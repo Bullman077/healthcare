@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book a medical appointment at UHS Healthcare. Direct Primary Care, DOT physicals, telehealth, and weight loss visits.">
+  <meta name="format-detection" content="telephone=yes">
+
+  <title>Schedule an Appointment | UHS Healthcare Direct Primary Care</title>
+
+  <!-- Preconnect Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__spinner"></div>
+  </div>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ===== GLASS HEADER ===== -->
+  <header class="nav" role="banner">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
+        <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
+        <span class="nav__logo-title">Healthcare Heights of Strength</span>
+      </a>
+
+      <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav__right">
+        <ul class="nav__list">
+          <li><a href="index.html" class="nav__link">Home</a></li>
+          <li><a href="index.html#pricing" class="nav__link">Membership</a></li>
+          <li><a href="services.html" class="nav__link">Services</a></li>
+          <li><a href="telehealth.html" class="nav__link">Telehealth</a></li>
+          <li><a href="about.html" class="nav__link">About NP Brown</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+
+        <div class="nav__actions">
+          <a href="tel:+18033817489" class="nav__call-pill">(803) 381-7489</a>
+          <a href="/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
+          <span id="patient-nav" style="display:none;"></span>
+          <button class="btn btn--primary btn--sm" data-open-modal>Book Appointment</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ===== HERO BANNER ===== -->
+    <section class="hero" style="min-height:40vh; padding:140px 0 50px; background:var(--gradient-primary);">
+      <div class="hero__gradient-overlay" style="background:linear-gradient(180deg, rgba(11,26,48,0.65) 0%, rgba(11,26,48,0.92) 100%);"></div>
+
+      <div class="container text-center" style="position:relative; z-index:2; max-width:800px; margin:0 auto;">
+        <span class="badge badge--white" style="margin-bottom:1rem;">Online Scheduling Portal</span>
+        <h1 class="hero__title" style="font-size:clamp(2.2rem, 4.5vw, 3.5rem);">
+          Schedule Your <span class="hero__title-serif">Visit Today.</span>
+        </h1>
+        <p class="hero__text" style="margin:0 auto 1.5rem; text-align:center;">
+          Select your preferred medical service, date, and time for unhurried, personalized care.
+        </p>
+      </div>
+    </section>
+    <!-- ===== APPOINTMENT FORM SECTION ===== -->
+    <section class="section" aria-labelledby="booking-title">
+      <div class="container">
+        <div style="display:grid; grid-template-columns:0.9fr 1.1fr; gap:3rem; align-items:stretch;" class="animate">
+
+          <!-- Left Info Card -->
+          <div style="background:#1e293b; border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:2.5rem; display:flex; flex-direction:column; box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+            <span style="display:inline-block; background:rgba(56,189,248,0.15); color:#38bdf8; border-radius:9999px; padding:0.2rem 0.75rem; font-size:0.7rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; align-self:flex-start; margin-bottom:1.25rem;">Patient First Promise</span>
+            <h2 id="booking-title" style="font-size:1.6rem; font-weight:700; color:#ffffff; margin-bottom:1.5rem;">Why Choose UHS Healthcare</h2>
+
+            <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+              <div style="width:36px; height:36px; border-radius:50%; background:#0284c7; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:0.95rem;">1</div>
+              <div>
+                <h4 style="font-size:1.05rem; font-weight:700; color:#ffffff; margin-bottom:0.2rem;">Unhurried Visits</h4>
+                <p style="font-size:0.88rem; color:#cbd5e1; line-height:1.5;">30 to 60 minute dedicated appointments with NP Nacole Brown.</p>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+              <div style="width:36px; height:36px; border-radius:50%; background:#0284c7; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:0.95rem;">2</div>
+              <div>
+                <h4 style="font-size:1.05rem; font-weight:700; color:#ffffff; margin-bottom:0.2rem;">Same-Day &amp; Virtual Access</h4>
+                <p style="font-size:0.88rem; color:#cbd5e1; line-height:1.5;">Quick appointments available in-person at Columbia, SC or via Telehealth.</p>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:1rem; margin-bottom:1.5rem;">
+              <div style="width:36px; height:36px; border-radius:50%; background:#0284c7; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:0.95rem;">3</div>
+              <div>
+                <h4 style="font-size:1.05rem; font-weight:700; color:#ffffff; margin-bottom:0.2rem;">Transparent Flat Pricing</h4>
+                <p style="font-size:0.88rem; color:#cbd5e1; line-height:1.5;">No surprise bills, hidden facility fees, or insurance barriers.</p>
+              </div>
+            </div>
+
+            <div style="margin-top:auto; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1);">
+              <div style="font-size:0.8rem; color:#94a3b8; text-transform:uppercase; font-weight:600; letter-spacing:0.04em;">Clinic Location</div>
+              <div style="font-size:0.95rem; font-weight:600; color:#ffffff; margin-top:0.25rem;">2638 Two Notch Rd. Suite 210 Unit 10, Columbia, SC 29204</div>
+              <div style="font-size:0.95rem; font-weight:700; color:#38bdf8; margin-top:0.5rem;">Direct Phone: (803) 381-7489</div>
+            </div>
+          </div>
+
+          <!-- Right Booking Form Card -->
+          <div style="background:#f8fafc; border-radius:16px; padding:2.5rem; box-shadow:0 20px 40px rgba(0,0,0,0.3);">
+            <h3 style="font-size:1.5rem; font-weight:700; color:#0f172a; margin-bottom:0.4rem;">Request Your Appointment</h3>
+            <p style="font-size:0.9rem; color:#64748b; margin-bottom:1.5rem;">Fill out the form below and our clinic staff will confirm your time slot.</p>
+
+            <div id="page-api-error" style="display:none; background:#fef2f2; border:1px solid #fca5a5; color:#991b1b; padding:12px 16px; border-radius:10px; font-size:13px; margin-bottom:14px;"></div>
+
+            <div id="page-api-success" style="display:none; background:#f0fdf4; border:1.5px solid #86efac; border-radius:16px; padding:1.5rem; text-align:center;">
+              <div style="width:56px; height:56px; background:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; color:#fff; font-size:24px; font-weight:bold;">✓</div>
+              <h4 style="font-size:1.3rem; font-weight:800; color:#0f172a; margin-bottom:0.5rem;">Appointment Confirmed!</h4>
+              <p id="page-success-msg" style="font-size:0.95rem; color:#475569; margin-bottom:1rem;"></p>
+              <div id="page-success-details" style="text-align:left; background:#ffffff; padding:1rem; border-radius:10px; font-size:0.9rem; border:1px solid #e2e8f0;"></div>
+              <button onclick="location.reload()" class="btn btn--accent btn--sm" style="margin-top:1rem;">Book Another Session</button>
+            </div>
+
+            <form id="standalone-booking-form">
+              <div style="margin-bottom:1.25rem;">
+                <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Full Name *</label>
+                <input type="text" id="app-name" required placeholder="John Smith" style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; font-family:inherit; background:#f1f5f9; color:#0f172a; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onfocus="this.style.borderColor='#0284c7'; this.style.boxShadow='0 0 0 3px rgba(2,132,199,0.2)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+                <div>
+                  <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Phone Number *</label>
+                  <input type="tel" id="app-phone" required placeholder="(803) 555-0199" style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; font-family:inherit; background:#f1f5f9; color:#0f172a; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onfocus="this.style.borderColor='#0284c7'; this.style.boxShadow='0 0 0 3px rgba(2,132,199,0.2)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+                </div>
+                <div>
+                  <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Email Address *</label>
+                  <input type="email" id="app-email" required placeholder="john@example.com" style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; font-family:inherit; background:#f1f5f9; color:#0f172a; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onfocus="this.style.borderColor='#0284c7'; this.style.boxShadow='0 0 0 3px rgba(2,132,199,0.2)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+                </div>
+              </div>
+
+              <div style="margin-bottom:1.25rem;">
+                <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Service Type *</label>
+                <select id="app-service" required style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; background:#f1f5f9; color:#0f172a; font-family:inherit; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#0284c7';" onblur="this.style.borderColor='#cbd5e1';">
+                  <option value="">-- Select Requested Care --</option>
+                  <option value="DOT / Non-DOT Physical">DOT / Non-DOT Physical Exam</option>
+                  <option value="Sports Physical">Sports Physical Exam</option>
+                  <option value="Work Physical">Work Physical Exam</option>
+                  <option value="BLS CPR Training">BLS CPR Training Class</option>
+                  <option value="TB Skin Testing">TB Skin Testing</option>
+                  <option value="Weight Loss Healthy Plans">Weight Loss Healthy Plans (GLP-1 Support)</option>
+                  <option value="Iontopherisis Patch Therapy">Iontopherisis Patch Therapy</option>
+                  <option value="Chronic Pain Relief">Chronic Pain Relief Consultation</option>
+                  <option value="Telehealth Visit">Virtual Telehealth Visit</option>
+                </select>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.5rem;">
+                <div>
+                  <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Preferred Date *</label>
+                  <input type="date" id="app-date" required style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; font-family:inherit; background:#f1f5f9; color:#0f172a; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onfocus="this.style.borderColor='#0284c7'; this.style.boxShadow='0 0 0 3px rgba(2,132,199,0.2)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';">
+                </div>
+                <div>
+                  <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Preferred Time *</label>
+                  <select id="app-time" required style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; background:#f1f5f9; color:#0f172a; font-family:inherit; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#0284c7';" onblur="this.style.borderColor='#cbd5e1';">
+                    <option value="">-- Select Time Slot --</option>
+                    <option value="8:00 AM">8:00 AM</option>
+                    <option value="9:00 AM">9:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="1:00 PM">1:00 PM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="4:00 PM">4:00 PM</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Additional Notes / Symptoms</label>
+                <textarea id="app-message" rows="3" placeholder="Tell us briefly about your visit needs..." style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; font-family:inherit; background:#f1f5f9; color:#0f172a; resize:vertical; outline:none; transition:border-color 0.2s, box-shadow 0.2s;" onfocus="this.style.borderColor='#0284c7'; this.style.boxShadow='0 0 0 3px rgba(2,132,199,0.2)';" onblur="this.style.borderColor='#cbd5e1'; this.style.boxShadow='none';"></textarea>
+              </div>
+
+              <button type="submit" id="app-submit-btn" style="width:100%; background:#0284c7; color:#ffffff; font-size:1.1rem; font-weight:700; padding:1rem; border:none; border-radius:12px; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='#0369a1'" onmouseout="this.style.background='#0284c7'">Submit Booking Request</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== UNIVERSAL BOOKING MODAL ===== -->
+  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav__logo" style="margin-bottom:1rem;">
+            <div class="nav__logo-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5"/></svg>
+            </div>
+            <div>
+              <span class="nav__logo-title">UHS Healthcare</span>
+              <span class="nav__logo-subtitle">Direct Primary Care</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+        </div>
+        <div>
+          <h4 class="footer-column__title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#pricing">Membership Plans</a></li>
+            <li><a href="services.html">Medical Services</a></li>
+            <li><a href="about.html">About NP Brown</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-column__title">Contact</h4>
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6;">
+            2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
+            <strong>Phone:</strong> (803) 381-7489
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 UHS Healthcare Services. All rights reserved.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
+          <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Pre-fill service from URL ?service= param (invisible)
+    (function(){
+      var svc = new URLSearchParams(window.location.search).get('service');
+      if (svc) {
+        var sel = document.getElementById('app-service');
+        var iv = setInterval(function(){
+          if (sel && sel.querySelector('option[value="' + svc.replace(/"/g,'\\"') + '"]')) {
+            sel.value = svc; clearInterval(iv);
+          }
+        }, 100);
+        setTimeout(function(){ clearInterval(iv); }, 5000);
+      }
+    })();
+
+    // Pre-fill patient info once auth resolves
+    (function(){
+      var iv = setInterval(function(){
+        var p = window.currentPatient;
+        if (p) {
+          var fields = { 'app-name': p.firstName + ' ' + p.lastName, 'app-phone': p.phone || '', 'app-email': p.email };
+          Object.keys(fields).forEach(function(id){
+            var el = document.getElementById(id);
+            if (el) { el.value = fields[id]; el.readOnly = true; el.style.background = 'var(--color-slate-100)'; }
+          });
+          clearInterval(iv);
+        }
+      }, 100);
+      setTimeout(function(){ clearInterval(iv); }, 5000);
+    })();
+
+    document.getElementById('standalone-booking-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var errEl = document.getElementById('page-api-error');
+      var succEl = document.getElementById('page-api-success');
+      var btn = document.getElementById('app-submit-btn');
+      errEl.style.display = 'none';
+      succEl.style.display = 'none';
+
+      var payload = {
+        name: document.getElementById('app-name').value.trim(),
+        phone: document.getElementById('app-phone').value.trim(),
+        email: document.getElementById('app-email').value.trim(),
+        service: document.getElementById('app-service').value,
+        date: document.getElementById('app-date').value,
+        time: document.getElementById('app-time').value,
+        message: document.getElementById('app-message').value.trim()
+      };
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting Request...';
+
+      try {
+        var res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(payload) });
+        var data = await res.json();
+        if (res.ok && data.success) {
+          document.getElementById('standalone-booking-form').style.display = 'none';
+          document.getElementById('page-success-msg').innerHTML = 'Thank you, <strong>' + data.data.patient + '</strong>. Your appointment request for <strong>' + data.data.service + '</strong> is submitted.';
+          document.getElementById('page-success-details').innerHTML = '<strong>Reference #:</strong> <span style="font-family:monospace; color:var(--color-indigo); font-weight:bold;">' + data.data.referenceNumber + '</span><br><strong>Date & Time:</strong> ' + data.data.date + ' at ' + data.data.time + '<br><strong>Status:</strong> ' + data.data.status;
+          succEl.style.display = 'block';
+
+          // Silently fetch and show accumulated appointment count
+          try {
+            var r2 = await fetch('/api/appointments/by-email?email=' + encodeURIComponent(payload.email));
+            var d2 = await r2.json();
+            var past = (d2.data || []).filter(function(a){ return a.referenceNumber !== data.data.referenceNumber; });
+            if (past.length) {
+              var p = document.createElement('p');
+              p.style.cssText = 'font-size:0.85rem;color:var(--color-slate-500);margin-top:0.75rem;';
+              p.textContent = 'You have ' + past.length + ' past appointment(s) on record.';
+              document.getElementById('page-success-details').appendChild(p);
+            }
+          } catch(_) {}
+        } else {
+          errEl.textContent = data.message || 'Error submitting booking. Please try again.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Submit Booking Request';
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please call (803) 381-7489 directly.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Submit Booking Request';
+      }
+    });
+
+    var di = document.getElementById('app-date');
+    if (di) {
+      var tm = new Date(); tm.setDate(tm.getDate() + 1);
+      di.min = tm.toISOString().split('T')[0];
+    }
+  </script>
+</body>
+</html>

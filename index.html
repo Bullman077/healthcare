@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="UHS Healthcare — Premier Direct Primary Care & Telehealth in Columbia, SC by Nacole Brown MSN AGPCNP-BC. Unhurried visits, transparent pricing, 24/7 direct doctor access.">
+  <meta name="format-detection" content="telephone=yes">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://uhshealthcare.com/">
+  <meta property="og:title" content="UHS Healthcare | Direct Primary Care & Telehealth">
+  <meta property="og:description" content="Personalized medical care built around you — unhurried visits, direct NP access, weight management, DOT physicals, and telehealth.">
+  <meta property="og:image" content="assets/images/hero-doctor-patient.png">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="UHS Healthcare">
+
+  <title>UHS Healthcare | Direct Primary Care &amp; Telehealth in Columbia, SC</title>
+
+  <!-- Preconnect Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": "Unmeasurable Heights of Strength Healthcare Services",
+    "alternateName": "UHS Healthcare Direct Primary Care",
+    "url": "https://uhshealthcare.com",
+    "telephone": "+18033817489",
+    "email": "info@uhshealthcare.com",
+    "medicalSpecialty": ["PrimaryCare", "GeriatricMedicine", "Telehealth"],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "2638 Two Notch Rd. Suite 210 Unit 10",
+      "addressLocality": "Columbia",
+      "addressRegion": "SC",
+      "postalCode": "29204",
+      "addressCountry": "US"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__spinner"></div>
+  </div>
+
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ===== GLASS STICKY HEADER ===== -->
+  <header class="nav" role="banner">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
+        <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
+        <span class="nav__logo-title">Healthcare Heights of Strength</span>
+      </a>
+
+      <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav__right">
+        <ul class="nav__list">
+          <li><a href="index.html" class="nav__link nav__link--active">Home</a></li>
+          <li><a href="#pricing" class="nav__link">Membership</a></li>
+          <li><a href="services.html" class="nav__link">Services</a></li>
+          <li><a href="telehealth.html" class="nav__link">Telehealth</a></li>
+          <li><a href="about.html" class="nav__link">About NP Brown</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+
+        <div class="nav__actions">
+          <a href="tel:+18033817489" class="nav__call-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            (803) 381-7489
+          </a>
+          <a href="/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
+          <span id="patient-nav" style="display:none;"></span>
+          <button class="btn btn--primary btn--sm" data-open-modal>Book Appointment</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" aria-label="Hero Section">
+      <img src="assets/images/clinic-interior.png" alt="Clinic interior" class="hero__bg-img">
+      <div class="hero__gradient-overlay"></div>
+
+      <div class="hero-floating-card">
+        <div class="hero-floating-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div>
+          <div class="hero-floating-status">Accepting New Patients</div>
+          <div class="hero-floating-name">Nacole Brown, MSN AGPCNP-BC</div>
+          <div class="hero-floating-title">Adult-Gerontology Primary Care Specialist</div>
+        </div>
+      </div>
+
+      <div class="container" style="position:relative;z-index:10;">
+        <div class="hero__grid">
+          <div class="hero__content animate">
+            <div class="hero__badge-group">
+              <span class="badge badge--white">Unmeasurable Heights of Strength</span>
+              <span class="badge badge--teal">Rising Above. Empowering Wellness.</span>
+              <span class="badge badge--indigo">Proudly Serving Columbia, SC &amp; Surrounding Areas</span>
+            </div>
+
+            <h1 class="hero__title">
+              Healthcare Built Around You.<br>
+              <span class="hero__title-serif">Heights of Strength.</span>
+            </h1>
+
+            <p class="hero__text">
+              We are committed to providing high-quality, compassionate care to help you reach your highest level of health and wellness. Experience unhurried visits, same-day appointments, direct NP access, and virtual telehealth.
+            </p>
+
+            <div class="hero__actions">
+              <button class="btn btn--accent btn--lg" data-open-modal>Book Appointment</button>
+              <a href="appointment.html" class="btn btn--outline btn--lg">Schedule Your Visit</a>
+            </div>
+
+            <div class="hero__stats">
+              <div class="stat-item">
+                <div class="stat-item__number">15<span>+</span></div>
+                <div class="stat-item__label">Years Experience</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-item__number">0<span>min</span></div>
+                <div class="stat-item__label">Wait Times</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-item__number">24<span>/7</span></div>
+                <div class="stat-item__label">Direct NP Access</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-item__number">100<span>%</span></div>
+                <div class="stat-item__label">Transparent Pricing</div>
+              </div>
+            </div>
+          </div>
+
+          <div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHY DPC VS TRADITIONAL CARE ===== -->
+    <section class="section section--navy" aria-labelledby="dpc-vs-traditional">
+      <div class="container">
+        <div class="section-header section-header--light animate">
+          <span class="section-header__subtitle">Why Direct Primary Care?</span>
+          <h2 id="dpc-vs-traditional" class="section-header__title">UHS Direct Care vs. Traditional Healthcare</h2>
+          <p class="section-header__desc">Compare how our membership model places your health, time, and budget first.</p>
+        </div>
+
+        <div class="comparison-card animate">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th class="col-feature">Feature / Experience</th>
+                <th class="col-dpc">
+                  <span class="col-badge">Recommended</span>
+                  UHS Direct Primary Care
+                </th>
+                <th class="col-traditional">Traditional Fee-for-Service</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="col-feature">
+                  <div class="feature-title">
+                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                    Appointment Length
+                  </div>
+                </td>
+                <td class="col-dpc">
+                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 30–60 min unhurried</span>
+                </td>
+                <td class="col-traditional">
+                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 8–12 min rushed</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-feature">
+                  <div class="feature-title">
+                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                    Doctor Access
+                  </div>
+                </td>
+                <td class="col-dpc">
+                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Direct text, phone, email &amp; video</span>
+                </td>
+                <td class="col-traditional">
+                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Answering service &amp; automated menus</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-feature">
+                  <div class="feature-title">
+                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                    Copays &amp; Surprise Bills
+                  </div>
+                </td>
+                <td class="col-dpc">
+                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> $0 Copays – Flat monthly fee</span>
+                </td>
+                <td class="col-traditional">
+                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> High copays &amp; surprise bills</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-feature">
+                  <div class="feature-title">
+                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                    Scheduling
+                  </div>
+                </td>
+                <td class="col-dpc">
+                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Same-day or next-day</span>
+                </td>
+                <td class="col-traditional">
+                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Weeks or months waitlist</span>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col-feature">
+                  <div class="feature-title">
+                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+                    Wholesale Labs &amp; Meds
+                  </div>
+                </td>
+                <td class="col-dpc">
+                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Up to 80–90% wholesale savings</span>
+                </td>
+                <td class="col-traditional">
+                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Marked-up retail pricing</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- ===== INTERACTIVE SERVICES EXPLORER ===== -->
+    <section class="section section--alt" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Comprehensive Care</span>
+          <h2 id="services-title" class="section-header__title">Services Tailored to Your Life</h2>
+          <p class="section-header__desc">Select a service category below to explore details, pricing, and treatment options.</p>
+        </div>
+
+        <div class="service-tabs animate">
+          <button class="service-tab-btn active" data-tab="tab-physicals">DOT / Work / Sports Physicals</button>
+          <button class="service-tab-btn" data-tab="tab-weight">Weight Loss Healthy Plans</button>
+          <button class="service-tab-btn" data-tab="tab-cpr">BLS CPR Training</button>
+          <button class="service-tab-btn" data-tab="tab-tb">TB Skin Testing</button>
+          <button class="service-tab-btn" data-tab="tab-patch">Iontopherisis Patch &amp; Chronic Pain</button>
+          <button class="service-tab-btn" data-tab="tab-telehealth">Telehealth Visits</button>
+        </div>
+
+        <!-- Tab Content 1: Physicals -->
+        <div id="tab-physicals" class="service-display-card animate" style="display:grid;">
+          <div class="service-display-card__content">
+            <span class="badge badge--teal" style="margin-bottom:1rem;">Stay Compliant &amp; Road Ready</span>
+            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">DOT, Work &amp; Sports Physicals</h3>
+            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
+              We provide thorough DOT and Non-DOT physicals, Work physicals, and Sports physicals with fast turnaround time of results so you can get back to what matters most. Keeping athletes of all ages healthy, strong, and ready to perform.
+            </p>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> DOT / Non-DOT Physical Exams with fast turnaround</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Sports Physicals for athletes of all ages</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Work Physicals supporting a safe and healthy workforce</li>
+            </ul>
+            <button class="btn btn--primary" data-open-modal>Schedule Physical Exam</button>
+          </div>
+          <div class="service-display-card__image">
+            <img src="assets/images/hero-doctor-patient.png" alt="Physical Exams">
+          </div>
+        </div>
+
+        <!-- Tab Content 2: Weight Loss Healthy Plans -->
+        <div id="tab-weight" class="service-display-card animate" style="display:none;">
+          <div class="service-display-card__content">
+            <span class="badge badge--indigo" style="margin-bottom:1rem;">Sustainable Plans for Real Results</span>
+            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">Weight Loss Healthy Plans</h3>
+            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
+              Sustainable plans designed for real results and a healthier you, featuring comprehensive GLP-1 support when appropriate.
+            </p>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Reach a Healthy BMI</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Personalized Nutrition Plans &amp; Exercise Guidance</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Lifestyle Coaching &amp; GLP-1 Support (when appropriate)</li>
+            </ul>
+            <button class="btn btn--primary" data-open-modal>Get Started Today</button>
+          </div>
+          <div class="service-display-card__image">
+            <img src="assets/images/poster-weight-loss.png" alt="Weight Loss Healthy Plans">
+          </div>
+        </div>
+
+        <!-- Tab Content 3: BLS CPR Training -->
+        <div id="tab-cpr" class="service-display-card animate" style="display:none;">
+          <div class="service-display-card__content">
+            <span class="badge badge--gold" style="margin-bottom:1rem;">American Heart Association</span>
+            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">BLS CPR Training</h3>
+            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
+              American Heart Association BLS CPR training for healthcare providers and the community. Classes are engaging, hands-on, and certification you can trust.
+            </p>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Official AHA BLS CPR Certification</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Engaging, hands-on classroom instruction</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Open for healthcare providers and community members</li>
+            </ul>
+            <button class="btn btn--primary" data-open-modal>Inquire for CPR Class</button>
+          </div>
+          <div class="service-display-card__image">
+            <img src="assets/images/hero-doctor-patient.png" alt="BLS CPR Training">
+          </div>
+        </div>
+
+        <!-- Tab Content 4: TB Skin Testing -->
+        <div id="tab-tb" class="service-display-card animate" style="display:none;">
+          <div class="service-display-card__content">
+            <span class="badge badge--teal" style="margin-bottom:1rem;">Fast &amp; Accurate</span>
+            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">TB Skin Testing</h3>
+            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
+              Accurate TB skin testing for employment, school, or healthcare requirements.
+            </p>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Employment clearance testing</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> School &amp; university requirements</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Healthcare worker screening</li>
+            </ul>
+            <button class="btn btn--primary" data-open-modal>Schedule TB Test</button>
+          </div>
+          <div class="service-display-card__image">
+            <img src="assets/images/clinic-interior.png" alt="TB Skin Testing">
+          </div>
+        </div>
+
+        <!-- Tab Content 5: Patch & Chronic Pain -->
+        <div id="tab-patch" class="service-display-card animate" style="display:none;">
+          <div class="service-display-card__content">
+            <span class="badge badge--indigo" style="margin-bottom:1rem;">Non-Invasive Therapy</span>
+            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">Iontopherisis Patch &amp; Chronic Pain Relief</h3>
+            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
+              A non-invasive therapy that uses a gentle electrical current to deliver anti-inflammatory medication through the skin directly to the affected area. Helps reduce pain, swelling, and inflammation—perfect for managing chronic pain conditions and improving mobility without drugs.
+            </p>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Transdermal anti-inflammatory medication delivery</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Comprehensive, individualized approaches for chronic pain</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Improve mobility without oral drugs</li>
+            </ul>
+            <button class="btn btn--primary" data-open-modal>Schedule Pain Consultation</button>
+          </div>
+          <div class="service-display-card__image">
+            <img src="assets/images/poster-iontopherisis-patch.png" alt="Iontopherisis Patch Therapy">
+          </div>
+        </div>
+
+        <!-- Tab Content 6: Telehealth Visits -->
+        <div id="tab-telehealth" class="service-display-card animate" style="display:none;">
+          <div class="service-display-card__content">
+            <span class="badge badge--teal" style="margin-bottom:1rem;">Virtual Care Available</span>
+            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">Telehealth Visits</h3>
+            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
+              Convenient virtual telehealth visits available from the comfort of your home or on the go.
+            </p>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Convenient video &amp; virtual checkups</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Direct prescription e-refills</li>
+              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Save time without traveling to the clinic</li>
+            </ul>
+            <a href="telehealth.html" class="btn btn--primary">Access Telehealth</a>
+          </div>
+          <div class="service-display-card__image">
+            <img src="assets/images/telehealth-consult.png" alt="Telehealth Consultation">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CARE NEED FINDER WIDGET ===== -->
+    <section class="care-finder-section" aria-label="Care Finder">
+      <div class="container">
+        <div class="animate" style="text-align:center;">
+          <h2 class="care-finder__title">What Care Do You Need Today?</h2>
+          <p class="care-finder__sub">Click an option to find your recommended service &amp; booking info.</p>
+
+          <div class="care-finder__options">
+            <div class="care-option" data-care-key="physicals">
+              <div class="care-option__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 2v4h4"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
+                  <path d="M11 14.5 8 11.5"/><path d="M15 8.5 11 12.5"/><circle cx="16.5" cy="6.5" r="1.5"/>
+                  <path d="M12 18v-4"/><path d="m15 6-3 3"/>
+                </svg>
+              </div>
+              <div class="care-option__label">DOT / Work / Sports Physicals</div>
+              <div class="care-option__arrow">Book Option →</div>
+            </div>
+
+            <div class="care-option" data-care-key="weight">
+              <div class="care-option__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="8"/><path d="M12 14v-4"/>
+                  <circle cx="12" cy="9" r="1"/><path d="M10 16h4"/>
+                </svg>
+              </div>
+              <div class="care-option__label">Weight Loss &amp; Healthy Plans</div>
+              <div class="care-option__arrow">Book Option →</div>
+            </div>
+
+            <div class="care-option" data-care-key="cpr">
+              <div class="care-option__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                </svg>
+              </div>
+              <div class="care-option__label">BLS CPR Training</div>
+              <div class="care-option__arrow">Book Option →</div>
+            </div>
+
+            <div class="care-option" data-care-key="tb">
+              <div class="care-option__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4.5 9.5 12 4l7.5 5.5"/><path d="M12 4v10"/>
+                  <path d="M12 14a4 4 0 0 0-4 4v2h8v-2a4 4 0 0 0-4-4Z"/>
+                </svg>
+              </div>
+              <div class="care-option__label">TB Skin Testing</div>
+              <div class="care-option__arrow">Book Option →</div>
+            </div>
+
+            <div class="care-option" data-care-key="patch">
+              <div class="care-option__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/>
+                  <path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/>
+                  <path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </div>
+              <div class="care-option__label">Iontophoresis Patch &amp; Chronic Pain</div>
+              <div class="care-option__arrow">Book Option →</div>
+            </div>
+
+            <div class="care-option" data-care-key="telehealth">
+              <div class="care-option__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                  <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <div class="care-option__label">Telehealth Visit</div>
+              <div class="care-option__arrow">Book Option →</div>
+            </div>
+          </div>
+
+          <div id="care-result-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROVIDER SPOTLIGHT ===== -->
+    <section class="section section--alt" aria-labelledby="provider-spotlight">
+      <div class="container">
+        <div class="provider-card animate">
+          <div class="provider-card__media">
+            <img src="assets/images/nacole-brown-provider.png" alt="Nacole Brown MSN AGPCNP-BC">
+          </div>
+
+          <div class="provider-card__details">
+            <span style="display:inline-block; background:rgba(56,189,248,0.15); color:#38bdf8; border-radius:9999px; padding:0.3rem 0.85rem; font-size:0.7rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; align-self:flex-start; margin-bottom:1rem;">Founder &amp; Lead Provider</span>
+            <h2 id="provider-spotlight" style="font-size:2rem; font-weight:700; color:#ffffff; margin-bottom:0.5rem; line-height:1.2;">Nacole Brown, MSN, AGPCNP-BC</h2>
+            <p style="font-size:1rem; font-weight:600; color:#94a3b8; margin-bottom:1rem;">Adult-Gerontology Primary Care Nurse Practitioner</p>
+
+            <div class="career-trail">
+              <span style="font-size:0.85rem; font-weight:700; color:#38bdf8;">Career Progression:</span>
+              <span class="career-step">LPN</span>
+              <span style="color:rgba(255,255,255,0.3); font-weight:700;">→</span>
+              <span class="career-step">ADN</span>
+              <span style="color:rgba(255,255,255,0.3); font-weight:700;">→</span>
+              <span class="career-step">BSN</span>
+              <span style="color:rgba(255,255,255,0.3); font-weight:700;">→</span>
+              <span class="career-step career-step--active">MSN, AGPCNP-BC</span>
+            </div>
+
+            <p style="font-size:1rem; line-height:1.7; color:#e2e8f0; margin-bottom:1.5rem;">
+              With over 15 years of clinical nursing and primary care experience, Nacole Brown founded UHS Healthcare to restore the sacred doctor-patient relationship. She believes in holistic, compassionate care where patients are heard, respected, and empowered.
+            </p>
+
+            <div style="background:rgba(255,255,255,0.06); padding:1.25rem; border-radius:16px; border-left:4px solid #38bdf8; margin-bottom:1.5rem;">
+              <p style="font-size:1rem; font-style:italic; color:#f8fafc; margin:0;">
+                "My mission is simple: to provide high-quality, accessible healthcare without the insurance barriers, waiting room delays, or rushed visits."
+              </p>
+            </div>
+
+            <div>
+              <a href="about.html" style="display:inline-block; background:#38bdf8; color:#0f172a; font-weight:700; font-size:0.95rem; padding:0.75rem 1.5rem; border-radius:8px; transition:all 0.25s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(56,189,248,0.35)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">Read Full Bio &amp; Credentials</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PATIENT TESTIMONIALS ===== -->
+    <section class="section" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Patient Experiences</span>
+          <h2 id="reviews-title" class="section-header__title">What Our Patients Say</h2>
+          <p class="section-header__desc">Real reviews from members in Columbia, SC and surrounding communities.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card animate">
+            <div>
+              <div class="stars-rating">★★★★★</div>
+              <p class="testimonial-card__text">
+                "Nacole Brown is the most attentive medical provider I've ever had. She spent a full 45 minutes with me reviewing my health history and lab results. The Direct Primary Care membership is worth every penny!"
+              </p>
+            </div>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">S.M.</div>
+              <div>
+                <div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">Sarah M.</div>
+                <div style="font-size:0.8rem; color:var(--color-slate-500);">DPC Member, Columbia, SC</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card animate">
+            <div>
+              <div class="stars-rating">★★★★★</div>
+              <p class="testimonial-card__text">
+                "Needed a DOT physical for my CDL renewal. Got a same-day appointment, zero waiting time, and NP Brown was extremely thorough and professional. Highly recommend UHS Healthcare!"
+              </p>
+            </div>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">J.D.</div>
+              <div>
+                <div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">James D.</div>
+                <div style="font-size:0.8rem; color:var(--color-slate-500);">CDL Driver</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card animate">
+            <div>
+              <div class="stars-rating">★★★★★</div>
+              <p class="testimonial-card__text">
+                "The telehealth service is incredible. I was able to text NP Brown directly on a Sunday when I came down with a bad sinus infection, and my prescription was called in immediately."
+              </p>
+            </div>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">M.R.</div>
+              <div>
+                <div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">Michelle R.</div>
+                <div style="font-size:0.8rem; color:var(--color-slate-500);">Telehealth Patient</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ACCORDION & SEARCH ===== -->
+    <section class="section section--alt" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Frequently Asked Questions</span>
+          <h2 id="faq-title" class="section-header__title">Got Questions? We Have Answers.</h2>
+          <p class="section-header__desc">Type a keyword below or click a question to expand details.</p>
+        </div>
+
+        <div class="faq-search-box animate">
+          <svg class="faq-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="faq-search" class="faq-search-input" placeholder="Search questions (e.g. insurance, membership, labs, telehealth)...">
+        </div>
+
+        <div class="faq-list animate">
+          <div class="faq-item active">
+            <button class="faq-button">
+              <span>What is Direct Primary Care (DPC)?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              Direct Primary Care is an innovative healthcare model where patients pay a clear, flat monthly membership fee directly to their provider. This eliminates insurance billing hassles, long waiting rooms, copays, and rushed visits, giving you unlimited access to unhurried medical care.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>Do I need health insurance to become a member?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              No insurance is required! DPC works wonderfully for uninsured individuals as well as those with high-deductible insurance plans or Health Savings Accounts (HSAs). We recommend pairing a DPC membership with high-deductible catastrophic coverage for hospitalizations.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>How do virtual telehealth visits work?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              Virtual visits allow you to connect directly with Nacole Brown, MSN AGPCNP-BC via secure video call or direct messaging from your phone or computer. Perfect for routine check-ins, medication refills, rash assessments, and acute illness consultations.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>What if I need lab work or prescription medications?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              As a DPC member, you enjoy deep wholesale discounts on routine lab panels (often 80% to 90% lower than hospital retail costs). Prescriptions can be sent electronically to your pharmacy of choice.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>Can I cancel my DPC membership at any time?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              Yes. UHS Healthcare DPC memberships are month-to-month with no long-term contracts. You may cancel at any time with 30 days written notice. There are no cancellation penalties or hidden fees.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>Are DOT physicals covered under my DPC membership?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              DOT/FMCSA physicals are a separate fee-for-service appointment and are not included in the standard DPC membership. However, as a member you receive a discounted rate. Same-day appointments are typically available with no waiting room delays.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>Is BLS/CPR training open to non-patients and businesses?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              Absolutely. Our American Heart Association BLS CPR certification classes are open to everyone — patients, employees, healthcare workers, teachers, and community members. Group and corporate rates are available. Contact us to schedule a class for your team.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>What areas do you serve?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              UHS Healthcare is based in Columbia, SC and serves patients across Richland County, Lexington County, and surrounding Midlands communities. Telehealth services are available to residents across South Carolina. Call us to confirm availability for your area.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>How quickly can I get an appointment?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              As a DPC member, you can typically be seen same-day or next-day. For non-members and fee-for-service appointments such as DOT physicals, sports physicals, and BLS training, we aim to accommodate you within 1 to 2 business days. Telehealth visits are often available the same day.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>What does Iontophoresis Patch Therapy treat?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              Iontophoresis is a non-invasive treatment that uses a mild electrical current to deliver medication through the skin. It is highly effective for localized pain and inflammation (such as tendinitis, bursitis, and carpal tunnel syndrome), hyperhidrosis (excessive sweating), and certain skin conditions. It is needle-free and typically requires no downtime.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>Does UHS Healthcare accept Medicare or Medicaid?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              UHS Healthcare operates outside of the traditional insurance system, which keeps your costs low and visits unhurried. We do not bill Medicare or Medicaid for DPC membership visits. However, Medicare members are welcome to join — the monthly membership fee is typically very affordable and complements your existing coverage. Certain fee-for-service items may be separately billable.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-button">
+              <span>How do I get started as a new patient?</span>
+              <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
+            </button>
+            <div class="faq-content">
+              Getting started is easy. Simply click "Book Appointment" on any page, fill out the short form, and our team will confirm your first visit within 24 hours. You can also call us directly at (803) 381-7489 or email info@uhshealthcare.com. No referral is needed.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="section section--navy" aria-label="Call to Action">
+      <div class="container">
+        <div style="text-align:center; max-width:800px; margin:0 auto;" class="animate">
+          <span class="badge badge--white" style="margin-bottom:1rem;">Ready for Better Healthcare?</span>
+          <h2 style="font-size:clamp(2rem, 4vw, 3rem); font-weight:800; color:#fff; margin-bottom:1.25rem;">Experience Healthcare Built Around You</h2>
+          <p style="font-size:1.15rem; color:rgba(255,255,255,0.85); line-height:1.7; margin-bottom:2.5rem;">
+            Join UHS Healthcare today and enjoy unhurried visits, direct NP access, and transparent pricing.
+          </p>
+          <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn--accent btn--lg" data-open-modal>Schedule Your First Visit</button>
+            <a href="tel:+18033817489" class="btn btn--outline btn--lg">Call (803) 381-7489</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== UNIVERSAL BOOKING MODAL ===== -->
+  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav__logo" style="margin-bottom:1rem;">
+            <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:40px; width:auto; border-radius:50%;">
+            <div>
+              <span class="nav__logo-title">UHS Healthcare</span>
+              <span class="nav__logo-subtitle">Heights of Strength</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">
+            Unmeasurable Heights of Strength Healthcare Services. Dedicated compassionate care by Nacole Brown, MSN AGPCNP-BC in Columbia, SC.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-column__title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#pricing">Membership Plans</a></li>
+            <li><a href="services.html">Medical Services</a></li>
+            <li><a href="telehealth.html">Virtual Telehealth</a></li>
+            <li><a href="about.html">About NP Brown</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-column__title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="services.html">Primary &amp; Preventive Care</a></li>
+            <li><a href="services.html">Medical Weight Loss</a></li>
+            <li><a href="services.html">DOT &amp; Sports Physicals</a></li>
+            <li><a href="telehealth.html">Telehealth Consults</a></li>
+            <li><a href="services.html">Iontophoresis Patch Therapy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-column__title">Contact &amp; Clinic</h4>
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:1rem;">
+            2638 Two Notch Rd. Suite 210 Unit 10<br>
+            Columbia, SC 29204<br><br>
+            <strong>Phone:</strong> (803) 381-7489<br>
+            <strong>Email:</strong> info@uhshealthcare.com
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 UHS Healthcare Services. All rights reserved.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
+          <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

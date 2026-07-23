@@ -1,0 +1,85 @@
+const rateLimit = require('express-rate-limit');
+const { AppError } = require('./errorHandler');
+
+/* ----- Global rate limit (all routes) ----- */
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many requests. Please try again later.' },
+});
+
+/* ----- Auth rate limit (login attempts) ----- */
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many login attempts. Please try again later.' },
+});
+
+/* ----- API rate limit (appointment booking) ----- */
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many requests. Slow down.' },
+});
+
+/* ----- CSRF Protection — Origin / Referer check ----- */
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5500')
+  .split(',')
+  .map((s) => s.trim().replace(/\/$/, ''));
+
+function csrfProtect(req, res, next) {
+  // Only check mutating methods
+  if (!['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
+    return next();
+  }
+
+  const origin = req.headers.origin;
+  const referer = req.headers.referer;
+
+  // Allow requests with no origin/referer (e.g. server-to-server, curl)
+  if (!origin && !referer) {
+    // In production, reject requests without origin/referer for mutating methods
+    if (process.env.NODE_ENV === 'production') {
+      return next(new AppError('CSRF: Request origin is required.', 403));
+    }
+    // In development, allow (for Postman, curl testing)
+    return next();
+  }
+
+  const source = origin || referer;
+
+  // Always allow same-host requests (admin panel served from same server)
+  try {
+    const srcHost = new URL(source).hostname;
+    const reqHost = req.hostname;
+    if (srcHost === reqHost || srcHost === 'localhost' || srcHost === '127.0.0.1') {
+      return next();
+    }
+  } catch (e) { /* malformed origin, fall through to check */ }
+
+  const isAllowed = allowedOrigins.some((allowed) => source.startsWith(allowed));
+
+  if (!isAllowed) {
+    console.warn(`CSRF blocked: ${req.method} ${req.originalUrl} from origin ${source}`);
+    return next(new AppError('CSRF: Request origin not allowed.', 403));
+  }
+
+  next();
+}
+
+/* ----- Admin write rate limit (mutating admin endpoints) ----- */
+const adminWriteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many admin operations. Slow down.' },
+});
+
+module.exports = { limiter, authLimiter, apiLimiter, adminWriteLimiter, csrfProtect };

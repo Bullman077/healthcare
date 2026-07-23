@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard – UHS Healthcare</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ====================== TOAST ====================== -->
+<div id="toast"></div>
+
+<!-- ====================== LOGIN PAGE ====================== -->
+<div id="loginPage" class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="login-logo-text">UHS Healthcare</div>
+      </div>
+    </div>
+    <div class="login-subtitle">Admin Dashboard &nbsp;·&nbsp; Secure Access</div>
+
+    <div id="loginError" class="login-error"></div>
+
+    <label class="form-label">Email Address</label>
+    <input type="email" id="loginEmail" class="form-input" autocomplete="email" spellcheck="false" value="admin@uhshealthcare.com" placeholder="admin@uhshealthcare.com">
+    <label class="form-label">Password</label>
+    <input type="password" id="loginPassword" class="form-input" autocomplete="current-password" value="Admin123!" placeholder="••••••••">
+    <button id="loginBtn" class="login-btn" onclick="login()">Sign In to Dashboard</button>
+
+    <div style="margin-top:1.25rem; text-align:center; font-size:0.8rem; color:rgba(255,255,255,0.75); background:rgba(255,255,255,0.06); padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); line-height:1.6;">
+      🔑 <strong>Default Admin Credentials:</strong><br>
+      Email: <code style="color:#CCFBF1; font-weight:600;">admin@uhshealthcare.com</code><br>
+      Password: <code style="color:#CCFBF1; font-weight:600;">Admin123!</code>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== MAIN APP ====================== -->
+<div id="app" class="app hidden">
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- ========= SIDEBAR ========= -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="sidebar-brand-name">UHS Healthcare</div>
+        <div class="sidebar-brand-role" id="adminRole">Admin Panel</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Overview</div>
+      <button class="nav-item active" data-page="dashboard" onclick="goTo('dashboard')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </span>
+        Dashboard
+      </button>
+
+      <div class="sidebar-section-label">Appointments</div>
+      <button class="nav-item" data-page="upcoming" onclick="goTo('upcoming')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+        </span>
+        Upcoming
+      </button>
+      <button class="nav-item" data-page="completed" onclick="goTo('completed')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </span>
+        Completed
+      </button>
+      <button class="nav-item" data-page="all" onclick="goTo('all')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+        </span>
+        All Appointments
+      </button>
+
+      <div class="sidebar-section-label">Records</div>
+      <button class="nav-item" data-page="patients" onclick="goTo('patients')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </span>
+        Patients
+      </button>
+      <button class="nav-item" data-page="services" onclick="goTo('services')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </span>
+        Services
+      </button>
+
+      <div class="sidebar-section-label">Account</div>
+      <button class="nav-item" data-page="profile" onclick="goTo('profile')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        Profile
+      </button>
+    </nav>
+
+    <button class="sidebar-logout" onclick="logout()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+      Sign Out
+    </button>
+  </aside>
+
+  <!-- ========= TOP BAR ========= -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="live-clock" id="liveClock"></div>
+      <a href="/" target="_blank" class="topbar-action-btn" title="View Public Site">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+      <div class="admin-avatar" id="adminAvatar">A</div>
+      <div class="admin-name" id="adminName">Admin</div>
+    </div>
+  </div>
+
+  <!-- ========= MAIN CONTENT ========= -->
+  <main class="main-content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section id="page-dashboard" class="page-section active">
+      <div id="statsGrid" class="stats-grid"></div>
+      <div class="card" style="margin-top:28px;">
+        <div class="card-header">
+          <span class="card-title">Recent Appointments</span>
+          <button class="btn btn-outline btn-sm" onclick="goTo('all')">View All</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Ref</th><th>Patient</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="recentBody"><tr><td colspan="9"><div class="empty-state">Loading…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== UPCOMING ===== -->
+    <section id="page-upcoming" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Upcoming Appointments</span>
+          <div class="card-actions">
+            <input type="date" id="upcomingFrom" class="filter-input" placeholder="From" onchange="loadUpcoming(1)">
+            <input type="date" id="upcomingTo" class="filter-input" placeholder="To" onchange="loadUpcoming(1)">
+            <input type="search" id="upcomingSearch" class="filter-input" placeholder="Search…" oninput="loadUpcoming(1)">
+            <button class="btn btn-outline btn-sm" onclick="exportCSV('confirmed')">Export CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Ref</th><th>Patient</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="upcomingBody"></tbody>
+          </table>
+        </div>
+        <div id="upcomingPagination" class="pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== COMPLETED ===== -->
+    <section id="page-completed" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Completed Appointments</span>
+          <div class="card-actions">
+            <input type="date" id="completedFrom" class="filter-input" onchange="loadCompleted(1)">
+            <input type="date" id="completedTo" class="filter-input" onchange="loadCompleted(1)">
+            <input type="search" id="completedSearch" class="filter-input" placeholder="Search…" oninput="loadCompleted(1)">
+            <button class="btn btn-outline btn-sm" onclick="exportCSV('completed')">Export CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Ref</th><th>Patient</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Duration</th><th>Status</th></tr></thead>
+            <tbody id="completedBody"></tbody>
+          </table>
+        </div>
+        <div id="completedPagination" class="pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== ALL APPOINTMENTS ===== -->
+    <section id="page-all" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">All Appointments</span>
+          <div class="card-actions">
+            <select id="allStatus" class="filter-input" onchange="loadAll(1)">
+              <option value="">All Statuses</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="no-show">No Show</option>
+            </select>
+            <input type="date" id="allFrom" class="filter-input" onchange="loadAll(1)">
+            <input type="date" id="allTo" class="filter-input" onchange="loadAll(1)">
+            <input type="search" id="allSearch" class="filter-input" placeholder="Search…" oninput="loadAll(1)">
+            <button class="btn btn-outline btn-sm" onclick="resetAllFilters()">Reset</button>
+            <button class="btn btn-outline btn-sm" onclick="exportCSV()">Export All CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Ref</th><th>Patient</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="allBody"></tbody>
+          </table>
+        </div>
+        <div id="allPagination" class="pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== PATIENTS ===== -->
+    <section id="page-patients" class="page-section">
+      <div id="patientListCard" class="card">
+        <div class="card-header">
+          <span class="card-title">Patient Records</span>
+          <div class="card-actions">
+            <input type="search" id="patientSearch" class="filter-input" placeholder="Search patients…" oninput="loadPatients(1)">
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date of Birth</th><th>Registered</th><th>Actions</th></tr></thead>
+            <tbody id="patientsBody"></tbody>
+          </table>
+        </div>
+        <div id="patientPagination" class="pagination"></div>
+      </div>
+      <div id="patientDetail" class="hidden">
+        <button class="btn btn-outline btn-sm" onclick="closePatientDetail()" style="margin-bottom:20px;">← Back to Patients</button>
+        <div id="patientDetailContent"></div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="page-services" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Services</span>
+          <button class="btn btn-primary btn-sm" onclick="openServiceModal(null)">+ Add Service</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Duration</th><th>Telehealth</th><th>Active</th><th>Actions</th></tr></thead>
+            <tbody id="servicesBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROFILE ===== -->
+    <section id="page-profile" class="page-section">
+      <div class="card" style="max-width:540px;">
+        <div class="card-header"><span class="card-title">Admin Profile</span></div>
+        <div class="modal-body">
+          <div id="profileError" class="login-error" style="display:none;"></div>
+          <div id="profileSuccess" style="display:none; background:#f0fdf4; border:1px solid #86efac; color:#166534; padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:14px;"></div>
+          <label class="form-label">Display Name</label>
+          <input type="text" id="profileName" class="form-input" placeholder="Your name">
+          <label class="form-label" style="margin-top:14px;">Email Address</label>
+          <input type="email" id="profileEmail" class="form-input" disabled style="opacity:0.6;">
+          <label class="form-label" style="margin-top:14px;">New Password <span style="font-weight:400; color:var(--slate-500);">(leave blank to keep current)</span></label>
+          <input type="password" id="profilePassword" class="form-input" placeholder="••••••••">
+          <label class="form-label" style="margin-top:14px;">Confirm New Password</label>
+          <input type="password" id="profilePasswordConfirm" class="form-input" placeholder="••••••••">
+          <button class="login-btn" onclick="saveProfile()" style="margin-top:20px;">Save Changes</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ VIEW APPOINTMENT MODAL ============ -->
+<div class="modal-overlay" id="apptModal">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <span class="modal-title">Appointment Details</span>
+      <button class="modal-close" onclick="closeModal('apptModal')">✕</button>
+    </div>
+    <div class="modal-body" id="apptModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('apptModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SERVICE MODAL ============ -->
+<div class="modal-overlay" id="serviceModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <span class="modal-title" id="serviceModalTitle">Add Service</span>
+      <button class="modal-close" onclick="closeModal('serviceModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="serviceId">
+      <label class="form-label">Service Name *</label>
+      <input type="text" id="serviceName" class="form-input" placeholder="e.g. DOT Physical">
+      <label class="form-label" style="margin-top:14px;">Duration (minutes)</label>
+      <input type="number" id="serviceDuration" class="form-input" value="30">
+      <label class="form-label" style="margin-top:14px;">Telehealth Available</label>
+      <select id="serviceTelehealth" class="form-input">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <label class="form-label" style="margin-top:14px;">Description</label>
+      <textarea id="serviceDescription" class="form-input" rows="3" placeholder="Brief description…"></textarea>
+      <label class="form-label" style="margin-top:14px;">Status</label>
+      <select id="serviceActive" class="form-input">
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('serviceModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveService()">Save Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONFIRM DELETE MODAL ============ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <span class="modal-title">⚠️ Confirm Delete</span>
+      <button class="modal-close" onclick="closeModal('confirmModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--slate-700);">Are you sure you want to permanently delete this appointment? This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('confirmModal')">Cancel</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   CONSTANTS & STATE
+   ========================================================= */
+const API = '/api/admin';
+let state = {
+  token: null,
+  admin: null,
+  pages: {
+    upcoming: 1, completed: 1, all: 1, patients: 1,
+  }
+};
+
+/* =========================================================
+   LIVE CLOCK
+   ========================================================= */
+function updateClock() {
+  const now = new Date();
+  const opts = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+  document.getElementById('liveClock').textContent = now.toLocaleDateString('en-US', opts);
+}
+setInterval(updateClock, 30000);
+updateClock();
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+async function login() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const err = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+
+  if (!email || !password) { showErr(err, 'Please enter your email and password.'); return; }
+
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+  err.classList.remove('show');
+
+  try {
+    const res = await apiFetch('/login', 'POST', { email, password }, true);
+    if (res.success) {
+      state.token = res.token;
+      state.admin = res.admin;
+      showApp(res.admin);
+    } else {
+      showErr(err, res.message || 'Invalid credentials. Try admin@uhshealthcare.com / Admin123!');
+    }
+  } catch(e) {
+    showErr(err, 'Server error. Please try again.');
+  }
+  btn.textContent = 'Sign In to Dashboard';
+  btn.disabled = false;
+}
+
+function showApp(admin) {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('adminName').textContent = admin.name || 'Admin';
+  document.getElementById('adminAvatar').textContent = (admin.name || 'A')[0].toUpperCase();
+  document.getElementById('adminRole').textContent = admin.role === 'superadmin' ? 'Super Admin' : 'Admin';
+  populateProfile(admin);
+  initDashboard();
+}
+
+async function logout() {
+  try { await apiFetch('/logout', 'POST', null, true); } catch(e) {}
+  state.token = null;
+  state.admin = null;
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('loginEmail').value = 'admin@uhshealthcare.com';
+  document.getElementById('loginPassword').value = '';
+}
+
+document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+async function checkAuthSession() {
+  try {
+    const res = await fetch(API + '/me', { credentials: 'include', headers: { 'Content-Type': 'application/json' } });
+    const data = await res.json();
+    if (data && data.success && data.admin) {
+      state.admin = data.admin;
+      showApp(data.admin);
+    }
+  } catch(e) {}
+}
+window.addEventListener('DOMContentLoaded', checkAuthSession);
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+const PAGE_TITLES = {
+  dashboard: 'Dashboard',
+  upcoming: 'Upcoming Appointments',
+  completed: 'Completed Appointments',
+  all: 'All Appointments',
+  patients: 'Patient Records',
+  services: 'Services',
+  profile: 'Admin Profile',
+};
+
+function goTo(page) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('page-' + page);
+  if (sec) sec.classList.add('active');
+  const navBtn = document.querySelector('.nav-item[data-page="' + page + '"]');
+  if (navBtn) navBtn.classList.add('active');
+  document.getElementById('pageTitle').textContent = PAGE_TITLES[page] || page;
+  closeSidebar();
+
+  if (page === 'dashboard') initDashboard();
+  if (page === 'upcoming') loadUpcoming();
+  if (page === 'completed') loadCompleted();
+  if (page === 'all') loadAll();
+  if (page === 'patients') loadPatients();
+  if (page === 'services') loadServices();
+}
+
+/* =========================================================
+   SIDEBAR TOGGLE
+   ========================================================= */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+/* =========================================================
+   API HELPER
+   ========================================================= */
+async function apiFetch(endpoint, method = 'GET', body = null, skipAuth = false) {
+  const opts = {
+    method,
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  if (!skipAuth && state.token) {
+    opts.headers['Authorization'] = 'Bearer ' + state.token;
+  }
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + endpoint, opts);
+  return res.json();
+}
+
+/* =========================================================
+   TOAST NOTIFICATIONS
+   ========================================================= */
+function toast(msg, type = 'default') {
+  const icons = { success: '✓', danger: '✕', warning: '⚠', default: 'ℹ' };
+  const t = document.createElement('div');
+  t.className = 'toast-item ' + type;
+  t.innerHTML = `<span>${icons[type] || icons.default}</span><span>${msg}</span>`;
+  document.getElementById('toast').appendChild(t);
+  setTimeout(() => t.remove(), 3800);
+}
+
+/* =========================================================
+   MODAL HELPERS
+   ========================================================= */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+window.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('open');
+  }
+});
+
+/* =========================================================
+   ERROR HELPER
+   ========================================================= */
+function showErr(el, msg) { el.textContent = msg; el.classList.add('show'); }
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+async function initDashboard() {
+  try {
+    const data = await apiFetch('/stats');
+    if (!data.success) return;
+    const s = data.stats;
+
+    const statDefs = [
+      { key: 'total',     label: 'Total Appointments',  icon: '📋', color: '#4F46E5', bg: 'rgba(79,70,229,0.1)' },
+      { key: 'confirmed', label: 'Confirmed / Upcoming', icon: '📅', color: '#10B981', bg: 'rgba(16,185,129,0.1)' },
+      { key: 'completed', label: 'Completed',            icon: '✅', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)' },
+      { key: 'cancelled', label: 'Cancelled',            icon: '❌', color: '#EF4444', bg: 'rgba(239,68,68,0.1)'  },
+      { key: 'noShow',    label: 'No-Shows',             icon: '⚠️', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' },
+      { key: 'patients',  label: 'Total Patients',       icon: '👥', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)' },
+    ];
+
+    document.getElementById('statsGrid').innerHTML = statDefs.map(d => `
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-icon" style="background:${d.bg}; color:${d.color};">${d.icon}</div>
+          <div class="stat-label">${d.label}</div>
+        </div>
+        <div class="stat-value" style="color:${d.color};">${s[d.key] ?? 0}</div>
+      </div>
+    `).join('');
+
+    const recent = await apiFetch('/appointments?limit=8');
+    renderTable('recentBody', recent, true);
+  } catch(e) {
+    console.error('Dashboard error:', e);
+  }
+}
+
+/* =========================================================
+   SKELETON LOADER
+   ========================================================= */
+function showSkeleton(tbodyId, rows = 4, cols = 8) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  const colHtml = Array(cols).fill('<td><div class="skeleton" style="height:16px;border-radius:4px;"></div></td>').join('');
+  tbody.innerHTML = Array(rows).fill(`<tr>${colHtml}</tr>`).join('');
+}
+
+/* =========================================================
+   UPCOMING
+   ========================================================= */
+async function loadUpcoming(page = state.pages.upcoming) {
+  state.pages.upcoming = page;
+  showSkeleton('upcomingBody', 4, 9);
+  const from   = document.getElementById('upcomingFrom').value;
+  const to     = document.getElementById('upcomingTo').value;
+  const search = document.getElementById('upcomingSearch').value;
+  const qs = new URLSearchParams({ status: 'confirmed', page, limit: 15 });
+  if (from) qs.set('from', from);
+  if (to) qs.set('to', to);
+  if (search) qs.set('search', search);
+
+  const data = await apiFetch('/appointments?' + qs);
+  renderTable('upcomingBody', data, true);
+  renderPagination('upcomingPagination', data, page, loadUpcoming);
+}
+
+/* =========================================================
+   COMPLETED
+   ========================================================= */
+async function loadCompleted(page = state.pages.completed) {
+  state.pages.completed = page;
+  showSkeleton('completedBody', 4, 9);
+  const from   = document.getElementById('completedFrom').value;
+  const to     = document.getElementById('completedTo').value;
+  const search = document.getElementById('completedSearch').value;
+  const qs = new URLSearchParams({ status: 'completed', page, limit: 15 });
+  if (from) qs.set('from', from);
+  if (to) qs.set('to', to);
+  if (search) qs.set('search', search);
+
+  const data = await apiFetch('/appointments?' + qs);
+  renderTable('completedBody', data, false);
+  renderPagination('completedPagination', data, page, loadCompleted);
+}
+
+/* =========================================================
+   ALL APPOINTMENTS
+   ========================================================= */
+async function loadAll(page = state.pages.all) {
+  state.pages.all = page;
+  showSkeleton('allBody', 4, 9);
+  const status = document.getElementById('allStatus').value;
+  const from   = document.getElementById('allFrom').value;
+  const to     = document.getElementById('allTo').value;
+  const search = document.getElementById('allSearch').value;
+  const qs = new URLSearchParams({ page, limit: 15 });
+  if (status) qs.set('status', status);
+  if (from) qs.set('from', from);
+  if (to) qs.set('to', to);
+  if (search) qs.set('search', search);
+
+  const data = await apiFetch('/appointments?' + qs);
+  renderTable('allBody', data, true);
+  renderPagination('allPagination', data, page, loadAll);
+}
+
+function resetAllFilters() {
+  ['allStatus','allFrom','allTo','allSearch'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = '';
+  });
+  loadAll(1);
+}
+
+/* =========================================================
+   TABLE RENDERER
+   ========================================================= */
+function renderTable(tbodyId, data, showActions) {
+  const tbody = document.getElementById(tbodyId);
+  if (!data.success || !data.appointments || data.appointments.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">No appointments found.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.appointments.map(a => {
+    const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
+    const email = a.Patient?.email || '—';
+    const phone = a.Patient?.phone || '—';
+    const service = a.Service?.name || '—';
+    const actions = showActions ? `
+      <div class="row-actions">
+        <select class="status-select" onchange="changeStatus('${a.id}', this.value)">
+          <option value="confirmed"  ${a.status==='confirmed'  ? 'selected':''}>Confirmed</option>
+          <option value="completed"  ${a.status==='completed'  ? 'selected':''}>Completed</option>
+          <option value="cancelled"  ${a.status==='cancelled'  ? 'selected':''}>Cancelled</option>
+          <option value="no-show"    ${a.status==='no-show'    ? 'selected':''}>No Show</option>
+        </select>
+        <button class="action-btn view" title="View" onclick="viewAppt(${JSON.stringify(a).replace(/"/g,'&quot;')})">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        <button class="action-btn del" title="Delete" onclick="confirmDelete('${a.id}')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        </button>
+      </div>
+    ` : '';
+    return `<tr>
+      <td><code style="font-size:11px;color:var(--indigo)">${a.referenceNumber || '—'}</code></td>
+      <td><strong>${name}</strong></td>
+      <td>${email}</td>
+      <td>${phone}</td>
+      <td>${service}</td>
+      <td>${fmtDate(a.date)}</td>
+      <td>${a.time}</td>
+      ${showActions ? `<td>${badgeHtml(a.status)}</td><td>${actions}</td>` : `<td>${a.duration || 30} min</td><td>${badgeHtml(a.status)}</td>`}
+    </tr>`;
+  }).join('');
+}
+
+/* =========================================================
+   VIEW APPOINTMENT MODAL
+   ========================================================= */
+function viewAppt(a) {
+  const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
+  document.getElementById('apptModalBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-field"><div class="detail-field-label">Reference</div><div class="detail-field-value" style="color:var(--indigo);font-family:monospace;">${a.referenceNumber||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Status</div><div class="detail-field-value">${badgeHtml(a.status)}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Patient Name</div><div class="detail-field-value">${name}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value">${a.Patient?.email||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${a.Patient?.phone||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Date of Birth</div><div class="detail-field-value">${a.Patient?.dob ? fmtDate(a.Patient.dob) : '—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Date</div><div class="detail-field-value">${fmtDate(a.date)}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Time</div><div class="detail-field-value">${a.time}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Service</div><div class="detail-field-value">${a.Service?.name||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Duration</div><div class="detail-field-value">${a.duration||30} minutes</div></div>
+      <div class="detail-field detail-field-full"><div class="detail-field-label">Patient Notes</div><div class="detail-field-value" style="white-space:pre-wrap">${a.patientNotes||'None'}</div></div>
+      <div class="detail-field detail-field-full"><div class="detail-field-label">Admin Notes</div><div class="detail-field-value" style="white-space:pre-wrap">${a.notes||'None'}</div></div>
+    </div>
+  `;
+  openModal('apptModal');
+}
+
+/* =========================================================
+   STATUS CHANGE
+   ========================================================= */
+async function changeStatus(id, status) {
+  const data = await apiFetch('/appointments/' + id, 'PUT', { status });
+  if (data.success) {
+    toast('Appointment updated to ' + status, 'success');
+  } else {
+    toast(data.message || 'Update failed', 'danger');
+  }
+}
+
+/* =========================================================
+   DELETE
+   ========================================================= */
+function confirmDelete(id) {
+  openModal('confirmModal');
+  document.getElementById('confirmDeleteBtn').onclick = async () => {
+    closeModal('confirmModal');
+    const data = await apiFetch('/appointments/' + id, 'DELETE');
+    if (data.success) {
+      toast('Appointment deleted.', 'success');
+      loadAll();
+    } else {
+      toast(data.message || 'Delete failed.', 'danger');
+    }
+  };
+}
+
+/* =========================================================
+   EXPORT CSV
+   ========================================================= */
+function exportCSV(status = '') {
+  const qs = status ? '?status=' + status : '';
+  window.open(API + '/export' + qs, '_blank');
+}
+
+/* =========================================================
+   PATIENTS
+   ========================================================= */
+async function loadPatients(page = state.pages.patients) {
+  state.pages.patients = page;
+  showSkeleton('patientsBody', 4, 6);
+  const search = document.getElementById('patientSearch').value;
+  const qs = new URLSearchParams({ page, limit: 15 });
+  if (search) qs.set('search', search);
+
+  const data = await apiFetch('/patients?' + qs);
+  const tbody = document.getElementById('patientsBody');
+
+  if (!data.success || !data.patients || data.patients.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No patients found.</div></td></tr>`;
+    renderPagination('patientPagination', {}, page, loadPatients);
+    return;
+  }
+
+  tbody.innerHTML = data.patients.map(p => `
+    <tr>
+      <td><strong>${p.firstName} ${p.lastName}</strong></td>
+      <td>${p.email}</td>
+      <td>${p.phone || '—'}</td>
+      <td>${p.dob ? fmtDate(p.dob) : '—'}</td>
+      <td>${fmtDate(p.createdAt)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="action-btn view" title="View Patient" onclick="viewPatient('${p.id}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  renderPagination('patientPagination', data, page, loadPatients);
+}
+
+async function viewPatient(id) {
+  const data = await apiFetch('/patients/' + id);
+  if (!data.success) { toast('Could not load patient.', 'danger'); return; }
+  const p = data.patient;
+  document.getElementById('patientListCard').classList.add('hidden');
+  document.getElementById('patientDetail').classList.remove('hidden');
+
+  const appts = (p.Appointments || []).map(a => `
+    <tr>
+      <td><code style="color:var(--indigo);font-size:11px;">${a.referenceNumber||'—'}</code></td>
+      <td>${fmtDate(a.date)}</td>
+      <td>${a.time}</td>
+      <td>${a.Service?.name||'—'}</td>
+      <td>${badgeHtml(a.status)}</td>
+    </tr>
+  `).join('') || `<tr><td colspan="5"><div class="empty-state">No appointments on record.</div></td></tr>`;
+
+  document.getElementById('patientDetailContent').innerHTML = `
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><span class="card-title">Patient Information</span></div>
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-field"><div class="detail-field-label">Full Name</div><div class="detail-field-value">${p.firstName} ${p.lastName}</div></div>
+          <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value">${p.email}</div></div>
+          <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${p.phone||'—'}</div></div>
+          <div class="detail-field"><div class="detail-field-label">Date of Birth</div><div class="detail-field-value">${p.dob?fmtDate(p.dob):'—'}</div></div>
+          <div class="detail-field"><div class="detail-field-label">Insurance</div><div class="detail-field-value">${p.insuranceProvider||'None listed'}</div></div>
+          <div class="detail-field"><div class="detail-field-label">Member Since</div><div class="detail-field-value">${fmtDate(p.createdAt)}</div></div>
+          <div class="detail-field detail-field-full"><div class="detail-field-label">Address</div><div class="detail-field-value">${[p.address,p.city,p.state,p.zip].filter(Boolean).join(', ')||'—'}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DOCTOR PROGRESS NOTES (VISIBLE TO PATIENT IN PORTAL) ===== -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header">
+        <span class="card-title">🩺 Clinical Progress & Notes (Visible to Patient)</span>
+        <button class="btn btn-primary btn-sm" onclick="savePatientProgress('${p.id}')">Save Progress Notes</button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">Doctor Progress Summary & Treatment Plan</label>
+        <textarea id="doctorProgressText" class="form-input" rows="4" placeholder="Enter patient treatment plan, progress notes, vitals, or clinical advice...">${p.progressNotes || ''}</textarea>
+        <div style="font-size:11px;color:var(--slate-500);margin-top:6px;">ℹ️ Notes saved here are immediately visible to the patient inside their secure Patient Portal.</div>
+      </div>
+    </div>
+
+    <!-- ===== DOCTOR FOLLOW-UP & REMINDERS ===== -->
+    <div class="card" style="margin-bottom:20px; border-left:4px solid var(--teal);">
+      <div class="card-header">
+        <span class="card-title">⏰ Send Follow-Up & Appointment Reminder (Email & Portal)</span>
+      </div>
+      <div class="modal-body">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label class="form-label">Agreed Follow-Up Timeframe</label>
+            <select id="reminderTimeframe" class="form-input">
+              <option value="1 week">In 1 Week</option>
+              <option value="2 weeks">In 2 Weeks</option>
+              <option value="1 month">In 1 Month</option>
+              <option value="3 months">In 3 Months</option>
+              <option value="Custom Date">Custom Return Date</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Target Return Date (Optional)</label>
+            <input type="date" id="reminderDate" class="form-input">
+          </div>
+        </div>
+        <label class="form-label">Reminder Instructions for Patient</label>
+        <textarea id="reminderMessage" class="form-input" rows="3" placeholder="E.g., Reminder to return in 1 week to re-check blood pressure and review lab results."></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <span style="font-size:11px; color:var(--slate-500);">📧 Sends automated reminder email & updates Patient Portal dashboard instantly.</span>
+          <button class="btn btn-primary btn-sm" onclick="sendPatientReminder('${p.id}')">Send Reminder Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Appointment History</span></div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Ref</th><th>Date</th><th>Time</th><th>Service</th><th>Status</th></tr></thead>
+          <tbody>${appts}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+async function savePatientProgress(patientId) {
+  const notes = document.getElementById('doctorProgressText').value.trim();
+  const res = await apiFetch('/patients/' + patientId + '/progress', 'PUT', { progressNotes: notes });
+  if (res.success) {
+    toast('Patient progress notes saved!', 'success');
+  } else {
+    toast(res.message || 'Error saving notes', 'danger');
+  }
+}
+
+async function sendPatientReminder(patientId) {
+  const timeframe = document.getElementById('reminderTimeframe').value;
+  const followUpDate = document.getElementById('reminderDate').value;
+  const message = document.getElementById('reminderMessage').value.trim();
+
+  if (!message) { toast('Please enter reminder instructions.', 'warning'); return; }
+
+  const res = await apiFetch('/patients/' + patientId + '/reminders', 'POST', {
+    timeframe, followUpDate, message
+  });
+
+  if (res.success) {
+    toast('Follow-up reminder sent via email & posted to patient portal!', 'success');
+    document.getElementById('reminderMessage').value = '';
+  } else {
+    toast(res.message || 'Failed to send reminder', 'danger');
+  }
+}
+
+function closePatientDetail() {
+  document.getElementById('patientListCard').classList.remove('hidden');
+  document.getElementById('patientDetail').classList.add('hidden');
+}
+
+/* =========================================================
+   SERVICES
+   ========================================================= */
+async function loadServices() {
+  showSkeleton('servicesBody', 4, 5);
+  const data = await apiFetch('/services');
+  const tbody = document.getElementById('servicesBody');
+  if (!data.success || !data.services || data.services.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">No services found.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.services.map(s => `
+    <tr>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.duration || 30} min</td>
+      <td>${s.telehealth ? '<span class="status-badge badge-confirmed">Yes</span>' : '<span class="status-badge badge-cancelled">No</span>'}</td>
+      <td>${s.isActive !== false ? '<span class="status-badge badge-confirmed">Active</span>' : '<span class="status-badge badge-cancelled">Inactive</span>'}</td>
+      <td>
+        <div class="row-actions">
+          <button class="action-btn edit" onclick="openServiceModal(${JSON.stringify(s).replace(/"/g,'&quot;')})">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openServiceModal(svc) {
+  document.getElementById('serviceModalTitle').textContent = svc ? 'Edit Service' : 'Add Service';
+  document.getElementById('serviceId').value = svc?.id || '';
+  document.getElementById('serviceName').value = svc?.name || '';
+  document.getElementById('serviceDuration').value = svc?.duration || 30;
+  document.getElementById('serviceTelehealth').value = String(svc?.telehealth ?? true);
+  document.getElementById('serviceDescription').value = svc?.description || '';
+  document.getElementById('serviceActive').value = String(svc?.isActive ?? true);
+  openModal('serviceModal');
+}
+
+async function saveService() {
+  const id = document.getElementById('serviceId').value;
+  const payload = {
+    name: document.getElementById('serviceName').value.trim(),
+    duration: parseInt(document.getElementById('serviceDuration').value),
+    telehealth: document.getElementById('serviceTelehealth').value === 'true',
+    description: document.getElementById('serviceDescription').value.trim(),
+    isActive: document.getElementById('serviceActive').value === 'true',
+  };
+  if (!payload.name) { toast('Service name is required.', 'warning'); return; }
+
+  const endpoint = id ? '/services/' + id : '/services';
+  const method   = id ? 'PUT' : 'POST';
+  const data = await apiFetch(endpoint, method, payload);
+  if (data.success) {
+    toast('Service saved.', 'success');
+    closeModal('serviceModal');
+    loadServices();
+  } else {
+    toast(data.message || 'Error saving service.', 'danger');
+  }
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+function populateProfile(admin) {
+  document.getElementById('profileName').value  = admin.name  || '';
+  document.getElementById('profileEmail').value = admin.email || '';
+}
+
+async function saveProfile() {
+  const name   = document.getElementById('profileName').value.trim();
+  const pass   = document.getElementById('profilePassword').value;
+  const passC  = document.getElementById('profilePasswordConfirm').value;
+  const errEl  = document.getElementById('profileError');
+  const okEl   = document.getElementById('profileSuccess');
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+
+  if (!name) { errEl.textContent = 'Name is required.'; errEl.style.display='block'; return; }
+  if (pass && pass !== passC) { errEl.textContent = 'Passwords do not match.'; errEl.style.display='block'; return; }
+
+  const payload = { name };
+  if (pass) payload.password = pass;
+
+  const data = await apiFetch('/profile', 'PUT', payload);
+  if (data.success) {
+    okEl.textContent = 'Profile updated successfully!';
+    okEl.style.display = 'block';
+    document.getElementById('adminName').textContent = name;
+    document.getElementById('adminAvatar').textContent = name[0].toUpperCase();
+    document.getElementById('profilePassword').value = '';
+    document.getElementById('profilePasswordConfirm').value = '';
+    toast('Profile saved.', 'success');
+  } else {
+    errEl.textContent = data.message || 'Error saving profile.';
+    errEl.style.display = 'block';
+  }
+}
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+function renderPagination(containerId, data, currentPage, loaderFn) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const total = data.pagination?.pages || data.totalPages || 1;
+  if (total <= 1) { el.innerHTML = ''; return; }
+
+  let html = '';
+  if (currentPage > 1) {
+    html += `<button class="page-btn" onclick="${loaderFn.name}(${currentPage - 1})">‹</button>`;
+  }
+  for (let p = Math.max(1, currentPage - 2); p <= Math.min(total, currentPage + 2); p++) {
+    html += `<button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="${loaderFn.name}(${p})">${p}</button>`;
+  }
+  if (currentPage < total) {
+    html += `<button class="page-btn" onclick="${loaderFn.name}(${currentPage + 1})">›</button>`;
+  }
+  el.innerHTML = html;
+}
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+function fmtDate(d) {
+  if (!d) return '—';
+  const date = new Date(d);
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function badgeHtml(status) {
+  const map = {
+    confirmed: 'badge-confirmed',
+    completed: 'badge-completed',
+    cancelled: 'badge-cancelled',
+    'no-show': 'badge-no-show',
+  };
+  const cls = map[status] || 'badge-pending';
+  return `<span class="status-badge ${cls}">${status || '—'}</span>`;
+}
+</script>
+</body>
+</html>

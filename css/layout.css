@@ -1,0 +1,131 @@
+/* ===== CONTAINER ===== */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+/* ===== GRID SYSTEM ===== */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid--auto {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid--center {
+  align-items: center;
+}
+
+/* ===== FLEXBOX HELPERS ===== */
+.flex {
+  display: flex;
+}
+
+.flex--col {
+  flex-direction: column;
+}
+
+.flex--wrap {
+  flex-wrap: wrap;
+}
+
+.flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.flex--between {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex--around {
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex--align-start {
+  align-items: flex-start;
+}
+
+.flex--align-center {
+  align-items: center;
+}
+
+.flex--justify-center {
+  justify-content: center;
+}
+
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+.gap-2xl { gap: var(--space-2xl); }
+
+/* ===== SECTIONS ===== */
+.section {
+  padding-block: var(--space-4xl);
+}
+
+.section--sm {
+  padding-block: var(--space-2xl);
+}
+
+.section--dark {
+  background-color: var(--color-dark-royal-blue);
+  color: var(--color-white);
+}
+
+.section--light {
+  background-color: var(--color-bg-secondary);
+}
+
+.section--white {
+  background-color: var(--color-white);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  padding-block: var(--space-3xl) var(--space-2xl);
+  background: linear-gradient(135deg, var(--color-dark-royal-blue), var(--color-deep-violet));
+  color: var(--color-white);
+  text-align: center;
+}
+
+.page-header__title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-sm);
+}
+
+.page-header__subtitle {
+  font-size: var(--fs-md);
+  opacity: 0.9;
+  max-width: 600px;
+  margin-inline: auto;
+}

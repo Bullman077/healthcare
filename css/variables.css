@@ -1,0 +1,128 @@
+:root {
+  /* Brand Colors - Unmeasurable Heights of Strength Healthcare Services (Poster Inspired Palette) */
+  --color-navy: #0B1A30;
+  --color-navy-light: #152C53;
+  --color-purple: #582C83;
+  --color-purple-dark: #3F1C63;
+  --color-purple-light: #F2ECF9;
+  --color-royal: #1A3680;
+  --color-teal: #0D9488;
+  --color-teal-light: #CCFBF1;
+  --color-gold: #D97706;
+  --color-gold-light: #FEF3C7;
+
+  --color-white: #FFFFFF;
+  --color-slate-900: #0F172A;
+  --color-slate-800: #1E293B;
+  --color-slate-700: #334155;
+  --color-slate-600: #475569;
+  --color-slate-500: #64748B;
+  --color-slate-400: #94A3B8;
+  --color-slate-300: #CBD5E1;
+  --color-slate-200: #E2E8F0;
+  --color-slate-100: #F1F5F9;
+  --color-slate-50: #F8FAFC;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #0B1A30 0%, #1A3680 50%, #582C83 100%);
+  --gradient-accent: linear-gradient(135deg, #582C83 0%, #3F1C63 100%);
+  --gradient-royal: linear-gradient(135deg, #1A3680 0%, #582C83 100%);
+  --gradient-teal: linear-gradient(135deg, #0D9488 0%, #059669 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(11, 26, 48, 0.96) 0%, rgba(26, 54, 128, 0.92) 50%, rgba(88, 44, 131, 0.85) 100%);
+
+  /* System Color Assignments */
+  --color-primary: var(--color-navy);
+  --color-secondary: var(--color-purple);
+  --color-accent: var(--color-royal);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-600);
+  --color-text-muted: var(--color-slate-400);
+  --color-bg: var(--color-white);
+  --color-bg-alt: var(--color-slate-50);
+  --color-border: var(--color-slate-200);
+
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  /* Typography */
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --fs-xs: 0.75rem;     /* 12px */
+  --fs-sm: 0.875rem;    /* 14px */
+  --fs-base: 1rem;      /* 16px */
+  --fs-md: 1.125rem;    /* 18px */
+  --fs-lg: 1.25rem;     /* 20px */
+  --fs-xl: 1.5rem;      /* 24px */
+  --fs-2xl: 1.875rem;   /* 30px */
+  --fs-3xl: 2.25rem;    /* 36px */
+  --fs-4xl: 3rem;       /* 48px */
+  --fs-5xl: 3.75rem;    /* 60px */
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.3;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;
+
+  /* Spacing */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 5.5rem;
+  --space-5xl: 7rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(11, 26, 48, 0.04);
+  --shadow-md: 0 6px 12px -2px rgba(11, 26, 48, 0.08), 0 3px 6px -3px rgba(11, 26, 48, 0.04);
+  --shadow-lg: 0 16px 24px -4px rgba(11, 26, 48, 0.1), 0 8px 12px -6px rgba(11, 26, 48, 0.05);
+  --shadow-xl: 0 25px 50px -12px rgba(11, 26, 48, 0.18);
+  --shadow-glow: 0 10px 30px rgba(79, 70, 229, 0.25);
+  --shadow-teal: 0 10px 30px rgba(13, 148, 136, 0.25);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --container-max: 1600px;
+  --container-narrow: 840px;
+  --container-padding: 2.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #070F1E;
+    --color-bg-alt: #0F172A;
+    --color-text: #F8FAFC;
+    --color-text-secondary: #CBD5E1;
+    --color-text-muted: #64748B;
+    --color-border: #1E293B;
+    --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.6);
+  }
+}
+

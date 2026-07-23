@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Virtual healthcare visits from home. UHS Healthcare offers secure HIPAA-compliant telehealth consultations with Nacole Brown MSN AGPCNP-BC.">
+  <meta name="format-detection" content="telephone=yes">
+
+  <title>Virtual Telehealth Visits | UHS Healthcare Direct Primary Care</title>
+
+  <!-- Preconnect Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__spinner"></div>
+  </div>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ===== GLASS HEADER ===== -->
+  <header class="nav" role="banner">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
+        <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
+        <span class="nav__logo-title">Healthcare Heights of Strength</span>
+      </a>
+
+      <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav__right">
+        <ul class="nav__list">
+          <li><a href="index.html" class="nav__link">Home</a></li>
+          <li><a href="index.html#pricing" class="nav__link">Membership</a></li>
+          <li><a href="services.html" class="nav__link">Services</a></li>
+          <li><a href="telehealth.html" class="nav__link nav__link--active">Telehealth</a></li>
+          <li><a href="about.html" class="nav__link">About NP Brown</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+
+        <div class="nav__actions">
+          <a href="tel:+18033817489" class="nav__call-pill">(803) 381-7489</a>
+          <a href="/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
+          <span id="patient-nav" style="display:none;"></span>
+          <button class="btn btn--primary btn--sm" data-open-modal>Book Appointment</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ===== HERO BANNER ===== -->
+    <section class="hero" style="min-height:55vh; padding:150px 0 60px;">
+      <div class="hero__gradient-overlay"></div>
+      <div class="container" style="position:relative; z-index:2;">
+        <div class="hero__grid">
+          <div class="hero__content animate">
+            <span class="badge badge--white" style="margin-bottom:1rem;">100% HIPAA Compliant Virtual Visits</span>
+            <h1 class="hero__title">
+              Compassionate Virtual Care<br>
+              <span class="hero__title-serif">From the Comfort of Home.</span>
+            </h1>
+            <p class="hero__text">
+              Connect directly with Nacole Brown, MSN AGPCNP-BC through secure video or messaging. Perfect for urgent minor illnesses, medication refills, and ongoing wellness follow-ups.
+            </p>
+            <div class="hero__actions">
+              <button class="btn btn--accent btn--lg" data-open-modal data-service="Telehealth Visit">Schedule Telehealth Visit</button>
+            </div>
+          </div>
+
+          <div class="hero-card animate">
+            <div class="hero-card__image-box" style="aspect-ratio:16/10;">
+              <img src="assets/images/telehealth-consult.png" alt="Telehealth Consultation">
+            </div>
+            <div style="text-align:center;">
+              <h3 style="font-size:1.15rem; font-weight:700; color:#fff;">Easy Smartphone or Laptop Access</h3>
+              <p style="font-size:0.85rem; color:rgba(255,255,255,0.8); margin:0;">No app downloads needed. Click &amp; connect.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HOW TELEHEALTH WORKS STEPS ===== -->
+    <section class="section section--alt" aria-labelledby="steps-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Simple 3-Step Process</span>
+          <h2 id="steps-title" class="section-header__title">How Virtual Telehealth Visits Work</h2>
+          <p class="section-header__desc">Getting high-quality care has never been easier or more convenient.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:2rem;" class="animate">
+          
+          <div style="background:#fff; border-radius:20px; border:1px solid var(--color-border); padding:2.5rem; text-align:center; box-shadow:var(--shadow-md);">
+            <div style="width:56px; height:56px; border-radius:50%; background:var(--color-teal-light); color:var(--color-teal); display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; margin:0 auto 1.25rem;">1</div>
+            <h3 style="font-size:1.25rem; font-weight:700; color:var(--color-navy); margin-bottom:0.5rem;">Book Your Appointment</h3>
+            <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6;">
+              Select your preferred date and time slot online or over the phone.
+            </p>
+          </div>
+
+          <div style="background:#fff; border-radius:20px; border:1px solid var(--color-border); padding:2.5rem; text-align:center; box-shadow:var(--shadow-md);">
+            <div style="width:56px; height:56px; border-radius:50%; background:var(--color-violet-light); color:var(--color-violet); display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; margin:0 auto 1.25rem;">2</div>
+            <h3 style="font-size:1.25rem; font-weight:700; color:var(--color-navy); margin-bottom:0.5rem;">Receive Secure Link</h3>
+            <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6;">
+              Receive a private, HIPAA-compliant video link via SMS or email right before your appointment.
+            </p>
+          </div>
+
+          <div style="background:#fff; border-radius:20px; border:1px solid var(--color-border); padding:2.5rem; text-align:center; box-shadow:var(--shadow-md);">
+            <div style="width:56px; height:56px; border-radius:50%; background:var(--color-gold-light); color:var(--color-gold); display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-size:1.5rem; font-weight:800; margin:0 auto 1.25rem;">3</div>
+            <h3 style="font-size:1.25rem; font-weight:700; color:var(--color-navy); margin-bottom:0.5rem;">Consult &amp; Get Care</h3>
+            <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6;">
+              Meet face-to-face with Nacole Brown, MSN AGPCNP-BC. Prescriptions are sent immediately to your local pharmacy.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONDITIONS TREATED VIA TELEHEALTH ===== -->
+    <section class="section" aria-labelledby="conditions-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Virtual Care Capabilities</span>
+          <h2 id="conditions-title" class="section-header__title">What We Can Treat via Telehealth</h2>
+          <p class="section-header__desc">Many common medical issues can be safely evaluated and managed virtually.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:2rem; max-width:960px; margin:0 auto;" class="animate">
+          <div style="background:var(--color-slate-50); border-radius:20px; padding:2rem; border:1px solid var(--color-border);">
+            <h3 style="font-size:1.25rem; font-weight:700; color:var(--color-navy); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+              <span style="color:var(--color-teal);">✓</span> Acute Common Illnesses
+            </h3>
+            <ul style="list-style:none; padding:0; margin:0; font-size:0.95rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.6rem;">
+              <li>• Colds, sinus infections &amp; flu symptoms</li>
+              <li>• Allergies, bronchitis &amp; mild asthma flare-ups</li>
+              <li>• Minor skin rashes, bug bites &amp; hives</li>
+              <li>• Urinary tract infections (UTIs)</li>
+            </ul>
+          </div>
+
+          <div style="background:var(--color-slate-50); border-radius:20px; padding:2rem; border:1px solid var(--color-border);">
+            <h3 style="font-size:1.25rem; font-weight:700; color:var(--color-navy); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+              <span style="color:var(--color-indigo);">✓</span> Ongoing Wellness &amp; Management
+            </h3>
+            <ul style="list-style:none; padding:0; margin:0; font-size:0.95rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.6rem;">
+              <li>• Prescription refills &amp; medication reviews</li>
+              <li>• Chronic condition monitoring (Blood pressure, Diabetes)</li>
+              <li>• Lab result discussions &amp; follow-up care</li>
+              <li>• Nutrition &amp; weight management counseling</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== UNIVERSAL BOOKING MODAL ===== -->
+  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav__logo" style="margin-bottom:1rem;">
+            <div class="nav__logo-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M2 12h20M5 5l14 14M5 19L19 5"/></svg>
+            </div>
+            <div>
+              <span class="nav__logo-title">UHS Healthcare</span>
+              <span class="nav__logo-subtitle">Direct Primary Care</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+        </div>
+        <div>
+          <h4 class="footer-column__title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#pricing">Membership Plans</a></li>
+            <li><a href="services.html">Medical Services</a></li>
+            <li><a href="about.html">About NP Brown</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-column__title">Contact</h4>
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6;">
+            2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
+            <strong>Phone:</strong> (803) 381-7489
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 UHS Healthcare Services. All rights reserved.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
+          <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

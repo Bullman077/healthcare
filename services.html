@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore our comprehensive healthcare services including Direct Primary Care, DOT physicals, weight management, telehealth, CPR training, and patch therapy at UHS Healthcare.">
+  <meta name="format-detection" content="telephone=yes">
+
+  <title>Medical Services | UHS Healthcare Direct Primary Care</title>
+
+  <!-- Preconnect Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__spinner"></div>
+  </div>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ===== GLASS HEADER ===== -->
+  <header class="nav" role="banner">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
+        <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
+        <span class="nav__logo-title">Healthcare Heights of Strength</span>
+      </a>
+
+      <button class="nav__toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav__right">
+        <ul class="nav__list">
+          <li><a href="index.html" class="nav__link">Home</a></li>
+          <li><a href="index.html#pricing" class="nav__link">Membership</a></li>
+          <li><a href="services.html" class="nav__link nav__link--active">Services</a></li>
+          <li><a href="telehealth.html" class="nav__link">Telehealth</a></li>
+          <li><a href="about.html" class="nav__link">About NP Brown</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+
+        <div class="nav__actions">
+          <a href="tel:+18033817489" class="nav__call-pill">(803) 381-7489</a>
+          <a href="/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
+          <span id="patient-nav" style="display:none;"></span>
+          <button class="btn btn--primary btn--sm" data-open-modal data-service="">Book Appointment</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ===== HERO BANNER ===== -->
+    <section class="hero" style="min-height:50vh; padding:150px 0 60px;">
+      <div class="hero__gradient-overlay"></div>
+      <div class="container text-center" style="position:relative; z-index:2; max-width:800px; margin:0 auto;">
+        <span class="badge badge--white" style="margin-bottom:1rem;">Comprehensive &bull; Compassionate &bull; Evidence-Based</span>
+        <h1 class="hero__title" style="font-size:clamp(2.2rem, 4.5vw, 3.5rem);">
+          Our Healthcare <span class="hero__title-serif">Services.</span>
+        </h1>
+        <p class="hero__text" style="margin:0 auto 1.5rem; text-align:center;">
+          From primary care memberships and DOT physicals to medical weight management, patch therapy, and virtual care.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES GRID ===== -->
+    <section class="section" aria-labelledby="all-services-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Medical Care Options</span>
+          <h2 id="all-services-title" class="section-header__title">Specialized Care Designed for You</h2>
+          <p class="section-header__desc">Explore our full suite of primary care and specialty medical services.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem;" class="animate">
+          
+          <!-- Card 1: DOT / Non-DOT Physicals -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--teal" style="margin-bottom:1rem;">Road Ready &amp; Compliant</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">DOT / Non-DOT Physicals</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Stay compliant and road ready. We provide thorough DOT and Non-DOT physicals with fast turnaround time of results so you can get back to what matters most.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Fast turnaround time of results</li>
+                <li>✓ Certified FMCSA physical exam</li>
+                <li>✓ Convenient scheduling</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="DOT Physical">Book DOT Physical</button>
+          </div>
+
+          <!-- Card 2: Sports Physicals -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--indigo" style="margin-bottom:1rem;">Athletic Clearance</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Sports Physicals</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Keeping athletes of all ages healthy, strong, and ready to perform. Comprehensive athletic evaluations for school &amp; club sports.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Clearance for all age groups</li>
+                <li>✓ Musculoskeletal &amp; cardiovascular check</li>
+                <li>✓ Same-day forms completion</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="Sports Physical">Book Sports Physical</button>
+          </div>
+
+          <!-- Card 3: Work Physicals -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--gold" style="margin-bottom:1rem;">Occupational Health</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Work Physicals</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Supporting a safe and healthy workforce with comprehensive work physicals and quick results for pre-employment or fit-for-duty clearances.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Pre-employment health exams</li>
+                <li>✓ Fit-for-duty evaluations</li>
+                <li>✓ Quick turnaround documentation</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="Work Physical">Book Work Physical</button>
+          </div>
+
+          <!-- Card 4: BLS CPR Training -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--indigo" style="margin-bottom:1rem;">American Heart Association</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">BLS CPR Training</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                American Heart Association BLS CPR training for healthcare providers and the community. Classes are engaging, hands-on, and certification you can trust.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Official AHA BLS Certification</li>
+                <li>✓ Hands-on classroom instruction</li>
+                <li>✓ For providers &amp; community members</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="BLS CPR Training">Inquire CPR Class</button>
+          </div>
+
+          <!-- Card 5: TB Skin Testing -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--teal" style="margin-bottom:1rem;">Employment &amp; School</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">TB Skin Testing</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Accurate TB skin testing for employment, school, or healthcare requirements. Quick placement and reading.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Employment clearance</li>
+                <li>✓ School &amp; clinical requirements</li>
+                <li>✓ Accurate reading &amp; documentation</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="TB Skin Testing">Schedule TB Test</button>
+          </div>
+
+          <!-- Card 6: Weight Loss Healthy Plans -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--gold" style="margin-bottom:1rem;">Real Results</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Weight Loss Healthy Plans</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Sustainable plans designed for real results and a healthier you. Includes BMI targeting, personalized nutrition, exercise guidance, and GLP-1 support.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Reach a Healthy BMI</li>
+                <li>✓ Personalized Nutrition &amp; Exercise Guidance</li>
+                <li>✓ Lifestyle Coaching &amp; GLP-1 Support</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="Weight Management">Start Weight Plan</button>
+          </div>
+
+          <!-- Card 7: Iontopherisis Patch Therapy -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--indigo" style="margin-bottom:1rem;">Pain Management</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Iontopherisis Patch</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                A non-invasive therapy that uses a gentle electrical current to deliver anti-inflammatory medication through the skin directly to the affected area. Helps reduce pain, swelling, and inflammation—perfect for managing chronic pain conditions and improving mobility without drugs.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Non-invasive transdermal drug delivery</li>
+                <li>✓ Reduce pain, swelling, and inflammation</li>
+                <li>✓ Improve mobility without oral drugs</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="Iontopherisis Patch Therapy">Book Patch Therapy</button>
+          </div>
+
+          <!-- Card 8: Chronic Pain Relief -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--teal" style="margin-bottom:1rem;">Individualized Approaches</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Chronic Pain Relief</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Comprehensive, individualized approaches to help manage pain and improve your quality of life.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Comprehensive individualized pain management</li>
+                <li>✓ Non-opioid and alternative therapy integration</li>
+                <li>✓ Focus on restoring quality of life</li>
+              </ul>
+            </div>
+            <button class="btn btn--primary" data-open-modal data-service="Chronic Pain Relief">Book Pain Relief Visit</button>
+          </div>
+
+          <!-- Card 9: Telehealth Visit -->
+          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <span class="badge badge--teal" style="margin-bottom:1rem;">Virtual Care</span>
+              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Telehealth Visit</h3>
+              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
+                Telehealth visits available for remote care, consultation, prescription refills, and virtual follow-ups.
+              </p>
+              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
+                <li>✓ Convenient remote video visits</li>
+                <li>✓ E-prescriptions sent to your pharmacy</li>
+                <li>✓ Accessible healthcare anywhere</li>
+              </ul>
+            </div>
+            <a href="telehealth.html" class="btn btn--primary">Explore Telehealth</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== UNIVERSAL BOOKING MODAL ===== -->
+  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav__logo" style="margin-bottom:1rem;">
+            <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:40px; width:auto; border-radius:50%;">
+            <div>
+              <span class="nav__logo-title">UHS Healthcare</span>
+              <span class="nav__logo-subtitle">Heights of Strength</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+        </div>
+        <div>
+          <h4 class="footer-column__title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#pricing">Membership Plans</a></li>
+            <li><a href="services.html">Medical Services</a></li>
+            <li><a href="about.html">About NP Brown</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-column__title">Contact</h4>
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6;">
+            2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
+            <strong>Phone:</strong> (803) 381-7489
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 UHS Healthcare Services. All rights reserved.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
+          <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

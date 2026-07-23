@@ -1,0 +1,187 @@
+/* ==========================================================================
+   UHS HEALTHCARE — RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* ----- Prevent nav overlap at mid-range screens ----- */
+@media (max-width: 1280px) {
+  #patient-portal-link {
+    display: none !important;
+  }
+  .nav__list {
+    gap: 1rem;
+  }
+  .nav__actions {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .nav__call-pill {
+    display: none;
+  }
+  .nav__list {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .pricing-grid,
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .service-display-card {
+    grid-template-columns: 1fr;
+  }
+
+  .service-display-card__image {
+    min-height: 280px;
+  }
+
+  .provider-card {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-card__media {
+    min-height: 340px;
+  }
+
+  .care-finder__options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav__right {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    width: 100%;
+    background: var(--color-navy);
+    padding: 2rem;
+    flex-direction: column;
+    gap: 1.25rem;
+    transform: translateY(-150%);
+    transition: transform var(--transition-base);
+    box-shadow: var(--shadow-xl);
+    z-index: 999;
+  }
+
+  .nav__right.open {
+    transform: translateY(0);
+  }
+
+  .nav__list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav__toggle {
+    display: flex;
+  }
+
+  .nav__call-pill {
+    display: none;
+  }
+
+  .hero {
+    padding: 120px 0 60px;
+    text-align: center;
+  }
+
+  .hero__gradient-overlay {
+    background: linear-gradient(180deg, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.65) 100%);
+  }
+
+  .hero__badge-group {
+    justify-content: center;
+  }
+
+  .hero__text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .hero-floating-card {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    left: 1.25rem;
+    max-width: none;
+  }
+
+  .pricing-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .care-finder-section {
+    padding: 3.5rem 0;
+  }
+
+  .care-finder__title {
+    font-size: 2rem;
+  }
+
+  .care-finder__options {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-card {
+    overflow-x: auto;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.85rem 1rem;
+    font-size: var(--fs-sm);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__title {
+    font-size: 2.1rem;
+  }
+
+  .section {
+    padding: 3.5rem 0;
+  }
+
+  .btn--lg {
+    padding: 0.85rem 1.75rem;
+    font-size: var(--fs-base);
+    width: 100%;
+  }
+
+  .modal-card {
+    padding: 1.75rem;
+  }
+}

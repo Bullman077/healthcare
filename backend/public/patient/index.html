@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal – UHS Healthcare Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="patient.css">
+</head>
+<body>
+
+  <!-- ================= AUTH VIEW ================= -->
+  <div id="authView" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="auth-title">UHS Healthcare</div>
+          <div style="font-size:12px;color:#0f766e;font-weight:700;">Patient Access Portal</div>
+        </div>
+      </div>
+      <div class="auth-subtitle">Sign in to view your medical progress, notes, and appointments</div>
+
+      <div id="authError" style="display:none;background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+
+      <div id="registerFields" class="hidden">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" id="regFirstName" class="form-input" placeholder="Jane">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" id="regLastName" class="form-input" placeholder="Doe">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" id="regPhone" class="form-input" placeholder="(803) 555-0199">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" id="authEmail" class="form-input" placeholder="patient@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="authPassword" class="form-input" placeholder="••••••••">
+      </div>
+
+      <button id="authBtn" class="btn-primary" onclick="handleAuthSubmit()">Sign In to Portal</button>
+
+      <div class="auth-toggle">
+        <span id="toggleText">First time here?</span>
+        <a onclick="toggleAuthMode()" id="toggleLink">Create Patient Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PORTAL DASHBOARD VIEW ================= -->
+  <div id="portalView" class="hidden">
+    <nav class="portal-navbar">
+      <div class="portal-brand">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+        <span>UHS Healthcare &nbsp;·&nbsp; Patient Portal</span>
+      </div>
+      <div class="portal-nav-links">
+        <a href="/">Home</a>
+        <a href="/services.html">Services</a>
+        <a href="/telehealth.html">Telehealth</a>
+        <a href="/about.html">About</a>
+        <a href="/appointment.html">Book</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+      <div class="portal-user">
+        <span id="userDisplayName" class="portal-user-name">Patient</span>
+        <button class="btn-logout" onclick="logout()">Sign Out</button>
+      </div>
+    </nav>
+
+    <div class="portal-layout">
+      <div class="welcome-banner">
+        <h1 id="welcomeTitle">Welcome Back</h1>
+        <p>Your private Direct Primary Care portal. Track your treatment progress, upcoming visits, and video calls.</p>
+      </div>
+
+      <!-- DOCTOR REMINDERS & FOLLOW-UPS -->
+      <div id="remindersCard" class="card hidden reminder-section">
+        <div class="card-title">
+          <span class="card-icon">⏰</span> Active Doctor Reminders &amp; Follow-Ups
+        </div>
+        <div id="remindersContent"></div>
+      </div>
+
+      <!-- CLINICAL PROGRESS NOTES -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-icon">🩺</span> Doctor Progress &amp; Treatment Plan
+        </div>
+        <div id="progressContent" class="progress-box">Loading your medical progress notes...</div>
+      </div>
+
+      <!-- MY APPOINTMENTS -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-icon">📅</span> My Appointments
+        </div>
+        <div id="appointmentsList" class="appt-list">Loading appointments...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= APPOINTMENT DETAIL POPUP ================= -->
+  <div id="apptPopupOverlay" class="popup-overlay hidden" onclick="if(event.target===this)closeApptPopup()">
+    <div class="popup-card">
+      <button class="popup-close" onclick="closeApptPopup()">&times;</button>
+      <div id="apptPopupBody"></div>
+    </div>
+  </div>
+
+  <script>
+    let isRegisterMode = false;
+    const API = '/api/patient';
+
+    function toggleAuthMode() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('registerFields').classList.toggle('hidden', !isRegisterMode);
+      document.getElementById('authBtn').textContent = isRegisterMode ? 'Create Portal Account' : 'Sign In to Portal';
+      document.getElementById('toggleText').textContent = isRegisterMode ? 'Already have an account?' : 'First time here?';
+      document.getElementById('toggleLink').textContent = isRegisterMode ? 'Sign In' : 'Create Patient Account';
+      document.getElementById('authError').style.display = 'none';
+    }
+
+    async function handleAuthSubmit() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const errEl = document.getElementById('authError');
+      errEl.style.display = 'none';
+
+      if (!email || !password) {
+        errEl.textContent = 'Please enter your email and password.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const endpoint = isRegisterMode ? '/register' : '/login';
+      const payload = { email, password };
+      if (isRegisterMode) {
+        payload.firstName = document.getElementById('regFirstName').value.trim();
+        payload.lastName = document.getElementById('regLastName').value.trim();
+        payload.phone = document.getElementById('regPhone').value.trim();
+      }
+
+      try {
+        const res = await fetch(API + endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.success) {
+          showPortal(data.patient);
+        } else {
+          errEl.textContent = data.message || 'Authentication failed.';
+          errEl.style.display = 'block';
+        }
+      } catch (e) {
+        errEl.textContent = 'Server error. Please try again.';
+        errEl.style.display = 'block';
+      }
+    }
+
+    async function checkSession() {
+      try {
+        const res = await fetch(API + '/session', { credentials: 'include' });
+        const data = await res.json();
+        if (data.success && data.patient) {
+          showPortal(data.patient);
+        }
+      } catch(e) {}
+    }
+
+    function showPortal(patient) {
+      document.getElementById('authView').classList.add('hidden');
+      document.getElementById('portalView').classList.remove('hidden');
+      document.getElementById('welcomeTitle').textContent = `Welcome, ${patient.firstName}!`;
+      document.getElementById('userDisplayName').textContent = `${patient.firstName} ${patient.lastName}`;
+      loadPortalData();
+    }
+
+    async function loadPortalData() {
+      // 1. Load Progress Notes & Reminders
+      try {
+        const resP = await fetch(API + '/progress', { credentials: 'include' });
+        const dataP = await resP.json();
+        if (dataP.success) {
+          document.getElementById('progressContent').textContent = dataP.progressNotes || 'No specific progress notes recorded yet by your care provider.';
+          
+          // Render Doctor Reminders
+          const reminders = dataP.reminders || [];
+          const remindersCard = document.getElementById('remindersCard');
+          const remindersContent = document.getElementById('remindersContent');
+
+          if (reminders.length > 0) {
+            remindersCard.classList.remove('hidden');
+            remindersContent.innerHTML = reminders.map(r => `
+              <div class="reminder-card">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                  <strong style="color:var(--teal-700);font-size:15px;">⏱️ Agreed Follow-Up: ${r.timeframe || 'Follow-Up Visit'}</strong>
+                  <span style="font-size:12px;color:var(--slate-400);white-space:nowrap;margin-left:10px;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
+                </div>
+                <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${r.message}&rdquo;</p>
+                <a href="/appointment.html" class="btn-book">🗓️ Schedule Follow-Up</a>
+              </div>
+            `).join('');
+          } else {
+            remindersCard.classList.add('hidden');
+          }
+        }
+      } catch(e) {
+        document.getElementById('progressContent').textContent = 'Unable to load progress notes.';
+      }
+
+      // 2. Load Appointments
+      try {
+        const resA = await fetch(API + '/appointments', { credentials: 'include' });
+        const dataA = await resA.json();
+        const apptContainer = document.getElementById('appointmentsList');
+        if (!dataA.success || !dataA.appointments || dataA.appointments.length === 0) {
+          apptContainer.innerHTML = '<div style="color:#64748b;font-size:14px;padding:12px;">No appointments found.</div>';
+          return;
+        }
+
+        apptContainer.innerHTML = dataA.appointments.map(function(a) {
+          var serviceName = a.service && a.service.name || 'Healthcare Service';
+          var isTelehealth = a.service && a.service.telehealth || (serviceName.toLowerCase().indexOf('telehealth') !== -1) || (serviceName.toLowerCase().indexOf('virtual') !== -1);
+          var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
+          var d = new Date(a.date);
+          var dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          var statusBadge = 'badge-' + (a.status || 'pending');
+          var encoded = encodeURIComponent(JSON.stringify(a));
+          return '<div class="appt-card" onclick="openApptDetail(this, \'' + encoded + '\')">'
+            + '<div class="appt-card-left">'
+              + '<div class="appt-service">' + serviceName
+                + ' <span class="badge ' + statusBadge + '">' + (a.status || 'pending') + '</span>'
+              + '</div>'
+              + '<div class="appt-meta">'
+                + '📅 <strong>' + dateStr + '</strong> at <strong>' + a.time + '</strong>'
+                + ' <span style="color:var(--slate-400);">·</span> Ref: <code>' + (a.referenceNumber || '—') + '</code>'
+              + '</div>'
+            + '</div>'
+            + '<div class="appt-right">'
+              + (isTelehealth
+                  ? '<a href="' + meetUrl + '" target="_blank" class="btn-join">📹 Join Video Call</a>'
+                  : '<span class="btn-clinic">🏥 In-Clinic</span>')
+            + '</div>'
+          + '</div>';
+        }).join('');
+      } catch(e) {
+        document.getElementById('appointmentsList').innerHTML = '<div style="color:#ef4444;font-size:14px;">Error loading appointments.</div>';
+      }
+    }
+
+    function openApptDetail(el, encoded) {
+      if (!el || !encoded) return;
+      var a;
+      try { a = JSON.parse(decodeURIComponent(encoded)); } catch(e) { return; }
+      if (!a) return;
+
+      var serviceName = a.service?.name || 'Healthcare Service';
+      var isTelehealth = a.service?.telehealth || serviceName.toLowerCase().includes('telehealth') || serviceName.toLowerCase().includes('virtual');
+      var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
+      var dateStr = new Date(a.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      // Status timeline steps
+      var steps = [
+        { label: 'Request Submitted', desc: 'Your appointment request has been received', key: 'pending' },
+        { label: 'Confirmed', desc: 'Your appointment has been confirmed by the clinic', key: 'confirmed' },
+        { label: 'Completed', desc: 'Your visit has been completed', key: 'completed' },
+      ];
+      var statusOrder = { pending: 0, confirmed: 1, completed: 2, cancelled: -1 };
+      var currentIdx = statusOrder[a.status] !== undefined ? statusOrder[a.status] : 0;
+
+      var timelineHtml = steps.map(function(s, i) {
+        var cls = 'future';
+        if (currentIdx === -1 && s.key === 'pending') cls = 'done';
+        else if (i < currentIdx) cls = 'done';
+        else if (i === currentIdx) cls = 'active';
+        var info = a.status === 'cancelled' && i === 0
+          ? '<h4 style="color:#dc2626;">Cancelled</h4><p>This appointment was cancelled.</p>'
+          : '<h4>' + s.label + '</h4><p>' + s.desc + '</p>';
+        return '<div class="status-step"><div class="status-dot ' + cls + '"></div><div class="status-step-info">' + info + '</div></div>';
+      }).join('');
+
+      var body = document.getElementById('apptPopupBody');
+      body.innerHTML =
+        '<div class="appt-detail-header">'
+          + '<span class="badge badge-' + (a.status || 'pending') + '" style="font-size:13px;padding:5px 16px;margin-bottom:10px;">' + (a.status || 'pending') + '</span>'
+          + '<h2>' + serviceName + '</h2>'
+          + '<div class="appt-detail-ref">Ref: ' + (a.referenceNumber || '—') + '</div>'
+        + '</div>'
+        + '<div class="appt-detail-section">'
+          + '<div class="appt-detail-label">Date & Time</div>'
+          + '<div class="appt-detail-value">' + dateStr + ' at ' + a.time + '</div>'
+        + '</div>'
+        + '<div class="appt-detail-section">'
+          + '<div class="appt-detail-label">Duration</div>'
+          + '<div class="appt-detail-value">' + (a.duration || 30) + ' minutes</div>'
+        + '</div>'
+        + (a.notes ? '<div class="appt-detail-section"><div class="appt-detail-label">Provider Notes</div><div class="appt-detail-value" style="font-weight:400;line-height:1.6;">' + a.notes + '</div></div>' : '')
+        + '<div class="appt-detail-section">'
+          + '<div class="appt-detail-label">Status Timeline</div>'
+          + '<div class="status-timeline">' + timelineHtml + '</div>'
+        + '</div>'
+        + '<div class="appt-detail-actions">'
+          + (isTelehealth
+              ? '<a href="' + meetUrl + '" target="_blank" class="btn-join" style="flex:1;text-align:center;">Join Video Call</a>'
+              : '<span class="btn-clinic" style="flex:1;text-align:center;padding:10px;">Clinic: 2638 Two Notch Rd. Suite 210, Columbia, SC 29204</span>'
+            )
+        + '</div>';
+
+      document.getElementById('apptPopupOverlay').classList.remove('hidden');
+    }
+
+    function closeApptPopup() {
+      document.getElementById('apptPopupOverlay').classList.add('hidden');
+    }
+
+    async function logout() {
+      await fetch(API + '/logout', { method: 'POST', credentials: 'include' });
+      document.getElementById('portalView').classList.add('hidden');
+      document.getElementById('authView').classList.remove('hidden');
+    }
+
+    window.addEventListener('DOMContentLoaded', checkSession);
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "uhs-healthcare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UHS Healthcare – full production deployment",
+  "scripts": {
+    "build:css": "cleancss -o css/styles.min.css css/reset.css css/variables.css css/layout.css css/components.css css/responsive.css",
+    "build:js": "terser js/main.js js/testimonials.js js/faq.js -o js/app.min.js --compress --mangle",
+    "build": "npm run build:css && npm run build:js",
+    "dev": "npm run dev:backend",
+    "install:backend": "cd backend && npm install",
+    "start:backend": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "deploy:prepare": "npm run build && npm run install:backend"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.31.0"
+  }
+}

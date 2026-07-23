@@ -1,0 +1,7 @@
+# UHS Healthcare
+# https://uhshealthcare.com
+
+User-agent: *
+Allow: /
+
+Sitemap: https://uhshealthcare.com/sitemap.xml
