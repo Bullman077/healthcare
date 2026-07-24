@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const { Op, fn, col, literal } = require('sequelize');
 const { Admin, Patient, Appointment, Service, AuditLog, Message } = require('../models');
 const { sequelize } = require('../config/db');
@@ -6,6 +9,30 @@ const { AppError } = require('../middleware/errorHandler');
 const { sendStatusUpdate, sendFollowUpReminderEmail } = require('../utils/email');
 
 const iLike = sequelize.dialect.name === 'sqlite' ? Op.like : Op.iLike;
+
+const uploadsDir = path.join(__dirname, '..', 'uploads', 'profiles');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+    cb(null, `admin-${req.admin.id}-${Date.now()}${ext}`);
+  },
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = /\.(jpg|jpeg|png|gif|webp)$/i;
+    if (allowed.test(path.extname(file.originalname)) && file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new AppError('Only image files (JPG, PNG, GIF, WebP) are allowed.', 400));
+    }
+  },
+});
 
 async function logAudit(admin, action, resource, resourceId, details, req) {
   try {
@@ -42,7 +69,8 @@ exports.login = async (req, res, next) => {
     }
 
     admin.lastLogin = new Date();
-    await admin.save({ fields: ['lastLogin'] });
+    admin.lastLoginIp = req.ip || req.connection?.remoteAddress || null;
+    await admin.save({ fields: ['lastLogin', 'lastLoginIp'] });
 
     const token = signToken(admin.id);
 
@@ -58,7 +86,17 @@ exports.login = async (req, res, next) => {
     res.json({
       success: true,
       token,
-      admin: { id: admin.id, email: admin.email, name: admin.name, role: admin.role },
+      admin: {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        isActive: admin.isActive,
+        profilePhoto: admin.profilePhoto,
+        lastLogin: admin.lastLogin,
+        lastLoginIp: admin.lastLoginIp,
+        createdAt: admin.createdAt,
+      },
     });
   } catch (err) {
     next(err);
@@ -66,9 +104,20 @@ exports.login = async (req, res, next) => {
 };
 
 exports.getMe = async (req, res) => {
+  const admin = req.admin;
   res.json({
     success: true,
-    admin: { id: req.admin.id, email: req.admin.email, name: req.admin.name, role: req.admin.role },
+    admin: {
+      id: admin.id,
+      email: admin.email,
+      name: admin.name,
+      role: admin.role,
+      isActive: admin.isActive,
+      profilePhoto: admin.profilePhoto,
+      lastLogin: admin.lastLogin,
+      lastLoginIp: admin.lastLoginIp,
+      createdAt: admin.createdAt,
+    },
   });
 };
 
@@ -381,21 +430,34 @@ exports.updateProfile = async (req, res, next) => {
     const admin = await Admin.findByPk(req.admin.id);
     if (!admin) return next(new AppError('Admin not found.', 404));
     
-    if (currentPassword) {
+    if (newPassword) {
+      if (!currentPassword) {
+        return next(new AppError('Current password is required to set a new password.', 400));
+      }
       const isMatch = await admin.comparePassword(currentPassword);
       if (!isMatch) return next(new AppError('Current password is incorrect.', 401));
+      admin.password = newPassword;
     }
     
     if (name) admin.name = name;
     if (email) admin.email = email;
-    if (newPassword) admin.password = newPassword;
     
     await admin.save();
     
     res.json({
       success: true,
       message: 'Profile updated successfully.',
-      admin: { id: admin.id, email: admin.email, name: admin.name, role: admin.role },
+      admin: {
+        id: admin.id,
+        email: admin.email,
+        name: admin.name,
+        role: admin.role,
+        isActive: admin.isActive,
+        profilePhoto: admin.profilePhoto,
+        lastLogin: admin.lastLogin,
+        lastLoginIp: admin.lastLoginIp,
+        createdAt: admin.createdAt,
+      },
     });
   } catch (err) {
     next(err);
@@ -646,5 +708,38 @@ exports.getNewPatientsThisMonth = async (req, res, next) => {
     next(err);
   }
 };
+
+/* ===== PROFILE PHOTO UPLOAD ===== */
+exports.uploadProfilePhoto = [
+  upload.single('photo'),
+  async (req, res, next) => {
+    try {
+      if (!req.file) return next(new AppError('Please upload an image file.', 400));
+
+      const admin = await Admin.findByPk(req.admin.id);
+      if (!admin) return next(new AppError('Admin not found.', 404));
+
+      if (admin.profilePhoto) {
+        const oldPath = path.join(__dirname, '..', admin.profilePhoto);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      admin.profilePhoto = `/uploads/profiles/${req.file.filename}`;
+      await admin.save({ fields: ['profilePhoto'] });
+
+      await logAudit(req.admin, 'upload_photo', 'profile', admin.id, { filename: req.file.filename }, req);
+
+      res.json({
+        success: true,
+        message: 'Profile photo updated.',
+        profilePhoto: admin.profilePhoto,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+];
 
 

@@ -705,5 +705,34 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script>
+  (async function() {
+    try {
+      var res = await fetch('/api/about-content');
+      var json = await res.json();
+      if (!json.success || !json.data) return;
+      var d = json.data;
+      var providerCard = document.querySelector('.section--provider .provider-card');
+      if (!providerCard) return;
+
+      if (d.provider_photo_url) {
+        var img = providerCard.querySelector('.provider-card__media img');
+        if (img) img.src = d.provider_photo_url;
+      }
+      if (d.provider_name) {
+        var h2 = providerCard.querySelector('h2');
+        if (h2) h2.textContent = d.provider_name;
+      }
+      if (d.provider_credentials) {
+        var cred = providerCard.querySelector('p[style*="38bdf8"]');
+        if (cred) cred.textContent = d.provider_credentials;
+      }
+      if (d.homepage_provider_quote) {
+        var quoteBlock = providerCard.querySelector('[style*="border-left:4px"] p');
+        if (quoteBlock) quoteBlock.textContent = '\u201C' + d.homepage_provider_quote + '\u201D';
+      }
+    } catch(e) {}
+  })();
+  </script>
 </body>
 </html>

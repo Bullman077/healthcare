@@ -8,6 +8,7 @@ const Admin = sequelize.define('Admin', {
   name: { type: DataTypes.STRING(100), allowNull: false },
   role: { type: DataTypes.ENUM('admin', 'superadmin'), defaultValue: 'admin' },
   isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
+  profilePhoto: { type: DataTypes.STRING(500) },
   lastLogin: { type: DataTypes.DATE },
   lastLoginIp: { type: DataTypes.STRING(45) },
 }, {

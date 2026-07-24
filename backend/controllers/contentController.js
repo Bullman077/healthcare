@@ -172,6 +172,13 @@ exports.updateSettings = async (req, res, next) => {
       'clinic_name', 'clinic_phone', 'clinic_email', 'clinic_address',
       'clinic_hours', 'clinic_tagline', 'hero_title', 'hero_subtitle',
       'about_text', 'privacy_policy', 'terms_of_service',
+      'provider_name', 'provider_credentials', 'provider_photo_url',
+      'provider_bio_p1', 'provider_bio_p2',
+      'provider_philosophy_title', 'provider_philosophy_text',
+      'value1_title', 'value1_text',
+      'value2_title', 'value2_text',
+      'value3_title', 'value3_text',
+      'homepage_provider_quote',
     ];
     const updates = req.body;
     const keys = Object.keys(updates).filter((k) => allowedKeys.includes(k));
@@ -195,6 +202,28 @@ exports.getPublicServices = async (req, res, next) => {
       order: [['category', 'ASC'], ['name', 'ASC']],
     });
     res.json({ success: true, services });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAboutContent = async (req, res, next) => {
+  try {
+    const aboutKeys = [
+      'provider_name', 'provider_credentials', 'provider_photo_url',
+      'provider_bio_p1', 'provider_bio_p2',
+      'provider_philosophy_title', 'provider_philosophy_text',
+      'value1_title', 'value1_text',
+      'value2_title', 'value2_text',
+      'value3_title', 'value3_text',
+      'homepage_provider_quote',
+    ];
+    const settings = await Setting.findAll({
+      where: { key: aboutKeys },
+    });
+    const result = {};
+    settings.forEach((s) => { result[s.key] = s.value; });
+    res.json({ success: true, data: result });
   } catch (err) {
     next(err);
   }

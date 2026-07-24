@@ -183,5 +183,67 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script>
+  (async function() {
+    try {
+      const res = await fetch('/api/about-content');
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+      const d = json.data;
+
+      if (d.provider_photo_url) {
+        document.querySelectorAll('.provider-card__media img').forEach(function(img) { img.src = d.provider_photo_url; });
+      }
+      if (d.provider_name) {
+        document.querySelectorAll('#provider-details').forEach(function(el) {
+          el.textContent = d.provider_name;
+        });
+      }
+      if (d.provider_credentials) {
+        var creds = document.querySelector('.provider-card__details p[style*="38bdf8"]');
+        if (creds) creds.textContent = d.provider_credentials;
+      }
+      if (d.provider_bio_p1) {
+        var p1 = document.querySelectorAll('.provider-card__details > p');
+        if (p1[0]) p1[0].innerHTML = d.provider_bio_p1;
+      }
+      if (d.provider_bio_p2) {
+        var p2 = document.querySelectorAll('.provider-card__details > p');
+        if (p2[1]) p2[1].innerHTML = d.provider_bio_p2;
+      }
+      if (d.provider_philosophy_title) {
+        var pt = document.querySelector('.provider-card__details h4');
+        if (pt) pt.textContent = d.provider_philosophy_title;
+      }
+      if (d.provider_philosophy_text) {
+        var pp = document.querySelector('.provider-card__details blockquote, .provider-card__details [style*="font-style:italic"]');
+        if (!pp) {
+          var block = document.querySelector('[style*="border-left:4px solid"]');
+          if (block) pp = block.querySelector('p');
+        }
+        if (pp) pp.textContent = '\u201C' + d.provider_philosophy_text + '\u201D';
+      }
+
+      var valueMap = [
+        { title: d.value1_title, text: d.value1_text },
+        { title: d.value2_title, text: d.value2_text },
+        { title: d.value3_title, text: d.value3_text },
+      ];
+      var valueCards = document.querySelectorAll('.section--provider ~ .animate > div[style*="border-radius:20px"]');
+      if (valueCards.length < 3) {
+        var container = document.querySelector('[style*="grid-template-columns:repeat(3"]');
+        if (container) valueCards = container.children;
+      }
+      valueMap.forEach(function(v, i) {
+        if (valueCards[i] && (v.title || v.text)) {
+          var h3 = valueCards[i].querySelector('h3');
+          var pEl = valueCards[i].querySelector('p');
+          if (v.title && h3) h3.textContent = v.title;
+          if (v.text && pEl) pEl.textContent = v.text;
+        }
+      });
+    } catch(e) {}
+  })();
+  </script>
 </body>
 </html>

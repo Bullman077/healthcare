@@ -411,21 +411,123 @@
 
     <!-- ===== PROFILE ===== -->
     <section id="page-profile" class="page-section">
-      <div class="card profile-card">
-        <div class="card-header"><span class="card-title">Admin Profile</span></div>
-        <div class="modal-body">
-          <div id="profileError" class="login-error profile-error" style="display:none;"></div>
-          <div id="profileSuccess" class="profile-success" style="display:none;"></div>
-          <label class="form-label">Display Name</label>
-          <input type="text" id="profileName" class="form-input" placeholder="Your name">
-          <label class="form-label" style="margin-top:14px;">Email Address</label>
-          <input type="email" id="profileEmail" class="form-input" disabled style="opacity:0.6;">
-          <label class="form-label" style="margin-top:14px;">New Password <span style="font-weight:400; color:var(--slate-500);">(leave blank to keep current)</span></label>
-          <input type="password" id="profilePassword" class="form-input" placeholder="••••••••">
-          <label class="form-label" style="margin-top:14px;">Confirm New Password</label>
-          <input type="password" id="profilePasswordConfirm" class="form-input" placeholder="••••••••">
-          <button class="login-btn save-profile-btn" onclick="saveProfile()">Save Changes</button>
+
+      <!-- Profile Header Card -->
+      <div class="profile-header-card">
+        <div class="profile-header-bg"></div>
+        <div class="profile-header-content">
+          <div class="profile-photo-wrapper" onclick="document.getElementById('photoUploadInput').click()">
+            <img id="profilePhotoImg" class="profile-photo-img" src="" alt="Profile Photo" style="display:none;">
+            <div class="profile-avatar-lg" id="profileAvatarLg">A</div>
+            <div class="profile-photo-overlay">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Change Photo</span>
+            </div>
+            <input type="file" id="photoUploadInput" accept="image/*" style="display:none;" onchange="uploadProfilePhoto(this)">
+          </div>
+          <div class="profile-header-info">
+            <h2 class="profile-header-name" id="profileHeaderName">Admin</h2>
+            <span class="profile-role-badge" id="profileRoleBadge">Admin</span>
+          </div>
         </div>
+      </div>
+
+      <div class="profile-grid">
+
+        <!-- Personal Info Card -->
+        <div class="card profile-section-card">
+          <div class="card-header">
+            <span class="card-title">Personal Information</span>
+            <button class="btn btn-outline btn-sm" id="editInfoBtn" onclick="toggleEditInfo()">Edit</button>
+          </div>
+          <div class="card-body">
+            <div id="profileError" class="login-error profile-error" style="display:none;"></div>
+            <div id="profileSuccess" class="profile-success" style="display:none;"></div>
+
+            <div class="profile-field">
+              <label class="profile-field-label">Full Name</label>
+              <div class="profile-field-display" id="nameDisplay">—</div>
+              <input type="text" id="profileName" class="form-input profile-field-input" style="display:none;" placeholder="Your name">
+            </div>
+
+            <div class="profile-field">
+              <label class="profile-field-label">Email Address</label>
+              <div class="profile-field-display" id="emailDisplay">—</div>
+              <input type="email" id="profileEmail" class="form-input profile-field-input" style="display:none;" disabled>
+              <span class="profile-field-note">Email cannot be changed. Contact support if needed.</span>
+            </div>
+
+            <div class="profile-field-actions" id="infoActions" style="display:none;">
+              <button class="btn btn-outline btn-sm" onclick="cancelEditInfo()">Cancel</button>
+              <button class="btn btn-primary btn-sm" onclick="saveProfileInfo()">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Details Card -->
+        <div class="card profile-section-card">
+          <div class="card-header">
+            <span class="card-title">Account Details</span>
+          </div>
+          <div class="card-body">
+            <div class="profile-info-row">
+              <span class="profile-info-label">Role</span>
+              <span class="profile-info-value" id="profileRole">—</span>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-label">Status</span>
+              <span class="profile-info-value"><span class="status-badge badge-confirmed" id="profileStatus">Active</span></span>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-label">Last Login</span>
+              <span class="profile-info-value" id="profileLastLogin">—</span>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-label">Login IP</span>
+              <span class="profile-info-value profile-info-mono" id="profileLastIp">—</span>
+            </div>
+            <div class="profile-info-row">
+              <span class="profile-info-label">Account Created</span>
+              <span class="profile-info-value" id="profileCreatedAt">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Card -->
+        <div class="card profile-section-card">
+          <div class="card-header">
+            <span class="card-title">Security</span>
+            <button class="btn btn-outline btn-sm" id="editPassBtn" onclick="toggleEditPass()">Change Password</button>
+          </div>
+          <div class="card-body">
+            <div id="passError" class="login-error profile-error" style="display:none;"></div>
+            <div id="passSuccess" class="profile-success" style="display:none;"></div>
+
+            <div class="profile-field">
+              <label class="profile-field-label">Current Password</label>
+              <input type="password" id="profileCurrentPass" class="form-input profile-field-input" style="display:none;" placeholder="Enter current password" autocomplete="current-password">
+              <div class="profile-field-display profile-pass-placeholder" id="passDisplay">••••••••</div>
+            </div>
+
+            <div class="profile-field" id="newPassField" style="display:none;">
+              <label class="profile-field-label">New Password</label>
+              <input type="password" id="profilePassword" class="form-input profile-field-input" placeholder="Enter new password" autocomplete="new-password">
+              <div class="pass-strength" id="passStrength"></div>
+            </div>
+
+            <div class="profile-field" id="confirmPassField" style="display:none;">
+              <label class="profile-field-label">Confirm New Password</label>
+              <input type="password" id="profilePasswordConfirm" class="form-input profile-field-input" placeholder="Confirm new password" autocomplete="new-password">
+              <div class="pass-match" id="passMatch"></div>
+            </div>
+
+            <div class="profile-field-actions" id="passActions" style="display:none;">
+              <button class="btn btn-outline btn-sm" onclick="cancelEditPass()">Cancel</button>
+              <button class="btn btn-primary btn-sm" onclick="saveProfilePassword()">Update Password</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -477,6 +579,7 @@
         <div class="settings-tabs">
           <button class="settings-tab active" onclick="switchSettingsTab('profile')">Clinic Profile</button>
           <button class="settings-tab" onclick="switchSettingsTab('content')">Homepage Content</button>
+          <button class="settings-tab" onclick="switchSettingsTab('about')">About Page</button>
           <button class="settings-tab" onclick="switchSettingsTab('legal')">Legal Pages</button>
         </div>
         <div class="modal-body">
@@ -505,6 +608,58 @@
             <textarea id="set_hero_subtitle" class="form-input" rows="2" placeholder="Direct primary care..."></textarea>
             <label class="form-label" style="margin-top:14px;">About Text</label>
             <textarea id="set_about_text" class="form-input" rows="5" placeholder="Tell patients about your practice..."></textarea>
+          </div>
+
+          <div id="settingsTab-about" class="settings-panel" style="display:none;">
+            <div style="background:var(--bg-secondary); border-radius:10px; padding:16px; margin-bottom:20px; border:1px solid var(--border);">
+              <p style="font-size:13px; color:var(--text-secondary); margin:0;">Content here controls the About page (<code>about.html</code>) and the Provider Spotlight section on the homepage.</p>
+            </div>
+
+            <label class="form-label">Provider Name</label>
+            <input type="text" id="set_provider_name" class="form-input" placeholder="Nacole Brown, MSN, AGPCNP-BC">
+            <label class="form-label" style="margin-top:14px;">Credentials / Title</label>
+            <input type="text" id="set_provider_credentials" class="form-input" placeholder="Adult-Gerontology Primary Care Nurse Practitioner">
+            <label class="form-label" style="margin-top:14px;">Bio Paragraph 1</label>
+            <textarea id="set_provider_bio_p1" class="form-input" rows="4" placeholder="First paragraph about the provider..."></textarea>
+            <label class="form-label" style="margin-top:14px;">Bio Paragraph 2</label>
+            <textarea id="set_provider_bio_p2" class="form-input" rows="3" placeholder="Second paragraph about the provider..."></textarea>
+
+            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
+              <label class="form-label">Philosophy of Care Title</label>
+              <input type="text" id="set_provider_philosophy_title" class="form-input" placeholder="Philosophy of Care">
+              <label class="form-label" style="margin-top:14px;">Philosophy of Care Quote</label>
+              <textarea id="set_provider_philosophy_text" class="form-input" rows="3" placeholder="The provider's philosophy of care statement..."></textarea>
+            </div>
+
+            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
+              <label class="form-label">Homepage Provider Quote</label>
+              <textarea id="set_homepage_provider_quote" class="form-input" rows="2" placeholder="Quote shown on the homepage provider card..."></textarea>
+            </div>
+
+            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
+              <label class="form-label" style="font-weight:700;">Core Values (displayed on About page)</label>
+
+              <label class="form-label" style="margin-top:14px;">Value 1 Title</label>
+              <input type="text" id="set_value1_title" class="form-input" placeholder="Compassion & Dignity">
+              <label class="form-label" style="margin-top:14px;">Value 1 Description</label>
+              <textarea id="set_value1_text" class="form-input" rows="2" placeholder="Treating every patient as a whole person..."></textarea>
+
+              <label class="form-label" style="margin-top:14px;">Value 2 Title</label>
+              <input type="text" id="set_value2_title" class="form-input" placeholder="Integrity & Transparency">
+              <label class="form-label" style="margin-top:14px;">Value 2 Description</label>
+              <textarea id="set_value2_text" class="form-input" rows="2" placeholder="Clear flat pricing, no surprise bills..."></textarea>
+
+              <label class="form-label" style="margin-top:14px;">Value 3 Title</label>
+              <input type="text" id="set_value3_title" class="form-input" placeholder="Direct Accessibility">
+              <label class="form-label" style="margin-top:14px;">Value 3 Description</label>
+              <textarea id="set_value3_text" class="form-input" rows="2" placeholder="Same-day appointments, 24/7 direct messaging..."></textarea>
+            </div>
+
+            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
+              <label class="form-label">Provider Photo URL</label>
+              <input type="text" id="set_provider_photo_url" class="form-input" placeholder="/assets/images/nacole-brown-provider.png">
+              <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Path to the provider photo displayed on the About page and homepage.</p>
+            </div>
           </div>
 
           <div id="settingsTab-legal" class="settings-panel" style="display:none;">
@@ -798,6 +953,7 @@ function goTo(page) {
   if (page === 'testimonials') loadTestimonials();
   if (page === 'settings') loadSettings();
   if (page === 'audit') loadAuditLogs();
+  if (page === 'profile') refreshProfile();
 }
 
 /* =========================================================
@@ -1621,39 +1777,282 @@ function deleteService(id, name) {
 /* =========================================================
    PROFILE
    ========================================================= */
-function populateProfile(admin) {
-  document.getElementById('profileName').value  = admin.name  || '';
-  document.getElementById('profileEmail').value = admin.email || '';
+async function refreshProfile() {
+  try {
+    const data = await apiFetch('/me');
+    if (data.success && data.admin) {
+      state.admin = data.admin;
+      populateProfile(data.admin);
+    }
+  } catch(e) {}
 }
 
-async function saveProfile() {
-  const name   = document.getElementById('profileName').value.trim();
-  const pass   = document.getElementById('profilePassword').value;
-  const passC  = document.getElementById('profilePasswordConfirm').value;
-  const errEl  = document.getElementById('profileError');
-  const okEl   = document.getElementById('profileSuccess');
+function populateProfile(admin) {
+  const name = admin.name || 'Admin';
+  const initial = name[0].toUpperCase();
+
+  document.getElementById('profileName').value = name;
+  document.getElementById('profileEmail').value = admin.email || '';
+  document.getElementById('nameDisplay').textContent = name;
+  document.getElementById('emailDisplay').textContent = admin.email || '—';
+  document.getElementById('profileHeaderName').textContent = name;
+  document.getElementById('profileAvatarLg').textContent = initial;
+  document.getElementById('profileRoleBadge').textContent = admin.role === 'superadmin' ? 'Super Admin' : 'Admin';
+  document.getElementById('profileRole').textContent = admin.role === 'superadmin' ? 'Super Admin' : 'Admin';
+  document.getElementById('profileStatus').textContent = admin.isActive !== false ? 'Active' : 'Inactive';
+  document.getElementById('profileStatus').className = 'status-badge ' + (admin.isActive !== false ? 'badge-confirmed' : 'badge-cancelled');
+  document.getElementById('profileLastLogin').textContent = admin.lastLogin ? fmtDateTime(admin.lastLogin) : 'First login';
+  document.getElementById('profileLastIp').textContent = admin.lastLoginIp || '—';
+  document.getElementById('profileCreatedAt').textContent = admin.createdAt ? fmtDateTime(admin.createdAt) : '—';
+
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = initial;
+
+  const photoImg = document.getElementById('profilePhotoImg');
+  const avatarLg = document.getElementById('profileAvatarLg');
+  if (admin.profilePhoto) {
+    photoImg.src = admin.profilePhoto;
+    photoImg.style.display = 'block';
+    avatarLg.style.display = 'none';
+  } else {
+    photoImg.style.display = 'none';
+    avatarLg.style.display = 'flex';
+  }
+
+  const sidebarAvatar = document.getElementById('adminAvatar');
+  if (sidebarAvatar) {
+    const existing = sidebarAvatar.querySelector('img');
+    if (admin.profilePhoto) {
+      sidebarAvatar.textContent = '';
+      if (!existing) {
+        const img = document.createElement('img');
+        img.src = admin.profilePhoto;
+        img.alt = 'Admin';
+        img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover;';
+        sidebarAvatar.appendChild(img);
+      } else {
+        existing.src = admin.profilePhoto;
+      }
+    } else {
+      if (existing) existing.remove();
+      sidebarAvatar.textContent = initial;
+    }
+  }
+}
+
+let origProfileName = '';
+
+function toggleEditInfo() {
+  const display = document.getElementById('nameDisplay');
+  const input = document.getElementById('profileName');
+  const actions = document.getElementById('infoActions');
+  const btn = document.getElementById('editInfoBtn');
+  origProfileName = input.value;
+  display.style.display = 'none';
+  input.style.display = 'block';
+  actions.style.display = 'flex';
+  btn.style.display = 'none';
+  input.focus();
+}
+
+function cancelEditInfo() {
+  document.getElementById('profileName').value = origProfileName;
+  document.getElementById('nameDisplay').style.display = 'block';
+  document.getElementById('profileName').style.display = 'none';
+  document.getElementById('infoActions').style.display = 'none';
+  document.getElementById('editInfoBtn').style.display = 'inline-flex';
+  document.getElementById('profileError').style.display = 'none';
+  document.getElementById('profileSuccess').style.display = 'none';
+}
+
+async function saveProfileInfo() {
+  const name = document.getElementById('profileName').value.trim();
+  const errEl = document.getElementById('profileError');
+  const okEl = document.getElementById('profileSuccess');
   errEl.style.display = 'none';
-  okEl.style.display  = 'none';
+  okEl.style.display = 'none';
 
-  if (!name) { errEl.textContent = 'Name is required.'; errEl.style.display='block'; return; }
-  if (pass && pass !== passC) { errEl.textContent = 'Passwords do not match.'; errEl.style.display='block'; return; }
+  if (!name) { errEl.textContent = 'Name is required.'; errEl.style.display = 'block'; return; }
 
-  const payload = { name };
-  if (pass) payload.password = pass;
+  const btn = document.querySelector('#infoActions .btn-primary');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
 
-  const data = await apiFetch('/profile', 'PUT', payload);
+  const data = await apiFetch('/profile', 'PUT', { name });
+  btn.textContent = 'Save Changes';
+  btn.disabled = false;
+
   if (data.success) {
-    okEl.textContent = 'Profile updated successfully!';
+    okEl.textContent = 'Profile updated!';
     okEl.style.display = 'block';
+    document.getElementById('nameDisplay').textContent = name;
+    document.getElementById('nameDisplay').style.display = 'block';
+    document.getElementById('profileName').style.display = 'none';
+    document.getElementById('infoActions').style.display = 'none';
+    document.getElementById('editInfoBtn').style.display = 'inline-flex';
+    state.admin.name = name;
     document.getElementById('adminName').textContent = name;
     document.getElementById('adminAvatar').textContent = name[0].toUpperCase();
-    document.getElementById('profilePassword').value = '';
-    document.getElementById('profilePasswordConfirm').value = '';
-    toast('Profile saved.', 'success');
+    document.getElementById('profileHeaderName').textContent = name;
+    document.getElementById('profileAvatarLg').textContent = name[0].toUpperCase();
+    toast('Profile updated.', 'success');
+    setTimeout(() => { okEl.style.display = 'none'; }, 3000);
   } else {
     errEl.textContent = data.message || 'Error saving profile.';
     errEl.style.display = 'block';
   }
+}
+
+function toggleEditPass() {
+  const passDisplay = document.getElementById('passDisplay');
+  const currentPass = document.getElementById('profileCurrentPass');
+  const newPass = document.getElementById('profilePassword');
+  const confirmPass = document.getElementById('profilePasswordConfirm');
+  const newPassField = document.getElementById('newPassField');
+  const confirmPassField = document.getElementById('confirmPassField');
+  const actions = document.getElementById('passActions');
+  const btn = document.getElementById('editPassBtn');
+
+  passDisplay.style.display = 'none';
+  currentPass.style.display = 'block';
+  newPassField.style.display = 'block';
+  confirmPassField.style.display = 'block';
+  actions.style.display = 'flex';
+  btn.style.display = 'none';
+  currentPass.focus();
+}
+
+function cancelEditPass() {
+  document.getElementById('passDisplay').style.display = 'flex';
+  document.getElementById('profileCurrentPass').style.display = 'none';
+  document.getElementById('newPassField').style.display = 'none';
+  document.getElementById('confirmPassField').style.display = 'none';
+  document.getElementById('passActions').style.display = 'none';
+  document.getElementById('editPassBtn').style.display = 'inline-flex';
+  document.getElementById('profileCurrentPass').value = '';
+  document.getElementById('profilePassword').value = '';
+  document.getElementById('profilePasswordConfirm').value = '';
+  document.getElementById('passError').style.display = 'none';
+  document.getElementById('passSuccess').style.display = 'none';
+  document.getElementById('passStrength').innerHTML = '';
+  document.getElementById('passMatch').innerHTML = '';
+}
+
+document.getElementById('profilePassword')?.addEventListener('input', function() {
+  const val = this.value;
+  const el = document.getElementById('passStrength');
+  if (!val) { el.innerHTML = ''; return; }
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+  const colors = ['', '#EF4444', '#F59E0B', '#3B82F6', '#10B981'];
+  el.innerHTML = `<div class="pass-strength-bar"><div class="pass-strength-fill" style="width:${score*25}%;background:${colors[score]};"></div></div><span style="font-size:11px;color:${colors[score]};font-weight:600;">${labels[score]}</span>`;
+});
+
+document.getElementById('profilePasswordConfirm')?.addEventListener('input', function() {
+  const pass = document.getElementById('profilePassword').value;
+  const el = document.getElementById('passMatch');
+  if (!this.value) { el.innerHTML = ''; return; }
+  if (this.value === pass) {
+    el.innerHTML = '<span style="font-size:11px;color:#10B981;font-weight:600;">Passwords match</span>';
+  } else {
+    el.innerHTML = '<span style="font-size:11px;color:#EF4444;font-weight:600;">Passwords do not match</span>';
+  }
+});
+
+document.getElementById('profileCurrentPass')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') saveProfilePassword();
+});
+
+document.getElementById('profilePassword')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('profilePasswordConfirm').focus();
+});
+
+document.getElementById('profilePasswordConfirm')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') saveProfilePassword();
+});
+
+async function saveProfilePassword() {
+  const current = document.getElementById('profileCurrentPass').value;
+  const pass = document.getElementById('profilePassword').value;
+  const passC = document.getElementById('profilePasswordConfirm').value;
+  const errEl = document.getElementById('passError');
+  const okEl = document.getElementById('passSuccess');
+  errEl.style.display = 'none';
+  okEl.style.display = 'none';
+
+  if (!current) { errEl.textContent = 'Current password is required.'; errEl.style.display = 'block'; return; }
+  if (!pass) { errEl.textContent = 'New password is required.'; errEl.style.display = 'block'; return; }
+  if (pass.length < 8) { errEl.textContent = 'New password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
+  if (pass !== passC) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
+
+  const btn = document.querySelector('#passActions .btn-primary');
+  btn.textContent = 'Updating...';
+  btn.disabled = true;
+
+  const data = await apiFetch('/profile', 'PUT', { currentPassword: current, newPassword: pass });
+  btn.textContent = 'Update Password';
+  btn.disabled = false;
+
+  if (data.success) {
+    okEl.textContent = 'Password updated!';
+    okEl.style.display = 'block';
+    cancelEditPass();
+    toast('Password updated.', 'success');
+    setTimeout(() => { okEl.style.display = 'none'; }, 3000);
+  } else {
+    errEl.textContent = data.message || 'Error updating password.';
+    errEl.style.display = 'block';
+  }
+}
+
+/* =========================================================
+   PROFILE PHOTO UPLOAD
+   ========================================================= */
+async function uploadProfilePhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    toast('Photo must be under 5MB.', 'danger');
+    input.value = '';
+    return;
+  }
+  if (!file.type.startsWith('image/')) {
+    toast('Please select an image file.', 'danger');
+    input.value = '';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('photo', file);
+
+  try {
+    const res = await fetch(API + '/profile/photo', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Authorization': 'Bearer ' + state.token },
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.success && data.profilePhoto) {
+      state.admin.profilePhoto = data.profilePhoto;
+      const photoImg = document.getElementById('profilePhotoImg');
+      const avatarLg = document.getElementById('profileAvatarLg');
+      photoImg.src = data.profilePhoto;
+      photoImg.style.display = 'block';
+      avatarLg.style.display = 'none';
+      toast('Profile photo updated.', 'success');
+    } else {
+      toast(data.message || 'Error uploading photo.', 'danger');
+    }
+  } catch (e) {
+    toast('Error uploading photo.', 'danger');
+  }
+  input.value = '';
 }
 
 /* =========================================================
@@ -1875,6 +2274,20 @@ async function loadSettings() {
   document.getElementById('set_about_text').value = s.about_text || '';
   document.getElementById('set_privacy_policy').value = s.privacy_policy || '';
   document.getElementById('set_terms_of_service').value = s.terms_of_service || '';
+  document.getElementById('set_provider_name').value = s.provider_name || '';
+  document.getElementById('set_provider_credentials').value = s.provider_credentials || '';
+  document.getElementById('set_provider_photo_url').value = s.provider_photo_url || '';
+  document.getElementById('set_provider_bio_p1').value = s.provider_bio_p1 || '';
+  document.getElementById('set_provider_bio_p2').value = s.provider_bio_p2 || '';
+  document.getElementById('set_provider_philosophy_title').value = s.provider_philosophy_title || '';
+  document.getElementById('set_provider_philosophy_text').value = s.provider_philosophy_text || '';
+  document.getElementById('set_homepage_provider_quote').value = s.homepage_provider_quote || '';
+  document.getElementById('set_value1_title').value = s.value1_title || '';
+  document.getElementById('set_value1_text').value = s.value1_text || '';
+  document.getElementById('set_value2_title').value = s.value2_title || '';
+  document.getElementById('set_value2_text').value = s.value2_text || '';
+  document.getElementById('set_value3_title').value = s.value3_title || '';
+  document.getElementById('set_value3_text').value = s.value3_text || '';
 }
 
 async function saveSettings() {
@@ -1895,6 +2308,20 @@ async function saveSettings() {
     about_text: document.getElementById('set_about_text').value.trim(),
     privacy_policy: document.getElementById('set_privacy_policy').value.trim(),
     terms_of_service: document.getElementById('set_terms_of_service').value.trim(),
+    provider_name: document.getElementById('set_provider_name').value.trim(),
+    provider_credentials: document.getElementById('set_provider_credentials').value.trim(),
+    provider_photo_url: document.getElementById('set_provider_photo_url').value.trim(),
+    provider_bio_p1: document.getElementById('set_provider_bio_p1').value.trim(),
+    provider_bio_p2: document.getElementById('set_provider_bio_p2').value.trim(),
+    provider_philosophy_title: document.getElementById('set_provider_philosophy_title').value.trim(),
+    provider_philosophy_text: document.getElementById('set_provider_philosophy_text').value.trim(),
+    homepage_provider_quote: document.getElementById('set_homepage_provider_quote').value.trim(),
+    value1_title: document.getElementById('set_value1_title').value.trim(),
+    value1_text: document.getElementById('set_value1_text').value.trim(),
+    value2_title: document.getElementById('set_value2_title').value.trim(),
+    value2_text: document.getElementById('set_value2_text').value.trim(),
+    value3_title: document.getElementById('set_value3_title').value.trim(),
+    value3_text: document.getElementById('set_value3_text').value.trim(),
   };
 
   const data = await apiFetch('/settings', 'PUT', payload);

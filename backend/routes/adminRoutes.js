@@ -25,6 +25,7 @@ const {
   addPatientReminder,
   getAuditLogs,
   getNewPatientsThisMonth,
+  uploadProfilePhoto,
 } = require('../controllers/adminController');
 const {
   getMessages, getMessage, toggleMessageRead, deleteMessage,
@@ -67,6 +68,7 @@ router.post('/services', adminWriteLimiter, createService);
 router.put('/services/:id', adminWriteLimiter, updateService);
 router.delete('/services/:id', adminWriteLimiter, deleteService);
 router.put('/profile', adminWriteLimiter, updateProfile);
+router.post('/profile/photo', adminWriteLimiter, uploadProfilePhoto);
 router.get('/audit-logs', getAuditLogs);
 
 router.get('/messages', getMessages);

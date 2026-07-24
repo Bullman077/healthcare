@@ -19,6 +19,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 const { limiter, csrfProtect } = require('./middleware/security');
 const { startScheduler } = require('./scheduler');
+const { Setting } = require('./models');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -95,6 +96,11 @@ app.use('/patient', express.static(path.join(__dirname, 'public', 'patient'), {
   etag: true,
   lastModified: true,
 }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: isProd ? '30d' : '0',
+  etag: true,
+  lastModified: true,
+}));
 app.use(express.static(path.join(__dirname, '..'), {
   maxAge: isProd ? '1d' : '0',
 }));
@@ -147,11 +153,37 @@ function validateEnv() {
   }
 }
 
+async function seedAboutDefaults() {
+  const defaults = {
+    provider_name: 'Nacole Brown, MSN, AGPCNP-BC',
+    provider_credentials: 'Adult-Gerontology Primary Care Nurse Practitioner',
+    provider_photo_url: '/assets/images/nacole-brown-provider.png',
+    provider_bio_p1: 'Nacole Brown is the founder of <strong>Unmeasurable Heights of Strength (UHS) Healthcare Services</strong>. Beginning her healthcare career as a Licensed Practical Nurse (LPN), Nacole systematically advanced her education to earn an Associate Degree in Nursing (ADN), Bachelor of Science in Nursing (BSN), and a Master of Science in Nursing (MSN) as an Adult-Gerontology Primary Care Nurse Practitioner (AGPCNP-BC).',
+    provider_bio_p2: 'Her extensive clinical experience spans hospice, home health, long-term care, outpatient primary care, and chronic disease management.',
+    provider_philosophy_title: 'Philosophy of Care',
+    provider_philosophy_text: 'Every patient deserves unhurried time, respectful listening, and personalized treatment. UHS Healthcare was created to eliminate the barriers of traditional insurance medicine and deliver care centered around you.',
+    homepage_provider_quote: 'My goal is to help every patient rise above their health challenges through compassionate care, education, and personalized wellness solutions. Together, we can achieve unmeasurable heights of strength.',
+    value1_title: 'Compassion & Dignity',
+    value1_text: 'Treating every patient as a whole person with empathy, respect, and active listening.',
+    value2_title: 'Integrity & Transparency',
+    value2_text: 'Clear flat pricing, no surprise bills, and honest medical guidance at every visit.',
+    value3_title: 'Direct Accessibility',
+    value3_text: 'Same-day appointments, 24/7 direct doctor text/phone messaging, and virtual visits.',
+  };
+  for (const [key, value] of Object.entries(defaults)) {
+    const existing = await Setting.findOne({ where: { key } });
+    if (!existing) {
+      await Setting.create({ key, value });
+    }
+  }
+}
+
 async function start() {
   try {
     validateEnv();
     await connectDB();
     await sequelize.sync();
+    await seedAboutDefaults();
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT} [${process.env.NODE_ENV || 'development'}]`);
       startScheduler();
