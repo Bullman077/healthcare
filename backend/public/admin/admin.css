@@ -217,7 +217,6 @@ body {
    APP LAYOUT
    ========================================================= */
 .app {
-  display: flex;
   min-height: 100vh;
 }
 
@@ -380,13 +379,17 @@ body {
 .main,
 .main-content {
   margin-left: var(--sidebar-w);
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
+  padding: 28px 32px;
+  background: var(--slate-50);
+  min-height: 100vh;
 }
 
-/* TOP BAR */
+.page-section { display: none; }
+.page-section.active { display: block; animation: fadeIn 0.25s ease; }
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
 .topbar {
   background: var(--white);
   height: var(--topbar-h);
@@ -504,29 +507,6 @@ body {
   font-size: 13px;
   font-weight: 600;
   color: var(--slate-700);
-}
-
-/* CONTENT */
-.content {
-  padding: 32px 36px;
-  flex: 1;
-  background: var(--slate-50);
-  min-height: calc(100vh - var(--topbar-h));
-}
-
-.page-section { display: none; }
-.page-section.active { display: block; animation: fadeIn 0.25s ease; }
-
-.page-section > .card,
-.page-section > .stats-grid,
-.page-section > .stats-row,
-.page-section > .dashboard-row,
-.page-section > .dashboard-welcome {
-  max-width: 1400px;
-}
-
-.page-section > .card:first-child {
-  max-width: 1400px;
 }
 
 /* =========================================================
@@ -1160,9 +1140,8 @@ table.data-table tr:hover td { background: rgba(79, 70, 229, 0.025); }
 @media (max-width: 768px) {
   .sidebar { transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
-  .main, .main-content { margin-left: 0; }
+  .main, .main-content { margin-left: 0; padding: 20px 16px; }
   .menu-toggle, .sidebar-toggle { display: flex; }
-  .content { padding: 20px 16px; }
   .stats-grid, .stats-row { grid-template-columns: 1fr 1fr; gap: 12px; }
   .filter-bar { flex-direction: column; align-items: stretch; }
   .filter-input { min-width: unset; width: 100%; }
