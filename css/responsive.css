@@ -61,15 +61,21 @@
   .footer-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  [style*="grid-template-columns:repeat(3, 1fr)"],
+  [style*="grid-template-columns:repeat(3,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 @media (max-width: 768px) {
+  /* ===== NAVIGATION (LIGHT MODE MOBILE) ===== */
   .nav__right {
     position: fixed;
     top: 72px;
     left: 0;
     width: 100%;
-    background: var(--color-navy);
+    background: #ffffff;
     padding: 2rem;
     flex-direction: column;
     gap: 1.25rem;
@@ -88,6 +94,10 @@
     align-items: stretch;
   }
 
+  .nav__list a {
+    color: var(--color-slate-900) !important;
+  }
+
   .nav__toggle {
     display: flex;
   }
@@ -96,13 +106,19 @@
     display: none;
   }
 
+  .nav__actions .btn--outline {
+    color: var(--color-slate-900) !important;
+    border-color: var(--color-slate-300) !important;
+  }
+
+  /* ===== HERO (LIGHT OVERLAY) ===== */
   .hero {
     padding: 120px 0 60px;
     text-align: center;
   }
 
   .hero__gradient-overlay {
-    background: linear-gradient(180deg, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.65) 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 100%) !important;
   }
 
   .hero__text {
@@ -126,16 +142,33 @@
     max-width: none;
   }
 
+  /* ===== PRICING ===== */
   .pricing-grid {
     grid-template-columns: 1fr;
   }
 
+  /* ===== TESTIMONIALS ===== */
   .testimonials-slider {
     max-width: 100%;
   }
 
+  .testimonials-slider__controls {
+    gap: 0.75rem;
+  }
+
+  .testimonial-card {
+    padding: 1.5rem !important;
+  }
+
+  .testimonial-card__text {
+    font-size: 0.95rem !important;
+  }
+
+  /* ===== COMPARISON TABLE ===== */
   .comparison-card {
     overflow-x: auto;
+    margin: 0 -1rem;
+    border-radius: 0;
   }
 
   .comparison-table th,
@@ -144,6 +177,113 @@
     font-size: var(--fs-sm);
   }
 
+  /* ===== INLINE GRIDS: 2-COLUMN → 1-COLUMN ===== */
+  [style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns:0.9fr 1.1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns: 0.9fr 1.1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ===== CARD PADDING REDUCTION ===== */
+  [style*="padding:3rem"],
+  [style*="padding: 3rem"] {
+    padding: 1.5rem !important;
+  }
+
+  [style*="padding:2.5rem"],
+  [style*="padding: 2.5rem"] {
+    padding: 1.5rem !important;
+  }
+
+  [style*="padding:2rem 2rem 2.25rem"] {
+    padding: 1.25rem !important;
+  }
+
+  [style*="padding:2rem"],
+  [style*="padding: 2rem"] {
+    padding: 1.25rem !important;
+  }
+
+  /* ===== FORM GAP REDUCTION ===== */
+  [style*="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem"],
+  [style*="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem"] {
+    gap: 0.75rem !important;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    padding-block: 3rem !important;
+  }
+
+  .section-header__title {
+    font-size: 1.75rem !important;
+  }
+
+  .section-header__desc {
+    font-size: 0.95rem !important;
+  }
+
+  /* ===== FAQ ===== */
+  .faq-button {
+    padding: 1rem 1.25rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .faq-item.active .faq-content {
+    padding: 0 1.25rem 1rem !important;
+  }
+
+  .faq-tabs {
+    gap: 0.4rem;
+  }
+
+  .faq-tab {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  /* ===== PROVIDER CARD ===== */
+  .provider-card__details {
+    padding: 1.5rem !important;
+  }
+
+  .career-trail {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  /* ===== CONTACT PAGE ===== */
+  [style*="background:var(--color-navy)"] {
+    padding: 1.5rem !important;
+  }
+
+  /* ===== BOOKING MODAL ===== */
+  .modal-card {
+    padding: 1.5rem !important;
+    margin: 0.5rem !important;
+  }
+
+  #booking-api-form [style*="display:grid; grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  #booking-api-form [style*="display:grid; grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  /* ===== FOOTER ===== */
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -169,6 +309,11 @@
     grid-template-columns: 1fr;
   }
 
+  [style*="grid-template-columns:repeat(2, 1fr)"],
+  [style*="grid-template-columns:repeat(2,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
   .comparison-table th,
   .comparison-table td {
     padding: 0.85rem 0.85rem;
@@ -179,15 +324,47 @@
   .comparison-table__cell--good::before {
     display: none;
   }
+
+  .hero__title {
+    font-size: 2rem !important;
+  }
+
+  .hero__text {
+    font-size: 0.95rem !important;
+  }
+
+  .section {
+    padding-block: 2.5rem !important;
+  }
+
+  .section--testimonials {
+    padding: 60px 16px !important;
+  }
+
+  .section--testimonials .section-header__title {
+    font-size: 1.5rem !important;
+  }
+
+  [style*="border-radius: 24px"] {
+    border-radius: 16px !important;
+  }
+
+  [style*="border-radius: 20px"] {
+    border-radius: 14px !important;
+  }
+
+  .provider-card__media {
+    min-height: 240px;
+  }
 }
 
 @media (max-width: 480px) {
   .hero__title {
-    font-size: 2.1rem;
+    font-size: 1.75rem !important;
   }
 
   .section {
-    padding: 3.5rem 0;
+    padding: 2.5rem 0 !important;
   }
 
   .btn--lg {
@@ -197,6 +374,42 @@
   }
 
   .modal-card {
-    padding: 1.75rem;
+    padding: 1.25rem !important;
+  }
+
+  [style*="padding:3rem"],
+  [style*="padding: 3rem"] {
+    padding: 1.25rem !important;
+  }
+
+  [style*="padding:2.5rem"],
+  [style*="padding: 2.5rem"] {
+    padding: 1.25rem !important;
+  }
+
+  .nav__logo-title {
+    font-size: 1rem !important;
+  }
+
+  .nav__logo img {
+    height: 36px !important;
+  }
+
+  .footer {
+    padding: 3rem 0 1.5rem !important;
+  }
+
+  [style*="max-width:960px"] {
+    max-width: 100% !important;
+  }
+
+  .privacy-content,
+  [style*="max-width:900px"] {
+    padding: 0 1rem !important;
+  }
+
+  .faq-tab {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
   }
 }
