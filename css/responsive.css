@@ -8,7 +8,7 @@
     display: none !important;
   }
   .nav__list {
-    gap: 1rem;
+    gap: 1.5rem;
   }
   .nav__actions {
     gap: 0.5rem;
@@ -20,7 +20,7 @@
     display: none;
   }
   .nav__list {
-    gap: 0.75rem;
+    gap: 1rem;
   }
 }
 
@@ -30,17 +30,24 @@
     gap: 2.5rem;
   }
 
-  .pricing-grid,
-  .testimonials-grid {
+  .pricing-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .service-display-card {
-    grid-template-columns: 1fr;
+  .testimonials-slider {
+    max-width: 500px;
   }
 
-  .service-display-card__image {
-    min-height: 280px;
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .core-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wellness-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .provider-card {
@@ -49,10 +56,6 @@
 
   .provider-card__media {
     min-height: 340px;
-  }
-
-  .care-finder__options {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .footer-grid {
@@ -102,10 +105,6 @@
     background: linear-gradient(180deg, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.65) 100%);
   }
 
-  .hero__badge-group {
-    justify-content: center;
-  }
-
   .hero__text {
     margin-left: auto;
     margin-right: auto;
@@ -127,21 +126,12 @@
     max-width: none;
   }
 
-  .pricing-grid,
-  .testimonials-grid {
+  .pricing-grid {
     grid-template-columns: 1fr;
   }
 
-  .care-finder-section {
-    padding: 3.5rem 0;
-  }
-
-  .care-finder__title {
-    font-size: 2rem;
-  }
-
-  .care-finder__options {
-    grid-template-columns: 1fr;
+  .testimonials-slider {
+    max-width: 100%;
   }
 
   .comparison-card {
@@ -163,6 +153,31 @@
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .core-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wellness-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.85rem 0.85rem;
+    font-size: var(--fs-xs);
+  }
+
+  .comparison-table__cell--bad::before,
+  .comparison-table__cell--good::before {
+    display: none;
   }
 }
 

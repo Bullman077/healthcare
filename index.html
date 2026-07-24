@@ -20,7 +20,7 @@
   <!-- Preconnect Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
@@ -64,7 +64,7 @@
     <div class="nav__inner">
       <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
         <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
-        <span class="nav__logo-title">Healthcare Heights of Strength</span>
+        <span class="nav__logo-title">UHS Healthcare</span>
       </a>
 
       <button class="nav__toggle" aria-label="Toggle navigation menu">
@@ -74,7 +74,6 @@
       <div class="nav__right">
         <ul class="nav__list">
           <li><a href="index.html" class="nav__link nav__link--active">Home</a></li>
-          <li><a href="#pricing" class="nav__link">Membership</a></li>
           <li><a href="services.html" class="nav__link">Services</a></li>
           <li><a href="telehealth.html" class="nav__link">Telehealth</a></li>
           <li><a href="about.html" class="nav__link">About NP Brown</a></li>
@@ -106,8 +105,8 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
         <div>
-          <div class="hero-floating-status">Accepting New Patients</div>
-          <div class="hero-floating-name">Nacole Brown, MSN AGPCNP-BC</div>
+          <div class="hero-floating-status"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#10b981;margin-right:0.35rem;box-shadow:0 0 6px rgba(16,185,129,0.5);"></span>Accepting New Patients</div>
+          <div class="hero-floating-name">Nacole Brown, MSN, AGPCNP-BC</div>
           <div class="hero-floating-title">Adult-Gerontology Primary Care Specialist</div>
         </div>
       </div>
@@ -115,12 +114,6 @@
       <div class="container" style="position:relative;z-index:10;">
         <div class="hero__grid">
           <div class="hero__content animate">
-            <div class="hero__badge-group">
-              <span class="badge badge--white">Unmeasurable Heights of Strength</span>
-              <span class="badge badge--teal">Rising Above. Empowering Wellness.</span>
-              <span class="badge badge--indigo">Proudly Serving Columbia, SC &amp; Surrounding Areas</span>
-            </div>
-
             <h1 class="hero__title">
               Healthcare Built Around You.<br>
               <span class="hero__title-serif">Heights of Strength.</span>
@@ -132,7 +125,7 @@
 
             <div class="hero__actions">
               <button class="btn btn--accent btn--lg" data-open-modal>Book Appointment</button>
-              <a href="appointment.html" class="btn btn--outline btn--lg">Schedule Your Visit</a>
+              <a href="tel:+18033817489" class="btn btn--outline btn--lg">Call (803) 381-7489</a>
             </div>
 
             <div class="hero__stats">
@@ -160,334 +153,252 @@
       </div>
     </section>
 
-    <!-- ===== WHY DPC VS TRADITIONAL CARE ===== -->
-    <section class="section section--navy" aria-labelledby="dpc-vs-traditional">
+    <!-- ===== WHY CHOOSE US (Split 2-Column) ===== -->
+    <section class="section section--navy" aria-labelledby="why-choose-title">
       <div class="container">
-        <div class="section-header section-header--light animate">
-          <span class="section-header__subtitle">Why Direct Primary Care?</span>
-          <h2 id="dpc-vs-traditional" class="section-header__title">UHS Direct Care vs. Traditional Healthcare</h2>
-          <p class="section-header__desc">Compare how our membership model places your health, time, and budget first.</p>
+        <div class="split-grid animate">
+          <div class="split-image-wrap">
+            <img src="assets/images/hero-doctor-patient.png" alt="Healthcare provider consulting with patient">
+          </div>
+
+          <div class="split-content">
+            <span class="split-badge">The Direct Care Difference</span>
+            <h2 id="why-choose-title" class="split-title">Healthcare Designed Around You.</h2>
+            <p class="split-sub">Experience accessible, unhurried, and transparent primary care tailored to your life.</p>
+
+            <div class="benefit-row">
+              <div class="benefit-row__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div class="benefit-row__text">
+                <div class="benefit-row__title">Unhurried 30–60 Min Visits</div>
+                <p class="benefit-row__desc">Forget 8-minute rushed appointments. Take time to discuss your health with a provider who truly listens.</p>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-row__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div class="benefit-row__text">
+                <div class="benefit-row__title">Direct Provider Access</div>
+                <p class="benefit-row__desc">Skip the phone trees and answering services. Reach out via direct text, phone, or virtual telehealth visits.</p>
+              </div>
+            </div>
+
+            <div class="benefit-row">
+              <div class="benefit-row__icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <div class="benefit-row__text">
+                <div class="benefit-row__title">Transparent Pricing &amp; Wholesale Savings</div>
+                <p class="benefit-row__desc">$0 copays, predictable direct-pay options, and up to 80–90% wholesale savings on labs and medications.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HOW DPC WORKS (3-Step) ===== -->
+    <section class="section" aria-labelledby="how-dpc-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Direct Primary Care</span>
+          <h2 id="how-dpc-title" class="section-header__title">How DPC Works</h2>
+          <p class="section-header__desc">Simple, transparent, and built around you — get started in three easy steps.</p>
+        </div>
+
+        <div class="steps-grid animate">
+          <div class="step-card">
+            <div class="step-card__number">1</div>
+            <h3 class="step-card__title">Select Your Plan</h3>
+            <p class="step-card__desc">Choose a DPC membership for unlimited access or a one-time service for your specific needs — no insurance required.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__number">2</div>
+            <h3 class="step-card__title">Direct NP Access</h3>
+            <p class="step-card__desc">Reach NP Brown directly via text, phone, or virtual visit — no phone trees, no answering services, no delays.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__number">3</div>
+            <h3 class="step-card__title">Experience Better Health</h3>
+            <p class="step-card__desc">Enjoy 30–60 minute unhurried visits, $0 copays, wholesale lab pricing, and a provider who truly knows your history.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CORE SERVICES GRID ===== -->
+    <section class="section section--alt" aria-labelledby="core-services-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Comprehensive Care</span>
+          <h2 id="core-services-title" class="section-header__title">Services Tailored to Your Life</h2>
+          <p class="section-header__desc">Expert care across every stage of life — from physicals to chronic pain relief.</p>
+        </div>
+
+        <div class="core-services-grid animate">
+          <div class="core-service-card">
+            <h3 class="core-service-card__title">DOT / Work / Sports Physicals</h3>
+            <p class="core-service-card__desc">Fast turnaround physicals to keep you compliant, safe, and ready to perform.</p>
+            <button class="core-service-card__btn" data-open-modal>Schedule Exam</button>
+          </div>
+
+          <div class="core-service-card">
+            <h3 class="core-service-card__title">Weight Loss &amp; Healthy Plans</h3>
+            <p class="core-service-card__desc">Sustainable plans with GLP-1 support, nutrition coaching, and lifestyle guidance.</p>
+            <button class="core-service-card__btn" data-open-modal>Get Started</button>
+          </div>
+
+          <div class="core-service-card">
+            <h3 class="core-service-card__title">BLS CPR Training</h3>
+            <p class="core-service-card__desc">American Heart Association (AHA) Certified Training for providers and the community.</p>
+            <button class="core-service-card__btn" data-open-modal>Inquire for Class</button>
+          </div>
+
+          <div class="core-service-card">
+            <h3 class="core-service-card__title">TB Skin Testing</h3>
+            <p class="core-service-card__desc">Fast, accurate TB skin testing for employment, school, and healthcare screening.</p>
+            <button class="core-service-card__btn" data-open-modal>Schedule TB Test</button>
+          </div>
+
+          <div class="core-service-card">
+            <h3 class="core-service-card__title">Iontopherisis Patch &amp; Chronic Pain</h3>
+            <p class="core-service-card__desc">Non-invasive transdermal therapy for pain relief and improved mobility without drugs.</p>
+            <button class="core-service-card__btn" data-open-modal>Schedule Consultation</button>
+          </div>
+
+          <div class="core-service-card">
+            <h3 class="core-service-card__title">Telehealth Visits</h3>
+            <p class="core-service-card__desc">Convenient virtual checkups, e-refills, and follow-up care from home.</p>
+            <a href="telehealth.html" class="core-service-card__btn">Access Telehealth</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SPECIALIZED WELLNESS ===== -->
+    <section class="section" aria-labelledby="wellness-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Specialized Wellness Programs</span>
+          <h2 id="wellness-title" class="section-header__title">Targeted Care for Your Health Goals</h2>
+          <p class="section-header__desc">Personalized programs designed to help you achieve lasting results and a better quality of life.</p>
+        </div>
+
+        <div class="wellness-grid animate">
+          <div class="wellness-card">
+            <div class="wellness-card__image">
+              <img src="assets/images/poster-weight-loss.png" alt="Weight Loss Programs">
+            </div>
+            <div class="wellness-card__body">
+              <h3 class="wellness-card__title">Medically Supervised Weight Loss</h3>
+              <p class="wellness-card__desc">Custom plans combining nutrition, exercise, and GLP-1 therapy to reach and maintain a healthy BMI.</p>
+              <button class="wellness-card__btn" data-open-modal>Learn More</button>
+            </div>
+          </div>
+
+          <div class="wellness-card">
+            <div class="wellness-card__image">
+              <img src="assets/images/poster-iontopherisis-patch.png" alt="Iontopherisis Patch Therapy">
+            </div>
+            <div class="wellness-card__body">
+              <h3 class="wellness-card__title">Iontopherisis Patch Therapy</h3>
+              <p class="wellness-card__desc">Non-invasive anti-inflammatory medication delivery to reduce pain, swelling, and improve mobility.</p>
+              <button class="wellness-card__btn" data-open-modal>Explore Therapy</button>
+            </div>
+          </div>
+
+          <div class="wellness-card">
+            <div class="wellness-card__image">
+              <img src="assets/images/poster-chronic-pain.png" alt="Chronic Pain Management">
+            </div>
+            <div class="wellness-card__body">
+              <h3 class="wellness-card__title">Chronic Pain Management</h3>
+              <p class="wellness-card__desc">Individualized care plans combining advanced therapies and lifestyle strategies for lasting relief.</p>
+              <button class="wellness-card__btn" data-open-modal>Find Relief</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DPC vs TRADITIONAL CARE ===== -->
+    <section class="section section--alt" aria-labelledby="comparison-title">
+      <div class="container">
+        <div class="section-header animate">
+          <span class="section-header__subtitle">Why Choose DPC</span>
+          <h2 id="comparison-title" class="section-header__title">DPC vs. Traditional Healthcare</h2>
+          <p class="section-header__desc">See how Direct Primary Care puts you back in control of your health.</p>
         </div>
 
         <div class="comparison-card animate">
           <table class="comparison-table">
             <thead>
               <tr>
-                <th class="col-feature">Feature / Experience</th>
-                <th class="col-dpc">
-                  <span class="col-badge">Recommended</span>
-                  UHS Direct Primary Care
-                </th>
-                <th class="col-traditional">Traditional Fee-for-Service</th>
+                <th></th>
+                <th class="comparison-table__head--traditional">Traditional Healthcare</th>
+                <th class="comparison-table__head--dpc">UHS Healthcare DPC</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="col-feature">
-                  <div class="feature-title">
-                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-                    Appointment Length
-                  </div>
-                </td>
-                <td class="col-dpc">
-                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 30–60 min unhurried</span>
-                </td>
-                <td class="col-traditional">
-                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> 8–12 min rushed</span>
-                </td>
+                <td class="comparison-table__label">Visit Length</td>
+                <td class="comparison-table__cell--bad">8–15 minute rushed visits</td>
+                <td class="comparison-table__cell--good">30–60 minute unhurried visits</td>
               </tr>
-
               <tr>
-                <td class="col-feature">
-                  <div class="feature-title">
-                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-                    Doctor Access
-                  </div>
-                </td>
-                <td class="col-dpc">
-                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Direct text, phone, email &amp; video</span>
-                </td>
-                <td class="col-traditional">
-                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Answering service &amp; automated menus</span>
-                </td>
+                <td class="comparison-table__label">Pricing</td>
+                <td class="comparison-table__cell--bad">Hidden fees, copays, surprise bills</td>
+                <td class="comparison-table__cell--good">Transparent flat monthly fee or one-time pay</td>
               </tr>
-
               <tr>
-                <td class="col-feature">
-                  <div class="feature-title">
-                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-                    Copays &amp; Surprise Bills
-                  </div>
-                </td>
-                <td class="col-dpc">
-                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> $0 Copays – Flat monthly fee</span>
-                </td>
-                <td class="col-traditional">
-                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> High copays &amp; surprise bills</span>
-                </td>
+                <td class="comparison-table__label">Provider Access</td>
+                <td class="comparison-table__cell--bad">Phone trees, answering services, voicemail</td>
+                <td class="comparison-table__cell--good">Direct text, phone &amp; virtual access to NP Brown</td>
               </tr>
-
               <tr>
-                <td class="col-feature">
-                  <div class="feature-title">
-                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-                    Scheduling
-                  </div>
-                </td>
-                <td class="col-dpc">
-                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Same-day or next-day</span>
-                </td>
-                <td class="col-traditional">
-                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Weeks or months waitlist</span>
-                </td>
+                <td class="comparison-table__label">Appointments</td>
+                <td class="comparison-table__cell--bad">Weeks-long wait times</td>
+                <td class="comparison-table__cell--good">Same-day / next-day availability</td>
               </tr>
-
               <tr>
-                <td class="col-feature">
-                  <div class="feature-title">
-                    <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-                    Wholesale Labs &amp; Meds
-                  </div>
-                </td>
-                <td class="col-dpc">
-                  <span class="check-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Up to 80–90% wholesale savings</span>
-                </td>
-                <td class="col-traditional">
-                  <span class="cross-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Marked-up retail pricing</span>
-                </td>
+                <td class="comparison-table__label">Insurance</td>
+                <td class="comparison-table__cell--bad">Claims, denials, prior authorizations</td>
+                <td class="comparison-table__cell--good">No insurance billing — cash pay simplicity</td>
+              </tr>
+              <tr>
+                <td class="comparison-table__label">Lab Pricing</td>
+                <td class="comparison-table__cell--bad">Hospital retail markup</td>
+                <td class="comparison-table__cell--good">Wholesale pricing, 80–90% savings</td>
+              </tr>
+              <tr>
+                <td class="comparison-table__label">Relationship</td>
+                <td class="comparison-table__cell--bad">Different doctor every visit</td>
+                <td class="comparison-table__cell--good">One trusted provider who knows you</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
-    </section>
 
-
-
-    <!-- ===== INTERACTIVE SERVICES EXPLORER ===== -->
-    <section class="section section--alt" aria-labelledby="services-title">
-      <div class="container">
-        <div id="pricing" class="section-header animate">
-          <span class="section-header__subtitle">Comprehensive Care</span>
-          <h2 id="services-title" class="section-header__title">Services Tailored to Your Life</h2>
-          <p class="section-header__desc">Select a service category below to explore details, pricing, and treatment options.</p>
-        </div>
-
-        <div class="service-tabs animate">
-          <button class="service-tab-btn active" data-tab="tab-physicals">DOT / Work / Sports Physicals</button>
-          <button class="service-tab-btn" data-tab="tab-weight">Weight Loss Healthy Plans</button>
-          <button class="service-tab-btn" data-tab="tab-cpr">BLS CPR Training</button>
-          <button class="service-tab-btn" data-tab="tab-tb">TB Skin Testing</button>
-          <button class="service-tab-btn" data-tab="tab-patch">Iontopherisis Patch &amp; Chronic Pain</button>
-          <button class="service-tab-btn" data-tab="tab-telehealth">Telehealth Visits</button>
-        </div>
-
-        <!-- Tab Content 1: Physicals -->
-        <div id="tab-physicals" class="service-display-card animate" style="display:grid;">
-          <div class="service-display-card__content">
-            <span class="badge badge--teal" style="margin-bottom:1rem;">Stay Compliant &amp; Road Ready</span>
-            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">DOT, Work &amp; Sports Physicals</h3>
-            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
-              We provide thorough DOT and Non-DOT physicals, Work physicals, and Sports physicals with fast turnaround time of results so you can get back to what matters most. Keeping athletes of all ages healthy, strong, and ready to perform.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> DOT / Non-DOT Physical Exams with fast turnaround</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Sports Physicals for athletes of all ages</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Work Physicals supporting a safe and healthy workforce</li>
-            </ul>
-            <button class="btn btn--primary" data-open-modal>Schedule Physical Exam</button>
-          </div>
-          <div class="service-display-card__image">
-            <img src="assets/images/hero-doctor-patient.png" alt="Physical Exams">
-          </div>
-        </div>
-
-        <!-- Tab Content 2: Weight Loss Healthy Plans -->
-        <div id="tab-weight" class="service-display-card animate" style="display:none;">
-          <div class="service-display-card__content">
-            <span class="badge badge--indigo" style="margin-bottom:1rem;">Sustainable Plans for Real Results</span>
-            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">Weight Loss Healthy Plans</h3>
-            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
-              Sustainable plans designed for real results and a healthier you, featuring comprehensive GLP-1 support when appropriate.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Reach a Healthy BMI</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Personalized Nutrition Plans &amp; Exercise Guidance</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Lifestyle Coaching &amp; GLP-1 Support (when appropriate)</li>
-            </ul>
-            <button class="btn btn--primary" data-open-modal>Get Started Today</button>
-          </div>
-          <div class="service-display-card__image">
-            <img src="assets/images/poster-weight-loss.png" alt="Weight Loss Healthy Plans">
-          </div>
-        </div>
-
-        <!-- Tab Content 3: BLS CPR Training -->
-        <div id="tab-cpr" class="service-display-card animate" style="display:none;">
-          <div class="service-display-card__content">
-            <span class="badge badge--gold" style="margin-bottom:1rem;">American Heart Association</span>
-            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">BLS CPR Training</h3>
-            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
-              American Heart Association BLS CPR training for healthcare providers and the community. Classes are engaging, hands-on, and certification you can trust.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Official AHA BLS CPR Certification</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Engaging, hands-on classroom instruction</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Open for healthcare providers and community members</li>
-            </ul>
-            <button class="btn btn--primary" data-open-modal>Inquire for CPR Class</button>
-          </div>
-          <div class="service-display-card__image">
-            <img src="assets/images/hero-doctor-patient.png" alt="BLS CPR Training">
-          </div>
-        </div>
-
-        <!-- Tab Content 4: TB Skin Testing -->
-        <div id="tab-tb" class="service-display-card animate" style="display:none;">
-          <div class="service-display-card__content">
-            <span class="badge badge--teal" style="margin-bottom:1rem;">Fast &amp; Accurate</span>
-            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">TB Skin Testing</h3>
-            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
-              Accurate TB skin testing for employment, school, or healthcare requirements.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Employment clearance testing</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> School &amp; university requirements</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Healthcare worker screening</li>
-            </ul>
-            <button class="btn btn--primary" data-open-modal>Schedule TB Test</button>
-          </div>
-          <div class="service-display-card__image">
-            <img src="assets/images/clinic-interior.png" alt="TB Skin Testing">
-          </div>
-        </div>
-
-        <!-- Tab Content 5: Patch & Chronic Pain -->
-        <div id="tab-patch" class="service-display-card animate" style="display:none;">
-          <div class="service-display-card__content">
-            <span class="badge badge--indigo" style="margin-bottom:1rem;">Non-Invasive Therapy</span>
-            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">Iontopherisis Patch &amp; Chronic Pain Relief</h3>
-            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
-              A non-invasive therapy that uses a gentle electrical current to deliver anti-inflammatory medication through the skin directly to the affected area. Helps reduce pain, swelling, and inflammation—perfect for managing chronic pain conditions and improving mobility without drugs.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Transdermal anti-inflammatory medication delivery</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Comprehensive, individualized approaches for chronic pain</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#582C83" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Improve mobility without oral drugs</li>
-            </ul>
-            <button class="btn btn--primary" data-open-modal>Schedule Pain Consultation</button>
-          </div>
-          <div class="service-display-card__image">
-            <img src="assets/images/poster-iontopherisis-patch.png" alt="Iontopherisis Patch Therapy">
-          </div>
-        </div>
-
-        <!-- Tab Content 6: Telehealth Visits -->
-        <div id="tab-telehealth" class="service-display-card animate" style="display:none;">
-          <div class="service-display-card__content">
-            <span class="badge badge--teal" style="margin-bottom:1rem;">Virtual Care Available</span>
-            <h3 style="font-size:1.75rem; font-weight:700; margin-bottom:1rem; color:var(--color-navy);">Telehealth Visits</h3>
-            <p style="font-size:1rem; line-height:1.7; color:var(--color-slate-600); margin-bottom:1.5rem;">
-              Convenient virtual telehealth visits available from the comfort of your home or on the go.
-            </p>
-            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.75rem;">
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Convenient video &amp; virtual checkups</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Direct prescription e-refills</li>
-              <li style="display:flex; align-items:center; gap:0.75rem; color:var(--color-slate-800); font-weight:500;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Save time without traveling to the clinic</li>
-            </ul>
-            <a href="telehealth.html" class="btn btn--primary">Access Telehealth</a>
-          </div>
-          <div class="service-display-card__image">
-            <img src="assets/images/telehealth-consult.png" alt="Telehealth Consultation">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== CARE NEED FINDER WIDGET ===== -->
-    <section class="care-finder-section" aria-label="Care Finder">
-      <div class="container">
-        <div class="animate" style="text-align:center;">
-          <h2 class="care-finder__title">What Care Do You Need Today?</h2>
-          <p class="care-finder__sub">Click an option to find your recommended service &amp; booking info.</p>
-
-          <div class="care-finder__options">
-            <div class="care-option" data-care-key="physicals">
-              <div class="care-option__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 2v4h4"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
-                  <path d="M11 14.5 8 11.5"/><path d="M15 8.5 11 12.5"/><circle cx="16.5" cy="6.5" r="1.5"/>
-                  <path d="M12 18v-4"/><path d="m15 6-3 3"/>
-                </svg>
-              </div>
-              <div class="care-option__label">DOT / Work / Sports Physicals</div>
-              <div class="care-option__arrow">Book Option →</div>
-            </div>
-
-            <div class="care-option" data-care-key="weight">
-              <div class="care-option__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="8"/><path d="M12 14v-4"/>
-                  <circle cx="12" cy="9" r="1"/><path d="M10 16h4"/>
-                </svg>
-              </div>
-              <div class="care-option__label">Weight Loss &amp; Healthy Plans</div>
-              <div class="care-option__arrow">Book Option →</div>
-            </div>
-
-            <div class="care-option" data-care-key="cpr">
-              <div class="care-option__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                </svg>
-              </div>
-              <div class="care-option__label">BLS CPR Training</div>
-              <div class="care-option__arrow">Book Option →</div>
-            </div>
-
-            <div class="care-option" data-care-key="tb">
-              <div class="care-option__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4.5 9.5 12 4l7.5 5.5"/><path d="M12 4v10"/>
-                  <path d="M12 14a4 4 0 0 0-4 4v2h8v-2a4 4 0 0 0-4-4Z"/>
-                </svg>
-              </div>
-              <div class="care-option__label">TB Skin Testing</div>
-              <div class="care-option__arrow">Book Option →</div>
-            </div>
-
-            <div class="care-option" data-care-key="patch">
-              <div class="care-option__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/>
-                  <path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/>
-                  <path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              </div>
-              <div class="care-option__label">Iontophoresis Patch &amp; Chronic Pain</div>
-              <div class="care-option__arrow">Book Option →</div>
-            </div>
-
-            <div class="care-option" data-care-key="telehealth">
-              <div class="care-option__icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                  <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-                </svg>
-              </div>
-              <div class="care-option__label">Telehealth Visit</div>
-              <div class="care-option__arrow">Book Option →</div>
-            </div>
-          </div>
-
-          <div id="care-result-box"></div>
+        <div class="comparison-cta animate">
+          <p>Take control of your healthcare today.</p>
+          <button class="btn btn--primary btn--lg" data-open-modal>Book Your First Visit</button>
         </div>
       </div>
     </section>
 
     <!-- ===== PROVIDER SPOTLIGHT ===== -->
-    <section class="section section--alt" aria-labelledby="provider-spotlight">
+    <section class="section section--provider" aria-labelledby="provider-spotlight">
       <div class="container">
         <div class="provider-card animate">
           <div class="provider-card__media">
@@ -495,12 +406,11 @@
           </div>
 
           <div class="provider-card__details">
-            <span style="display:inline-block; background:rgba(56,189,248,0.15); color:#38bdf8; border-radius:9999px; padding:0.3rem 0.85rem; font-size:0.7rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; align-self:flex-start; margin-bottom:1rem;">Founder &amp; Lead Provider</span>
-            <h2 id="provider-spotlight" style="font-size:2rem; font-weight:700; color:#ffffff; margin-bottom:0.5rem; line-height:1.2;">Nacole Brown, MSN, AGPCNP-BC</h2>
-            <p style="font-size:1rem; font-weight:600; color:#94a3b8; margin-bottom:1rem;">Adult-Gerontology Primary Care Nurse Practitioner</p>
+            <h2 id="provider-spotlight" style="font-size:1.75rem; font-weight:700; color:#ffffff; margin-bottom:0.5rem; line-height:1.2;">Nacole Brown, MSN, AGPCNP-BC</h2>
+            <p style="font-size:1rem; font-weight:600; color:#38bdf8; margin-bottom:1rem;">Adult-Gerontology Primary Care Nurse Practitioner</p>
 
             <div class="career-trail">
-              <span style="font-size:0.85rem; font-weight:700; color:#38bdf8;">Career Progression:</span>
+              <span style="font-size:0.85rem; font-weight:600; color:#94A3B8;">Educational Pathway:</span>
               <span class="career-step">LPN</span>
               <span style="color:rgba(255,255,255,0.3); font-weight:700;">→</span>
               <span class="career-step">ADN</span>
@@ -510,18 +420,18 @@
               <span class="career-step career-step--active">MSN, AGPCNP-BC</span>
             </div>
 
-            <p style="font-size:1rem; line-height:1.7; color:#e2e8f0; margin-bottom:1.5rem;">
-              With over 15 years of clinical nursing and primary care experience, Nacole Brown founded UHS Healthcare to restore the sacred doctor-patient relationship. She believes in holistic, compassionate care where patients are heard, respected, and empowered.
+            <p style="font-size:1.125rem; line-height:1.6; color:var(--color-slate-700); margin-bottom:1.5rem;">
+              Over 15 years of clinical nursing excellence across the adult lifespan in Columbia, SC.
             </p>
 
-            <div style="background:rgba(255,255,255,0.06); padding:1.25rem; border-radius:16px; border-left:4px solid #38bdf8; margin-bottom:1.5rem;">
-              <p style="font-size:1rem; font-style:italic; color:#f8fafc; margin:0;">
-                "My mission is simple: to provide high-quality, accessible healthcare without the insurance barriers, waiting room delays, or rushed visits."
+            <div style="background:var(--color-slate-50); padding:1.25rem; border-radius:16px; border-left:4px solid #0284C7; margin-bottom:1.5rem;">
+              <p style="font-size:1rem; font-weight:500; color:var(--color-slate-700); margin:0;">
+                "My goal is to help every patient rise above their health challenges through compassionate care, education, and personalized wellness solutions. Together, we can achieve unmeasurable heights of strength."
               </p>
             </div>
 
             <div>
-              <a href="about.html" style="display:inline-block; background:#38bdf8; color:#0f172a; font-weight:700; font-size:0.95rem; padding:0.75rem 1.5rem; border-radius:8px; transition:all 0.25s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(56,189,248,0.35)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">Read Full Bio &amp; Credentials</a>
+              <a href="about.html" style="display:inline-block; background:#0284C7; color:#ffffff; font-weight:700; font-size:0.95rem; padding:0.75rem 1.5rem; border-radius:8px; transition:all 0.25s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(2,132,199,0.35)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">Read Full Bio &amp; Credentials</a>
             </div>
           </div>
         </div>
@@ -529,7 +439,7 @@
     </section>
 
     <!-- ===== PATIENT TESTIMONIALS ===== -->
-    <section class="section" aria-labelledby="reviews-title">
+    <section class="section section--testimonials" aria-labelledby="reviews-title">
       <div class="container">
         <div class="section-header animate">
           <span class="section-header__subtitle">Patient Experiences</span>
@@ -537,65 +447,27 @@
           <p class="section-header__desc">Real reviews from members in Columbia, SC and surrounding communities.</p>
         </div>
 
-        <div class="testimonials-grid">
-          <div class="testimonial-card animate">
-            <div>
-              <div class="stars-rating">★★★★★</div>
-              <p class="testimonial-card__text">
-                "Nacole Brown is the most attentive medical provider I've ever had. She spent a full 45 minutes with me reviewing my health history and lab results. The Direct Primary Care membership is worth every penny!"
-              </p>
-            </div>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">S.M.</div>
-              <div>
-                <div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">Sarah M.</div>
-                <div style="font-size:0.8rem; color:var(--color-slate-500);">DPC Member, Columbia, SC</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-card animate">
-            <div>
-              <div class="stars-rating">★★★★★</div>
-              <p class="testimonial-card__text">
-                "Needed a DOT physical for my CDL renewal. Got a same-day appointment, zero waiting time, and NP Brown was extremely thorough and professional. Highly recommend UHS Healthcare!"
-              </p>
-            </div>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">J.D.</div>
-              <div>
-                <div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">James D.</div>
-                <div style="font-size:0.8rem; color:var(--color-slate-500);">CDL Driver</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testimonial-card animate">
-            <div>
-              <div class="stars-rating">★★★★★</div>
-              <p class="testimonial-card__text">
-                "The telehealth service is incredible. I was able to text NP Brown directly on a Sunday when I came down with a bad sinus infection, and my prescription was called in immediately."
-              </p>
-            </div>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">M.R.</div>
-              <div>
-                <div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">Michelle R.</div>
-                <div style="font-size:0.8rem; color:var(--color-slate-500);">Telehealth Patient</div>
-              </div>
-            </div>
+        <div class="testimonials-slider animate" role="region" aria-label="Patient testimonials">
+          <div class="testimonials-slider__track"></div>
+          <div class="testimonials-slider__controls">
+            <button class="testimonials-slider__arrow testimonials-slider__arrow--prev" aria-label="Previous testimonial">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="testimonials-slider__dots"></div>
+            <button class="testimonials-slider__arrow testimonials-slider__arrow--next" aria-label="Next testimonial">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ===== FAQ ACCORDION & SEARCH ===== -->
-    <section class="section section--alt" aria-labelledby="faq-title">
+    <section class="section section--faq" aria-labelledby="faq-title">
       <div class="container">
-        <div class="section-header animate">
-          <span class="section-header__subtitle">Frequently Asked Questions</span>
-          <h2 id="faq-title" class="section-header__title">Got Questions? We Have Answers.</h2>
-          <p class="section-header__desc">Type a keyword below or click a question to expand details.</p>
+        <div class="section-header section-header--light animate">
+          <h2 id="faq-title" class="section-header__title" style="font-size:2.5rem;">Frequently Asked Questions</h2>
+          <p class="section-header__desc" style="color:var(--color-slate-600); font-size:1.05rem;">Find clear answers about our direct primary care, telehealth, and clinic services.</p>
         </div>
 
         <div class="faq-search-box animate">
@@ -603,8 +475,16 @@
           <input type="text" id="faq-search" class="faq-search-input" placeholder="Search questions (e.g. insurance, membership, labs, telehealth)...">
         </div>
 
+        <div class="faq-tabs animate">
+          <button class="faq-tab active" data-filter="all">All Questions</button>
+          <button class="faq-tab" data-filter="membership">Primary Care &amp; DPC</button>
+          <button class="faq-tab" data-filter="telehealth">Telehealth Visits</button>
+          <button class="faq-tab" data-filter="labs">Labs &amp; Refills</button>
+          <button class="faq-tab" data-filter="billing">Billing &amp; Pricing</button>
+        </div>
+
         <div class="faq-list animate">
-          <div class="faq-item active">
+          <div class="faq-item active" data-category="membership">
             <button class="faq-button">
               <span>What is Direct Primary Care (DPC)?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -614,7 +494,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="membership">
             <button class="faq-button">
               <span>Do I need health insurance to become a member?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -624,7 +504,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="telehealth">
             <button class="faq-button">
               <span>How do virtual telehealth visits work?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -634,7 +514,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="labs">
             <button class="faq-button">
               <span>What if I need lab work or prescription medications?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -644,7 +524,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="membership">
             <button class="faq-button">
               <span>Can I cancel my DPC membership at any time?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -654,7 +534,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="billing">
             <button class="faq-button">
               <span>Are DOT physicals covered under my DPC membership?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -664,7 +544,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="billing">
             <button class="faq-button">
               <span>Is BLS/CPR training open to non-patients and businesses?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -674,7 +554,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="membership">
             <button class="faq-button">
               <span>What areas do you serve?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -684,7 +564,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="membership">
             <button class="faq-button">
               <span>How quickly can I get an appointment?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -694,7 +574,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="billing">
             <button class="faq-button">
               <span>What does Iontophoresis Patch Therapy treat?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -704,7 +584,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="billing">
             <button class="faq-button">
               <span>Does UHS Healthcare accept Medicare or Medicaid?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -714,7 +594,7 @@
             </div>
           </div>
 
-          <div class="faq-item">
+          <div class="faq-item" data-category="membership">
             <button class="faq-button">
               <span>How do I get started as a new patient?</span>
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -722,6 +602,17 @@
             <div class="faq-content">
               Getting started is easy. Simply click "Book Appointment" on any page, fill out the short form, and our team will confirm your first visit within 24 hours. You can also call us directly at (803) 381-7489 or email info@uhshealthcare.com. No referral is needed.
             </div>
+          </div>
+        </div>
+
+        <div class="faq-cta animate">
+          <div class="faq-cta__text">
+            <h3>Still have questions about our services?</h3>
+            <p>We're here to help. Call us or schedule a consultation to get the answers you need.</p>
+          </div>
+          <div class="faq-cta__actions">
+            <a href="tel:+18033817489" class="btn btn--primary" style="background:#7c3aed; border-color:#7c3aed; color:#fff;">Call Us: (803) 381-7489</a>
+            <button class="btn btn--accent" data-open-modal>Schedule a Consultation</button>
           </div>
         </div>
       </div>
@@ -732,8 +623,8 @@
       <div class="container">
         <div style="text-align:center; max-width:800px; margin:0 auto;" class="animate">
           <span class="badge badge--white" style="margin-bottom:1rem;">Ready for Better Healthcare?</span>
-          <h2 style="font-size:clamp(2rem, 4vw, 3rem); font-weight:800; color:#fff; margin-bottom:1.25rem;">Experience Healthcare Built Around You</h2>
-          <p style="font-size:1.15rem; color:rgba(255,255,255,0.85); line-height:1.7; margin-bottom:2.5rem;">
+          <h2 style="font-size:clamp(2rem, 4vw, 3rem); font-weight:800; color:var(--color-slate-900); margin-bottom:1.25rem;">Experience Healthcare Built Around You</h2>
+          <p style="font-size:1.15rem; color:var(--color-slate-600); line-height:1.7; margin-bottom:2.5rem;">
             Join UHS Healthcare today and enjoy unhurried visits, direct NP access, and transparent pricing.
           </p>
           <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
@@ -795,7 +686,7 @@
         <div>
           <h4 class="footer-column__title">Contact &amp; Clinic</h4>
           <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:1rem;">
-            2638 Two Notch Rd. Suite 210 Unit 10<br>
+            2638 Two Notch Rd, Suite 210 Unit 10<br>
             Columbia, SC 29204<br><br>
             <strong>Phone:</strong> (803) 381-7489<br>
             <strong>Email:</strong> info@uhshealthcare.com

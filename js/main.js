@@ -80,106 +80,51 @@
     });
   });
 
-  // 5. Interactive Service Explorer Tabs
-  const serviceTabs = document.querySelectorAll('.service-tab-btn');
-  const serviceCards = document.querySelectorAll('.service-display-card');
+  // 5. (removed - old service explorer tabs replaced by static service grids)
+  // 6. (removed - care need finder widget replaced by unified service grid)
 
-  serviceTabs.forEach(tab => {
-    tab.addEventListener('click', function () {
-      serviceTabs.forEach(t => t.classList.remove('active'));
-      this.classList.add('active');
-
-      const targetId = this.getAttribute('data-tab');
-      serviceCards.forEach(card => {
-        if (card.id === targetId) {
-          card.style.display = 'grid';
-          card.classList.add('animated');
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  // 6. Care Need / Symptom Selector Widget
-  const careOptions = document.querySelectorAll('.care-option');
-  const careResultBox = document.getElementById('care-result-box');
-
-  const careMap = {
-    'physicals': {
-      title: 'DOT / Non-DOT, Work & Sports Physicals',
-      desc: 'Stay compliant and road ready. We provide thorough DOT and Non-DOT physicals, work physicals, and sports physicals with fast turnaround results.',
-      btnText: 'Book Physical Exam',
-    },
-    'weight': {
-      title: 'Weight Loss Healthy Plans',
-      desc: 'Sustainable plans designed for real results. Reach a healthy BMI with personalized nutrition, exercise guidance, lifestyle coaching, and GLP-1 support.',
-      btnText: 'Start Weight Loss Plan',
-    },
-    'cpr': {
-      title: 'BLS CPR Training',
-      desc: 'American Heart Association BLS CPR training for healthcare providers and the community. Engaging, hands-on, and trusted certification.',
-      btnText: 'Inquire CPR Class',
-    },
-    'tb': {
-      title: 'TB Skin Testing',
-      desc: 'Accurate TB skin testing for employment, school, or healthcare requirements with fast results.',
-      btnText: 'Schedule TB Test',
-    },
-    'patch': {
-      title: 'Iontophoresis Patch & Chronic Pain Relief',
-      desc: 'Non-invasive transdermal drug delivery using gentle electrical current. Reduces pain and swelling to improve mobility without oral drugs.',
-      btnText: 'Schedule Pain Consultation',
-    },
-    'telehealth': {
-      title: 'Telehealth Visit',
-      desc: 'Connect remotely for consultations, treatment plans, and prescription refills from home.',
-      btnText: 'Access Telehealth Visit',
-    }
-  };
-
-  careOptions.forEach(opt => {
-    opt.addEventListener('click', function () {
-      careOptions.forEach(o => o.classList.remove('selected'));
-      this.classList.add('selected');
-
-      const key = this.getAttribute('data-care-key');
-      const data = careMap[key];
-      if (data && careResultBox) {
-        careResultBox.innerHTML = `
-          <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.5rem 2rem; border-radius: 16px; margin-top: 1.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.25);">
-            <h4 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff;">${data.title}</h4>
-            <p style="font-size: 0.95rem; margin-bottom: 1.25rem; color: rgba(255,255,255,0.9);">${data.desc}</p>
-            <button class="btn btn--accent btn--sm" data-open-modal>${data.btnText}</button>
-          </div>
-        `;
-        initModalTriggers();
-      }
-    });
-  });
-
-  // 7. FAQ Accordion & Search Filter
+  // 7. FAQ Accordion, Category Tabs & Search Filter
   const faqButtons = document.querySelectorAll('.faq-button');
   const faqSearchInput = document.getElementById('faq-search');
+  const faqTabs = document.querySelectorAll('.faq-tab');
+  const faqItems = document.querySelectorAll('.faq-item');
 
   faqButtons.forEach(btn => {
     btn.addEventListener('click', function () {
       const item = this.closest('.faq-item');
       const isActive = item.classList.contains('active');
 
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      faqItems.forEach(i => i.classList.remove('active'));
       if (!isActive) item.classList.add('active');
     });
   });
 
-  if (faqSearchInput) {
-    faqSearchInput.addEventListener('input', function () {
-      const term = this.value.toLowerCase().trim();
-      document.querySelectorAll('.faq-item').forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = text.includes(term) ? 'block' : 'none';
+  function filterFAQs() {
+    const activeTab = document.querySelector('.faq-tab.active');
+    const category = activeTab ? activeTab.getAttribute('data-filter') : 'all';
+    const term = faqSearchInput ? faqSearchInput.value.toLowerCase().trim() : '';
+
+    faqItems.forEach(item => {
+      const cat = item.getAttribute('data-category') || 'membership';
+      const text = item.textContent.toLowerCase();
+      const matchCategory = category === 'all' || cat === category;
+      const matchSearch = !term || text.includes(term);
+      item.style.display = matchCategory && matchSearch ? 'block' : 'none';
+    });
+  }
+
+  if (faqTabs.length) {
+    faqTabs.forEach(tab => {
+      tab.addEventListener('click', function () {
+        faqTabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        filterFAQs();
       });
     });
+  }
+
+  if (faqSearchInput) {
+    faqSearchInput.addEventListener('input', filterFAQs);
   }
 
   // =========================================================
@@ -546,5 +491,123 @@
   window.addEventListener('pageshow', function() {
     refreshAuth();
   });
+
+  // ===== TESTIMONIALS CAROUSEL =====
+  (function initTestimonials() {
+    var reviews = [
+      {
+        name: "Sarah M.",
+        role: "DPC Member, Columbia, SC",
+        text: "Nacole Brown is the most attentive medical provider I've ever had. She spent a full 45 minutes with me reviewing my health history and lab results. The Direct Primary Care membership is worth every penny!",
+        rating: 5
+      },
+      {
+        name: "James D.",
+        role: "CDL Driver",
+        text: "Needed a DOT physical for my CDL renewal. Got a same-day appointment, zero waiting time, and NP Brown was extremely thorough and professional. Highly recommend UHS Healthcare!",
+        rating: 5
+      },
+      {
+        name: "Michelle R.",
+        role: "Telehealth Patient",
+        text: "The telehealth service is incredible. I was able to text NP Brown directly on a Sunday when I came down with a bad sinus infection, and my prescription was called in immediately.",
+        rating: 5
+      }
+    ];
+
+    var track = document.querySelector('.testimonials-slider__track');
+    var dotsContainer = document.querySelector('.testimonials-slider__dots');
+    var prevBtn = document.querySelector('.testimonials-slider__arrow--prev');
+    var nextBtn = document.querySelector('.testimonials-slider__arrow--next');
+    if (!track || !dotsContainer) return;
+
+    var currentIndex = 0;
+    var intervalId;
+    var isPaused = false;
+
+    function getInitials(name) {
+      var parts = name.split(' ');
+      return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+    }
+
+    function renderStars(rating) {
+      return '\u2605'.repeat(rating) + '\u2606'.repeat(5 - rating);
+    }
+
+    function buildSlides() {
+      track.innerHTML = '';
+      reviews.forEach(function(review, index) {
+        var card = document.createElement('div');
+        card.className = 'testimonial-card';
+        card.innerHTML =
+          '<div>' +
+            '<div class="stars-rating">' + renderStars(review.rating) + '</div>' +
+            '<p class="testimonial-card__text">"' + review.text + '"</p>' +
+          '</div>' +
+          '<div class="testimonial-card__author">' +
+            '<div class="testimonial-card__avatar">' + getInitials(review.name) + '</div>' +
+            '<div>' +
+              '<div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">' + review.name + '</div>' +
+              '<div style="font-size:0.8rem; color:var(--color-slate-500);">' + review.role + '</div>' +
+            '</div>' +
+          '</div>';
+        track.appendChild(card);
+      });
+    }
+
+    function buildDots() {
+      dotsContainer.innerHTML = '';
+      reviews.forEach(function(_, index) {
+        var dot = document.createElement('button');
+        dot.className = 'testimonials-slider__dot' + (index === 0 ? ' testimonials-slider__dot--active' : '');
+        dot.setAttribute('aria-label', 'Go to testimonial ' + (index + 1));
+        dot.addEventListener('click', function() { goToSlide(index); });
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function goToSlide(index) {
+      var slides = track.querySelectorAll('.testimonial-card');
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+      currentIndex = index;
+      var offset = -currentIndex * 100;
+      track.style.transform = 'translateX(' + offset + '%)';
+      track.style.transition = 'transform 0.6s ease-in-out';
+      updateDots();
+    }
+
+    function updateDots() {
+      var dots = dotsContainer.querySelectorAll('.testimonials-slider__dot');
+      dots.forEach(function(dot, index) {
+        dot.classList.toggle('testimonials-slider__dot--active', index === currentIndex);
+      });
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      intervalId = setInterval(function() {
+        if (!isPaused) goToSlide(currentIndex + 1);
+      }, 4500);
+    }
+
+    function stopAutoPlay() {
+      if (intervalId) { clearInterval(intervalId); intervalId = null; }
+    }
+
+    var sliderEl = track.closest('.testimonials-slider');
+    if (sliderEl) {
+      sliderEl.addEventListener('mouseenter', function() { isPaused = true; });
+      sliderEl.addEventListener('mouseleave', function() { isPaused = false; });
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function() { goToSlide(currentIndex - 1); startAutoPlay(); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { goToSlide(currentIndex + 1); startAutoPlay(); });
+
+    buildSlides();
+    buildDots();
+    goToSlide(0);
+    startAutoPlay();
+  })();
 
 })();
