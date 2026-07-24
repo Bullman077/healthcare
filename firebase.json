@@ -1,0 +1,73 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "backend/**",
+      "deploy/**",
+      "scripts/**",
+      "**/node_modules/**",
+      ".git/**",
+      ".github/**",
+      ".firebase/**",
+      "**/*.md",
+      "firebase.json",
+      ".firebaserc",
+      ".gitignore",
+      ".dockerignore",
+      "Dockerfile",
+      "ecosystem.config.js",
+      "package-lock.json",
+      "package.json",
+      "robots.txt",
+      "sitemap.xml"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|ico|webp|css|js|woff|woff2|ttf|eot)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(html|htm)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "assets/images/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/appointment",
+        "destination": "/appointment.html",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "destination": "https://uhs-backend.onrender.com/api/**"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
