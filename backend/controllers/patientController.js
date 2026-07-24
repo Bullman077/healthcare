@@ -1,9 +1,22 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { Patient, Appointment, Service } = require('../models');
 const { AppError } = require('../middleware/errorHandler');
+const { sendPasswordResetEmail } = require('../utils/email');
+
+function validatePassword(password) {
+  if (!password || password.length < 8) return 'Password must be at least 8 characters long.';
+  if (!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter.';
+  if (!/[a-z]/.test(password)) return 'Password must contain at least one lowercase letter.';
+  if (!/[0-9]/.test(password)) return 'Password must contain at least one number.';
+  return null;
+}
 
 function generateToken(id) {
-  return jwt.sign({ id, role: 'patient' }, process.env.JWT_SECRET || 'uhs_jwt_secret', {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is not configured.');
+  }
+  return jwt.sign({ id, role: 'patient' }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 }
@@ -38,6 +51,9 @@ exports.registerPatient = async (req, res, next) => {
     if (!firstName || !lastName || !email || !password) {
       return next(new AppError('Please fill in all required fields.', 400));
     }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) return next(new AppError(passwordError, 400));
 
     let patient = await Patient.findOne({ where: { email: email.toLowerCase() } });
     if (patient) {
@@ -162,4 +178,97 @@ exports.logoutPatient = async (req, res) => {
     path: '/',
   });
   res.json({ success: true, message: 'Logged out successfully.' });
+};
+
+exports.updateMe = async (req, res, next) => {
+  try {
+    const allowedFields = [
+      'firstName', 'lastName', 'phone', 'dateOfBirth',
+      'address', 'insurance', 'emergencyContact',
+      'allergies', 'medications',
+    ];
+    const patient = await Patient.findByPk(req.patient.id);
+    if (!patient) return next(new AppError('Patient not found.', 404));
+
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) patient[field] = req.body[field];
+    });
+    await patient.save();
+
+    res.json({
+      success: true,
+      patient: {
+        id: patient.id,
+        firstName: patient.firstName,
+        lastName: patient.lastName,
+        email: patient.email,
+        phone: patient.phone,
+        dateOfBirth: patient.dateOfBirth,
+        address: patient.address,
+        insurance: patient.insurance,
+        emergencyContact: patient.emergencyContact,
+        allergies: patient.allergies,
+        medications: patient.medications,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) return next(new AppError('Please provide your email address.', 400));
+
+    const patient = await Patient.findOne({ where: { email: email.toLowerCase() } });
+    if (!patient) {
+      return res.json({ success: true, message: 'If an account exists, a reset link has been sent.' });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    patient.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    patient.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000);
+    await patient.save({ fields: ['resetPasswordToken', 'resetPasswordExpires'] });
+
+    try {
+      await sendPasswordResetEmail(patient, resetToken);
+    } catch (emailErr) {
+      console.error('Password reset email failed:', emailErr.message);
+    }
+
+    res.json({ success: true, message: 'If an account exists, a reset link has been sent.' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  try {
+    const { token, password } = req.body;
+    if (!token || !password) return next(new AppError('Token and new password are required.', 400));
+
+    const passwordError = validatePassword(password);
+    if (passwordError) return next(new AppError(passwordError, 400));
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const patient = await Patient.findOne({
+      where: {
+        resetPasswordToken: hashedToken,
+      },
+    });
+
+    if (!patient || !patient.resetPasswordExpires || patient.resetPasswordExpires < new Date()) {
+      return next(new AppError('Invalid or expired reset token.', 400));
+    }
+
+    await patient.setPassword(password);
+    patient.resetPasswordToken = null;
+    patient.resetPasswordExpires = null;
+    await patient.save();
+
+    sendPatientToken(patient, 200, res);
+  } catch (err) {
+    next(err);
+  }
 };

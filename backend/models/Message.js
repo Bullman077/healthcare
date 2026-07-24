@@ -8,7 +8,6 @@ const Message = sequelize.define('Message', {
   subject: { type: DataTypes.STRING(200) },
   message: { type: DataTypes.TEXT, allowNull: false },
   isRead: { type: DataTypes.BOOLEAN, defaultValue: false },
-  repliedAt: { type: DataTypes.DATE },
 }, {
   timestamps: true,
 });

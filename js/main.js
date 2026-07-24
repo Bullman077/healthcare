@@ -1,6 +1,13 @@
 (function () {
   'use strict';
 
+  function esc(str) {
+    if (str == null) return '';
+    return String(str).replace(/[<>&"']/g, function(c) {
+      return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' }[c];
+    });
+  }
+
   // 1. Preloader Hide
   window.addEventListener('load', function () {
     const preloader = document.querySelector('.preloader');
@@ -120,7 +127,7 @@
       btnText: 'Schedule TB Test',
     },
     'patch': {
-      title: 'Iontopherisis Patch & Chronic Pain Relief',
+      title: 'Iontophoresis Patch & Chronic Pain Relief',
       desc: 'Non-invasive transdermal drug delivery using gentle electrical current. Reduces pain and swelling to improve mobility without oral drugs.',
       btnText: 'Schedule Pain Consultation',
     },
@@ -191,11 +198,12 @@
       }
     } catch (e) { /* fallback below */ }
     availableServices = [
-      { name: 'DOT / Non-DOT Physical' }, { name: 'Sports Physical' },
-      { name: 'Work Physical' }, { name: 'BLS CPR Training' },
-      { name: 'TB Skin Testing' }, { name: 'Weight Loss Healthy Plans' },
-      { name: 'Iontopherisis Patch Therapy' }, { name: 'Chronic Pain Relief' },
-      { name: 'Telehealth Visit' }
+      { name: 'DOT Physical' }, { name: 'Non-DOT Physical' },
+      { name: 'Sports Physical' }, { name: 'Work Physical' },
+      { name: 'BLS CPR Training' }, { name: 'TB Skin Testing' },
+      { name: 'Weight Management' }, { name: 'Iontophoresis Patch Therapy' },
+      { name: 'Chronic Pain Relief' }, { name: 'Telehealth Visit' },
+      { name: 'Preventive Wellness' }
     ];
   }
 
@@ -302,13 +310,13 @@
         </div>
         <h3 style="font-size:1.6rem;font-weight:800;color:var(--color-navy);margin-bottom:.75rem;">Appointment Confirmed!</h3>
         <p style="color:var(--color-slate-600);margin-bottom:1.75rem;line-height:1.6;">
-          Thank you, <strong>${appt.patient}</strong>. Your <strong>${appt.service}</strong> appointment is booked. A confirmation email has been sent to you.
+          Thank you, <strong>${esc(appt.patient)}</strong>. Your <strong>${esc(appt.service)}</strong> appointment is booked. A confirmation email has been sent to you.
         </p>
         <div style="background:var(--color-slate-50);border:1.5px solid var(--color-slate-200);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;text-align:left;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;">
             <div>
               <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Reference #</div>
-              <div style="font-size:1rem;font-weight:800;color:var(--color-indigo);font-family:monospace;">${appt.referenceNumber}</div>
+              <div style="font-size:1rem;font-weight:800;color:var(--color-indigo);font-family:monospace;">${esc(appt.referenceNumber)}</div>
             </div>
             <div>
               <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Date & Time</div>
@@ -316,7 +324,7 @@
             </div>
             <div>
               <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Service</div>
-              <div style="font-size:.9rem;font-weight:600;color:var(--color-slate-800);">${appt.service}</div>
+              <div style="font-size:.9rem;font-weight:600;color:var(--color-slate-800);">${esc(appt.service)}</div>
             </div>
             <div>
               <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Status</div>

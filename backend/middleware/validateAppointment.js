@@ -1,6 +1,9 @@
 const { body, validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 const Service = require('../models/Service');
+const { sequelize } = require('../config/db');
+
+const iLike = sequelize.dialect.name === 'sqlite' ? Op.like : Op.iLike;
 
 const appointmentRules = [
   body('name')
@@ -25,7 +28,7 @@ const appointmentRules = [
     .notEmpty().withMessage('Service is required')
     .custom(async (value) => {
       const service = await Service.findOne({
-        where: { name: { [Op.iLike]: value.trim() }, isActive: true },
+        where: { name: { [iLike]: value.trim() }, isActive: true },
       });
       if (!service) {
         throw new Error(`Service "${value}" is not available. Please select a valid service.`);

@@ -152,15 +152,17 @@
                 <label style="display:block; font-weight:600; font-size:0.95rem; margin-bottom:0.4rem; color:#0f172a;">Service Type *</label>
                 <select id="app-service" required style="width:100%; padding:0.85rem 1rem; border-radius:12px; border:1px solid #cbd5e1; font-size:0.95rem; background:#f1f5f9; color:#0f172a; font-family:inherit; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#0284c7';" onblur="this.style.borderColor='#cbd5e1';">
                   <option value="">-- Select Requested Care --</option>
-                  <option value="DOT / Non-DOT Physical">DOT / Non-DOT Physical Exam</option>
+                  <option value="DOT Physical">DOT Physical Exam</option>
+                  <option value="Non-DOT Physical">Non-DOT Physical Exam</option>
                   <option value="Sports Physical">Sports Physical Exam</option>
                   <option value="Work Physical">Work Physical Exam</option>
                   <option value="BLS CPR Training">BLS CPR Training Class</option>
                   <option value="TB Skin Testing">TB Skin Testing</option>
-                  <option value="Weight Loss Healthy Plans">Weight Loss Healthy Plans (GLP-1 Support)</option>
-                  <option value="Iontopherisis Patch Therapy">Iontopherisis Patch Therapy</option>
+                  <option value="Weight Management">Weight Management (GLP-1 Support)</option>
+                  <option value="Iontophoresis Patch Therapy">Iontophoresis Patch Therapy</option>
                   <option value="Chronic Pain Relief">Chronic Pain Relief Consultation</option>
                   <option value="Telehealth Visit">Virtual Telehealth Visit</option>
+                  <option value="Preventive Wellness">Preventive Wellness Visit</option>
                 </select>
               </div>
 
@@ -177,10 +179,12 @@
                     <option value="9:00 AM">9:00 AM</option>
                     <option value="10:00 AM">10:00 AM</option>
                     <option value="11:00 AM">11:00 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
                     <option value="1:00 PM">1:00 PM</option>
                     <option value="2:00 PM">2:00 PM</option>
                     <option value="3:00 PM">3:00 PM</option>
                     <option value="4:00 PM">4:00 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
                   </select>
                 </div>
               </div>
@@ -299,6 +303,18 @@
         message: document.getElementById('app-message').value.trim()
       };
 
+      if (!payload.name || !payload.email || !payload.service || !payload.date || !payload.time) {
+        errEl.textContent = 'Please fill in all required fields.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+        errEl.textContent = 'Please enter a valid email address.';
+        errEl.style.display = 'block';
+        return;
+      }
+
       btn.disabled = true;
       btn.textContent = 'Submitting Request...';
 
@@ -307,8 +323,9 @@
         var data = await res.json();
         if (res.ok && data.success) {
           document.getElementById('standalone-booking-form').style.display = 'none';
-          document.getElementById('page-success-msg').innerHTML = 'Thank you, <strong>' + data.data.patient + '</strong>. Your appointment request for <strong>' + data.data.service + '</strong> is submitted.';
-          document.getElementById('page-success-details').innerHTML = '<strong>Reference #:</strong> <span style="font-family:monospace; color:var(--color-indigo); font-weight:bold;">' + data.data.referenceNumber + '</span><br><strong>Date & Time:</strong> ' + data.data.date + ' at ' + data.data.time + '<br><strong>Status:</strong> ' + data.data.status;
+          function esc(s){return String(s||'').replace(/[<>&"']/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#x27;'}[c]});}
+          document.getElementById('page-success-msg').innerHTML = 'Thank you, <strong>' + esc(data.data.patient) + '</strong>. Your appointment request for <strong>' + esc(data.data.service) + '</strong> is submitted.';
+          document.getElementById('page-success-details').innerHTML = '<strong>Reference #:</strong> <span style="font-family:monospace; color:var(--color-indigo); font-weight:bold;">' + esc(data.data.referenceNumber) + '</span><br><strong>Date &amp; Time:</strong> ' + esc(data.data.date) + ' at ' + esc(data.data.time) + '<br><strong>Status:</strong> ' + esc(data.data.status);
           succEl.style.display = 'block';
 
           // Silently fetch and show accumulated appointment count

@@ -9,7 +9,7 @@ const Admin = sequelize.define('Admin', {
   role: { type: DataTypes.ENUM('admin', 'superadmin'), defaultValue: 'admin' },
   isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
   lastLogin: { type: DataTypes.DATE },
-  refreshToken: { type: DataTypes.TEXT },
+  lastLoginIp: { type: DataTypes.STRING(45) },
 }, {
   timestamps: true,
   hooks: {

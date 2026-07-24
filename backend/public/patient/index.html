@@ -58,6 +58,53 @@
         <span id="toggleText">First time here?</span>
         <a onclick="toggleAuthMode()" id="toggleLink">Create Patient Account</a>
       </div>
+      <div class="auth-toggle" style="margin-top:8px;">
+        <a onclick="showForgotPassword()" id="forgotLink" style="color:var(--slate-500);font-size:13px;cursor:pointer;">Forgot password?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FORGOT PASSWORD VIEW ================= -->
+  <div id="forgotView" class="auth-container hidden">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="auth-title">Reset Password</div>
+        </div>
+      </div>
+      <div class="auth-subtitle">Enter your email and we'll send you a reset link</div>
+      <div id="forgotError" style="display:none;background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+      <div id="forgotSuccess" style="display:none;background:#d1fae5;border:1px solid #6ee7b7;color:#065f46;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+
+      <div id="forgotEmailStep">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="forgotEmail" class="form-input" placeholder="patient@example.com">
+        </div>
+        <button class="btn-primary" onclick="submitForgotPassword()">Send Reset Link</button>
+      </div>
+
+      <div id="forgotResetStep" class="hidden">
+        <p style="font-size:13px;color:var(--slate-600);margin-bottom:16px;line-height:1.5;">Paste the token from your email and enter your new password:</p>
+        <div class="form-group">
+          <label class="form-label">Reset Token</label>
+          <input type="text" id="resetToken" class="form-input" placeholder="Paste token from email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input type="password" id="resetNewPassword" class="form-input" placeholder="Min 8 chars, upper, lower, number">
+        </div>
+        <button class="btn-primary" onclick="submitResetPassword()">Reset Password</button>
+      </div>
+
+      <div class="auth-toggle" style="margin-top:16px;">
+        <a onclick="backToLogin()" style="color:var(--teal-600);font-weight:600;cursor:pointer;">&larr; Back to Sign In</a>
+      </div>
     </div>
   </div>
 
@@ -90,28 +137,80 @@
         <p>Your private Direct Primary Care portal. Track your treatment progress, upcoming visits, and video calls.</p>
       </div>
 
-      <!-- DOCTOR REMINDERS & FOLLOW-UPS -->
-      <div id="remindersCard" class="card hidden reminder-section">
-        <div class="card-title">
-          <span class="card-icon">⏰</span> Active Doctor Reminders &amp; Follow-Ups
-        </div>
-        <div id="remindersContent"></div>
+      <!-- PORTAL NAV TABS -->
+      <div class="portal-tabs">
+        <button class="portal-tab active" onclick="switchPortalTab('appointments')">📅 Appointments</button>
+        <button class="portal-tab" onclick="switchPortalTab('health')">🩺 My Health</button>
+        <button class="portal-tab" onclick="switchPortalTab('profile')">👤 My Profile</button>
       </div>
 
-      <!-- CLINICAL PROGRESS NOTES -->
-      <div class="card">
-        <div class="card-title">
-          <span class="card-icon">🩺</span> Doctor Progress &amp; Treatment Plan
+      <!-- ===== APPOINTMENTS TAB ===== -->
+      <div id="tab-appointments" class="portal-tab-panel active">
+        <!-- DOCTOR REMINDERS & FOLLOW-UPS -->
+        <div id="remindersCard" class="card hidden reminder-section">
+          <div class="card-title">
+            <span class="card-icon">⏰</span> Active Doctor Reminders &amp; Follow-Ups
+          </div>
+          <div id="remindersContent"></div>
         </div>
-        <div id="progressContent" class="progress-box">Loading your medical progress notes...</div>
+
+        <!-- CLINICAL PROGRESS NOTES -->
+        <div class="card">
+          <div class="card-title">
+            <span class="card-icon">🩺</span> Doctor Progress &amp; Treatment Plan
+          </div>
+          <div id="progressContent" class="progress-box">Loading your medical progress notes...</div>
+        </div>
+
+        <!-- MY APPOINTMENTS -->
+        <div class="card">
+          <div class="card-title">
+            <span class="card-icon">📅</span> My Appointments
+          </div>
+          <div id="appointmentsList" class="appt-list">Loading appointments...</div>
+        </div>
       </div>
 
-      <!-- MY APPOINTMENTS -->
-      <div class="card">
-        <div class="card-title">
-          <span class="card-icon">📅</span> My Appointments
+      <!-- ===== MY HEALTH TAB ===== -->
+      <div id="tab-health" class="portal-tab-panel hidden">
+        <div class="card">
+          <div class="card-title"><span class="card-icon">⚠️</span> Allergies</div>
+          <div id="allergiesContent" class="medical-tags">Loading...</div>
         </div>
-        <div id="appointmentsList" class="appt-list">Loading appointments...</div>
+        <div class="card">
+          <div class="card-title"><span class="card-icon">💊</span> Current Medications</div>
+          <div id="medicationsContent" class="medical-tags">Loading...</div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="card-icon">📋</span> Medical History</div>
+          <div id="medicalHistoryContent" class="progress-box">Loading...</div>
+        </div>
+      </div>
+
+      <!-- ===== MY PROFILE TAB ===== -->
+      <div id="tab-profile" class="portal-tab-panel hidden">
+        <div id="profileMsg" style="display:none;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+        <div class="card">
+          <div class="card-title"><span class="card-icon">👤</span> Personal Information</div>
+          <div class="profile-grid">
+            <div class="form-group"><label class="form-label">First Name</label><input type="text" id="profFirstName" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input type="text" id="profLastName" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" id="profPhone" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Date of Birth</label><input type="date" id="profDob" class="form-input"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="card-icon">🏥</span> Insurance & Emergency Contact</div>
+          <div class="profile-grid">
+            <div class="form-group"><label class="form-label">Insurance Provider</label><input type="text" id="profInsuranceProvider" class="form-input" placeholder="e.g. BlueCross BlueShield"></div>
+            <div class="form-group"><label class="form-label">Policy Number</label><input type="text" id="profInsurancePolicy" class="form-input" placeholder="Policy #"></div>
+            <div class="form-group"><label class="form-label">Emergency Contact Name</label><input type="text" id="profEmergencyName" class="form-input"></div>
+            <div class="form-group"><label class="form-label">Emergency Contact Phone</label><input type="tel" id="profEmergencyPhone" class="form-input"></div>
+          </div>
+        </div>
+        <div style="text-align:right;margin-top:12px;">
+          <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
+        </div>
       </div>
     </div>
   </div>
@@ -213,10 +312,10 @@
             remindersContent.innerHTML = reminders.map(r => `
               <div class="reminder-card">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-                  <strong style="color:var(--teal-700);font-size:15px;">⏱️ Agreed Follow-Up: ${r.timeframe || 'Follow-Up Visit'}</strong>
+                  <strong style="color:var(--teal-700);font-size:15px;">⏱️ Agreed Follow-Up: ${esc(r.timeframe || 'Follow-Up Visit')}</strong>
                   <span style="font-size:12px;color:var(--slate-400);white-space:nowrap;margin-left:10px;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
                 </div>
-                <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${r.message}&rdquo;</p>
+                <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${esc(r.message)}&rdquo;</p>
                 <a href="/appointment.html" class="btn-book">🗓️ Schedule Follow-Up</a>
               </div>
             `).join('');
@@ -240,7 +339,7 @@
 
         apptContainer.innerHTML = dataA.appointments.map(function(a) {
           var serviceName = a.service && a.service.name || 'Healthcare Service';
-          var isTelehealth = a.service && a.service.telehealth || (serviceName.toLowerCase().indexOf('telehealth') !== -1) || (serviceName.toLowerCase().indexOf('virtual') !== -1);
+          var isTelehealth = a.service && (a.service.category === 'telehealth') || (serviceName.toLowerCase().indexOf('telehealth') !== -1) || (serviceName.toLowerCase().indexOf('virtual') !== -1);
           var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
           var d = new Date(a.date);
           var dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
@@ -248,17 +347,17 @@
           var encoded = encodeURIComponent(JSON.stringify(a));
           return '<div class="appt-card" onclick="openApptDetail(this, \'' + encoded + '\')">'
             + '<div class="appt-card-left">'
-              + '<div class="appt-service">' + serviceName
-                + ' <span class="badge ' + statusBadge + '">' + (a.status || 'pending') + '</span>'
+              + '<div class="appt-service">' + esc(serviceName)
+                + ' <span class="badge ' + esc(statusBadge) + '">' + esc(a.status || 'pending') + '</span>'
               + '</div>'
               + '<div class="appt-meta">'
-                + '📅 <strong>' + dateStr + '</strong> at <strong>' + a.time + '</strong>'
-                + ' <span style="color:var(--slate-400);">·</span> Ref: <code>' + (a.referenceNumber || '—') + '</code>'
+                + '📅 <strong>' + esc(dateStr) + '</strong> at <strong>' + esc(a.time) + '</strong>'
+                + ' <span style="color:var(--slate-400);">·</span> Ref: <code>' + esc(a.referenceNumber || '—') + '</code>'
               + '</div>'
             + '</div>'
             + '<div class="appt-right">'
               + (isTelehealth
-                  ? '<a href="' + meetUrl + '" target="_blank" class="btn-join">📹 Join Video Call</a>'
+                  ? '<a href="' + esc(meetUrl) + '" target="_blank" class="btn-join">📹 Join Video Call</a>'
                   : '<span class="btn-clinic">🏥 In-Clinic</span>')
             + '</div>'
           + '</div>';
@@ -275,7 +374,7 @@
       if (!a) return;
 
       var serviceName = a.service?.name || 'Healthcare Service';
-      var isTelehealth = a.service?.telehealth || serviceName.toLowerCase().includes('telehealth') || serviceName.toLowerCase().includes('virtual');
+      var isTelehealth = a.service?.category === 'telehealth' || serviceName.toLowerCase().includes('telehealth') || serviceName.toLowerCase().includes('virtual');
       var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
       var dateStr = new Date(a.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -302,26 +401,26 @@
       var body = document.getElementById('apptPopupBody');
       body.innerHTML =
         '<div class="appt-detail-header">'
-          + '<span class="badge badge-' + (a.status || 'pending') + '" style="font-size:13px;padding:5px 16px;margin-bottom:10px;">' + (a.status || 'pending') + '</span>'
-          + '<h2>' + serviceName + '</h2>'
-          + '<div class="appt-detail-ref">Ref: ' + (a.referenceNumber || '—') + '</div>'
+          + '<span class="badge badge-' + esc(a.status || 'pending') + '" style="font-size:13px;padding:5px 16px;margin-bottom:10px;">' + esc(a.status || 'pending') + '</span>'
+          + '<h2>' + esc(serviceName) + '</h2>'
+          + '<div class="appt-detail-ref">Ref: ' + esc(a.referenceNumber || '—') + '</div>'
         + '</div>'
         + '<div class="appt-detail-section">'
           + '<div class="appt-detail-label">Date & Time</div>'
-          + '<div class="appt-detail-value">' + dateStr + ' at ' + a.time + '</div>'
+          + '<div class="appt-detail-value">' + esc(dateStr) + ' at ' + esc(a.time) + '</div>'
         + '</div>'
         + '<div class="appt-detail-section">'
           + '<div class="appt-detail-label">Duration</div>'
-          + '<div class="appt-detail-value">' + (a.duration || 30) + ' minutes</div>'
+          + '<div class="appt-detail-value">' + esc(a.duration || 30) + ' minutes</div>'
         + '</div>'
-        + (a.notes ? '<div class="appt-detail-section"><div class="appt-detail-label">Provider Notes</div><div class="appt-detail-value" style="font-weight:400;line-height:1.6;">' + a.notes + '</div></div>' : '')
+        + (a.notes ? '<div class="appt-detail-section"><div class="appt-detail-label">Provider Notes</div><div class="appt-detail-value" style="font-weight:400;line-height:1.6;">' + esc(a.notes) + '</div></div>' : '')
         + '<div class="appt-detail-section">'
           + '<div class="appt-detail-label">Status Timeline</div>'
           + '<div class="status-timeline">' + timelineHtml + '</div>'
         + '</div>'
         + '<div class="appt-detail-actions">'
           + (isTelehealth
-              ? '<a href="' + meetUrl + '" target="_blank" class="btn-join" style="flex:1;text-align:center;">Join Video Call</a>'
+              ? '<a href="' + esc(meetUrl) + '" target="_blank" class="btn-join" style="flex:1;text-align:center;">Join Video Call</a>'
               : '<span class="btn-clinic" style="flex:1;text-align:center;padding:10px;">Clinic: 2638 Two Notch Rd. Suite 210, Columbia, SC 29204</span>'
             )
         + '</div>';
@@ -339,7 +438,160 @@
       document.getElementById('authView').classList.remove('hidden');
     }
 
+    /* ===== FORGOT PASSWORD ===== */
+    function showForgotPassword() {
+      document.getElementById('authView').classList.add('hidden');
+      document.getElementById('forgotView').classList.remove('hidden');
+      document.getElementById('forgotError').style.display = 'none';
+      document.getElementById('forgotSuccess').style.display = 'none';
+      document.getElementById('forgotEmailStep').classList.remove('hidden');
+      document.getElementById('forgotResetStep').classList.add('hidden');
+    }
+
+    function backToLogin() {
+      document.getElementById('forgotView').classList.add('hidden');
+      document.getElementById('authView').classList.remove('hidden');
+    }
+
+    async function submitForgotPassword() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      const errEl = document.getElementById('forgotError');
+      const sucEl = document.getElementById('forgotSuccess');
+      errEl.style.display = 'none'; sucEl.style.display = 'none';
+      if (!email) { errEl.textContent = 'Please enter your email.'; errEl.style.display = 'block'; return; }
+      try {
+        const res = await fetch(API + '/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        const data = await res.json();
+        if (data.success) {
+          sucEl.textContent = data.message || 'If an account exists, a reset link has been sent.';
+          sucEl.style.display = 'block';
+          document.getElementById('forgotEmailStep').classList.add('hidden');
+          document.getElementById('forgotResetStep').classList.remove('hidden');
+        } else {
+          errEl.textContent = data.message || 'Error sending reset email.'; errEl.style.display = 'block';
+        }
+      } catch(e) { errEl.textContent = 'Server error.'; errEl.style.display = 'block'; }
+    }
+
+    async function submitResetPassword() {
+      const token = document.getElementById('resetToken').value.trim();
+      const password = document.getElementById('resetNewPassword').value;
+      const errEl = document.getElementById('forgotError');
+      const sucEl = document.getElementById('forgotSuccess');
+      errEl.style.display = 'none'; sucEl.style.display = 'none';
+      if (!token || !password) { errEl.textContent = 'Please enter the token and new password.'; errEl.style.display = 'block'; return; }
+      try {
+        const res = await fetch(API + '/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password }) });
+        const data = await res.json();
+        if (data.success) {
+          showPortal(data.patient);
+        } else {
+          errEl.textContent = data.message || 'Reset failed.'; errEl.style.display = 'block';
+        }
+      } catch(e) { errEl.textContent = 'Server error.'; errEl.style.display = 'block'; }
+    }
+
+    /* ===== PORTAL TABS ===== */
+    function switchPortalTab(tab) {
+      document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.portal-tab-panel').forEach(p => { p.classList.add('hidden'); p.classList.remove('active'); });
+      event.target.classList.add('active');
+      var panel = document.getElementById('tab-' + tab);
+      panel.classList.remove('hidden');
+      panel.classList.add('active');
+      if (tab === 'profile') loadProfile();
+      if (tab === 'health') loadHealthData();
+    }
+
+    /* ===== PROFILE ===== */
+    async function loadProfile() {
+      try {
+        const res = await fetch(API + '/me', { credentials: 'include' });
+        const data = await res.json();
+        if (!data.success) return;
+        var p = data.patient;
+        document.getElementById('profFirstName').value = p.firstName || '';
+        document.getElementById('profLastName').value = p.lastName || '';
+        document.getElementById('profPhone').value = p.phone || '';
+        document.getElementById('profDob').value = p.dateOfBirth || '';
+        var ins = p.insurance || {};
+        document.getElementById('profInsuranceProvider').value = ins.provider || '';
+        document.getElementById('profInsurancePolicy').value = ins.policyNumber || '';
+        var ec = p.emergencyContact || {};
+        document.getElementById('profEmergencyName').value = ec.name || '';
+        document.getElementById('profEmergencyPhone').value = ec.phone || '';
+      } catch(e) {}
+    }
+
+    async function saveProfile() {
+      var msgEl = document.getElementById('profileMsg');
+      msgEl.style.display = 'none';
+      var payload = {
+        firstName: document.getElementById('profFirstName').value.trim(),
+        lastName: document.getElementById('profLastName').value.trim(),
+        phone: document.getElementById('profPhone').value.trim(),
+        dateOfBirth: document.getElementById('profDob').value || null,
+        insurance: { provider: document.getElementById('profInsuranceProvider').value.trim(), policyNumber: document.getElementById('profInsurancePolicy').value.trim() },
+        emergencyContact: { name: document.getElementById('profEmergencyName').value.trim(), phone: document.getElementById('profEmergencyPhone').value.trim() },
+      };
+      try {
+        const res = await fetch(API + '/me', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(payload) });
+        const data = await res.json();
+        if (data.success) {
+          msgEl.textContent = 'Profile updated successfully!';
+          msgEl.style.background = '#d1fae5'; msgEl.style.color = '#065f46'; msgEl.style.border = '1px solid #6ee7b7';
+          msgEl.style.display = 'block';
+          document.getElementById('userDisplayName').textContent = data.patient.firstName + ' ' + data.patient.lastName;
+        } else {
+          msgEl.textContent = data.message || 'Error saving profile.';
+          msgEl.style.background = '#fee2e2'; msgEl.style.color = '#991b1b'; msgEl.style.border = '1px solid #fca5a5';
+          msgEl.style.display = 'block';
+        }
+      } catch(e) {
+        msgEl.textContent = 'Server error.'; msgEl.style.background = '#fee2e2'; msgEl.style.color = '#991b1b'; msgEl.style.display = 'block';
+      }
+    }
+
+    /* ===== MY HEALTH ===== */
+    async function loadHealthData() {
+      try {
+        const res = await fetch(API + '/me', { credentials: 'include' });
+        const data = await res.json();
+        if (!data.success) return;
+        var p = data.patient;
+        var allergies = p.allergies || [];
+        var medications = p.medications || [];
+        var history = p.medicalHistory || '';
+
+        var alEl = document.getElementById('allergiesContent');
+        if (allergies.length) {
+          alEl.innerHTML = allergies.map(a => '<span class="medical-tag tag-red">' + esc(typeof a === 'string' ? a : a.name || a) + '</span>').join('');
+        } else {
+          alEl.innerHTML = '<span style="color:var(--slate-500);font-size:13px;">No allergies on file.</span>';
+        }
+
+        var medEl = document.getElementById('medicationsContent');
+        if (medications.length) {
+          medEl.innerHTML = medications.map(m => '<span class="medical-tag tag-blue">' + esc(typeof m === 'string' ? m : m.name || m) + '</span>').join('');
+        } else {
+          medEl.innerHTML = '<span style="color:var(--slate-500);font-size:13px;">No medications on file.</span>';
+        }
+
+        var histEl = document.getElementById('medicalHistoryContent');
+        histEl.textContent = history || 'No medical history recorded yet.';
+      } catch(e) {
+        document.getElementById('allergiesContent').textContent = 'Unable to load health data.';
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', checkSession);
+
+    function esc(str) {
+      if (str == null) return '';
+      return String(str).replace(/[<>&"']/g, function(c) {
+        return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' }[c];
+      });
+    }
   </script>
 </body>
 </html>

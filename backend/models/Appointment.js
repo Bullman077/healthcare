@@ -21,7 +21,6 @@ const Appointment = sequelize.define('Appointment', {
   duration: { type: DataTypes.INTEGER, defaultValue: 30 },
   notes: { type: DataTypes.TEXT },
   patientNotes: { type: DataTypes.TEXT },
-  meetingUrl: { type: DataTypes.STRING(500) },
   paid: { type: DataTypes.BOOLEAN, defaultValue: false },
   remindersSent: { type: DataTypes.JSONB, defaultValue: [] },
   confirmedAt: { type: DataTypes.DATE },

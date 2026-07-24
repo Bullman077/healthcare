@@ -1,7 +1,10 @@
 const { Op } = require('sequelize');
 const { Patient, Service, Appointment } = require('../models');
+const { sequelize } = require('../config/db');
 const { sendConfirmation } = require('../utils/email');
 const { AppError } = require('../middleware/errorHandler');
+
+const iLike = sequelize.dialect.name === 'sqlite' ? Op.like : Op.iLike;
 
 exports.createAppointment = async (req, res, next) => {
   try {
@@ -9,7 +12,7 @@ exports.createAppointment = async (req, res, next) => {
 
     const service = await Service.findOne({
       where: {
-        name: { [Op.iLike]: serviceName.trim() },
+        name: { [iLike]: serviceName.trim() },
         isActive: true,
       },
     });
@@ -40,6 +43,13 @@ exports.createAppointment = async (req, res, next) => {
     });
     if (existing) {
       return next(new AppError('You already have a confirmed booking for this date and time.', 409));
+    }
+
+    const slotTaken = await Appointment.findOne({
+      where: { date, time, status: { [Op.in]: ['confirmed'] } },
+    });
+    if (slotTaken) {
+      return next(new AppError('This time slot is already booked. Please choose a different time.', 409));
     }
 
     let appointment;

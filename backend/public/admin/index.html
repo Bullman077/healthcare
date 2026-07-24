@@ -32,15 +32,14 @@
     <div id="loginError" class="login-error"></div>
 
     <label class="form-label">Email Address</label>
-    <input type="email" id="loginEmail" class="form-input" autocomplete="email" spellcheck="false" value="admin@uhshealthcare.com" placeholder="admin@uhshealthcare.com">
+    <input type="email" id="loginEmail" class="form-input" autocomplete="email" spellcheck="false" placeholder="admin@uhshealthcare.com">
     <label class="form-label">Password</label>
-    <input type="password" id="loginPassword" class="form-input" autocomplete="current-password" value="Admin123!" placeholder="••••••••">
+    <input type="password" id="loginPassword" class="form-input" autocomplete="current-password" placeholder="••••••••">
     <button id="loginBtn" class="login-btn" onclick="login()">Sign In to Dashboard</button>
 
-    <div style="margin-top:1.25rem; text-align:center; font-size:0.8rem; color:rgba(255,255,255,0.75); background:rgba(255,255,255,0.06); padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); line-height:1.6;">
-      🔑 <strong>Default Admin Credentials:</strong><br>
-      Email: <code style="color:#CCFBF1; font-weight:600;">admin@uhshealthcare.com</code><br>
-      Password: <code style="color:#CCFBF1; font-weight:600;">Admin123!</code>
+    <div class="login-notice">
+      🔒 <strong>Secure Access Only</strong><br>
+      Contact your system administrator for login credentials.
     </div>
   </div>
 </div>
@@ -124,7 +123,43 @@
         Services
       </button>
 
-      <div class="sidebar-section-label">Account</div>
+      <div class="sidebar-section-label">Communications</div>
+      <button class="nav-item" data-page="messages" onclick="goTo('messages')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </span>
+        Messages
+        <span class="nav-badge" id="msgBadge" style="display:none;">0</span>
+      </button>
+      <button class="nav-item" data-page="testimonials" onclick="goTo('testimonials')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </span>
+        Testimonials
+      </button>
+
+      <div class="sidebar-section-label">Administration</div>
+      <button class="nav-item" data-page="settings" onclick="goTo('settings')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </span>
+        Settings
+      </button>
+      <button class="nav-item" data-page="audit" onclick="goTo('audit')">
+        <span class="nav-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </span>
+        Audit Logs
+      </button>
       <button class="nav-item" data-page="profile" onclick="goTo('profile')">
         <span class="nav-icon">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -170,8 +205,61 @@
 
     <!-- ===== DASHBOARD ===== -->
     <section id="page-dashboard" class="page-section active">
+      <div id="dashboardWelcome" class="dashboard-welcome">
+        <div class="welcome-greeting" id="welcomeGreeting">Good morning, Admin</div>
+        <div class="welcome-sub">Here's what's happening at your clinic today.</div>
+        <div class="welcome-stats">
+          <div class="welcome-stat">
+            <span class="welcome-stat-value" id="welcomeTodayCount">0</span>
+            <span class="welcome-stat-label">Today's Appointments</span>
+          </div>
+          <div class="welcome-stat">
+            <span class="welcome-stat-value" id="welcomePatientCount">0</span>
+            <span class="welcome-stat-label">Total Patients</span>
+          </div>
+          <div class="welcome-stat">
+            <span class="welcome-stat-value" id="welcomeUnreadCount">0</span>
+            <span class="welcome-stat-label">Unread Messages</span>
+          </div>
+        </div>
+      </div>
+
       <div id="statsGrid" class="stats-grid"></div>
-      <div class="card" style="margin-top:28px;">
+
+      <div class="dashboard-row">
+        <div class="card dashboard-schedule">
+          <div class="card-header">
+            <span class="card-title">Today's Schedule</span>
+            <button class="btn btn-outline btn-sm" onclick="goTo('all')">View Calendar</button>
+          </div>
+          <div id="todaySchedule" class="schedule-list">
+            <div class="empty-state">Loading today's appointments...</div>
+          </div>
+        </div>
+
+        <div class="card dashboard-activity">
+          <div class="card-header">
+            <span class="card-title">Recent Activity</span>
+            <button class="btn btn-outline btn-sm" onclick="goTo('audit')">View All</button>
+          </div>
+          <div id="activityFeed" class="activity-feed">
+            <div class="empty-state">Loading...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-row">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Appointment Trends (7 Days)</span></div>
+          <div id="trendsChart" class="chart-container"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Services Breakdown</span></div>
+          <div id="distributionChart" class="chart-container"></div>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-header">
           <span class="card-title">Recent Appointments</span>
           <button class="btn btn-outline btn-sm" onclick="goTo('all')">View All</button>
@@ -235,6 +323,16 @@
         <div class="card-header">
           <span class="card-title">All Appointments</span>
           <div class="card-actions">
+            <div class="view-toggle">
+              <button class="view-btn active" id="listViewBtn" onclick="switchApptView('list')">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                List
+              </button>
+              <button class="view-btn" id="calendarViewBtn" onclick="switchApptView('calendar')">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Calendar
+              </button>
+            </div>
             <select id="allStatus" class="filter-input" onchange="loadAll(1)">
               <option value="">All Statuses</option>
               <option value="confirmed">Confirmed</option>
@@ -249,13 +347,26 @@
             <button class="btn btn-outline btn-sm" onclick="exportCSV()">Export All CSV</button>
           </div>
         </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th>Ref</th><th>Patient</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="allBody"></tbody>
-          </table>
+
+        <div id="allListView">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Ref</th><th>Patient</th><th>Email</th><th>Phone</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="allBody"></tbody>
+            </table>
+          </div>
+          <div id="allPagination" class="pagination"></div>
         </div>
-        <div id="allPagination" class="pagination"></div>
+
+        <div id="allCalendarView" style="display:none;">
+          <div class="calendar-header">
+            <button class="btn btn-outline btn-sm" onclick="changeCalMonth(-1)">‹ Prev</button>
+            <span id="calMonthLabel" class="cal-month-label"></span>
+            <button class="btn btn-outline btn-sm" onclick="changeCalMonth(1)">Next ›</button>
+          </div>
+          <div id="calendarGrid" class="calendar-grid"></div>
+          <div id="calDayDetail" class="cal-day-detail" style="display:none;"></div>
+        </div>
       </div>
     </section>
 
@@ -277,7 +388,7 @@
         <div id="patientPagination" class="pagination"></div>
       </div>
       <div id="patientDetail" class="hidden">
-        <button class="btn btn-outline btn-sm" onclick="closePatientDetail()" style="margin-bottom:20px;">← Back to Patients</button>
+        <button class="btn btn-outline btn-sm patient-back-btn" onclick="closePatientDetail()">← Back to Patients</button>
         <div id="patientDetailContent"></div>
       </div>
     </section>
@@ -300,11 +411,11 @@
 
     <!-- ===== PROFILE ===== -->
     <section id="page-profile" class="page-section">
-      <div class="card" style="max-width:540px;">
+      <div class="card profile-card">
         <div class="card-header"><span class="card-title">Admin Profile</span></div>
         <div class="modal-body">
-          <div id="profileError" class="login-error" style="display:none;"></div>
-          <div id="profileSuccess" style="display:none; background:#f0fdf4; border:1px solid #86efac; color:#166534; padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:14px;"></div>
+          <div id="profileError" class="login-error profile-error" style="display:none;"></div>
+          <div id="profileSuccess" class="profile-success" style="display:none;"></div>
           <label class="form-label">Display Name</label>
           <input type="text" id="profileName" class="form-input" placeholder="Your name">
           <label class="form-label" style="margin-top:14px;">Email Address</label>
@@ -313,8 +424,129 @@
           <input type="password" id="profilePassword" class="form-input" placeholder="••••••••">
           <label class="form-label" style="margin-top:14px;">Confirm New Password</label>
           <input type="password" id="profilePasswordConfirm" class="form-input" placeholder="••••••••">
-          <button class="login-btn" onclick="saveProfile()" style="margin-top:20px;">Save Changes</button>
+          <button class="login-btn save-profile-btn" onclick="saveProfile()">Save Changes</button>
         </div>
+      </div>
+    </section>
+
+    <!-- ===== MESSAGES ===== -->
+    <section id="page-messages" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Messages</span>
+          <div class="card-actions">
+            <select id="msgFilter" class="filter-input" onchange="loadMessages(1)">
+              <option value="">All Messages</option>
+              <option value="false">Unread</option>
+              <option value="true">Read</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th></th><th>From</th><th>Email</th><th>Phone</th><th>Subject</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="messagesBody"></tbody>
+          </table>
+        </div>
+        <div id="messagesPagination" class="pagination"></div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section id="page-testimonials" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Testimonials</span>
+          <button class="btn btn-primary btn-sm" onclick="openTestimonialModal(null)">+ Add Testimonial</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Rating</th><th>Content</th><th>Active</th><th>Homepage</th><th>Actions</th></tr></thead>
+            <tbody id="testimonialsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS ===== -->
+    <section id="page-settings" class="page-section">
+      <div class="card settings-card">
+        <div class="card-header">
+          <span class="card-title">Clinic Settings</span>
+        </div>
+        <div class="settings-tabs">
+          <button class="settings-tab active" onclick="switchSettingsTab('profile')">Clinic Profile</button>
+          <button class="settings-tab" onclick="switchSettingsTab('content')">Homepage Content</button>
+          <button class="settings-tab" onclick="switchSettingsTab('legal')">Legal Pages</button>
+        </div>
+        <div class="modal-body">
+          <div id="settingsSuccess" class="profile-success" style="display:none;"></div>
+          <div id="settingsError" class="login-error profile-error" style="display:none;"></div>
+
+          <div id="settingsTab-profile" class="settings-panel">
+            <label class="form-label">Clinic Name</label>
+            <input type="text" id="set_clinic_name" class="form-input" placeholder="UHS Healthcare">
+            <label class="form-label" style="margin-top:14px;">Tagline</label>
+            <input type="text" id="set_clinic_tagline" class="form-input" placeholder="Direct Primary Care & Telehealth">
+            <label class="form-label" style="margin-top:14px;">Phone Number</label>
+            <input type="tel" id="set_clinic_phone" class="form-input" placeholder="(803) 555-0123">
+            <label class="form-label" style="margin-top:14px;">Email Address</label>
+            <input type="email" id="set_clinic_email" class="form-input" placeholder="info@uhshealthcare.com">
+            <label class="form-label" style="margin-top:14px;">Address</label>
+            <textarea id="set_clinic_address" class="form-input" rows="2" placeholder="123 Main St, Columbia, SC 29201"></textarea>
+            <label class="form-label" style="margin-top:14px;">Business Hours</label>
+            <textarea id="set_clinic_hours" class="form-input" rows="3" placeholder="Mon-Fri: 8AM-6PM&#10;Sat: 9AM-2PM&#10;Sun: Closed"></textarea>
+          </div>
+
+          <div id="settingsTab-content" class="settings-panel" style="display:none;">
+            <label class="form-label">Hero Title</label>
+            <input type="text" id="set_hero_title" class="form-input" placeholder="Your Health, Your Schedule">
+            <label class="form-label" style="margin-top:14px;">Hero Subtitle</label>
+            <textarea id="set_hero_subtitle" class="form-input" rows="2" placeholder="Direct primary care..."></textarea>
+            <label class="form-label" style="margin-top:14px;">About Text</label>
+            <textarea id="set_about_text" class="form-input" rows="5" placeholder="Tell patients about your practice..."></textarea>
+          </div>
+
+          <div id="settingsTab-legal" class="settings-panel" style="display:none;">
+            <label class="form-label">Privacy Policy</label>
+            <textarea id="set_privacy_policy" class="form-input" rows="8" placeholder="Privacy policy content..."></textarea>
+            <label class="form-label" style="margin-top:14px;">Terms of Service</label>
+            <textarea id="set_terms_of_service" class="form-input" rows="8" placeholder="Terms of service content..."></textarea>
+          </div>
+
+          <button class="login-btn save-settings-btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AUDIT LOGS ===== -->
+    <section id="page-audit" class="page-section">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Audit Logs</span>
+          <div class="card-actions">
+            <select id="auditAction" class="filter-input" onchange="loadAuditLogs(1)">
+              <option value="">All Actions</option>
+              <option value="create">Create</option>
+              <option value="update">Update</option>
+              <option value="update_status">Status Change</option>
+              <option value="delete">Delete</option>
+            </select>
+            <select id="auditResource" class="filter-input" onchange="loadAuditLogs(1)">
+              <option value="">All Resources</option>
+              <option value="appointment">Appointment</option>
+              <option value="patient">Patient</option>
+              <option value="service">Service</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Time</th><th>Admin</th><th>Action</th><th>Resource</th><th>Details</th><th>IP Address</th></tr></thead>
+            <tbody id="auditBody"></tbody>
+          </table>
+        </div>
+        <div id="auditPagination" class="pagination"></div>
       </div>
     </section>
 
@@ -348,10 +580,15 @@
       <input type="text" id="serviceName" class="form-input" placeholder="e.g. DOT Physical">
       <label class="form-label" style="margin-top:14px;">Duration (minutes)</label>
       <input type="number" id="serviceDuration" class="form-input" value="30">
-      <label class="form-label" style="margin-top:14px;">Telehealth Available</label>
-      <select id="serviceTelehealth" class="form-input">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
+      <label class="form-label" style="margin-top:14px;">Category *</label>
+      <select id="serviceCategory" class="form-input">
+        <option value="physical">Physical</option>
+        <option value="wellness">Wellness</option>
+        <option value="training">Training</option>
+        <option value="therapy">Therapy</option>
+        <option value="preventive">Preventive</option>
+        <option value="telehealth">Telehealth</option>
+        <option value="diagnostic">Diagnostic</option>
       </select>
       <label class="form-label" style="margin-top:14px;">Description</label>
       <textarea id="serviceDescription" class="form-input" rows="3" placeholder="Brief description…"></textarea>
@@ -376,11 +613,61 @@
       <button class="modal-close" onclick="closeModal('confirmModal')">✕</button>
     </div>
     <div class="modal-body">
-      <p style="color:var(--slate-700);">Are you sure you want to permanently delete this appointment? This action cannot be undone.</p>
+      <p style="color:var(--slate-700);">Are you sure you want to permanently delete this? This action cannot be undone.</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('confirmModal')">Cancel</button>
       <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MESSAGE DETAIL MODAL ============ -->
+<div class="modal-overlay" id="msgModal">
+  <div class="modal" style="max-width:600px;">
+    <div class="modal-header">
+      <span class="modal-title">Message Details</span>
+      <button class="modal-close" onclick="closeModal('msgModal')">✕</button>
+    </div>
+    <div class="modal-body" id="msgModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('msgModal')">Close</button>
+      <button class="btn btn-danger btn-sm" id="msgDeleteBtn">Delete Message</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TESTIMONIAL MODAL ============ -->
+<div class="modal-overlay" id="testimonialModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <span class="modal-title" id="testimonialModalTitle">Add Testimonial</span>
+      <button class="modal-close" onclick="closeModal('testimonialModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="testimId">
+      <label class="form-label">Patient Name *</label>
+      <input type="text" id="testimName" class="form-input" placeholder="e.g. Sarah M.">
+      <label class="form-label" style="margin-top:14px;">Title / Relationship</label>
+      <input type="text" id="testimTitle" class="form-input" placeholder="e.g. Patient for 2 years">
+      <label class="form-label" style="margin-top:14px;">Testimonial Content *</label>
+      <textarea id="testimContent" class="form-input" rows="4" placeholder="What the patient said..."></textarea>
+      <label class="form-label" style="margin-top:14px;">Rating</label>
+      <div class="rating-input" id="ratingInput">
+        <button type="button" class="rating-star" data-val="1" onclick="setRating(1)">★</button>
+        <button type="button" class="rating-star" data-val="2" onclick="setRating(2)">★</button>
+        <button type="button" class="rating-star" data-val="3" onclick="setRating(3)">★</button>
+        <button type="button" class="rating-star" data-val="4" onclick="setRating(4)">★</button>
+        <button type="button" class="rating-star" data-val="5" onclick="setRating(5)">★</button>
+      </div>
+      <div style="display:flex; gap:20px; margin-top:14px;">
+        <label class="toggle-label"><input type="checkbox" id="testimActive" checked> Active</label>
+        <label class="toggle-label"><input type="checkbox" id="testimHome"> Display on Homepage</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('testimonialModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTestimonial()">Save Testimonial</button>
     </div>
   </div>
 </div>
@@ -431,7 +718,7 @@ async function login() {
       state.admin = res.admin;
       showApp(res.admin);
     } else {
-      showErr(err, res.message || 'Invalid credentials. Try admin@uhshealthcare.com / Admin123!');
+      showErr(err, res.message || 'Invalid credentials. Please try again.');
     }
   } catch(e) {
     showErr(err, 'Server error. Please try again.');
@@ -456,7 +743,7 @@ async function logout() {
   state.admin = null;
   document.getElementById('app').classList.add('hidden');
   document.getElementById('loginPage').classList.remove('hidden');
-  document.getElementById('loginEmail').value = 'admin@uhshealthcare.com';
+  document.getElementById('loginEmail').value = '';
   document.getElementById('loginPassword').value = '';
 }
 
@@ -484,6 +771,10 @@ const PAGE_TITLES = {
   all: 'All Appointments',
   patients: 'Patient Records',
   services: 'Services',
+  messages: 'Messages',
+  testimonials: 'Testimonials',
+  settings: 'Clinic Settings',
+  audit: 'Audit Logs',
   profile: 'Admin Profile',
 };
 
@@ -503,6 +794,10 @@ function goTo(page) {
   if (page === 'all') loadAll();
   if (page === 'patients') loadPatients();
   if (page === 'services') loadServices();
+  if (page === 'messages') loadMessages();
+  if (page === 'testimonials') loadTestimonials();
+  if (page === 'settings') loadSettings();
+  if (page === 'audit') loadAuditLogs();
 }
 
 /* =========================================================
@@ -566,19 +861,32 @@ function showErr(el, msg) { el.textContent = msg; el.classList.add('show'); }
 /* =========================================================
    DASHBOARD
    ========================================================= */
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
 async function initDashboard() {
   try {
     const data = await apiFetch('/stats');
     if (!data.success) return;
     const s = data.stats;
 
+    const name = state.admin?.name || 'Admin';
+    document.getElementById('welcomeGreeting').textContent = getGreeting() + ', ' + name;
+    document.getElementById('welcomeTodayCount').textContent = s.today ?? 0;
+    document.getElementById('welcomePatientCount').textContent = s.totalPatients ?? 0;
+    document.getElementById('welcomeUnreadCount').textContent = s.unreadMessages ?? 0;
+
     const statDefs = [
-      { key: 'total',     label: 'Total Appointments',  icon: '📋', color: '#4F46E5', bg: 'rgba(79,70,229,0.1)' },
-      { key: 'confirmed', label: 'Confirmed / Upcoming', icon: '📅', color: '#10B981', bg: 'rgba(16,185,129,0.1)' },
-      { key: 'completed', label: 'Completed',            icon: '✅', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)' },
-      { key: 'cancelled', label: 'Cancelled',            icon: '❌', color: '#EF4444', bg: 'rgba(239,68,68,0.1)'  },
-      { key: 'noShow',    label: 'No-Shows',             icon: '⚠️', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' },
-      { key: 'patients',  label: 'Total Patients',       icon: '👥', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)' },
+      { key: 'today',            label: "Today's Appts",      icon: '📋', color: '#4F46E5', bg: 'rgba(79,70,229,0.1)' },
+      { key: 'confirmed',        label: 'Confirmed / Upcoming', icon: '📅', color: '#10B981', bg: 'rgba(16,185,129,0.1)' },
+      { key: 'completed',        label: 'Completed',           icon: '✅', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)' },
+      { key: 'totalPatients',    label: 'Active Patients',     icon: '👥', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)' },
+      { key: 'unreadMessages',   label: 'Unread Messages',     icon: '✉️', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
+      { key: 'total',            label: 'Total Appointments',  icon: '📊', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' },
     ];
 
     document.getElementById('statsGrid').innerHTML = statDefs.map(d => `
@@ -593,9 +901,141 @@ async function initDashboard() {
 
     const recent = await apiFetch('/appointments?limit=8');
     renderTable('recentBody', recent, true);
+    updateMsgBadge();
+
+    loadTodaySchedule();
+    loadTrendsChart();
+    loadDistributionChart();
+    loadActivityFeed();
   } catch(e) {
     console.error('Dashboard error:', e);
   }
+}
+
+/* =========================================================
+   TODAY'S SCHEDULE
+   ========================================================= */
+async function loadTodaySchedule() {
+  try {
+    const data = await apiFetch('/today-schedule');
+    const el = document.getElementById('todaySchedule');
+    if (!data.success || !data.appointments || data.appointments.length === 0) {
+      el.innerHTML = '<div class="empty-state" style="padding:30px;">No appointments scheduled for today.</div>';
+      return;
+    }
+    el.innerHTML = data.appointments.map(a => {
+      const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
+      const svcColor = a.Service?.color || '#4F46E5';
+      return `
+        <div class="schedule-item" onclick="viewAppt(${JSON.stringify(a).replace(/"/g,'&quot;')})" style="border-left:3px solid ${svcColor};">
+          <div class="schedule-time">${a.time}</div>
+          <div class="schedule-info">
+            <div class="schedule-name">${name}</div>
+            <div class="schedule-service">${a.Service?.name || '—'}</div>
+          </div>
+          <div class="schedule-status">${badgeHtml(a.status)}</div>
+        </div>
+      `;
+    }).join('');
+  } catch(e) {
+    document.getElementById('todaySchedule').innerHTML = '<div class="empty-state">Could not load schedule.</div>';
+  }
+}
+
+/* =========================================================
+   TRENDS CHART (Pure CSS bar chart)
+   ========================================================= */
+async function loadTrendsChart() {
+  try {
+    const data = await apiFetch('/appointment-trends');
+    if (!data.success || !data.data) return;
+    const days = data.data;
+    const maxVal = Math.max(1, ...days.map(d => d.total));
+
+    document.getElementById('trendsChart').innerHTML = `
+      <div class="bar-chart">
+        ${days.map(d => `
+          <div class="bar-col">
+            <div class="bar-stack">
+              <div class="bar-seg bar-completed" style="height:${(d.completed/maxVal)*100}%;" title="Completed: ${d.completed}"></div>
+              <div class="bar-seg bar-confirmed" style="height:${(d.confirmed/maxVal)*100}%;" title="Confirmed: ${d.confirmed}"></div>
+              <div class="bar-seg bar-cancelled" style="height:${(d.cancelled/maxVal)*100}%;" title="Cancelled: ${d.cancelled}"></div>
+            </div>
+            <div class="bar-label">${d.label.split(',')[0]}</div>
+            <div class="bar-date">${d.label.split(',')[1] || ''}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#10B981;"></span>Completed</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#4F46E5;"></span>Confirmed</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#EF4444;"></span>Cancelled</span>
+      </div>
+    `;
+  } catch(e) {}
+}
+
+/* =========================================================
+   SERVICE DISTRIBUTION (Pure CSS donut)
+   ========================================================= */
+async function loadDistributionChart() {
+  try {
+    const data = await apiFetch('/service-distribution');
+    if (!data.success || !data.data || data.data.length === 0) {
+      document.getElementById('distributionChart').innerHTML = '<div class="empty-state">No appointment data yet.</div>';
+      return;
+    }
+    const items = data.data;
+    const total = items.reduce((sum, i) => sum + parseInt(i.count, 10), 0);
+    const colors = ['#4F46E5','#10B981','#F59E0B','#EF4444','#8B5CF6','#0D9488','#EC4899','#6366F1','#14B8A6'];
+    let cumPct = 0;
+    const segments = items.map((item, idx) => {
+      const pct = (parseInt(item.count, 10) / total) * 100;
+      const color = item.service?.color || colors[idx % colors.length];
+      const seg = `${color} ${cumPct}% ${cumPct + pct}%`;
+      cumPct += pct;
+      return { ...item, pct: pct.toFixed(1), color, seg };
+    });
+
+    document.getElementById('distributionChart').innerHTML = `
+      <div class="donut-layout">
+        <div class="donut-chart" style="background: conic-gradient(${segments.map(s => s.seg).join(',')});"></div>
+        <div class="donut-legend">
+          ${segments.map(s => `
+            <div class="legend-row">
+              <span class="legend-dot" style="background:${s.color};"></span>
+              <span class="legend-name">${s.service?.name || 'Unknown'}</span>
+              <span class="legend-count">${s.count} (${s.pct}%)</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } catch(e) {}
+}
+
+/* =========================================================
+   ACTIVITY FEED (from audit logs)
+   ========================================================= */
+async function loadActivityFeed() {
+  try {
+    const data = await apiFetch('/audit-logs?limit=8');
+    const el = document.getElementById('activityFeed');
+    const logs = data.logs || [];
+    if (logs.length === 0) {
+      el.innerHTML = '<div class="empty-state" style="padding:20px;">No recent activity.</div>';
+      return;
+    }
+    el.innerHTML = logs.map(l => `
+      <div class="activity-item">
+        <div class="activity-dot ${l.action === 'delete' ? 'dot-red' : l.action === 'create' ? 'dot-green' : 'dot-blue'}"></div>
+        <div class="activity-content">
+          <div class="activity-text"><strong>${escHtml(l.adminEmail)}</strong> ${l.action} a ${l.resource}</div>
+          <div class="activity-time">${fmtDateTime(l.createdAt)}</div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {}
 }
 
 /* =========================================================
@@ -676,6 +1116,92 @@ function resetAllFilters() {
 }
 
 /* =========================================================
+   APPOINTMENT VIEW TOGGLE (List / Calendar)
+   ========================================================= */
+let currentApptView = 'list';
+let calYear, calMonth, calAppts = [];
+
+function switchApptView(view) {
+  currentApptView = view;
+  document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
+  document.getElementById('calendarViewBtn').classList.toggle('active', view === 'calendar');
+  document.getElementById('allListView').style.display = view === 'list' ? '' : 'none';
+  document.getElementById('allCalendarView').style.display = view === 'calendar' ? '' : 'none';
+  if (view === 'calendar') loadCalendar();
+}
+
+function changeCalMonth(delta) {
+  calMonth += delta;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  loadCalendar();
+}
+
+async function loadCalendar() {
+  const now = new Date();
+  if (!calYear) calYear = now.getFullYear();
+  if (calMonth === undefined) calMonth = now.getMonth();
+
+  document.getElementById('calMonthLabel').textContent = new Date(calYear, calMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  const from = `${calYear}-${String(calMonth+1).padStart(2,'0')}-01`;
+  const lastDay = new Date(calYear, calMonth+1, 0).getDate();
+  const to = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`;
+
+  const data = await apiFetch(`/appointments?dateFrom=${from}&dateTo=${to}&limit=200`);
+  calAppts = data.appointments || [];
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = lastDay;
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  let html = '';
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  dayNames.forEach(d => { html += `<div class="cal-head">${d}</div>`; });
+  for (let i = 0; i < firstDay; i++) { html += '<div class="cal-cell cal-empty"></div>'; }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayAppts = calAppts.filter(a => a.date === dateStr);
+    const isToday = dateStr === todayStr;
+    html += `<div class="cal-cell ${isToday ? 'cal-today' : ''} ${dayAppts.length ? 'cal-has-appts' : ''}" onclick="showCalDay('${dateStr}')">
+      <div class="cal-day-num">${d}</div>
+      ${dayAppts.length ? `<div class="cal-dots">${dayAppts.slice(0,4).map(a => `<span class="cal-dot" style="background:${statusColor(a.status)};"></span>`).join('')}${dayAppts.length > 4 ? `<span class="cal-more">+${dayAppts.length-4}</span>` : ''}</div>` : ''}
+    </div>`;
+  }
+  document.getElementById('calendarGrid').innerHTML = html;
+  document.getElementById('calDayDetail').style.display = 'none';
+}
+
+function statusColor(status) {
+  const map = { confirmed: '#4F46E5', completed: '#10B981', cancelled: '#EF4444', 'no-show': '#F59E0B' };
+  return map[status] || '#94A3B8';
+}
+
+function showCalDay(dateStr) {
+  const dayAppts = calAppts.filter(a => a.date === dateStr);
+  const el = document.getElementById('calDayDetail');
+  if (dayAppts.length === 0) {
+    el.innerHTML = `<div style="padding:16px;color:var(--slate-500);font-size:13px;">No appointments on ${fmtDate(dateStr)}.</div>`;
+  } else {
+    el.innerHTML = `
+      <div class="cal-day-header">${fmtDate(dateStr)} — ${dayAppts.length} appointment${dayAppts.length>1?'s':''}</div>
+      ${dayAppts.map(a => {
+        const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
+        return `<div class="cal-appt-row" onclick="viewAppt(${JSON.stringify(a).replace(/"/g,'&quot;')})">
+          <span class="cal-appt-time">${a.time}</span>
+          <span class="cal-appt-name">${name}</span>
+          <span class="cal-appt-svc">${a.Service?.name||'—'}</span>
+          ${badgeHtml(a.status)}
+        </div>`;
+      }).join('')}
+    `;
+  }
+  el.style.display = 'block';
+}
+
+/* =========================================================
    TABLE RENDERER
    ========================================================= */
 function renderTable(tbodyId, data, showActions) {
@@ -736,10 +1262,24 @@ function viewAppt(a) {
       <div class="detail-field"><div class="detail-field-label">Service</div><div class="detail-field-value">${a.Service?.name||'—'}</div></div>
       <div class="detail-field"><div class="detail-field-label">Duration</div><div class="detail-field-value">${a.duration||30} minutes</div></div>
       <div class="detail-field detail-field-full"><div class="detail-field-label">Patient Notes</div><div class="detail-field-value" style="white-space:pre-wrap">${a.patientNotes||'None'}</div></div>
-      <div class="detail-field detail-field-full"><div class="detail-field-label">Admin Notes</div><div class="detail-field-value" style="white-space:pre-wrap">${a.notes||'None'}</div></div>
+      <div class="detail-field detail-field-full">
+        <div class="detail-field-label">Provider Notes</div>
+        <textarea id="apptProviderNotes" class="form-input appt-notes-textarea" rows="3" placeholder="Add clinical notes for this visit...">${a.notes||''}</textarea>
+        <button class="btn btn-primary btn-sm appt-notes-save" onclick="saveApptNotes('${a.id}')">Save Notes</button>
+      </div>
     </div>
   `;
   openModal('apptModal');
+}
+
+async function saveApptNotes(id) {
+  const notes = document.getElementById('apptProviderNotes').value.trim();
+  const data = await apiFetch('/appointments/' + id + '/notes', 'PUT', { notes });
+  if (data.success) {
+    toast('Provider notes saved.', 'success');
+  } else {
+    toast(data.message || 'Error saving notes.', 'danger');
+  }
 }
 
 /* =========================================================
@@ -824,7 +1364,7 @@ async function viewPatient(id) {
   document.getElementById('patientListCard').classList.add('hidden');
   document.getElementById('patientDetail').classList.remove('hidden');
 
-  const appts = (p.Appointments || []).map(a => `
+  const appts = (data.appointments || []).map(a => `
     <tr>
       <td><code style="color:var(--indigo);font-size:11px;">${a.referenceNumber||'—'}</code></td>
       <td>${fmtDate(a.date)}</td>
@@ -834,76 +1374,133 @@ async function viewPatient(id) {
     </tr>
   `).join('') || `<tr><td colspan="5"><div class="empty-state">No appointments on record.</div></td></tr>`;
 
+  const allergies = Array.isArray(p.allergies) ? p.allergies : (p.allergies ? JSON.parse(p.allergies || '[]') : []);
+  const medications = Array.isArray(p.medications) ? p.medications : (p.medications ? JSON.parse(p.medications || '[]') : []);
+  const insurance = p.insurance || {};
+  const address = p.address || {};
+  const emergency = p.emergencyContact || {};
+  const reminders = Array.isArray(p.reminders) ? p.reminders : [];
+
   document.getElementById('patientDetailContent').innerHTML = `
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-header"><span class="card-title">Patient Information</span></div>
-      <div class="modal-body">
-        <div class="detail-grid">
-          <div class="detail-field"><div class="detail-field-label">Full Name</div><div class="detail-field-value">${p.firstName} ${p.lastName}</div></div>
-          <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value">${p.email}</div></div>
-          <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${p.phone||'—'}</div></div>
-          <div class="detail-field"><div class="detail-field-label">Date of Birth</div><div class="detail-field-value">${p.dob?fmtDate(p.dob):'—'}</div></div>
-          <div class="detail-field"><div class="detail-field-label">Insurance</div><div class="detail-field-value">${p.insuranceProvider||'None listed'}</div></div>
-          <div class="detail-field"><div class="detail-field-label">Member Since</div><div class="detail-field-value">${fmtDate(p.createdAt)}</div></div>
-          <div class="detail-field detail-field-full"><div class="detail-field-label">Address</div><div class="detail-field-value">${[p.address,p.city,p.state,p.zip].filter(Boolean).join(', ')||'—'}</div></div>
-        </div>
-      </div>
+    <div class="patient-tabs">
+      <button class="patient-tab active" onclick="switchPatientTab('overview',this)">Overview</button>
+      <button class="patient-tab" onclick="switchPatientTab('medical',this)">Medical</button>
+      <button class="patient-tab" onclick="switchPatientTab('notes',this)">Notes & Progress</button>
     </div>
 
-    <!-- ===== DOCTOR PROGRESS NOTES (VISIBLE TO PATIENT IN PORTAL) ===== -->
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-header">
-        <span class="card-title">🩺 Clinical Progress & Notes (Visible to Patient)</span>
-        <button class="btn btn-primary btn-sm" onclick="savePatientProgress('${p.id}')">Save Progress Notes</button>
-      </div>
-      <div class="modal-body">
-        <label class="form-label">Doctor Progress Summary & Treatment Plan</label>
-        <textarea id="doctorProgressText" class="form-input" rows="4" placeholder="Enter patient treatment plan, progress notes, vitals, or clinical advice...">${p.progressNotes || ''}</textarea>
-        <div style="font-size:11px;color:var(--slate-500);margin-top:6px;">ℹ️ Notes saved here are immediately visible to the patient inside their secure Patient Portal.</div>
-      </div>
-    </div>
-
-    <!-- ===== DOCTOR FOLLOW-UP & REMINDERS ===== -->
-    <div class="card" style="margin-bottom:20px; border-left:4px solid var(--teal);">
-      <div class="card-header">
-        <span class="card-title">⏰ Send Follow-Up & Appointment Reminder (Email & Portal)</span>
-      </div>
-      <div class="modal-body">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
-          <div>
-            <label class="form-label">Agreed Follow-Up Timeframe</label>
-            <select id="reminderTimeframe" class="form-input">
-              <option value="1 week">In 1 Week</option>
-              <option value="2 weeks">In 2 Weeks</option>
-              <option value="1 month">In 1 Month</option>
-              <option value="3 months">In 3 Months</option>
-              <option value="Custom Date">Custom Return Date</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Target Return Date (Optional)</label>
-            <input type="date" id="reminderDate" class="form-input">
+    <!-- OVERVIEW TAB -->
+    <div id="ptab-overview" class="patient-tab-panel">
+      <div class="card patient-info-card">
+        <div class="card-header"><span class="card-title">Patient Information</span></div>
+        <div class="modal-body">
+          <div class="detail-grid">
+            <div class="detail-field"><div class="detail-field-label">Full Name</div><div class="detail-field-value">${p.firstName} ${p.lastName}</div></div>
+            <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value">${p.email}</div></div>
+            <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${p.phone||'—'}</div></div>
+            <div class="detail-field"><div class="detail-field-label">Date of Birth</div><div class="detail-field-value">${p.dateOfBirth?fmtDate(p.dateOfBirth):'—'}</div></div>
+            <div class="detail-field"><div class="detail-field-label">Insurance Provider</div><div class="detail-field-value">${insurance.provider||'None listed'}</div></div>
+            <div class="detail-field"><div class="detail-field-label">Member Since</div><div class="detail-field-value">${fmtDate(p.createdAt)}</div></div>
+            <div class="detail-field detail-field-full"><div class="detail-field-label">Address</div><div class="detail-field-value">${[address.street, address.city, address.state, address.zip].filter(Boolean).join(', ')||'—'}</div></div>
+            ${emergency.name ? `<div class="detail-field"><div class="detail-field-label">Emergency Contact</div><div class="detail-field-value">${emergency.name} (${emergency.relationship||'—'}) — ${emergency.phone||'—'}</div></div>` : ''}
           </div>
         </div>
-        <label class="form-label">Reminder Instructions for Patient</label>
-        <textarea id="reminderMessage" class="form-input" rows="3" placeholder="E.g., Reminder to return in 1 week to re-check blood pressure and review lab results."></textarea>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-          <span style="font-size:11px; color:var(--slate-500);">📧 Sends automated reminder email & updates Patient Portal dashboard instantly.</span>
-          <button class="btn btn-primary btn-sm" onclick="sendPatientReminder('${p.id}')">Send Reminder Now</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Appointment History</span></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Ref</th><th>Date</th><th>Time</th><th>Service</th><th>Status</th></tr></thead>
+            <tbody>${appts}</tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header"><span class="card-title">Appointment History</span></div>
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead><tr><th>Ref</th><th>Date</th><th>Time</th><th>Service</th><th>Status</th></tr></thead>
-          <tbody>${appts}</tbody>
-        </table>
+    <!-- MEDICAL TAB -->
+    <div id="ptab-medical" class="patient-tab-panel" style="display:none;">
+      <div class="card patient-info-card">
+        <div class="card-header"><span class="card-title">Allergies & Medications</span></div>
+        <div class="modal-body">
+          <label class="form-label">Known Allergies</label>
+          <div class="medical-tags">${allergies.length ? allergies.map(a => `<span class="medical-tag tag-red">${escHtml(a)}</span>`).join('') : '<span style="color:var(--slate-500);font-size:13px;">No known allergies</span>'}</div>
+          <label class="form-label" style="margin-top:16px;">Current Medications</label>
+          <div class="medical-tags">${medications.length ? medications.map(m => `<span class="medical-tag tag-blue">${escHtml(m)}</span>`).join('') : '<span style="color:var(--slate-500);font-size:13px;">No medications on file</span>'}</div>
+        </div>
       </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Medical History</span></div>
+        <div class="modal-body">
+          <div style="white-space:pre-wrap; font-size:13px; color:var(--slate-700); line-height:1.7; padding:8px 0;">${p.medicalHistory || 'No medical history recorded.'}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES & PROGRESS TAB -->
+    <div id="ptab-notes" class="patient-tab-panel" style="display:none;">
+      <div class="card patient-info-card">
+        <div class="card-header">
+          <span class="card-title">Clinical Progress & Treatment Plan</span>
+          <button class="btn btn-primary btn-sm" onclick="savePatientProgress('${p.id}')">Save Notes</button>
+        </div>
+        <div class="modal-body">
+          <textarea id="doctorProgressText" class="form-input" rows="5" placeholder="Enter patient treatment plan, progress notes, vitals, or clinical advice...">${p.progressNotes || ''}</textarea>
+          <div class="progress-notes-hint">Notes saved here are immediately visible to the patient inside their secure Patient Portal.</div>
+        </div>
+      </div>
+
+      <div class="card patient-info-card reminder-card">
+        <div class="card-header">
+          <span class="card-title">Send Follow-Up Reminder</span>
+        </div>
+        <div class="modal-body">
+          <div class="reminder-form-grid">
+            <div>
+              <label class="form-label">Follow-Up Timeframe</label>
+              <select id="reminderTimeframe" class="form-input">
+                <option value="1 week">In 1 Week</option>
+                <option value="2 weeks">In 2 Weeks</option>
+                <option value="1 month">In 1 Month</option>
+                <option value="3 months">In 3 Months</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Target Date (Optional)</label>
+              <input type="date" id="reminderDate" class="form-input">
+            </div>
+          </div>
+          <label class="form-label">Reminder Instructions</label>
+          <textarea id="reminderMessage" class="form-input" rows="3" placeholder="E.g., Reminder to return in 1 week to re-check blood pressure."></textarea>
+          <div class="reminder-form-actions">
+            <button class="btn btn-primary btn-sm" onclick="sendPatientReminder('${p.id}')">Send Reminder</button>
+          </div>
+        </div>
+      </div>
+
+      ${reminders.length > 0 ? `
+      <div class="card">
+        <div class="card-header"><span class="card-title">Reminder History</span></div>
+        <div class="modal-body">
+          ${reminders.map(r => `
+            <div class="reminder-item">
+              <div class="reminder-time">${r.timeframe || '—'} ${r.followUpDate ? '(by '+fmtDate(r.followUpDate)+')' : ''}</div>
+              <div class="reminder-msg">${escHtml(r.message || '')}</div>
+              <div class="reminder-date">Sent: ${fmtDateTime(r.createdAt)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      ` : ''}
     </div>
   `;
+}
+
+function switchPatientTab(tab, btn) {
+  document.querySelectorAll('.patient-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.patient-tab-panel').forEach(p => p.style.display = 'none');
+  btn.classList.add('active');
+  document.getElementById('ptab-' + tab).style.display = 'block';
 }
 
 async function savePatientProgress(patientId) {
@@ -955,12 +1552,15 @@ async function loadServices() {
     <tr>
       <td><strong>${s.name}</strong></td>
       <td>${s.duration || 30} min</td>
-      <td>${s.telehealth ? '<span class="status-badge badge-confirmed">Yes</span>' : '<span class="status-badge badge-cancelled">No</span>'}</td>
+      <td>${s.category === 'telehealth' ? '<span class="status-badge badge-confirmed">Yes</span>' : '<span class="status-badge badge-cancelled">No</span>'}</td>
       <td>${s.isActive !== false ? '<span class="status-badge badge-confirmed">Active</span>' : '<span class="status-badge badge-cancelled">Inactive</span>'}</td>
       <td>
         <div class="row-actions">
-          <button class="action-btn edit" onclick="openServiceModal(${JSON.stringify(s).replace(/"/g,'&quot;')})">
+          <button class="action-btn edit" onclick='openServiceModal(${JSON.stringify(s).replace(/"/g,"&quot;")})'>
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="action-btn del" onclick="deleteService('${s.id}','${escHtml(s.name)}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
           </button>
         </div>
       </td>
@@ -973,7 +1573,7 @@ function openServiceModal(svc) {
   document.getElementById('serviceId').value = svc?.id || '';
   document.getElementById('serviceName').value = svc?.name || '';
   document.getElementById('serviceDuration').value = svc?.duration || 30;
-  document.getElementById('serviceTelehealth').value = String(svc?.telehealth ?? true);
+  document.getElementById('serviceCategory').value = svc?.category || 'physical';
   document.getElementById('serviceDescription').value = svc?.description || '';
   document.getElementById('serviceActive').value = String(svc?.isActive ?? true);
   openModal('serviceModal');
@@ -984,7 +1584,7 @@ async function saveService() {
   const payload = {
     name: document.getElementById('serviceName').value.trim(),
     duration: parseInt(document.getElementById('serviceDuration').value),
-    telehealth: document.getElementById('serviceTelehealth').value === 'true',
+    category: document.getElementById('serviceCategory').value,
     description: document.getElementById('serviceDescription').value.trim(),
     isActive: document.getElementById('serviceActive').value === 'true',
   };
@@ -1000,6 +1600,22 @@ async function saveService() {
   } else {
     toast(data.message || 'Error saving service.', 'danger');
   }
+}
+
+function deleteService(id, name) {
+  openModal('confirmModal');
+  document.querySelector('#confirmModal .modal-body p').textContent = `Delete "${name}"? If it has existing appointments it will be deactivated instead.`;
+  document.getElementById('confirmDeleteBtn').onclick = async () => {
+    closeModal('confirmModal');
+    const data = await apiFetch('/services/' + id, 'DELETE');
+    if (data.success) {
+      toast(data.message, 'success');
+      loadServices();
+    } else {
+      toast(data.message || 'Delete failed.', 'danger');
+    }
+    document.querySelector('#confirmModal .modal-body p').textContent = 'Are you sure you want to permanently delete this? This action cannot be undone.';
+  };
 }
 
 /* =========================================================
@@ -1063,12 +1679,318 @@ function renderPagination(containerId, data, currentPage, loaderFn) {
 }
 
 /* =========================================================
+   MESSAGES
+   ========================================================= */
+let currentMsgId = null;
+
+async function loadMessages(page = 1) {
+  showSkeleton('messagesBody', 4, 7);
+  const filter = document.getElementById('msgFilter').value;
+  const qs = new URLSearchParams({ page, limit: 15 });
+  if (filter) qs.set('isRead', filter);
+
+  const data = await apiFetch('/messages?' + qs);
+  const tbody = document.getElementById('messagesBody');
+
+  if (!data.success || !data.data || data.data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">No messages found.</div></td></tr>`;
+    renderPagination('messagesPagination', data, page, loadMessages);
+    return;
+  }
+
+  tbody.innerHTML = data.data.map(m => `
+    <tr class="${!m.isRead ? 'unread-row' : ''}" style="cursor:pointer;" onclick="viewMessage('${m.id}')">
+      <td>${!m.isRead ? '<span class="unread-dot"></span>' : ''}</td>
+      <td><strong>${escHtml(m.name)}</strong></td>
+      <td>${escHtml(m.email)}</td>
+      <td>${m.phone || '—'}</td>
+      <td>${escHtml(m.subject || 'No subject')}</td>
+      <td>${fmtDateTime(m.createdAt)}</td>
+      <td>
+        <div class="row-actions" onclick="event.stopPropagation()">
+          <button class="action-btn view" title="View" onclick="viewMessage('${m.id}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button class="action-btn del" title="Delete" onclick="deleteMessage('${m.id}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  renderPagination('messagesPagination', data, page, loadMessages);
+}
+
+async function viewMessage(id) {
+  currentMsgId = id;
+  const data = await apiFetch('/messages/' + id);
+  if (!data.success) { toast('Could not load message.', 'danger'); return; }
+  const m = data.data;
+  document.getElementById('msgModalBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-field"><div class="detail-field-label">From</div><div class="detail-field-value"><strong>${escHtml(m.name)}</strong></div></div>
+      <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value"><a href="mailto:${escHtml(m.email)}" style="color:var(--indigo)">${escHtml(m.email)}</a></div></div>
+      <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${m.phone || '—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Date</div><div class="detail-field-value">${fmtDateTime(m.createdAt)}</div></div>
+      <div class="detail-field detail-field-full"><div class="detail-field-label">Subject</div><div class="detail-field-value">${escHtml(m.subject || 'No subject')}</div></div>
+      <div class="detail-field detail-field-full"><div class="detail-field-label">Message</div><div class="detail-field-value" style="white-space:pre-wrap; line-height:1.7;">${escHtml(m.message)}</div></div>
+    </div>
+  `;
+  document.getElementById('msgDeleteBtn').onclick = async () => {
+    closeModal('msgModal');
+    await deleteMessage(id);
+  };
+  openModal('msgModal');
+}
+
+async function deleteMessage(id) {
+  openModal('confirmModal');
+  document.getElementById('confirmDeleteBtn').onclick = async () => {
+    closeModal('confirmModal');
+    const data = await apiFetch('/messages/' + id, 'DELETE');
+    if (data.success) {
+      toast('Message deleted.', 'success');
+      loadMessages();
+    } else {
+      toast(data.message || 'Delete failed.', 'danger');
+    }
+  };
+}
+
+/* =========================================================
+   TESTIMONIALS
+   ========================================================= */
+let currentRating = 5;
+
+function setRating(val) {
+  currentRating = val;
+  document.querySelectorAll('.rating-star').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+  });
+}
+
+async function loadTestimonials() {
+  showSkeleton('testimonialsBody', 4, 6);
+  const data = await apiFetch('/testimonials/manage');
+  const tbody = document.getElementById('testimonialsBody');
+
+  if (!data.success || !data.data || data.data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No testimonials yet.</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.data.map(t => `
+    <tr>
+      <td><strong>${escHtml(t.name)}</strong><br><span style="font-size:11px;color:var(--slate-500);">${escHtml(t.title || '')}</span></td>
+      <td><span class="stars">${'★'.repeat(t.rating || 0)}${'☆'.repeat(5 - (t.rating || 0))}</span></td>
+      <td><span style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; max-width:300px;">${escHtml(t.content)}</span></td>
+      <td>${t.isActive ? '<span class="status-badge badge-confirmed">Active</span>' : '<span class="status-badge badge-cancelled">Inactive</span>'}</td>
+      <td>${t.displayOnHome ? '<span class="status-badge badge-confirmed">Yes</span>' : '<span class="status-badge badge-cancelled">No</span>'}</td>
+      <td>
+        <div class="row-actions">
+          <button class="action-btn edit" onclick='openTestimonialModal(${JSON.stringify(t).replace(/"/g,"&quot;")})'>
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="action-btn del" onclick="deleteTestimonial('${t.id}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openTestimonialModal(t) {
+  document.getElementById('testimonialModalTitle').textContent = t ? 'Edit Testimonial' : 'Add Testimonial';
+  document.getElementById('testimId').value = t?.id || '';
+  document.getElementById('testimName').value = t?.name || '';
+  document.getElementById('testimTitle').value = t?.title || '';
+  document.getElementById('testimContent').value = t?.content || '';
+  document.getElementById('testimActive').checked = t?.isActive !== false;
+  document.getElementById('testimHome').checked = !!t?.displayOnHome;
+  setRating(t?.rating || 5);
+  openModal('testimonialModal');
+}
+
+async function saveTestimonial() {
+  const id = document.getElementById('testimId').value;
+  const payload = {
+    name: document.getElementById('testimName').value.trim(),
+    title: document.getElementById('testimTitle').value.trim(),
+    content: document.getElementById('testimContent').value.trim(),
+    rating: currentRating,
+    isActive: document.getElementById('testimActive').checked,
+    displayOnHome: document.getElementById('testimHome').checked,
+  };
+  if (!payload.name || !payload.content) { toast('Name and content are required.', 'warning'); return; }
+
+  const endpoint = id ? '/testimonials/manage/' + id : '/testimonials/manage';
+  const method = id ? 'PUT' : 'POST';
+  const data = await apiFetch(endpoint, method, payload);
+  if (data.success) {
+    toast('Testimonial saved.', 'success');
+    closeModal('testimonialModal');
+    loadTestimonials();
+  } else {
+    toast(data.message || 'Error saving.', 'danger');
+  }
+}
+
+function deleteTestimonial(id) {
+  openModal('confirmModal');
+  document.getElementById('confirmDeleteBtn').onclick = async () => {
+    closeModal('confirmModal');
+    const data = await apiFetch('/testimonials/manage/' + id, 'DELETE');
+    if (data.success) {
+      toast('Testimonial deleted.', 'success');
+      loadTestimonials();
+    } else {
+      toast(data.message || 'Delete failed.', 'danger');
+    }
+  };
+}
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+function switchSettingsTab(tab) {
+  document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.settings-panel').forEach(p => p.style.display = 'none');
+  event.target.classList.add('active');
+  document.getElementById('settingsTab-' + tab).style.display = 'block';
+}
+
+async function loadSettings() {
+  const data = await apiFetch('/settings');
+  if (!data.success) return;
+  const s = data.data || {};
+  document.getElementById('set_clinic_name').value = s.clinic_name || '';
+  document.getElementById('set_clinic_tagline').value = s.clinic_tagline || '';
+  document.getElementById('set_clinic_phone').value = s.clinic_phone || '';
+  document.getElementById('set_clinic_email').value = s.clinic_email || '';
+  document.getElementById('set_clinic_address').value = s.clinic_address || '';
+  document.getElementById('set_clinic_hours').value = s.clinic_hours || '';
+  document.getElementById('set_hero_title').value = s.hero_title || '';
+  document.getElementById('set_hero_subtitle').value = s.hero_subtitle || '';
+  document.getElementById('set_about_text').value = s.about_text || '';
+  document.getElementById('set_privacy_policy').value = s.privacy_policy || '';
+  document.getElementById('set_terms_of_service').value = s.terms_of_service || '';
+}
+
+async function saveSettings() {
+  const errEl = document.getElementById('settingsError');
+  const okEl = document.getElementById('settingsSuccess');
+  errEl.style.display = 'none';
+  okEl.style.display = 'none';
+
+  const payload = {
+    clinic_name: document.getElementById('set_clinic_name').value.trim(),
+    clinic_tagline: document.getElementById('set_clinic_tagline').value.trim(),
+    clinic_phone: document.getElementById('set_clinic_phone').value.trim(),
+    clinic_email: document.getElementById('set_clinic_email').value.trim(),
+    clinic_address: document.getElementById('set_clinic_address').value.trim(),
+    clinic_hours: document.getElementById('set_clinic_hours').value.trim(),
+    hero_title: document.getElementById('set_hero_title').value.trim(),
+    hero_subtitle: document.getElementById('set_hero_subtitle').value.trim(),
+    about_text: document.getElementById('set_about_text').value.trim(),
+    privacy_policy: document.getElementById('set_privacy_policy').value.trim(),
+    terms_of_service: document.getElementById('set_terms_of_service').value.trim(),
+  };
+
+  const data = await apiFetch('/settings', 'PUT', payload);
+  if (data.success) {
+    okEl.textContent = 'Settings saved successfully!';
+    okEl.style.display = 'block';
+    toast('Settings saved.', 'success');
+  } else {
+    errEl.textContent = data.message || 'Error saving settings.';
+    errEl.style.display = 'block';
+    toast('Error saving settings.', 'danger');
+  }
+}
+
+/* =========================================================
+   AUDIT LOGS
+   ========================================================= */
+async function loadAuditLogs(page = 1) {
+  showSkeleton('auditBody', 4, 6);
+  const qs = new URLSearchParams({ page, limit: 30 });
+
+  const data = await apiFetch('/audit-logs?' + qs);
+  const tbody = document.getElementById('auditBody');
+
+  let logs = data.logs || [];
+
+  const actionFilter = document.getElementById('auditAction').value;
+  const resourceFilter = document.getElementById('auditResource').value;
+  if (actionFilter) logs = logs.filter(l => l.action === actionFilter);
+  if (resourceFilter) logs = logs.filter(l => l.resource === resourceFilter);
+
+  if (logs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No audit logs found.</div></td></tr>`;
+    renderPagination('auditPagination', data, page, loadAuditLogs);
+    return;
+  }
+
+  tbody.innerHTML = logs.map(l => `
+    <tr>
+      <td style="white-space:nowrap;">${fmtDateTime(l.createdAt)}</td>
+      <td><strong>${escHtml(l.adminEmail || '—')}</strong></td>
+      <td><span class="status-badge ${auditBadgeClass(l.action)}">${l.action}</span></td>
+      <td>${escHtml(l.resource || '—')}</td>
+      <td><code style="font-size:11px; color:var(--slate-500);">${escHtml(JSON.stringify(l.details || {}).substring(0, 80))}</code></td>
+      <td style="font-size:12px; color:var(--slate-500);">${l.ipAddress || '—'}</td>
+    </tr>
+  `).join('');
+  renderPagination('auditPagination', data, page, loadAuditLogs);
+}
+
+function auditBadgeClass(action) {
+  if (action === 'create') return 'badge-confirmed';
+  if (action === 'delete') return 'badge-cancelled';
+  if (action === 'update_status') return 'badge-no-show';
+  return 'badge-completed';
+}
+
+/* =========================================================
+   UNREAD MESSAGE BADGE
+   ========================================================= */
+async function updateMsgBadge() {
+  try {
+    const data = await apiFetch('/stats');
+    if (data.success && data.stats) {
+      const badge = document.getElementById('msgBadge');
+      const count = data.stats.unreadMessages || 0;
+      if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.style.display = 'inline-flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  } catch(e) {}
+}
+
+/* =========================================================
    UTILITIES
    ========================================================= */
 function fmtDate(d) {
   if (!d) return '—';
   const date = new Date(d);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function fmtDateTime(d) {
+  if (!d) return '—';
+  const date = new Date(d);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 function badgeHtml(status) {

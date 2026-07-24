@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 const { Patient } = require('../models');
 const { AppError } = require('./errorHandler');
 
+function getJwtSecret() {
+  if (!process.env.JWT_SECRET) {
+    throw new AppError('JWT_SECRET environment variable is not configured.', 500);
+  }
+  return process.env.JWT_SECRET;
+}
+
 exports.optionalPatientAuth = async (req, res, next) => {
   let token;
   if (req.cookies && req.cookies.patientToken) {
@@ -13,7 +20,7 @@ exports.optionalPatientAuth = async (req, res, next) => {
   if (!token) return next();
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'uhs_jwt_secret');
+    const decoded = jwt.verify(token, getJwtSecret());
     const patient = await Patient.findByPk(decoded.id);
     if (patient && patient.status !== 'archived') {
       req.patient = patient;
@@ -35,7 +42,7 @@ exports.protectPatient = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'uhs_jwt_secret');
+    const decoded = jwt.verify(token, getJwtSecret());
     const patient = await Patient.findByPk(decoded.id);
 
     if (!patient || patient.status === 'archived') {

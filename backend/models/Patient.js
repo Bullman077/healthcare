@@ -20,6 +20,8 @@ const Patient = sequelize.define('Patient', {
   progressNotes: { type: DataTypes.TEXT },
   medicalProgress: { type: DataTypes.JSONB, defaultValue: [] },
   reminders: { type: DataTypes.JSONB, defaultValue: [] },
+  resetPasswordToken: { type: DataTypes.STRING(255) },
+  resetPasswordExpires: { type: DataTypes.DATE },
 }, {
   timestamps: true,
   getterMethods: {

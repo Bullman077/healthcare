@@ -677,6 +677,64 @@ body {
 
 .hidden { display: none !important; }
 
+/* ================= PORTAL TABS ================= */
+.portal-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: white;
+  padding: 6px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.portal-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-500);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.portal-tab:hover { background: var(--slate-50); color: var(--slate-700); }
+.portal-tab.active { background: var(--teal-600); color: white; box-shadow: 0 2px 8px rgba(13,148,136,0.3); }
+.portal-tab-panel { animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ================= MEDICAL TAGS ================= */
+.medical-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.medical-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.tag-red {
+  background: rgba(220,38,38,0.08);
+  color: #dc2626;
+  border: 1px solid rgba(220,38,38,0.15);
+}
+.tag-blue {
+  background: rgba(79,70,229,0.08);
+  color: #4f46e5;
+  border: 1px solid rgba(79,70,229,0.15);
+}
+
+/* ================= PROFILE GRID ================= */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .profile-grid { grid-template-columns: 1fr; }
+  .portal-tabs { flex-direction: column; }
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 700px) {
   .portal-navbar {

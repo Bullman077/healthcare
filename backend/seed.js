@@ -11,8 +11,10 @@ async function seed() {
   console.log('Connected to PostgreSQL');
 
   // Sync all models (create tables if they don't exist)
-  await sequelize.sync({ force: true });
-  console.log('Tables created / reset');
+  // Use 'alter' only in development; never use 'force' in production
+  const syncOpts = process.env.NODE_ENV === 'production' ? {} : { alter: true };
+  await sequelize.sync(syncOpts);
+  console.log('Tables synced');
 
   await Admin.create({
     email: process.env.ADMIN_EMAIL || 'admin@uhshealthcare.com',

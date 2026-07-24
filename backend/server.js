@@ -18,6 +18,7 @@ const patientRoutes = require('./routes/patientRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 const { limiter, csrfProtect } = require('./middleware/security');
+const { startScheduler } = require('./scheduler');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,6 +37,7 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:', 'http:'],
@@ -70,7 +72,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 /* 5. Rate limiting — global */
 app.use(limiter);
 
-/* 6. Body parsing */
+/* 6. Body parsing — raw body preserved for Stripe webhooks before json parser */
+app.use('/api/payments/webhook', express.raw({ type: 'application/json', limit: '10kb' }));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 
@@ -131,12 +134,27 @@ process.on('SIGTERM', () => shutdown('SIGTERM'));
 process.on('SIGINT', () => shutdown('SIGINT'));
 
 /* ----- Start ----- */
+function validateEnv() {
+  if (process.env.NODE_ENV === 'test') return;
+  const required = ['DATABASE_URL', 'JWT_SECRET', 'COOKIE_SECRET'];
+  const missing = required.filter((k) => !process.env[k]);
+  if (missing.length) {
+    console.error(`FATAL: Missing required environment variables: ${missing.join(', ')}`);
+    process.exit(1);
+  }
+  if (process.env.JWT_SECRET.length < 32) {
+    console.warn('WARNING: JWT_SECRET is shorter than 32 characters. Consider using a longer secret.');
+  }
+}
+
 async function start() {
   try {
+    validateEnv();
     await connectDB();
     await sequelize.sync();
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT} [${process.env.NODE_ENV || 'development'}]`);
+      startScheduler();
     });
   } catch (err) {
     console.error('Failed to start server:', err.message);
@@ -144,4 +162,8 @@ async function start() {
   }
 }
 
-start();
+if (require.main === module) {
+  start();
+}
+
+module.exports = app;

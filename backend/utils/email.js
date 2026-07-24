@@ -1,5 +1,10 @@
 const nodemailer = require('nodemailer');
 
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 function createTransporter() {
   const isPlaceholder = !process.env.EMAIL_USER || process.env.EMAIL_USER.includes('your_ethereal');
 
@@ -38,7 +43,7 @@ function extractAppointmentData(appointment) {
   const patientName = patient.fullName || (patient.firstName && `${patient.firstName} ${patient.lastName}`) || 'Patient';
   const patientEmail = patient.email || '';
   const serviceName = service.name || 'Healthcare Visit';
-  const isTelehealth = service.telehealth || serviceName.toLowerCase().includes('telehealth') || serviceName.toLowerCase().includes('virtual');
+  const isTelehealth = service.category === 'telehealth' || serviceName.toLowerCase().includes('telehealth') || serviceName.toLowerCase().includes('virtual');
   const dateStr = new Date(appointment.date).toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
@@ -136,7 +141,10 @@ async function sendConfirmation(appointment) {
   });
 
   if (process.env.NODE_ENV !== 'production') {
-    console.log('Confirmation Email preview: %s', nodemailer.getTestMessageUrl(info));
+    const preview = info.messageId && !info.messageId.startsWith('simulated_')
+      ? nodemailer.getTestMessageUrl(info)
+      : `[simulated] ${info.messageId}`;
+    console.log('Confirmation Email preview: %s', preview);
   }
 
   return info;
@@ -357,6 +365,79 @@ async function sendStatusUpdate(appointment) {
   });
 }
 
-module.exports = { sendConfirmation, sendReminderEmail, sendPaymentConfirmation, sendFollowUpReminderEmail, sendStatusUpdate };
+async function sendPasswordResetEmail(patient, resetToken) {
+  const patientEmail = patient.email;
+  const patientName = patient.fullName || `${patient.firstName} ${patient.lastName}`;
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5000';
+  const resetUrl = `${frontendUrl}/patient/?resetToken=${resetToken}`;
+
+  if (!patientEmail) return;
+
+  const html = `
+  <div style="font-family:'Plus Jakarta Sans',Segoe UI,sans-serif;max-width:600px;margin:20px auto;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden;background:#fff;">
+    <div style="background:linear-gradient(135deg,#0F766E,#0D9488);color:#fff;padding:28px 24px;text-align:center;">
+      <h2 style="margin:0;font-size:22px;">🔒 Password Reset Request</h2>
+      <p style="margin:6px 0 0;opacity:0.9;font-size:14px;">UHS Healthcare Services</p>
+    </div>
+    <div style="padding:28px 24px;color:#1E293B;">
+      <p>Dear <strong>${patientName}</strong>,</p>
+      <p>We received a request to reset your patient portal password. Click the button below to set a new password:</p>
+      <p style="text-align:center;margin:24px 0;">
+        <a href="${resetUrl}" style="display:inline-block;padding:14px 28px;background:#0F766E;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:15px;">Reset My Password</a>
+      </p>
+      <p style="font-size:13px;color:#64748B;">This link will expire in 1 hour. If you did not request this, please ignore this email.</p>
+    </div>
+    <div style="text-align:center;padding:16px;background:#F8FAFC;color:#94A3B8;font-size:12px;border-top:1px solid #E2E8F0;">
+      UHS Healthcare Services &bull; (803) 381-7489
+    </div>
+  </div>`;
+
+  await getTransporter().sendMail({
+    from: `"UHS Healthcare Services" <${process.env.EMAIL_FROM || 'noreply@uhshealthcare.com'}>`,
+    to: patientEmail,
+    subject: `🔒 Password Reset Request – UHS Healthcare`,
+    html,
+  });
+}
+
+async function sendNewMessageNotification(messageData) {
+  const { name, email, phone, subject, message } = messageData;
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'admin@uhshealthcare.com';
+
+  const html = `
+  <div style="font-family:'Plus Jakarta Sans',Segoe UI,sans-serif;max-width:600px;margin:20px auto;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden;background:#fff;">
+    <div style="background:linear-gradient(135deg,#4F46E5,#6366F1);color:#fff;padding:28px 24px;text-align:center;">
+      <h2 style="margin:0;font-size:22px;">✉️ New Contact Form Message</h2>
+      <p style="margin:6px 0 0;opacity:0.9;font-size:14px;">UHS Healthcare Admin Dashboard</p>
+    </div>
+    <div style="padding:28px 24px;color:#1E293B;">
+      <p>A new message has been submitted through the contact form:</p>
+      <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+        <tr><td style="padding:8px 0;border-bottom:1px solid #F1F5F9;font-weight:600;color:#475569;width:100px;">From</td><td>${escHtml(name)} (${escHtml(email)})</td></tr>
+        ${phone ? `<tr><td style="padding:8px 0;border-bottom:1px solid #F1F5F9;font-weight:600;color:#475569;">Phone</td><td>${escHtml(phone)}</td></tr>` : ''}
+        ${subject ? `<tr><td style="padding:8px 0;border-bottom:1px solid #F1F5F9;font-weight:600;color:#475569;">Subject</td><td>${escHtml(subject)}</td></tr>` : ''}
+      </table>
+      <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:16px;margin:16px 0;">
+        <div style="font-size:11px;text-transform:uppercase;font-weight:700;color:#64748B;margin-bottom:6px;">Message</div>
+        <div style="font-size:14px;line-height:1.6;white-space:pre-wrap;">${escHtml(message)}</div>
+      </div>
+      <p style="text-align:center;margin-top:20px;">
+        <a href="${process.env.FRONTEND_URL || 'http://localhost:5000'}/admin/" style="display:inline-block;padding:12px 24px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">View in Admin Dashboard</a>
+      </p>
+    </div>
+    <div style="text-align:center;padding:16px;background:#F8FAFC;color:#94A3B8;font-size:12px;border-top:1px solid #E2E8F0;">
+      UHS Healthcare Services &bull; Automated Notification
+    </div>
+  </div>`;
+
+  await getTransporter().sendMail({
+    from: `"UHS Contact Form" <${process.env.EMAIL_FROM || 'noreply@uhshealthcare.com'}>`,
+    to: adminEmail,
+    subject: `✉️ New Contact Message: ${escHtml(subject || 'No Subject')} – from ${escHtml(name)}`,
+    html,
+  });
+}
+
+module.exports = { sendConfirmation, sendReminderEmail, sendPaymentConfirmation, sendFollowUpReminderEmail, sendStatusUpdate, sendPasswordResetEmail, sendNewMessageNotification };
 
 

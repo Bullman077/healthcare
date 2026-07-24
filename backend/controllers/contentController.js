@@ -1,13 +1,36 @@
 const { Op } = require('sequelize');
 const { Message, Testimonial, Setting, Service } = require('../models');
 const { AppError } = require('../middleware/errorHandler');
+const { sendNewMessageNotification } = require('../utils/email');
 
 /* ===== MESSAGES ===== */
 exports.submitMessage = async (req, res, next) => {
   try {
     const { name, email, phone, subject, message } = req.body;
-    const msg = await Message.create({ name, email, phone, subject, message });
+    if (!name || !email || !message) {
+      return next(new AppError('Name, email, and message are required.', 400));
+    }
+    if (name.length > 100) {
+      return next(new AppError('Name must be 100 characters or less.', 400));
+    }
+    if (message.length > 2000) {
+      return next(new AppError('Message must be 2000 characters or less.', 400));
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return next(new AppError('Please provide a valid email address.', 400));
+    }
+    const msg = await Message.create({
+      name: name.substring(0, 100),
+      email: email.toLowerCase().substring(0, 255),
+      phone: phone ? phone.substring(0, 20) : null,
+      subject: subject ? subject.substring(0, 200) : null,
+      message: message.substring(0, 2000),
+    });
     res.status(201).json({ success: true, message: 'Thank you! We will get back to you soon.', data: { id: msg.id } });
+    sendNewMessageNotification({ name, email, phone, subject, message }).catch((err) => {
+      console.error('Failed to send contact notification email:', err.message);
+    });
   } catch (err) {
     next(err);
   }
@@ -41,6 +64,18 @@ exports.getMessage = async (req, res, next) => {
       msg.isRead = true;
       await msg.save({ fields: ['isRead'] });
     }
+    res.json({ success: true, data: msg });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.toggleMessageRead = async (req, res, next) => {
+  try {
+    const msg = await Message.findByPk(req.params.id);
+    if (!msg) return next(new AppError('Message not found.', 404));
+    msg.isRead = !msg.isRead;
+    await msg.save({ fields: ['isRead'] });
     res.json({ success: true, data: msg });
   } catch (err) {
     next(err);
@@ -81,7 +116,12 @@ exports.getAllTestimonials = async (req, res, next) => {
 
 exports.createTestimonial = async (req, res, next) => {
   try {
-    const testimonial = await Testimonial.create(req.body);
+    const allowedFields = ['name', 'title', 'content', 'rating', 'isActive', 'displayOnHome'];
+    const filtered = {};
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) filtered[field] = req.body[field];
+    });
+    const testimonial = await Testimonial.create(filtered);
     res.status(201).json({ success: true, data: testimonial });
   } catch (err) {
     next(err);
@@ -90,9 +130,12 @@ exports.createTestimonial = async (req, res, next) => {
 
 exports.updateTestimonial = async (req, res, next) => {
   try {
+    const allowedFields = ['name', 'title', 'content', 'rating', 'isActive', 'displayOnHome'];
     const testimonial = await Testimonial.findByPk(req.params.id);
     if (!testimonial) return next(new AppError('Testimonial not found.', 404));
-    Object.assign(testimonial, req.body);
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) testimonial[field] = req.body[field];
+    });
     await testimonial.save();
     res.json({ success: true, data: testimonial });
   } catch (err) {
@@ -125,8 +168,13 @@ exports.getSettings = async (req, res, next) => {
 
 exports.updateSettings = async (req, res, next) => {
   try {
+    const allowedKeys = [
+      'clinic_name', 'clinic_phone', 'clinic_email', 'clinic_address',
+      'clinic_hours', 'clinic_tagline', 'hero_title', 'hero_subtitle',
+      'about_text', 'privacy_policy', 'terms_of_service',
+    ];
     const updates = req.body;
-    const keys = Object.keys(updates);
+    const keys = Object.keys(updates).filter((k) => allowedKeys.includes(k));
     for (const key of keys) {
       await Setting.upsert({ key, value: String(updates[key]) });
     }

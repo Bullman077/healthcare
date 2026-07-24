@@ -1,9 +1,27 @@
 const jwt = require('jsonwebtoken');
 const { Op, fn, col, literal } = require('sequelize');
-const { Admin, Patient, Appointment, Service } = require('../models');
+const { Admin, Patient, Appointment, Service, AuditLog, Message } = require('../models');
 const { sequelize } = require('../config/db');
 const { AppError } = require('../middleware/errorHandler');
 const { sendStatusUpdate, sendFollowUpReminderEmail } = require('../utils/email');
+
+const iLike = sequelize.dialect.name === 'sqlite' ? Op.like : Op.iLike;
+
+async function logAudit(admin, action, resource, resourceId, details, req) {
+  try {
+    await AuditLog.create({
+      adminId: admin.id,
+      adminEmail: admin.email,
+      action,
+      resource,
+      resourceId,
+      details: details || {},
+      ipAddress: req ? (req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim() : null,
+    });
+  } catch (err) {
+    console.error('Audit log error:', err.message);
+  }
+}
 
 function signToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -70,10 +88,10 @@ exports.getAppointments = async (req, res, next) => {
     if (search) {
       const term = `%${search.trim()}%`;
       where[Op.or] = [
-        { referenceNumber: { [Op.iLike]: term } },
-        { '$patient.firstName$': { [Op.iLike]: term } },
-        { '$patient.lastName$': { [Op.iLike]: term } },
-        { '$patient.email$': { [Op.iLike]: term } },
+        { referenceNumber: { [iLike]: term } },
+        { '$patient.firstName$': { [iLike]: term } },
+        { '$patient.lastName$': { [iLike]: term } },
+        { '$patient.email$': { [iLike]: term } },
       ];
     }
 
@@ -91,7 +109,7 @@ exports.getAppointments = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: rows,
+      appointments: rows,
       pagination: {
         page: parseInt(page, 10),
         limit: parseInt(limit, 10),
@@ -134,6 +152,7 @@ exports.updateAppointmentStatus = async (req, res, next) => {
     });
     if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
 
+    const previousStatus = appointment.status;
     appointment.status = status;
     if (status === 'cancelled') {
       appointment.cancelledAt = new Date();
@@ -143,6 +162,8 @@ exports.updateAppointmentStatus = async (req, res, next) => {
       appointment.confirmedAt = new Date();
     }
     await appointment.save();
+
+    await logAudit(req.admin, 'update_status', 'appointment', req.params.id, { status, previousStatus }, req);
 
     try {
       await sendStatusUpdate(appointment);
@@ -160,7 +181,9 @@ exports.deleteAppointment = async (req, res, next) => {
   try {
     const appointment = await Appointment.findByPk(req.params.id);
     if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
+    const refNumber = appointment.referenceNumber;
     await appointment.destroy();
+    await logAudit(req.admin, 'delete', 'appointment', req.params.id, { referenceNumber: refNumber }, req);
     res.json({ success: true, message: 'Appointment deleted permanently.' });
   } catch (err) {
     next(err);
@@ -216,7 +239,7 @@ exports.getStats = async (req, res, next) => {
     const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
     const todayEnd = new Date(); todayEnd.setHours(23, 59, 59, 999);
 
-    const [totalPatients, totalAppointments, statusCounts, todayCount] = await Promise.all([
+    const [totalPatients, totalAppointments, statusCounts, todayCount, unreadMessages, totalServices] = await Promise.all([
       Patient.count({ where: { status: 'active' } }),
       Appointment.count(),
       Appointment.findAll({
@@ -227,6 +250,8 @@ exports.getStats = async (req, res, next) => {
       Appointment.count({
         where: { date: { [Op.between]: [todayStart, todayEnd] }, status: 'confirmed' },
       }),
+      Message.count({ where: { isRead: false } }),
+      Service.count({ where: { isActive: true } }),
     ]);
 
     const statusMap = { confirmed: 0, cancelled: 0, completed: 0, 'no-show': 0 };
@@ -234,11 +259,11 @@ exports.getStats = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: {
-        totalPatients, totalAppointments,
+      stats: {
+        total: totalAppointments, totalPatients,
         confirmed: statusMap.confirmed, cancelled: statusMap.cancelled,
         completed: statusMap.completed, noShow: statusMap['no-show'],
-        today: todayCount,
+        today: todayCount, unreadMessages, totalServices,
       },
     });
   } catch (err) {
@@ -255,19 +280,20 @@ exports.getPatients = async (req, res, next) => {
     if (search) {
       const term = `%${search.trim()}%`;
       where[Op.or] = [
-        { firstName: { [Op.iLike]: term } },
-        { lastName: { [Op.iLike]: term } },
-        { email: { [Op.iLike]: term } },
-        { phone: { [Op.iLike]: term } },
+        { firstName: { [iLike]: term } },
+        { lastName: { [iLike]: term } },
+        { email: { [iLike]: term } },
+        { phone: { [iLike]: term } },
       ];
     }
 
     const { count, rows } = await Patient.findAndCountAll({
       where, order: [['createdAt', 'DESC']], offset, limit: parseInt(limit, 10), distinct: true,
+      attributes: { exclude: ['resetPasswordToken', 'resetPasswordExpires'] },
     });
 
     res.json({
-      success: true, data: rows,
+      success: true, patients: rows,
       pagination: {
         page: parseInt(page, 10), limit: parseInt(limit, 10), total: count,
         pages: Math.ceil(count / parseInt(limit, 10)),
@@ -280,7 +306,9 @@ exports.getPatients = async (req, res, next) => {
 
 exports.getPatient = async (req, res, next) => {
   try {
-    const patient = await Patient.findByPk(req.params.id);
+    const patient = await Patient.findByPk(req.params.id, {
+      attributes: { exclude: ['resetPasswordToken', 'resetPasswordExpires', 'passwordHash'] },
+    });
     if (!patient) return next(new AppError('No patient found with that ID.', 404));
 
     const appointments = await Appointment.findAll({
@@ -290,7 +318,7 @@ exports.getPatient = async (req, res, next) => {
       limit: 50,
     });
 
-    res.json({ success: true, data: { patient, appointments } });
+    res.json({ success: true, patient, appointments });
   } catch (err) {
     next(err);
   }
@@ -311,6 +339,7 @@ exports.updatePatient = async (req, res, next) => {
       if (req.body[field] !== undefined) patient[field] = req.body[field];
     });
     await patient.save();
+    await logAudit(req.admin, 'update', 'patient', req.params.id, { email: patient.email }, req);
 
     res.json({ success: true, data: patient });
   } catch (err) {
@@ -321,7 +350,7 @@ exports.updatePatient = async (req, res, next) => {
 exports.getServices = async (req, res, next) => {
   try {
     const services = await Service.findAll({ order: [['category', 'ASC'], ['name', 'ASC']] });
-    res.json({ success: true, data: services });
+    res.json({ success: true, services });
   } catch (err) {
     next(err);
   }
@@ -329,7 +358,17 @@ exports.getServices = async (req, res, next) => {
 
 exports.createService = async (req, res, next) => {
   try {
-    const service = await Service.create(req.body);
+    const allowedFields = [
+      'name', 'description', 'duration', 'price', 'category',
+      'isActive', 'requiresPreparation', 'preparationInstructions',
+      'color', 'icon',
+    ];
+    const filtered = {};
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) filtered[field] = req.body[field];
+    });
+    const service = await Service.create(filtered);
+    await logAudit(req.admin, 'create', 'service', service.id, { name: service.name }, req);
     res.status(201).json({ success: true, data: service });
   } catch (err) {
     next(err);
@@ -365,10 +404,18 @@ exports.updateProfile = async (req, res, next) => {
 
 exports.updateService = async (req, res, next) => {
   try {
+    const allowedFields = [
+      'name', 'description', 'duration', 'price', 'category',
+      'isActive', 'requiresPreparation', 'preparationInstructions',
+      'color', 'icon',
+    ];
     const service = await Service.findByPk(req.params.id);
     if (!service) return next(new AppError('No service found with that ID.', 404));
-    Object.assign(service, req.body);
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) service[field] = req.body[field];
+    });
     await service.save();
+    await logAudit(req.admin, 'update', 'service', req.params.id, { name: service.name }, req);
     res.json({ success: true, data: service });
   } catch (err) {
     next(err);
@@ -433,6 +480,168 @@ exports.addPatientReminder = async (req, res, next) => {
       message: 'Follow-up reminder sent and saved to patient account.',
       reminders: patient.reminders,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAuditLogs = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 50 } = req.query;
+    const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
+
+    const { count, rows } = await AuditLog.findAndCountAll({
+      order: [['createdAt', 'DESC']],
+      offset,
+      limit: parseInt(limit, 10),
+    });
+
+    res.json({
+      success: true,
+      logs: rows,
+      pagination: {
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10),
+        total: count,
+        pages: Math.ceil(count / parseInt(limit, 10)),
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ===== APPOINTMENT NOTES ===== */
+exports.updateAppointmentNotes = async (req, res, next) => {
+  try {
+    const { notes } = req.body;
+    const appointment = await Appointment.findByPk(req.params.id, {
+      include: [
+        { association: 'patient', attributes: ['firstName', 'lastName', 'email'] },
+        { association: 'service', attributes: ['name'] },
+      ],
+    });
+    if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
+
+    appointment.notes = notes;
+    await appointment.save({ fields: ['notes'] });
+    await logAudit(req.admin, 'update_notes', 'appointment', req.params.id, { notes: (notes || '').substring(0, 100) }, req);
+
+    res.json({ success: true, message: 'Notes saved.', data: appointment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ===== SERVICE DELETE ===== */
+exports.deleteService = async (req, res, next) => {
+  try {
+    const service = await Service.findByPk(req.params.id);
+    if (!service) return next(new AppError('No service found with that ID.', 404));
+
+    const apptCount = await Appointment.count({ where: { serviceId: service.id } });
+    if (apptCount > 0) {
+      service.isActive = false;
+      await service.save({ fields: ['isActive'] });
+      await logAudit(req.admin, 'deactivate', 'service', req.params.id, { name: service.name, reason: 'has appointments' }, req);
+      return res.json({ success: true, message: 'Service deactivated (has existing appointments).', data: service });
+    }
+
+    await service.destroy();
+    await logAudit(req.admin, 'delete', 'service', req.params.id, { name: service.name }, req);
+    res.json({ success: true, message: 'Service deleted permanently.' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ===== TODAY'S SCHEDULE ===== */
+exports.getTodaySchedule = async (req, res, next) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const appointments = await Appointment.findAll({
+      where: {
+        date: { [Op.gte]: today, [Op.lt]: tomorrow },
+        status: { [Op.in]: ['confirmed', 'completed'] },
+      },
+      include: [
+        { association: 'patient', attributes: ['firstName', 'lastName', 'email', 'phone'] },
+        { association: 'service', attributes: ['name', 'duration', 'color', 'category'] },
+      ],
+      order: [['time', 'ASC']],
+    });
+
+    res.json({ success: true, appointments });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ===== APPOINTMENT TRENDS (last 7 days) ===== */
+exports.getAppointmentTrends = async (req, res, next) => {
+  try {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      d.setHours(0, 0, 0, 0);
+      const next = new Date(d);
+      next.setDate(next.getDate() + 1);
+
+      const [confirmed, completed, cancelled] = await Promise.all([
+        Appointment.count({ where: { date: { [Op.gte]: d, [Op.lt]: next }, status: 'confirmed' } }),
+        Appointment.count({ where: { date: { [Op.gte]: d, [Op.lt]: next }, status: 'completed' } }),
+        Appointment.count({ where: { date: { [Op.gte]: d, [Op.lt]: next }, status: { [Op.in]: ['cancelled', 'no-show'] } } }),
+      ]);
+
+      days.push({
+        date: d.toISOString().split('T')[0],
+        label: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        confirmed, completed, cancelled,
+        total: confirmed + completed + cancelled,
+      });
+    }
+
+    res.json({ success: true, data: days });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ===== SERVICE DISTRIBUTION ===== */
+exports.getServiceDistribution = async (req, res, next) => {
+  try {
+    const distributions = await Appointment.findAll({
+      attributes: ['serviceId', [fn('COUNT', col('Appointment.id')), 'count']],
+      include: [{ association: 'service', attributes: ['name', 'color'] }],
+      group: ['serviceId', 'service.id', 'service.name', 'service.color'],
+      order: [[fn('COUNT', col('Appointment.id')), 'DESC']],
+      raw: true,
+      nest: true,
+    });
+
+    res.json({ success: true, data: distributions });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ===== NEW PATIENTS THIS MONTH ===== */
+exports.getNewPatientsThisMonth = async (req, res, next) => {
+  try {
+    const start = new Date();
+    start.setDate(1);
+    start.setHours(0, 0, 0, 0);
+
+    const count = await Patient.count({
+      where: { createdAt: { [Op.gte]: start } },
+    });
+
+    res.json({ success: true, count });
   } catch (err) {
     next(err);
   }
