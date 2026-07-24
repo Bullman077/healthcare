@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
+    "build": "echo 'No build step required'",
     "seed": "node seed.js",
     "migrate": "node migrate.js",
     "test": "jest --forceExit --detectOpenHandles",
