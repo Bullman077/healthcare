@@ -57,6 +57,8 @@ function signToken(id) {
   });
 }
 
+const failedAttemptsMap = new Map();
+
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -64,13 +66,51 @@ exports.login = async (req, res, next) => {
       return next(new AppError('Please provide email and password.', 400));
     }
 
-    const admin = await Admin.findOne({ where: { email, isActive: true } });
-    if (!admin || !(await admin.comparePassword(password))) {
-      return next(new AppError('Invalid email or password.', 401));
+    const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+    const key = `${email.toLowerCase()}_${ip}`;
+
+    // Check lockout status
+    const record = failedAttemptsMap.get(key);
+    if (record && record.lockUntil) {
+      if (Date.now() < record.lockUntil) {
+        const minsLeft = Math.ceil((record.lockUntil - Date.now()) / 60000);
+        return res.status(429).json({
+          success: false,
+          message: `Account temporarily locked due to 3 failed login attempts. Please wait ${minsLeft} minute(s) before trying again.`,
+        });
+      } else {
+        failedAttemptsMap.delete(key);
+      }
     }
 
+    const admin = await Admin.findOne({ where: { email, isActive: true } });
+    if (!admin || !(await admin.comparePassword(password))) {
+      const current = failedAttemptsMap.get(key) || { count: 0 };
+      current.count += 1;
+      current.lastAttempt = Date.now();
+      
+      if (current.count >= 3) {
+        current.lockUntil = Date.now() + 15 * 60 * 1000; // 15 minutes lockout
+        failedAttemptsMap.set(key, current);
+        return res.status(429).json({
+          success: false,
+          message: 'Too many failed login attempts. Your access is locked for 15 minutes.',
+        });
+      } else {
+        failedAttemptsMap.set(key, current);
+        const remaining = 3 - current.count;
+        return res.status(401).json({
+          success: false,
+          message: `Invalid email or password. You have ${remaining} attempt(s) remaining before a 15-minute lockout.`,
+        });
+      }
+    }
+
+    // Success -> Clear failed attempts counter
+    failedAttemptsMap.delete(key);
+
     admin.lastLogin = new Date();
-    admin.lastLoginIp = req.ip || req.connection?.remoteAddress || null;
+    admin.lastLoginIp = ip;
     await admin.save({ fields: ['lastLogin', 'lastLoginIp'] });
 
     const token = signToken(admin.id);
@@ -286,8 +326,21 @@ exports.exportAppointments = async (req, res, next) => {
   }
 };
 
+let statsCache = { data: null, expiresAt: 0 };
+
+// Reset the cached statistics to force fresh calculation on next request
+function resetStatsCache() {
+  statsCache = { data: null, expiresAt: 0 };
+}
+
+module.exports.resetStatsCache = resetStatsCache;
+
 exports.getStats = async (req, res, next) => {
   try {
+    if (statsCache.data && Date.now() < statsCache.expiresAt) {
+      return res.json(statsCache.data);
+    }
+
     const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
     const todayEnd = new Date(); todayEnd.setHours(23, 59, 59, 999);
 
@@ -309,7 +362,7 @@ exports.getStats = async (req, res, next) => {
     const statusMap = { confirmed: 0, cancelled: 0, completed: 0, 'no-show': 0 };
     statusCounts.forEach((s) => { statusMap[s.status] = parseInt(s.count, 10); });
 
-    res.json({
+    const responseData = {
       success: true,
       stats: {
         total: totalAppointments, totalPatients,
@@ -317,7 +370,10 @@ exports.getStats = async (req, res, next) => {
         completed: statusMap.completed, noShow: statusMap['no-show'],
         today: todayCount, unreadMessages, totalServices,
       },
-    });
+    };
+
+    statsCache = { data: responseData, expiresAt: Date.now() + 15000 };
+    res.json(responseData);
   } catch (err) {
     next(err);
   }

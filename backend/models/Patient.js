@@ -24,6 +24,11 @@ const Patient = sequelize.define('Patient', {
   resetPasswordExpires: { type: DataTypes.DATE },
 }, {
   timestamps: true,
+  indexes: [
+    { fields: ['email'] },
+    { fields: ['status'] },
+    { fields: ['createdAt'] },
+  ],
   getterMethods: {
     fullName() { return `${this.firstName} ${this.lastName}`; },
   },

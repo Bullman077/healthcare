@@ -611,4 +611,49 @@
       });
   })();
 
+  // =========================================================
+  // 11. HOMEPAGE CORE SERVICES — dynamic from /api/services
+  // =========================================================
+  (function() {
+    var grid = document.getElementById('homeServicesGrid');
+    if (!grid) return;
+
+    var CATEGORY_BTN = {
+      physical: 'Schedule Now', wellness: 'Get Started', training: 'Inquire',
+      therapy: 'Book Session', preventive: 'Schedule', telehealth: 'Access Telehealth', diagnostic: 'Schedule Test'
+    };
+
+    function esc(s) {
+      if (!s) return '';
+      var d = document.createElement('div');
+      d.appendChild(document.createTextNode(s));
+      return d.innerHTML;
+    }
+
+    fetch('/api/services')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data.success || !data.services || data.services.length === 0) {
+          grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:2rem; color:var(--color-slate-500);">Services are being updated.</div>';
+          return;
+        }
+        var html = data.services.map(function(s) {
+          var btn = s.category === 'telehealth'
+            ? '<a href="telehealth.html" class="core-service-card__btn">Access Telehealth</a>'
+            : '<button class="core-service-card__btn" data-open-modal data-service="' + esc(s.name) + '">' + esc(CATEGORY_BTN[s.category] || 'Learn More') + '</button>';
+          return '<div class="core-service-card">' +
+            '<h3 class="core-service-card__title">' + esc(s.name) + '</h3>' +
+            '<p class="core-service-card__desc">' + esc(s.description || '') + '</p>' +
+            btn +
+          '</div>';
+        }).join('');
+        grid.innerHTML = html;
+        // Re-bind modal triggers for newly created buttons
+        if (typeof initModalTriggers === 'function') initModalTriggers();
+      })
+      .catch(function() {
+        grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:2rem; color:var(--color-slate-500);">Unable to load services.</div>';
+      });
+  })();
+
 })();

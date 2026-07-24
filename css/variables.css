@@ -1,13 +1,23 @@
 :root {
-  /* Brand Colors - Light DPC Theme */
-  --color-navy: #0B1A30;
-  --color-navy-light: #152C53;
-  --color-purple: #582C83;
-  --color-purple-dark: #3F1C63;
-  --color-purple-light: #F2ECF9;
-  --color-royal: #1A3680;
-  --color-teal: #0D9488;
-  --color-teal-light: #CCFBF1;
+  /* Brand Colors - Plum Purple & Royal Blue Theme */
+  --color-plum: #4B1D6D;
+  --color-plum-dark: #371353;
+  --color-plum-light: #F3EBF9;
+  --color-plum-muted: #E5D5F2;
+
+  --color-royal-blue: #0E437D;
+  --color-royal-blue-dark: #092B52;
+  --color-royal-blue-light: #EBF3FB;
+  --color-royal-blue-muted: #D1E3F6;
+
+  --color-navy: #092B52;
+  --color-navy-light: #0E437D;
+  --color-purple: #4B1D6D;
+  --color-purple-dark: #371353;
+  --color-purple-light: #F3EBF9;
+  --color-royal: #0E437D;
+  --color-teal: #0E437D;
+  --color-teal-light: #EBF3FB;
   --color-gold: #D97706;
   --color-gold-light: #FEF3C7;
 
@@ -23,23 +33,24 @@
   --color-slate-100: #F1F5F9;
   --color-slate-50: #F8FAFC;
 
-  --color-blue: #0284C7;
-  --color-blue-dark: #0369A1;
-  --color-indigo: #6366F1;
-  --color-indigo-light: #EEF2FF;
+  --color-blue: #0E437D;
+  --color-blue-dark: #092B52;
+  --color-indigo: #4B1D6D;
+  --color-indigo-light: #F3EBF9;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #0284C7 0%, #2563EB 100%);
-  --gradient-accent: linear-gradient(135deg, #0284C7 0%, #2563EB 100%);
-  --gradient-royal: linear-gradient(135deg, #1A3680 0%, #582C83 100%);
-  --gradient-teal: linear-gradient(135deg, #0D9488 0%, #059669 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
-  --gradient-hero: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+  --gradient-primary: linear-gradient(135deg, #4B1D6D 0%, #0E437D 100%);
+  --gradient-accent: linear-gradient(135deg, #0E437D 0%, #4B1D6D 100%);
+  --gradient-royal: linear-gradient(135deg, #092B52 0%, #371353 100%);
+  --gradient-teal: linear-gradient(135deg, #4B1D6D 0%, #371353 100%);
+  --gradient-plum: linear-gradient(135deg, #582C83 0%, #4B1D6D 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(243, 235, 249, 0.9) 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(75, 29, 109, 0.88) 0%, rgba(14, 67, 125, 0.92) 100%);
 
   /* System Color Assignments */
-  --color-primary: #0284C7;
-  --color-secondary: #2563EB;
-  --color-accent: var(--color-blue);
+  --color-primary: #4B1D6D;
+  --color-secondary: #0E437D;
+  --color-accent: #0E437D;
   --color-text: #0F172A;
   --color-text-secondary: #475569;
   --color-text-muted: #94A3B8;
@@ -53,7 +64,6 @@
 
   /* Typography */
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --fs-xs: 0.75rem;     /* 12px */
@@ -104,8 +114,8 @@
   --shadow-md: 0 6px 12px -2px rgba(0, 0, 0, 0.06), 0 3px 6px -3px rgba(0, 0, 0, 0.03);
   --shadow-lg: 0 16px 24px -4px rgba(0, 0, 0, 0.06), 0 8px 12px -6px rgba(0, 0, 0, 0.03);
   --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 10px 30px rgba(2, 132, 199, 0.25);
-  --shadow-teal: 0 10px 30px rgba(13, 148, 136, 0.25);
+  --shadow-glow: 0 10px 30px rgba(75, 29, 109, 0.25);
+  --shadow-teal: 0 10px 30px rgba(14, 67, 125, 0.25);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);

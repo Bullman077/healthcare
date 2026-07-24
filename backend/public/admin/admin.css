@@ -157,7 +157,7 @@ body {
 
 .login-error.show { display: block; }
 
-.form-label {
+.login-page .form-label {
   display: block;
   font-size: 11px;
   font-weight: 700;
@@ -167,7 +167,7 @@ body {
   margin-bottom: 6px;
 }
 
-.form-input {
+.login-page .form-input {
   width: 100%;
   padding: 13px 16px;
   background: rgba(255, 255, 255, 0.07);
@@ -180,8 +180,39 @@ body {
   font-family: var(--font);
 }
 
-.form-input::placeholder { color: rgba(255, 255, 255, 0.35); }
-.form-input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
+.login-page .form-input::placeholder { color: rgba(255, 255, 255, 0.35); }
+.login-page .form-input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
+
+/* General / Light Theme Form Inputs & Labels */
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--slate-700);
+  margin-bottom: 6px;
+}
+
+.form-input, select.form-input, textarea.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1.5px solid var(--slate-200);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--slate-900);
+  margin-bottom: 0;
+  transition: all var(--transition);
+  font-family: var(--font);
+  box-sizing: border-box;
+}
+
+select.form-input option {
+  background: var(--white);
+  color: var(--slate-900);
+}
+
+.form-input::placeholder { color: var(--slate-400, #94A3B8); }
+.form-input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
 
 .login-btn {
   width: 100%;
@@ -2283,3 +2314,170 @@ table.data-table tr:hover td { background: rgba(79, 70, 229, 0.025); }
 }
 .cal-appt-name { font-weight: 600; font-size: 13px; flex: 1; }
 .cal-appt-svc { font-size: 12px; color: var(--slate-500); }
+
+/* =========================================================
+   MODAL DIALOGS
+   ========================================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(11, 26, 48, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 20px;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgba(11, 26, 48, 0.25);
+  border: 1px solid var(--slate-200);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--slate-900);
+}
+
+.modal-overlay.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--slate-50);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--slate-500);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.modal-close:hover {
+  background: var(--slate-200);
+  color: var(--slate-900);
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  color: var(--slate-700);
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  background: var(--slate-50);
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: 1px solid transparent;
+  text-decoration: none;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--indigo), var(--violet));
+  color: white;
+  border: none;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+  color: white;
+}
+
+.btn-outline {
+  background: white;
+  border: 1.5px solid var(--slate-300);
+  color: var(--slate-700);
+}
+
+.btn-outline:hover {
+  background: var(--slate-100);
+  color: var(--navy);
+  border-color: var(--slate-400);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #DC2626;
+  color: white;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+}

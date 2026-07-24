@@ -91,16 +91,16 @@
 }
 
 #patient-portal-link {
-  background: #0284C7 !important;
+  background: var(--color-plum) !important;
   color: #FFFFFF !important;
-  border-color: #0284C7 !important;
+  border-color: var(--color-plum) !important;
   transition: all 0.3s ease;
 }
 
 #patient-portal-link:hover {
-  background-color: #0369A1 !important;
+  background-color: var(--color-royal-blue) !important;
   color: #FFFFFF !important;
-  border-color: #0369A1 !important;
+  border-color: var(--color-royal-blue) !important;
 }
 
 .btn--dark-outline {

@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const { Message, Testimonial, Setting, Service } = require('../models');
 const { AppError } = require('../middleware/errorHandler');
 const { sendNewMessageNotification } = require('../utils/email');
-const { logAudit } = require('./adminController');
+const { logAudit, resetStatsCache } = require('./adminController');
 
 /* ===== MESSAGES ===== */
 exports.submitMessage = async (req, res, next) => {
@@ -32,6 +32,8 @@ exports.submitMessage = async (req, res, next) => {
     sendNewMessageNotification({ name, email, phone, subject, message }).catch((err) => {
       console.error('Failed to send contact notification email:', err.message);
     });
+    // New message added, reset stats cache to update unread count
+    resetStatsCache();
   } catch (err) {
     next(err);
   }
@@ -64,6 +66,8 @@ exports.getMessage = async (req, res, next) => {
     if (!msg.isRead) {
       msg.isRead = true;
       await msg.save({ fields: ['isRead'] });
+      // Marked as read, reset stats cache
+      resetStatsCache();
     }
     res.json({ success: true, data: msg });
   } catch (err) {
@@ -78,6 +82,8 @@ exports.toggleMessageRead = async (req, res, next) => {
     msg.isRead = !msg.isRead;
     await msg.save({ fields: ['isRead'] });
     await logAudit(req.admin, msg.isRead ? 'read' : 'unread', 'message', msg.id, { from: msg.name, subject: msg.subject }, req);
+    // Toggled read status, reset stats cache
+    resetStatsCache();
     res.json({ success: true, data: msg });
   } catch (err) {
     next(err);
@@ -90,6 +96,8 @@ exports.deleteMessage = async (req, res, next) => {
     if (!msg) return next(new AppError('Message not found.', 404));
     await logAudit(req.admin, 'delete', 'message', msg.id, { from: msg.name, email: msg.email, subject: msg.subject }, req);
     await msg.destroy();
+    // Message deleted, reset stats cache
+    resetStatsCache();
     res.json({ success: true, message: 'Message deleted.' });
   } catch (err) {
     next(err);
@@ -270,7 +278,7 @@ exports.getPublicServices = async (req, res, next) => {
   try {
     const services = await Service.findAll({
       where: { isActive: true },
-      attributes: ['id', 'name', 'duration', 'price', 'category', 'description'],
+      attributes: ['id', 'name', 'description', 'duration', 'price', 'category', 'isActive', 'requiresPreparation', 'preparationInstructions', 'color', 'icon'],
       order: [['category', 'ASC'], ['name', 'ASC']],
     });
     res.json({ success: true, services });

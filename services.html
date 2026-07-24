@@ -6,7 +6,7 @@
   <meta name="description" content="Explore our comprehensive healthcare services including Direct Primary Care, DOT physicals, weight management, telehealth, CPR training, and patch therapy at UHS Healthcare.">
   <meta name="format-detection" content="telephone=yes">
 
-  <title>Medical Services | UHS Healthcare Direct Primary Care</title>
+  <title>Medical Services | Unmeasurable Heights of Strength Healthcare Services</title>
 
   <!-- Preconnect Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,9 +31,12 @@
   <!-- ===== GLASS HEADER ===== -->
   <header class="nav" role="banner">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
-        <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
-        <span class="nav__logo-title">UHS Healthcare</span>
+      <a href="index.html" class="nav__logo" aria-label="Unmeasurable Heights of Strength Healthcare Services Home">
+        <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+          <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+        </div>
       </a>
 
       <button class="nav__toggle" aria-label="Toggle navigation menu">
@@ -82,161 +85,16 @@
           <p class="section-header__desc" data-content="services_section_desc">Explore our full suite of primary care and specialty medical services.</p>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem;" class="animate">
-          
-          <!-- Card 1: DOT / Non-DOT Physicals -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--teal" style="margin-bottom:1rem;">Road Ready &amp; Compliant</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">DOT / Non-DOT Physicals</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Stay compliant and road ready. We provide thorough DOT and Non-DOT physicals with fast turnaround time of results so you can get back to what matters most.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Fast turnaround time of results</li>
-                <li>✓ Certified FMCSA physical exam</li>
-                <li>✓ Convenient scheduling</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="DOT Physical">Book DOT Physical</button>
-          </div>
+        <div id="servicesGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem;" class="animate">
+          <!-- Populated by JS from /api/services -->
+        </div>
 
-          <!-- Card 2: Sports Physicals -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--indigo" style="margin-bottom:1rem;">Athletic Clearance</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Sports Physicals</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Keeping athletes of all ages healthy, strong, and ready to perform. Comprehensive athletic evaluations for school &amp; club sports.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Clearance for all age groups</li>
-                <li>✓ Musculoskeletal &amp; cardiovascular check</li>
-                <li>✓ Same-day forms completion</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="Sports Physical">Book Sports Physical</button>
-          </div>
+        <div id="servicesLoading" style="text-align:center; padding:3rem;">
+          <div class="preloader__spinner" style="margin:0 auto;"></div>
+        </div>
 
-          <!-- Card 3: Work Physicals -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--gold" style="margin-bottom:1rem;">Occupational Health</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Work Physicals</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Supporting a safe and healthy workforce with comprehensive work physicals and quick results for pre-employment or fit-for-duty clearances.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Pre-employment health exams</li>
-                <li>✓ Fit-for-duty evaluations</li>
-                <li>✓ Quick turnaround documentation</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="Work Physical">Book Work Physical</button>
-          </div>
-
-          <!-- Card 4: BLS CPR Training -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--indigo" style="margin-bottom:1rem;">American Heart Association</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">BLS CPR Training</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                American Heart Association BLS CPR training for healthcare providers and the community. Classes are engaging, hands-on, and certification you can trust.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Official AHA BLS Certification</li>
-                <li>✓ Hands-on classroom instruction</li>
-                <li>✓ For providers &amp; community members</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="BLS CPR Training">Inquire CPR Class</button>
-          </div>
-
-          <!-- Card 5: TB Skin Testing -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--teal" style="margin-bottom:1rem;">Employment &amp; School</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">TB Skin Testing</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Accurate TB skin testing for employment, school, or healthcare requirements. Quick placement and reading.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Employment clearance</li>
-                <li>✓ School &amp; clinical requirements</li>
-                <li>✓ Accurate reading &amp; documentation</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="TB Skin Testing">Schedule TB Test</button>
-          </div>
-
-          <!-- Card 6: Weight Loss Healthy Plans -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--gold" style="margin-bottom:1rem;">Real Results</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Weight Loss Healthy Plans</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Sustainable plans designed for real results and a healthier you. Includes BMI targeting, personalized nutrition, exercise guidance, and GLP-1 support.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Reach a Healthy BMI</li>
-                <li>✓ Personalized Nutrition &amp; Exercise Guidance</li>
-                <li>✓ Lifestyle Coaching &amp; GLP-1 Support</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="Weight Management">Start Weight Plan</button>
-          </div>
-
-          <!-- Card 7: Iontopherisis Patch Therapy -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--indigo" style="margin-bottom:1rem;">Pain Management</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Iontopherisis Patch</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                A non-invasive therapy that uses a gentle electrical current to deliver anti-inflammatory medication through the skin directly to the affected area. Helps reduce pain, swelling, and inflammation—perfect for managing chronic pain conditions and improving mobility without drugs.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Non-invasive transdermal drug delivery</li>
-                <li>✓ Reduce pain, swelling, and inflammation</li>
-                <li>✓ Improve mobility without oral drugs</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="Iontopherisis Patch Therapy">Book Patch Therapy</button>
-          </div>
-
-          <!-- Card 8: Chronic Pain Relief -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--teal" style="margin-bottom:1rem;">Individualized Approaches</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Chronic Pain Relief</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Comprehensive, individualized approaches to help manage pain and improve your quality of life.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Comprehensive individualized pain management</li>
-                <li>✓ Non-opioid and alternative therapy integration</li>
-                <li>✓ Focus on restoring quality of life</li>
-              </ul>
-            </div>
-            <button class="btn btn--primary" data-open-modal data-service="Chronic Pain Relief">Book Pain Relief Visit</button>
-          </div>
-
-          <!-- Card 9: Telehealth Visit -->
-          <div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between;">
-            <div>
-              <span class="badge badge--teal" style="margin-bottom:1rem;">Virtual Care</span>
-              <h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">Telehealth Visit</h3>
-              <p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">
-                Telehealth visits available for remote care, consultation, prescription refills, and virtual follow-ups.
-              </p>
-              <ul style="list-style:none; padding:0; margin:0 0 2rem; font-size:0.9rem; color:var(--color-slate-700); display:flex; flex-direction:column; gap:0.5rem;">
-                <li>✓ Convenient remote video visits</li>
-                <li>✓ E-prescriptions sent to your pharmacy</li>
-                <li>✓ Accessible healthcare anywhere</li>
-              </ul>
-            </div>
-            <a href="telehealth.html" class="btn btn--primary">Explore Telehealth</a>
-          </div>
-
+        <div id="servicesEmpty" style="display:none; text-align:center; padding:3rem;">
+          <p style="font-size:1.1rem; color:var(--color-slate-500);">Services are being updated. Please check back soon.</p>
         </div>
       </div>
     </section>
@@ -255,13 +113,13 @@
       <div class="footer-grid">
         <div>
           <div class="nav__logo" style="margin-bottom:1rem;">
-            <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:40px; width:auto; border-radius:50%;">
-            <div>
-              <span class="nav__logo-title">UHS Healthcare</span>
-              <span class="nav__logo-subtitle">Heights of Strength</span>
+            <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+              <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+              <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
             </div>
           </div>
-          <p class="footer-brand__desc" data-content="footer_brand_desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+          <p class="footer-brand__desc" data-content="footer_brand_desc">Unmeasurable Heights of Strength Healthcare Services. Dedicated compassionate care by Nacole Brown, MSN AGPCNP-BC in Columbia, SC.</p>
         </div>
         <div>
           <h4 class="footer-column__title">Quick Links</h4>
@@ -281,7 +139,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <div>&copy; 2026 UHS Healthcare Services. All rights reserved.</div>
+        <div>&copy; 2026 Unmeasurable Heights of Strength Healthcare Services. All rights reserved.</div>
         <div style="display:flex; gap:1.5rem;">
           <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
           <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
@@ -292,5 +150,83 @@
 
   <script src="js/site-content.js"></script>
   <script src="js/main.js"></script>
+  <script>
+  (function() {
+    var CATEGORY_BADGE = {
+      physical: 'badge--teal', wellness: 'badge--indigo', training: 'badge--gold',
+      therapy: 'badge--indigo', preventive: 'badge--teal', telehealth: 'badge--teal', diagnostic: 'badge--gold'
+    };
+    var CATEGORY_LABEL = {
+      physical: 'Primary Care', wellness: 'Wellness', training: 'Training',
+      therapy: 'Therapy', preventive: 'Preventive', telehealth: 'Virtual Care', diagnostic: 'Diagnostic'
+    };
+    var CATEGORY_CTA = {
+      physical: 'Book Now', wellness: 'Get Started', training: 'Inquire',
+      therapy: 'Book Session', preventive: 'Schedule', telehealth: 'Explore Telehealth', diagnostic: 'Schedule Test'
+    };
+
+    function esc(s) {
+      if (!s) return '';
+      var d = document.createElement('div');
+      d.appendChild(document.createTextNode(s));
+      return d.innerHTML;
+    }
+
+    function renderCard(s) {
+      var color = s.color || '#6A3FA0';
+      var badgeClass = CATEGORY_BADGE[s.category] || 'badge--teal';
+      var catLabel = CATEGORY_LABEL[s.category] || s.category;
+      var cta = s.category === 'telehealth'
+        ? '<a href="telehealth.html" class="btn btn--primary">Explore Telehealth</a>'
+        : '<button class="btn btn--primary" data-open-modal data-service="' + esc(s.name) + '">' + esc(CATEGORY_CTA[s.category] || 'Book Now') + '</button>';
+      var prepNote = s.requiresPreparation
+        ? '<p style="font-size:0.85rem; color:var(--color-gold); font-weight:600; margin-bottom:1rem;">⚠ Preparation Required</p>'
+        : '';
+      return '<div style="background:#fff; border-radius:24px; border:1px solid var(--color-border); padding:2.5rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:space-between; border-top:4px solid ' + color + ';">' +
+        '<div>' +
+          '<span class="badge ' + badgeClass + '" style="margin-bottom:1rem;">' + esc(catLabel) + '</span>' +
+          '<h3 style="font-size:1.4rem; font-weight:700; color:var(--color-navy); margin-bottom:0.75rem;">' + esc(s.name) + '</h3>' +
+          '<p style="font-size:0.95rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1.5rem;">' + esc(s.description || '') + '</p>' +
+          prepNote +
+          '<div style="font-size:0.85rem; color:var(--color-slate-500); margin-bottom:1.5rem;">' +
+            '<span>' + (s.duration || 30) + ' min</span>' +
+            (s.price > 0 ? '<span style="margin-left:12px;">$' + Number(s.price).toFixed(2) + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        cta +
+      '</div>';
+    }
+
+    function init() {
+      fetch('/api/services')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var grid = document.getElementById('servicesGrid');
+          var loading = document.getElementById('servicesLoading');
+          var empty = document.getElementById('servicesEmpty');
+          if (!loading) return;
+          loading.style.display = 'none';
+          if (!data.success || !data.services || data.services.length === 0) {
+            empty.style.display = 'block';
+            return;
+          }
+          grid.innerHTML = data.services.map(renderCard).join('');
+          grid.style.display = 'grid';
+        })
+        .catch(function() {
+          var loading = document.getElementById('servicesLoading');
+          var empty = document.getElementById('servicesEmpty');
+          if (loading) loading.style.display = 'none';
+          if (empty) { empty.style.display = 'block'; empty.querySelector('p').textContent = 'Unable to load services. Please try again later.'; }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
 </body>
 </html>

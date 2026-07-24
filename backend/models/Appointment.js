@@ -28,6 +28,13 @@ const Appointment = sequelize.define('Appointment', {
   cancellationReason: { type: DataTypes.TEXT },
 }, {
   timestamps: true,
+  indexes: [
+    { fields: ['date'] },
+    { fields: ['status'] },
+    { fields: ['createdAt'] },
+    { fields: ['patientId'] },
+    { fields: ['serviceId'] },
+  ],
   getterMethods: {
     dateFormatted() {
       return new Date(this.date).toLocaleDateString('en-US', {

@@ -12,11 +12,11 @@ const limiter = rateLimit({
 
 /* ----- Auth rate limit (login attempts) ----- */
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 3, // 3 trials max
   standardHeaders: true,
   legacyHeaders: false,
-  message: { success: false, message: 'Too many login attempts. Please try again later.' },
+  message: { success: false, message: 'Too many login attempts. Please wait 15 minutes before trying again.' },
 });
 
 /* ----- API rate limit (appointment booking) ----- */

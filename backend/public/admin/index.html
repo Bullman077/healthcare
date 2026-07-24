@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard – UHS Healthcare</title>
+<title>Admin Dashboard – Unmeasurable Heights of Strength Healthcare Services</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
         </svg>
       </div>
       <div>
-        <div class="login-logo-text">UHS Healthcare</div>
+        <div class="login-logo-text">Unmeasurable Heights of Strength Healthcare Services</div>
       </div>
     </div>
     <div class="login-subtitle">Admin Dashboard &nbsp;·&nbsp; Secure Access</div>
@@ -37,10 +37,7 @@
     <input type="password" id="loginPassword" class="form-input" autocomplete="current-password" placeholder="••••••••">
     <button id="loginBtn" class="login-btn" onclick="login()">Sign In to Dashboard</button>
 
-    <div class="login-notice">
-      🔒 <strong>Secure Access Only</strong><br>
-      Contact your system administrator for login credentials.
-    </div>
+
   </div>
 </div>
 
@@ -59,7 +56,7 @@
         </svg>
       </div>
       <div>
-        <div class="sidebar-brand-name">UHS Healthcare</div>
+        <div class="sidebar-brand-name">Unmeasurable Heights of Strength Healthcare Services</div>
         <div class="sidebar-brand-role" id="adminRole">Admin Panel</div>
       </div>
     </div>
@@ -381,7 +378,7 @@
         </div>
         <div class="table-wrap">
           <table class="data-table">
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Date of Birth</th><th>Registered</th><th>Actions</th></tr></thead>
+            <thead><tr><th>No.</th><th>Name</th><th>Email</th><th>Phone</th><th>Date of Birth</th><th>Registered</th><th>Actions</th></tr></thead>
             <tbody id="patientsBody"></tbody>
           </table>
         </div>
@@ -395,16 +392,48 @@
 
     <!-- ===== SERVICES ===== -->
     <section id="page-services" class="page-section">
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Services</span>
-          <button class="btn btn-primary btn-sm" onclick="openServiceModal(null)">+ Add Service</button>
+      <div class="card" style="overflow:visible;">
+        <div class="settings-nav">
+          <div style="display:flex; align-items:center; gap:12px; padding:4px 0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal);"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            <span style="font-size:16px; font-weight:800; color:var(--navy);">Medical Services</span>
+          </div>
         </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th>Name</th><th>Duration</th><th>Telehealth</th><th>Active</th><th>Actions</th></tr></thead>
-            <tbody id="servicesBody"></tbody>
-          </table>
+        <div class="settings-divider"></div>
+        <div class="settings-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+            <p style="font-size:13px; color:var(--text-secondary); margin:0;">Manage all healthcare services. Active services appear on the public services page and appointment booking.</p>
+            <button class="save-btn" onclick="openServiceModal(null)" style="font-size:13px; padding:10px 20px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Service
+            </button>
+          </div>
+
+          <div id="servicesEmpty" style="display:none;">
+            <div class="section-editor">
+              <div class="section-editor-body" style="text-align:center; padding:48px 20px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;color:var(--slate-300);margin-bottom:16px;"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">No services yet</div>
+                <div style="font-size:13px; color:var(--slate-500);">Click "Add Service" to create your first medical service.</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="servicesActiveSection" style="display:none;">
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--success); margin-right:6px; vertical-align:middle;"></span>
+              Active Services
+            </label>
+            <div id="servicesActive"></div>
+          </div>
+
+          <div id="servicesInactiveSection" style="display:none; margin-top:28px;">
+            <label style="display:block; font-size:11px; font-weight:700; color:var(--slate-500); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--slate-400); margin-right:6px; vertical-align:middle;"></span>
+              Inactive Services
+            </label>
+            <div id="servicesInactive"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -533,24 +562,71 @@
 
     <!-- ===== MESSAGES ===== -->
     <section id="page-messages" class="page-section">
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Messages</span>
-          <div class="card-actions">
-            <select id="msgFilter" class="filter-input" onchange="loadMessages(1)">
-              <option value="">All Messages</option>
-              <option value="false">Unread</option>
-              <option value="true">Read</option>
-            </select>
+      <div class="card" style="overflow:visible;">
+        <div class="settings-nav">
+          <div style="display:flex; align-items:center; gap:12px; padding:4px 0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--teal);"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span style="font-size:16px; font-weight:800; color:var(--navy);">Patient Messages</span>
           </div>
         </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th></th><th>From</th><th>Email</th><th>Phone</th><th>Subject</th><th>Date</th><th>Actions</th></tr></thead>
-            <tbody id="messagesBody"></tbody>
-          </table>
+        <div class="settings-divider"></div>
+        <div class="settings-body">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+            <p style="font-size:13px; color:var(--text-secondary); margin:0;">Manage patient contact requests. View and mark messages as read.</p>
+            <button class="save-btn" onclick="deleteSelectedMessages()" style="font-size:13px; padding:10px 20px; background:var(--danger);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+              Delete Selected
+            </button>
+          </div>
+
+          <div id="messagesFilterBar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label style="font-size:12px; color:var(--slate-600); font-weight:600;">Filter:</label>
+              <select id="msgFilter" class="filter-input" onchange="loadMessages(1)">
+                <option value="">All Messages</option>
+                <option value="false">Unread</option>
+                <option value="true">Read</option>
+              </select>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="loadMessages();">All</button>
+              <button class="btn btn-outline btn-sm" onclick="markSelectedRead();">Mark Read</button>
+              <button class="btn btn-outline btn-sm" onclick="exportMessages();">Export</button>
+            </div>
+          </div>
+
+          <div id="messagesEmpty" style="display:none;">
+            <div class="section-editor">
+              <div class="section-editor-body" style="text-align:center; padding:48px 20px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px;color:var(--slate-300);margin-bottom:16px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">No messages yet</div>
+                <div style="font-size:13px; color:var(--slate-500);">Patient messages will appear here when received.</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="messagesSection" style="display:none;">
+            <div style="overflow-x:auto; border:1px solid var(--slate-200); border-radius:12px;">
+              <table class="data-table" style="min-width:800px;">
+                <thead>
+                  <tr style="background:var(--slate-50);">
+                    <th style="padding:16px;"><input type="checkbox" id="selectAllCheckbox" onchange="toggleAllSelections()"></th>
+                    <th style="padding:16px; text-align:left;">From</th>
+                    <th style="padding:16px; text-align:left;">Email</th>
+                    <th style="padding:16px; text-align:left;">Phone</th>
+                    <th style="padding:16px; text-align:left;">Subject</th>
+                    <th style="padding:16px; text-align:left;">Date</th>
+                    <th style="padding:16px; text-align:center;">Status</th>
+                    <th style="padding:16px; text-align:center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="messagesBody"></tbody>
+              </table>
+            </div>
+
+            <div id="messagesPagination" class="pagination" style="margin-top:20px;"></div>
+          </div>
         </div>
-        <div id="messagesPagination" class="pagination"></div>
       </div>
     </section>
 
@@ -652,7 +728,7 @@
                 <div class="visual-fields visual-fields--2col">
                   <div class="visual-field">
                     <label>Clinic Name</label>
-                    <input type="text" id="set_clinic_name" placeholder="UHS Healthcare">
+                    <input type="text" id="set_clinic_name" placeholder="Unmeasurable Heights of Strength Healthcare Services">
                   </div>
                   <div class="visual-field">
                     <label>Tagline</label>
@@ -1104,7 +1180,7 @@
                   </div>
                   <div class="visual-field">
                     <label>Page Heading</label>
-                    <input type="text" id="set_contact_heading" placeholder="Reach UHS Healthcare">
+                    <input type="text" id="set_contact_heading" placeholder="Reach Unmeasurable Heights of Strength Healthcare Services">
                   </div>
                   <div class="visual-field">
                     <label>Page Intro</label>
@@ -1356,34 +1432,77 @@
 
 <!-- ============ SERVICE MODAL ============ -->
 <div class="modal-overlay" id="serviceModal">
-  <div class="modal" style="max-width:480px;">
+  <div class="modal" style="max-width:560px;">
     <div class="modal-header">
       <span class="modal-title" id="serviceModalTitle">Add Service</span>
       <button class="modal-close" onclick="closeModal('serviceModal')">✕</button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="max-height:70vh; overflow-y:auto;">
       <input type="hidden" id="serviceId">
+
       <label class="form-label">Service Name *</label>
       <input type="text" id="serviceName" class="form-input" placeholder="e.g. DOT Physical">
-      <label class="form-label" style="margin-top:14px;">Duration (minutes)</label>
-      <input type="number" id="serviceDuration" class="form-input" value="30">
-      <label class="form-label" style="margin-top:14px;">Category *</label>
-      <select id="serviceCategory" class="form-input">
-        <option value="physical">Physical</option>
-        <option value="wellness">Wellness</option>
-        <option value="training">Training</option>
-        <option value="therapy">Therapy</option>
-        <option value="preventive">Preventive</option>
-        <option value="telehealth">Telehealth</option>
-        <option value="diagnostic">Diagnostic</option>
-      </select>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;">
+        <div>
+          <label class="form-label">Category *</label>
+          <select id="serviceCategory" class="form-input">
+            <option value="physical">Physical</option>
+            <option value="wellness">Wellness</option>
+            <option value="training">Training</option>
+            <option value="therapy">Therapy</option>
+            <option value="preventive">Preventive</option>
+            <option value="telehealth">Telehealth</option>
+            <option value="diagnostic">Diagnostic</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Status</label>
+          <select id="serviceActive" class="form-input">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;">
+        <div>
+          <label class="form-label">Duration (minutes)</label>
+          <input type="number" id="serviceDuration" class="form-input" value="30" min="5" step="5">
+        </div>
+        <div>
+          <label class="form-label">Price ($)</label>
+          <input type="number" id="servicePrice" class="form-input" value="0" min="0" step="0.01" placeholder="0.00">
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;">
+        <div>
+          <label class="form-label">Color</label>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="color" id="serviceColorPicker" value="#6A3FA0" style="width:36px; height:36px; border:1px solid var(--slate-200); border-radius:8px; cursor:pointer; padding:2px;">
+            <input type="text" id="serviceColor" class="form-input" value="#6A3FA0" placeholder="#6A3FA0" style="flex:1;">
+          </div>
+        </div>
+        <div>
+          <label class="form-label">Icon (emoji or text)</label>
+          <input type="text" id="serviceIcon" class="form-input" placeholder="e.g. 🩺 or stethoscope">
+        </div>
+      </div>
+
       <label class="form-label" style="margin-top:14px;">Description</label>
-      <textarea id="serviceDescription" class="form-input" rows="3" placeholder="Brief description…"></textarea>
-      <label class="form-label" style="margin-top:14px;">Status</label>
-      <select id="serviceActive" class="form-input">
-        <option value="true">Active</option>
-        <option value="false">Inactive</option>
-      </select>
+      <textarea id="serviceDescription" class="form-input" rows="3" placeholder="Brief description of this service…"></textarea>
+
+      <div style="margin-top:14px; padding:14px; background:var(--slate-50); border:1px solid var(--slate-200); border-radius:10px;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; font-weight:600; color:var(--navy);">
+          <input type="checkbox" id="serviceRequiresPrep" style="width:16px; height:16px; accent-color:var(--indigo);">
+          Requires Patient Preparation
+        </label>
+        <div id="servicePrepFields" style="display:none; margin-top:12px;">
+          <label class="form-label">Preparation Instructions</label>
+          <textarea id="servicePrepInstructions" class="form-input" rows="2" placeholder="e.g. Fast for 8 hours before your visit…"></textarea>
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('serviceModal')">Cancel</button>
@@ -1500,11 +1619,21 @@ updateClock();
 /* =========================================================
    AUTH
    ========================================================= */
+let lastLoginAttemptTime = 0;
+
 async function login() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
   const err = document.getElementById('loginError');
   const btn = document.getElementById('loginBtn');
+
+  const now = Date.now();
+  if (now - lastLoginAttemptTime < 1000) {
+    showErr(err, 'Please wait a second before submitting again.');
+    return;
+  }
+  lastLoginAttemptTime = now;
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
 
   if (!email || !password) { showErr(err, 'Please enter your email and password.'); return; }
 
@@ -1514,7 +1643,7 @@ async function login() {
 
   try {
     const res = await apiFetch('/login', 'POST', { email, password }, true);
-    if (res.success) {
+    if (res && res.success) {
       state.token = res.token;
       state.admin = res.admin;
       showApp(res.admin);
@@ -1549,18 +1678,6 @@ async function logout() {
 }
 
 document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
-
-async function checkAuthSession() {
-  try {
-    const res = await fetch(API + '/me', { credentials: 'include', headers: { 'Content-Type': 'application/json' } });
-    const data = await res.json();
-    if (data && data.success && data.admin) {
-      state.admin = data.admin;
-      showApp(data.admin);
-    }
-  } catch(e) {}
-}
-window.addEventListener('DOMContentLoaded', checkAuthSession);
 
 /* =========================================================
    NAVIGATION
@@ -1672,43 +1789,47 @@ function getGreeting() {
 
 async function initDashboard() {
   try {
-    const data = await apiFetch('/stats');
-    if (!data.success) return;
-    const s = data.stats;
+    const [data, recent] = await Promise.all([
+      apiFetch('/stats'),
+      apiFetch('/appointments?limit=8'),
+      loadTodaySchedule(),
+      loadTrendsChart(),
+      loadDistributionChart(),
+      loadActivityFeed(),
+    ]);
 
-    const name = state.admin?.name || 'Admin';
-    document.getElementById('welcomeGreeting').textContent = getGreeting() + ', ' + name;
-    document.getElementById('welcomeTodayCount').textContent = s.today ?? 0;
-    document.getElementById('welcomePatientCount').textContent = s.totalPatients ?? 0;
-    document.getElementById('welcomeUnreadCount').textContent = s.unreadMessages ?? 0;
+    if (data && data.success) {
+      const s = data.stats;
+      const name = state.admin?.name || 'Admin';
+      document.getElementById('welcomeGreeting').textContent = getGreeting() + ', ' + name;
+      document.getElementById('welcomeTodayCount').textContent = s.today ?? 0;
+      document.getElementById('welcomePatientCount').textContent = s.totalPatients ?? 0;
+      document.getElementById('welcomeUnreadCount').textContent = s.unreadMessages ?? 0;
 
-    const statDefs = [
-      { key: 'today',            label: "Today's Appts",      icon: '📋', color: '#4F46E5', bg: 'rgba(79,70,229,0.1)' },
-      { key: 'confirmed',        label: 'Confirmed / Upcoming', icon: '📅', color: '#10B981', bg: 'rgba(16,185,129,0.1)' },
-      { key: 'completed',        label: 'Completed',           icon: '✅', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)' },
-      { key: 'totalPatients',    label: 'Active Patients',     icon: '👥', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)' },
-      { key: 'unreadMessages',   label: 'Unread Messages',     icon: '✉️', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
-      { key: 'total',            label: 'Total Appointments',  icon: '📊', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' },
-    ];
+      const statDefs = [
+        { key: 'today',            label: "Today's Appts",        icon: '📋', color: '#4F46E5', bg: 'rgba(79,70,229,0.1)' },
+        { key: 'confirmed',        label: 'Confirmed / Upcoming', icon: '📅', color: '#10B981', bg: 'rgba(16,185,129,0.1)' },
+        { key: 'completed',        label: 'Completed',             icon: '✅', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)' },
+        { key: 'totalPatients',    label: 'Active Patients',       icon: '👥', color: '#8B5CF6', bg: 'rgba(139,92,246,0.1)' },
+        { key: 'unreadMessages',   label: 'Unread Messages',       icon: '✉️', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
+        { key: 'total',            label: 'Total Appointments',    icon: '📊', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)' },
+      ];
 
-    document.getElementById('statsGrid').innerHTML = statDefs.map(d => `
-      <div class="stat-card">
-        <div class="stat-card-top">
-          <div class="stat-icon" style="background:${d.bg}; color:${d.color};">${d.icon}</div>
-          <div class="stat-label">${d.label}</div>
+      document.getElementById('statsGrid').innerHTML = statDefs.map(d => `
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon" style="background:${d.bg}; color:${d.color};">${d.icon}</div>
+            <div class="stat-label">${d.label}</div>
+          </div>
+          <div class="stat-value" style="color:${d.color};">${s[d.key] ?? 0}</div>
         </div>
-        <div class="stat-value" style="color:${d.color};">${s[d.key] ?? 0}</div>
-      </div>
-    `).join('');
+      `).join('');
+    }
 
-    const recent = await apiFetch('/appointments?limit=8');
-    renderTable('recentBody', recent, true);
-    updateMsgBadge();
-
-    loadTodaySchedule();
-    loadTrendsChart();
-    loadDistributionChart();
-    loadActivityFeed();
+    if (recent) {
+      renderTable('recentBody', recent, true);
+      updateMsgBadge();
+    }
   } catch(e) {
     console.error('Dashboard error:', e);
   }
@@ -2126,7 +2247,7 @@ function exportCSV(status = '') {
    ========================================================= */
 async function loadPatients(page = state.pages.patients) {
   state.pages.patients = page;
-  showSkeleton('patientsBody', 4, 6);
+  showSkeleton('patientsBody', 4, 7);
   const search = document.getElementById('patientSearch').value;
   const qs = new URLSearchParams({ page, limit: 15 });
   if (search) qs.set('search', search);
@@ -2135,13 +2256,15 @@ async function loadPatients(page = state.pages.patients) {
   const tbody = document.getElementById('patientsBody');
 
   if (!data.success || !data.patients || data.patients.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No patients found.</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">No patients found.</div></td></tr>`;
     renderPagination('patientPagination', {}, page, loadPatients);
     return;
   }
 
-  tbody.innerHTML = data.patients.map(p => `
+  const startNo = (page - 1) * 15 + 1;
+  tbody.innerHTML = data.patients.map((p, i) => `
     <tr>
+      <td><span style="font-weight:600; color:var(--slate-500); font-size:12px;">${startNo + i}</span></td>
       <td><strong>${p.firstName} ${p.lastName}</strong></td>
       <td>${p.email}</td>
       <td>${p.phone || '—'}</td>
@@ -2342,32 +2465,94 @@ function closePatientDetail() {
 /* =========================================================
    SERVICES
    ========================================================= */
+const SERVICE_CATEGORY_COLORS = {
+  physical: 'var(--teal)', wellness: 'var(--indigo)', training: 'var(--gold)',
+  therapy: 'var(--violet)', preventive: 'var(--success)', telehealth: 'var(--info)', diagnostic: 'var(--slate-500)'
+};
+const SERVICE_CATEGORY_LABELS = {
+  physical: 'Physical', wellness: 'Wellness', training: 'Training',
+  therapy: 'Therapy', preventive: 'Preventive', telehealth: 'Telehealth', diagnostic: 'Diagnostic'
+};
+
+function renderServiceCard(s) {
+  const color = s.color || '#6A3FA0';
+  const catColor = SERVICE_CATEGORY_COLORS[s.category] || 'var(--slate-500)';
+  const catLabel = SERVICE_CATEGORY_LABELS[s.category] || s.category;
+  const icon = s.icon || '🩺';
+  return `
+    <div class="section-editor" style="margin-bottom:12px; border-left:4px solid ${color};">
+      <div class="section-editor-body" style="padding:16px 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px;">
+          <div style="flex:1; min-width:0;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+              <div style="width:36px; height:36px; border-radius:10px; background:${color}15; color:${color}; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:1px solid ${color}25;">
+                ${icon}
+              </div>
+              <div>
+                <div style="font-size:14px; font-weight:700; color:var(--navy);">${escHtml(s.name)}</div>
+                <div style="font-size:11px; color:var(--slate-500); display:flex; gap:8px; align-items:center; margin-top:2px;">
+                  <span style="display:inline-block; padding:2px 8px; border-radius:6px; background:${catColor}15; color:${catColor}; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">${catLabel}</span>
+                  <span>${s.duration || 30} min</span>
+                  ${s.price > 0 ? `<span>$${Number(s.price).toFixed(2)}</span>` : ''}
+                </div>
+              </div>
+            </div>
+            ${s.description ? `<div style="font-size:12.5px; color:var(--slate-600); line-height:1.5; margin-top:6px; max-width:520px;">${escHtml(s.description).substring(0, 160)}${s.description.length > 160 ? '…' : ''}</div>` : ''}
+            ${s.requiresPreparation ? '<div style="font-size:11px; color:var(--gold); font-weight:600; margin-top:6px;">⚠ Requires Patient Preparation</div>' : ''}
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px; flex-shrink:0; align-items:flex-end;">
+            <div style="display:flex; gap:6px;">
+              ${s.isActive !== false
+                ? '<span class="status-badge badge-confirmed">Active</span>'
+                : '<span class="status-badge badge-cancelled">Inactive</span>'}
+            </div>
+            <div style="display:flex; gap:4px;">
+              <button class="action-btn edit" title="Edit" onclick='openServiceModal(${JSON.stringify(s).replace(/'/g, "&#39;").replace(/"/g, "&quot;")})'>
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="action-btn del" title="Delete" onclick="deleteService('${s.id}','${escHtml(s.name)}')">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 async function loadServices() {
-  showSkeleton('servicesBody', 4, 5);
   const data = await apiFetch('/services');
-  const tbody = document.getElementById('servicesBody');
+  const emptyEl = document.getElementById('servicesEmpty');
+  const activeSection = document.getElementById('servicesActiveSection');
+  const inactiveSection = document.getElementById('servicesInactiveSection');
+  const activeContainer = document.getElementById('servicesActive');
+  const inactiveContainer = document.getElementById('servicesInactive');
+
   if (!data.success || !data.services || data.services.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">No services found.</div></td></tr>`;
+    emptyEl.style.display = 'block';
+    activeSection.style.display = 'none';
+    inactiveSection.style.display = 'none';
     return;
   }
-  tbody.innerHTML = data.services.map(s => `
-    <tr>
-      <td><strong>${s.name}</strong></td>
-      <td>${s.duration || 30} min</td>
-      <td>${s.category === 'telehealth' ? '<span class="status-badge badge-confirmed">Yes</span>' : '<span class="status-badge badge-cancelled">No</span>'}</td>
-      <td>${s.isActive !== false ? '<span class="status-badge badge-confirmed">Active</span>' : '<span class="status-badge badge-cancelled">Inactive</span>'}</td>
-      <td>
-        <div class="row-actions">
-          <button class="action-btn edit" onclick='openServiceModal(${JSON.stringify(s).replace(/"/g,"&quot;")})'>
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          </button>
-          <button class="action-btn del" onclick="deleteService('${s.id}','${escHtml(s.name)}')">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+
+  emptyEl.style.display = 'none';
+  const services = data.services;
+  const active = services.filter(s => s.isActive !== false);
+  const inactive = services.filter(s => s.isActive === false);
+
+  if (active.length > 0) {
+    activeSection.style.display = 'block';
+    activeContainer.innerHTML = active.map(renderServiceCard).join('');
+  } else {
+    activeSection.style.display = 'none';
+  }
+
+  if (inactive.length > 0) {
+    inactiveSection.style.display = 'block';
+    inactiveContainer.innerHTML = inactive.map(renderServiceCard).join('');
+  } else {
+    inactiveSection.style.display = 'none';
+  }
 }
 
 function openServiceModal(svc) {
@@ -2375,20 +2560,48 @@ function openServiceModal(svc) {
   document.getElementById('serviceId').value = svc?.id || '';
   document.getElementById('serviceName').value = svc?.name || '';
   document.getElementById('serviceDuration').value = svc?.duration || 30;
+  document.getElementById('servicePrice').value = svc?.price || 0;
   document.getElementById('serviceCategory').value = svc?.category || 'physical';
   document.getElementById('serviceDescription').value = svc?.description || '';
   document.getElementById('serviceActive').value = String(svc?.isActive ?? true);
-  openModal('serviceModal');
+  document.getElementById('serviceColor').value = svc?.color || '#6A3FA0';
+  document.getElementById('serviceColorPicker').value = svc?.color || '#6A3FA0';
+  document.getElementById('serviceIcon').value = svc?.icon || '';
+  document.getElementById('serviceRequiresPrep').checked = svc?.requiresPreparation || false;
+  document.getElementById('servicePrepInstructions').value = svc?.preparationInstructions || '';
+  document.getElementById('servicePrepFields').style.display = svc?.requiresPreparation ? 'block' : 'none';
+  
+  const modalOverlay = document.getElementById('serviceModal');
+  if (modalOverlay) {
+    modalOverlay.classList.add('open');
+  }
 }
+
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'serviceRequiresPrep') {
+    document.getElementById('servicePrepFields').style.display = e.target.checked ? 'block' : 'none';
+  }
+  if (e.target.id === 'serviceColorPicker') {
+    document.getElementById('serviceColor').value = e.target.value;
+  }
+  if (e.target.id === 'serviceColor') {
+    try { document.getElementById('serviceColorPicker').value = e.target.value; } catch(_) {}
+  }
+});
 
 async function saveService() {
   const id = document.getElementById('serviceId').value;
   const payload = {
     name: document.getElementById('serviceName').value.trim(),
-    duration: parseInt(document.getElementById('serviceDuration').value),
+    duration: parseInt(document.getElementById('serviceDuration').value) || 30,
+    price: parseFloat(document.getElementById('servicePrice').value) || 0,
     category: document.getElementById('serviceCategory').value,
     description: document.getElementById('serviceDescription').value.trim(),
     isActive: document.getElementById('serviceActive').value === 'true',
+    color: document.getElementById('serviceColor').value.trim() || '#6A3FA0',
+    icon: document.getElementById('serviceIcon').value.trim(),
+    requiresPreparation: document.getElementById('serviceRequiresPrep').checked,
+    preparationInstructions: document.getElementById('servicePrepInstructions').value.trim(),
   };
   if (!payload.name) { toast('Service name is required.', 'warning'); return; }
 
@@ -2397,7 +2610,8 @@ async function saveService() {
   const data = await apiFetch(endpoint, method, payload);
   if (data.success) {
     toast('Service saved.', 'success');
-    closeModal('serviceModal');
+    const modal = document.getElementById('serviceModal');
+    if (modal) modal.classList.remove('active');
     loadServices();
   } else {
     toast(data.message || 'Error saving service.', 'danger');
@@ -2714,9 +2928,190 @@ function renderPagination(containerId, data, currentPage, loaderFn) {
   el.innerHTML = html;
 }
 
-/* =========================================================
-   MESSAGES
-   ========================================================= */
+/** Global state for message management */
+let currentMessagesSelection = [];
+
+/** Toggle all message selections */
+function toggleAllSelections() {
+  const selectAll = document.getElementById('selectAllCheckbox');
+  const rows = document.querySelectorAll('#messagesSection tbody tr.message-row');
+  
+  if (selectAll.checked) {
+    currentMessagesSelection = [];
+    rows.forEach((row, index) => {
+      if (!row.classList.contains('selected')) {
+        row.classList.add('selected');
+        row.querySelector('input[type="checkbox"]').checked = true;
+        currentMessagesSelection.push(row.dataset.messageId);
+      }
+    });
+  } else {
+    currentMessagesSelection = [];
+    rows.forEach(row => {
+      if (row.classList.contains('selected')) {
+        row.classList.remove('selected');
+        row.querySelector('input[type="checkbox"]').checked = false;
+      }
+    });
+  }
+  updateBatchActionsVisibility();
+}
+
+/** Toggle individual message selection */
+function toggleMessageSelection(messageId) {
+  const row = document.querySelector(`#messagesBody tr[data-message-id="${messageId}"]`);
+  const checkbox = row?.querySelector('input[type="checkbox"]');
+  
+  if (row && checkbox) {
+    if (checkbox.checked) {
+      row.classList.add('selected');
+      currentMessagesSelection.push(messageId);
+    } else {
+      row.classList.remove('selected');
+      currentMessagesSelection = currentMessagesSelection.filter(id => id !== messageId);
+    }
+    document.getElementById('selectAllCheckbox').checked = 
+      currentMessagesSelection.length === document.querySelectorAll('#messagesBody tr').length - 1;
+    updateBatchActionsVisibility();
+  }
+}
+
+/** Update batch actions button visibility */
+function updateBatchActionsVisibility() {
+  const btn = document.getElementById('messagesBatchActions');
+  if (btn) {
+    btn.style.display = currentMessagesSelection.length > 0 ? 'flex' : 'none';
+    btn.title = currentMessagesSelection.length + ' selected';
+  }
+}
+
+/** Clean up message selection */
+function resetMessageSelection() {
+  currentMessagesSelection = [];
+  document.getElementById('selectAllCheckbox').checked = false;
+  document.querySelectorAll('#messagesBody tr').forEach(row => {
+    row.classList.remove('selected');
+    const checkbox = row.querySelector('input[type="checkbox"]');
+    if (checkbox) checkbox.checked = false;
+  });
+  updateBatchActionsVisibility();
+}
+
+/** Delete selected messages */
+async function deleteSelectedMessages() {
+  if (currentMessagesSelection.length === 0) {
+    toast('No messages selected.', 'warning');
+    return;
+  }
+  
+  if (!confirm('Delete ' + currentMessagesSelection.length + ' selected messages? This cannot be undone.')) {
+    return;
+  }
+  
+  const btn = document.getElementById('messagesBatchActions');
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+  
+  try {
+    const deletePromises = currentMessagesSelection.map(id => 
+      apiFetch('/messages/' + id, 'DELETE')
+    );
+    
+    const results = await Promise.allSettled(deletePromises);
+    const successful = results.filter(r => r.status === 'fulfilled' && r.value.success).length;
+    
+    if (successful > 0) {
+      toast(successful + ' message(s) deleted.', 'success');
+      resetMessageSelection();
+      loadMessages();
+    }
+    
+    if (successful < currentMessagesSelection.length) {
+      toast('Some messages could not be deleted.', 'warning');
+    }
+  } catch (error) {
+    toast('Error deleting messages.', 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Delete Selected';
+  }
+}
+
+/** Mark selected messages as read */
+async function markSelectedRead() {
+  if (currentMessagesSelection.length === 0) {
+    toast('No messages selected.', 'warning');
+    return;
+  }
+  
+  const btn = document.getElementById('messagesBatchActions');
+  btn.disabled = true;
+  btn.textContent = 'Updating...';
+  
+  try {
+    const updatePromises = currentMessagesSelection.map(id => 
+      apiFetch('/messages/' + id, 'PUT', { isRead: true })
+    );
+    
+    const results = await Promise.allSettled(updatePromises);
+    const successful = results.filter(r => r.status === 'fulfilled' && r.value.success).length;
+    
+    if (successful > 0) {
+      toast(successful + ' message(s) marked as read.', 'success');
+      resetMessageSelection();
+      loadMessages();
+    }
+    
+    if (successful < currentMessagesSelection.length) {
+      toast('Some messages could not be updated.', 'warning');
+    }
+  } catch (error) {
+    toast('Error updating messages.', 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Mark Selected Read';
+  }
+}
+
+/** Export messages */
+async function exportMessages() {
+  const btn = document.getElementById('messagesExportBtn');
+  const originalText = btn.textContent;
+  
+  btn.disabled = true;
+  btn.textContent = 'Exporting...';
+  
+  try {
+    let url = '/messages/export';
+    const filter = document.getElementById('msgFilter').value;
+    if (filter) {
+      url += '?isRead=' + filter;
+    }
+    
+    const response = await apiFetch(url);
+    
+    if (response.success && response.data) {
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const timestamp = new Date().toISOString().split('T')[0];
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = 'messages_' + timestamp + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(downloadUrl);
+      toast('Messages exported successfully.', 'success');
+    } else {
+      throw new Error('No data to export');
+    }
+  } catch (error) {
+    toast('Error exporting messages: ' + (error.message || 'Unknown error'), 'danger');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
 let currentMsgId = null;
 
 async function loadMessages(page = 1) {

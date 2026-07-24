@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="UHS Healthcare — Premier Direct Primary Care & Telehealth in Columbia, SC by Nacole Brown MSN AGPCNP-BC. Unhurried visits, transparent pricing, 24/7 direct doctor access.">
+  <meta name="description" content="Unmeasurable Heights of Strength Healthcare Services — Premier Direct Primary Care & Telehealth in Columbia, SC by Nacole Brown MSN AGPCNP-BC. Unhurried visits, transparent pricing, dedicated Wednesday walk-ins, and direct NP access.">
   <meta name="format-detection" content="telephone=yes">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://uhshealthcare.com/">
-  <meta property="og:title" content="UHS Healthcare | Direct Primary Care & Telehealth">
-  <meta property="og:description" content="Personalized medical care built around you — unhurried visits, direct NP access, weight management, DOT physicals, and telehealth.">
+  <meta property="og:title" content="Unmeasurable Heights of Strength Healthcare Services | Direct Primary Care & Telehealth">
+  <meta property="og:description" content="Personalized medical care built around you — unhurried visits, direct NP access, weight management, DOT physicals, dedicated Wednesday walk-ins, and telehealth.">
   <meta property="og:image" content="assets/images/hero-doctor-patient.png">
   <meta property="og:locale" content="en_US">
-  <meta property="og:site_name" content="UHS Healthcare">
+  <meta property="og:site_name" content="Unmeasurable Heights of Strength Healthcare Services">
 
-  <title>UHS Healthcare | Direct Primary Care &amp; Telehealth in Columbia, SC</title>
+  <title>Unmeasurable Heights of Strength Healthcare Services | Direct Primary Care &amp; Telehealth in Columbia, SC</title>
 
   <!-- Preconnect Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,9 +62,12 @@
   <!-- ===== GLASS STICKY HEADER ===== -->
   <header class="nav" role="banner">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" aria-label="UHS Healthcare Home">
-        <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3);">
-        <span class="nav__logo-title">UHS Healthcare</span>
+      <a href="index.html" class="nav__logo" aria-label="Unmeasurable Heights of Strength Healthcare Services Home">
+        <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+          <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+        </div>
       </a>
 
       <button class="nav__toggle" aria-label="Toggle navigation menu">
@@ -120,7 +123,7 @@
             </h1>
 
             <p class="hero__text">
-              We are committed to providing high-quality, compassionate care to help you reach your highest level of health and wellness. Experience unhurried visits, same-day appointments, direct NP access, and virtual telehealth.
+              We are committed to providing high-quality, compassionate care to help you reach your highest level of health and wellness. Experience unhurried visits, dedicated Wednesday walk-ins, direct NP access, and virtual telehealth.
             </p>
 
             <div class="hero__actions">
@@ -246,42 +249,8 @@
           <p class="section-header__desc">Expert care across every stage of life — from physicals to chronic pain relief.</p>
         </div>
 
-        <div class="core-services-grid animate">
-          <div class="core-service-card">
-            <h3 class="core-service-card__title">DOT / Work / Sports Physicals</h3>
-            <p class="core-service-card__desc">Fast turnaround physicals to keep you compliant, safe, and ready to perform.</p>
-            <button class="core-service-card__btn" data-open-modal>Schedule Exam</button>
-          </div>
-
-          <div class="core-service-card">
-            <h3 class="core-service-card__title">Weight Loss &amp; Healthy Plans</h3>
-            <p class="core-service-card__desc">Sustainable plans with GLP-1 support, nutrition coaching, and lifestyle guidance.</p>
-            <button class="core-service-card__btn" data-open-modal>Get Started</button>
-          </div>
-
-          <div class="core-service-card">
-            <h3 class="core-service-card__title">BLS CPR Training</h3>
-            <p class="core-service-card__desc">American Heart Association (AHA) Certified Training for providers and the community.</p>
-            <button class="core-service-card__btn" data-open-modal>Inquire for Class</button>
-          </div>
-
-          <div class="core-service-card">
-            <h3 class="core-service-card__title">TB Skin Testing</h3>
-            <p class="core-service-card__desc">Fast, accurate TB skin testing for employment, school, and healthcare screening.</p>
-            <button class="core-service-card__btn" data-open-modal>Schedule TB Test</button>
-          </div>
-
-          <div class="core-service-card">
-            <h3 class="core-service-card__title">Iontopherisis Patch &amp; Chronic Pain</h3>
-            <p class="core-service-card__desc">Non-invasive transdermal therapy for pain relief and improved mobility without drugs.</p>
-            <button class="core-service-card__btn" data-open-modal>Schedule Consultation</button>
-          </div>
-
-          <div class="core-service-card">
-            <h3 class="core-service-card__title">Telehealth Visits</h3>
-            <p class="core-service-card__desc">Convenient virtual checkups, e-refills, and follow-up care from home.</p>
-            <a href="telehealth.html" class="core-service-card__btn">Access Telehealth</a>
-          </div>
+        <div id="homeServicesGrid" class="core-services-grid animate">
+          <div style="text-align:center; grid-column:1/-1; padding:2rem;"><div class="preloader__spinner" style="margin:0 auto;"></div></div>
         </div>
       </div>
     </section>
@@ -369,7 +338,7 @@
               <tr>
                 <td class="comparison-table__label">Appointments</td>
                 <td class="comparison-table__cell--bad">Weeks-long wait times</td>
-                <td class="comparison-table__cell--good">Same-day / next-day availability</td>
+                <td class="comparison-table__cell--good">Dedicated Wednesday walk-ins &amp; prompt scheduling</td>
               </tr>
               <tr>
                 <td class="comparison-table__label">Insurance</td>
@@ -540,7 +509,7 @@
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
             </button>
             <div class="faq-content">
-              DOT/FMCSA physicals are a separate fee-for-service appointment and are not included in the standard DPC membership. However, as a member you receive a discounted rate. Same-day appointments are typically available with no waiting room delays.
+              DOT/FMCSA physicals are a separate fee-for-service appointment and are not included in the standard DPC membership. However, as a member you receive a discounted rate. Appointments are available with no waiting room delays, plus dedicated Wednesday walk-in hours.
             </div>
           </div>
 
@@ -570,7 +539,7 @@
               <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></div>
             </button>
             <div class="faq-content">
-              As a DPC member, you can typically be seen same-day or next-day. For non-members and fee-for-service appointments such as DOT physicals, sports physicals, and BLS training, we aim to accommodate you within 1 to 2 business days. Telehealth visits are often available the same day.
+              We offer convenient scheduled appointments for all our medical services and physicals. Wednesdays are specifically dedicated for walk-in visits. Virtual telehealth consultations are also available for flexible, remote care.
             </div>
           </div>
 
@@ -650,10 +619,10 @@
       <div class="footer-grid">
         <div>
           <div class="nav__logo" style="margin-bottom:1rem;">
-            <img src="assets/images/logo.png" alt="UHS Heights of Strength Logo" style="height:40px; width:auto; border-radius:50%;">
-            <div>
-              <span class="nav__logo-title">UHS Healthcare</span>
-              <span class="nav__logo-subtitle">Heights of Strength</span>
+            <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+              <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+              <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
             </div>
           </div>
           <p class="footer-brand__desc" id="footer-brand-desc" data-content="footer_brand_desc">
@@ -694,7 +663,7 @@
       </div>
 
       <div class="footer-bottom">
-        <div>&copy; 2026 UHS Healthcare Services. All rights reserved.</div>
+        <div>&copy; 2026 Unmeasurable Heights of Strength Healthcare Services. All rights reserved.</div>
         <div style="display:flex; gap:1.5rem;">
           <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
           <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
