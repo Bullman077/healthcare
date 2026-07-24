@@ -1297,20 +1297,34 @@
       <div class="card">
         <div class="card-header">
           <span class="card-title">Audit Logs</span>
-          <div class="card-actions">
+          <div class="card-actions" style="flex-wrap:wrap; gap:8px;">
             <select id="auditAction" class="filter-input" onchange="loadAuditLogs(1)">
               <option value="">All Actions</option>
+              <option value="login">Login</option>
               <option value="create">Create</option>
               <option value="update">Update</option>
               <option value="update_status">Status Change</option>
+              <option value="update_notes">Notes Update</option>
+              <option value="update_profile">Profile Update</option>
+              <option value="read">Mark Read</option>
               <option value="delete">Delete</option>
+              <option value="deactivate">Deactivate</option>
+              <option value="upload_photo">Photo Upload</option>
             </select>
             <select id="auditResource" class="filter-input" onchange="loadAuditLogs(1)">
               <option value="">All Resources</option>
               <option value="appointment">Appointment</option>
               <option value="patient">Patient</option>
               <option value="service">Service</option>
+              <option value="testimonial">Testimonial</option>
+              <option value="message">Message</option>
+              <option value="settings">Settings</option>
+              <option value="profile">Profile</option>
+              <option value="reminder">Reminder</option>
+              <option value="auth">Auth</option>
             </select>
+            <input type="date" id="auditDateFrom" class="filter-input" onchange="loadAuditLogs(1)" title="From date">
+            <input type="date" id="auditDateTo" class="filter-input" onchange="loadAuditLogs(1)" title="To date">
           </div>
         </div>
         <div class="table-wrap">
@@ -3151,17 +3165,21 @@ async function saveSettings() {
    ========================================================= */
 async function loadAuditLogs(page = 1) {
   showSkeleton('auditBody', 4, 6);
-  const qs = new URLSearchParams({ page, limit: 30 });
+  const params = { page, limit: 30 };
+  const actionFilter = document.getElementById('auditAction').value;
+  const resourceFilter = document.getElementById('auditResource').value;
+  const dateFrom = document.getElementById('auditDateFrom').value;
+  const dateTo = document.getElementById('auditDateTo').value;
+  if (actionFilter) params.action = actionFilter;
+  if (resourceFilter) params.resource = resourceFilter;
+  if (dateFrom) params.dateFrom = dateFrom;
+  if (dateTo) params.dateTo = dateTo;
 
+  const qs = new URLSearchParams(params);
   const data = await apiFetch('/audit-logs?' + qs);
   const tbody = document.getElementById('auditBody');
 
-  let logs = data.logs || [];
-
-  const actionFilter = document.getElementById('auditAction').value;
-  const resourceFilter = document.getElementById('auditResource').value;
-  if (actionFilter) logs = logs.filter(l => l.action === actionFilter);
-  if (resourceFilter) logs = logs.filter(l => l.resource === resourceFilter);
+  const logs = data.logs || [];
 
   if (logs.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No audit logs found.</div></td></tr>`;
@@ -3175,17 +3193,49 @@ async function loadAuditLogs(page = 1) {
       <td><strong>${escHtml(l.adminEmail || '—')}</strong></td>
       <td><span class="status-badge ${auditBadgeClass(l.action)}">${l.action}</span></td>
       <td>${escHtml(l.resource || '—')}</td>
-      <td><code style="font-size:11px; color:var(--slate-500);">${escHtml(JSON.stringify(l.details || {}).substring(0, 80))}</code></td>
+      <td><code style="font-size:11px; color:var(--slate-500);">${escHtml(formatAuditDetails(l))}</code></td>
       <td style="font-size:12px; color:var(--slate-500);">${l.ipAddress || '—'}</td>
     </tr>
   `).join('');
   renderPagination('auditPagination', data, page, loadAuditLogs);
 }
 
+function formatAuditDetails(log) {
+  if (!log.details || Object.keys(log.details).length === 0) return '—';
+  if (log.action === 'update' && log.resource === 'settings' && log.details.changes) {
+    const keys = log.details.keysChanged || [];
+    return keys.length + ' key' + (keys.length !== 1 ? 's' : '') + ' changed: ' + keys.slice(0, 4).join(', ') + (keys.length > 4 ? '...' : '');
+  }
+  if (log.action === 'update' && log.resource === 'testimonial' && log.details.changes) {
+    const fields = Object.keys(log.details.changes);
+    return log.details.name + ' — ' + fields.join(', ');
+  }
+  if (log.action === 'update_profile' && log.details) {
+    const parts = [];
+    if (log.details.name) parts.push('name');
+    if (log.details.email) parts.push('email');
+    if (log.details.password) parts.push('password');
+    return 'Changed: ' + parts.join(', ');
+  }
+  if (log.action === 'login') return 'Login via ' + (log.details.method || 'password');
+  if (log.action === 'create' && log.resource === 'reminder') {
+    return 'Reminder for ' + (log.details.patientEmail || '—') + ' (' + (log.details.timeframe || '') + ')';
+  }
+  const d = log.details;
+  if (d.name) return d.name;
+  if (d.from) return d.from;
+  if (d.patientEmail) return d.patientEmail;
+  return JSON.stringify(d).substring(0, 60);
+}
+
 function auditBadgeClass(action) {
+  if (action === 'login') return 'badge-confirmed';
   if (action === 'create') return 'badge-confirmed';
   if (action === 'delete') return 'badge-cancelled';
+  if (action === 'deactivate') return 'badge-cancelled';
   if (action === 'update_status') return 'badge-no-show';
+  if (action === 'update_profile') return 'badge-no-show';
+  if (action === 'upload_photo') return 'badge-confirmed';
   return 'badge-completed';
 }
 

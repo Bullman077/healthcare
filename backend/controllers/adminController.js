@@ -49,6 +49,7 @@ async function logAudit(admin, action, resource, resourceId, details, req) {
     console.error('Audit log error:', err.message);
   }
 }
+exports.logAudit = logAudit;
 
 function signToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -73,6 +74,8 @@ exports.login = async (req, res, next) => {
     await admin.save({ fields: ['lastLogin', 'lastLoginIp'] });
 
     const token = signToken(admin.id);
+
+    await logAudit(admin, 'login', 'auth', admin.id, { email: admin.email, method: 'password' }, req);
 
     const cookieOptions = {
       httpOnly: true,
@@ -429,6 +432,11 @@ exports.updateProfile = async (req, res, next) => {
     const { name, email, currentPassword, newPassword } = req.body;
     const admin = await Admin.findByPk(req.admin.id);
     if (!admin) return next(new AppError('Admin not found.', 404));
+
+    const changes = {};
+    if (name && name !== admin.name) changes.name = { from: admin.name, to: name };
+    if (email && email !== admin.email) changes.email = { from: admin.email, to: email };
+    if (newPassword) changes.password = { changed: true };
     
     if (newPassword) {
       if (!currentPassword) {
@@ -444,6 +452,10 @@ exports.updateProfile = async (req, res, next) => {
     
     await admin.save();
     
+    if (Object.keys(changes).length > 0) {
+      await logAudit(req.admin, 'update_profile', 'profile', admin.id, changes, req);
+    }
+
     res.json({
       success: true,
       message: 'Profile updated successfully.',
@@ -496,6 +508,11 @@ exports.updatePatientProgress = async (req, res, next) => {
 
     await patient.save();
 
+    await logAudit(req.admin, 'update_notes', 'patient', patient.id, {
+      patientEmail: patient.email,
+      fieldsUpdated: Object.keys(req.body).filter(k => req.body[k] !== undefined),
+    }, req);
+
     res.json({
       success: true,
       message: 'Patient progress updated successfully.',
@@ -537,6 +554,12 @@ exports.addPatientReminder = async (req, res, next) => {
       console.error('Follow-up reminder email failed:', emailErr.message);
     }
 
+    await logAudit(req.admin, 'create', 'reminder', patient.id, {
+      patientEmail: patient.email,
+      timeframe: reminder.timeframe,
+      followUpDate: reminder.followUpDate,
+    }, req);
+
     res.json({
       success: true,
       message: 'Follow-up reminder sent and saved to patient account.',
@@ -549,10 +572,24 @@ exports.addPatientReminder = async (req, res, next) => {
 
 exports.getAuditLogs = async (req, res, next) => {
   try {
-    const { page = 1, limit = 50 } = req.query;
+    const { page = 1, limit = 50, dateFrom, dateTo, action, resource } = req.query;
     const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
+    const where = {};
+
+    if (dateFrom || dateTo) {
+      where.createdAt = {};
+      if (dateFrom) where.createdAt[Op.gte] = new Date(dateFrom);
+      if (dateTo) {
+        const to = new Date(dateTo);
+        to.setHours(23, 59, 59, 999);
+        where.createdAt[Op.lte] = to;
+      }
+    }
+    if (action) where.action = action;
+    if (resource) where.resource = resource;
 
     const { count, rows } = await AuditLog.findAndCountAll({
+      where,
       order: [['createdAt', 'DESC']],
       offset,
       limit: parseInt(limit, 10),

@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const { Message, Testimonial, Setting, Service } = require('../models');
 const { AppError } = require('../middleware/errorHandler');
 const { sendNewMessageNotification } = require('../utils/email');
+const { logAudit } = require('./adminController');
 
 /* ===== MESSAGES ===== */
 exports.submitMessage = async (req, res, next) => {
@@ -76,6 +77,7 @@ exports.toggleMessageRead = async (req, res, next) => {
     if (!msg) return next(new AppError('Message not found.', 404));
     msg.isRead = !msg.isRead;
     await msg.save({ fields: ['isRead'] });
+    await logAudit(req.admin, msg.isRead ? 'read' : 'unread', 'message', msg.id, { from: msg.name, subject: msg.subject }, req);
     res.json({ success: true, data: msg });
   } catch (err) {
     next(err);
@@ -86,6 +88,7 @@ exports.deleteMessage = async (req, res, next) => {
   try {
     const msg = await Message.findByPk(req.params.id);
     if (!msg) return next(new AppError('Message not found.', 404));
+    await logAudit(req.admin, 'delete', 'message', msg.id, { from: msg.name, email: msg.email, subject: msg.subject }, req);
     await msg.destroy();
     res.json({ success: true, message: 'Message deleted.' });
   } catch (err) {
@@ -122,6 +125,7 @@ exports.createTestimonial = async (req, res, next) => {
       if (req.body[field] !== undefined) filtered[field] = req.body[field];
     });
     const testimonial = await Testimonial.create(filtered);
+    await logAudit(req.admin, 'create', 'testimonial', testimonial.id, { name: testimonial.name, rating: testimonial.rating }, req);
     res.status(201).json({ success: true, data: testimonial });
   } catch (err) {
     next(err);
@@ -133,10 +137,19 @@ exports.updateTestimonial = async (req, res, next) => {
     const allowedFields = ['name', 'title', 'content', 'rating', 'isActive', 'displayOnHome'];
     const testimonial = await Testimonial.findByPk(req.params.id);
     if (!testimonial) return next(new AppError('Testimonial not found.', 404));
+    const changes = {};
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined && req.body[field] !== testimonial[field]) {
+        changes[field] = { from: testimonial[field], to: req.body[field] };
+      }
+    });
     allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) testimonial[field] = req.body[field];
     });
     await testimonial.save();
+    if (Object.keys(changes).length > 0) {
+      await logAudit(req.admin, 'update', 'testimonial', testimonial.id, { name: testimonial.name, changes }, req);
+    }
     res.json({ success: true, data: testimonial });
   } catch (err) {
     next(err);
@@ -147,6 +160,7 @@ exports.deleteTestimonial = async (req, res, next) => {
   try {
     const testimonial = await Testimonial.findByPk(req.params.id);
     if (!testimonial) return next(new AppError('Testimonial not found.', 404));
+    await logAudit(req.admin, 'delete', 'testimonial', testimonial.id, { name: testimonial.name, content: testimonial.content.substring(0, 100) }, req);
     await testimonial.destroy();
     res.json({ success: true, message: 'Testimonial deleted.' });
   } catch (err) {
@@ -214,9 +228,35 @@ exports.updateSettings = async (req, res, next) => {
     ];
     const updates = req.body;
     const keys = Object.keys(updates).filter((k) => allowedKeys.includes(k));
+
+    /* Capture old values for changed keys */
+    const oldValues = {};
+    for (const key of keys) {
+      const existing = await Setting.findOne({ where: { key } });
+      oldValues[key] = existing ? existing.value : null;
+    }
+
     for (const key of keys) {
       await Setting.upsert({ key, value: String(updates[key]) });
     }
+
+    /* Build rich change log */
+    const changes = {};
+    for (const key of keys) {
+      const oldVal = oldValues[key] || '';
+      const newVal = String(updates[key]);
+      if (oldVal !== newVal) {
+        changes[key] = { from: oldVal.substring(0, 80), to: newVal.substring(0, 80) };
+      }
+    }
+    if (Object.keys(changes).length > 0) {
+      await logAudit(req.admin, 'update', 'settings', null, {
+        keysChanged: Object.keys(changes),
+        count: Object.keys(changes).length,
+        changes,
+      }, req);
+    }
+
     const settings = await Setting.findAll({ order: [['key', 'ASC']] });
     const result = {};
     settings.forEach((s) => { result[s.key] = s.value; });
