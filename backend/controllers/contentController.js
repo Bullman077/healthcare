@@ -97,7 +97,7 @@ exports.deleteMessage = async (req, res, next) => {
 exports.getTestimonials = async (req, res, next) => {
   try {
     const testimonials = await Testimonial.findAll({
-      where: { isActive: true }, order: [['createdAt', 'DESC']],
+      where: { isActive: true, displayOnHome: true }, order: [['createdAt', 'DESC']],
     });
     res.json({ success: true, data: testimonials });
   } catch (err) {
@@ -200,12 +200,16 @@ exports.updateSettings = async (req, res, next) => {
       'comparison_title', 'comparison_subtitle',
       'faq_title', 'faq_intro',
       'cta_title', 'cta_text',
-      'telehealth_hero_title', 'telehealth_hero_subtitle',
+      'testimonials_section_title', 'testimonials_section_subtitle',
+      'telehealth_hero_badge', 'telehealth_hero_title', 'telehealth_hero_text',
+      'telehealth_steps_title', 'telehealth_steps_subtitle',
       'telehealth_step1_title', 'telehealth_step1_desc',
       'telehealth_step2_title', 'telehealth_step2_desc',
       'telehealth_step3_title', 'telehealth_step3_desc',
       'telehealth_conditions_title', 'telehealth_conditions_subtitle',
-      'contact_heading', 'contact_intro',
+      'contact_badge', 'contact_heading', 'contact_intro',
+      'services_hero_title', 'services_hero_text',
+      'services_section_title', 'services_section_subtitle', 'services_section_desc',
       'footer_brand_desc',
     ];
     const updates = req.body;

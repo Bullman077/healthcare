@@ -240,6 +240,10 @@ async function seedSiteDefaults() {
     cta_title: 'Experience Healthcare Built Around You',
     cta_text: 'Join UHS Healthcare today and enjoy unhurried visits, direct NP access, and transparent pricing.',
 
+    /* Homepage Testimonials */
+    testimonials_section_title: 'What Our Patients Say',
+    testimonials_section_subtitle: 'Patient Experiences',
+
     /* Contact Page */
     contact_heading: 'Reach UHS Healthcare',
     contact_intro: 'We are here to answer your questions about membership, services, and appointment scheduling.',

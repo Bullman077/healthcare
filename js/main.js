@@ -494,33 +494,13 @@
 
   // ===== TESTIMONIALS CAROUSEL =====
   (function initTestimonials() {
-    var reviews = [
-      {
-        name: "Sarah M.",
-        role: "DPC Member, Columbia, SC",
-        text: "Nacole Brown is the most attentive medical provider I've ever had. She spent a full 45 minutes with me reviewing my health history and lab results. The Direct Primary Care membership is worth every penny!",
-        rating: 5
-      },
-      {
-        name: "James D.",
-        role: "CDL Driver",
-        text: "Needed a DOT physical for my CDL renewal. Got a same-day appointment, zero waiting time, and NP Brown was extremely thorough and professional. Highly recommend UHS Healthcare!",
-        rating: 5
-      },
-      {
-        name: "Michelle R.",
-        role: "Telehealth Patient",
-        text: "The telehealth service is incredible. I was able to text NP Brown directly on a Sunday when I came down with a bad sinus infection, and my prescription was called in immediately.",
-        rating: 5
-      }
-    ];
-
     var track = document.querySelector('.testimonials-slider__track');
     var dotsContainer = document.querySelector('.testimonials-slider__dots');
     var prevBtn = document.querySelector('.testimonials-slider__arrow--prev');
     var nextBtn = document.querySelector('.testimonials-slider__arrow--next');
     if (!track || !dotsContainer) return;
 
+    var reviews = [];
     var currentIndex = 0;
     var intervalId;
     var isPaused = false;
@@ -536,13 +516,13 @@
 
     function buildSlides() {
       track.innerHTML = '';
-      reviews.forEach(function(review, index) {
+      reviews.forEach(function(review) {
         var card = document.createElement('div');
         card.className = 'testimonial-card';
         card.innerHTML =
           '<div>' +
             '<div class="stars-rating">' + renderStars(review.rating) + '</div>' +
-            '<p class="testimonial-card__text">"' + review.text + '"</p>' +
+            '<p class="testimonial-card__text">\u201C' + review.text + '\u201D</p>' +
           '</div>' +
           '<div class="testimonial-card__author">' +
             '<div class="testimonial-card__avatar">' + getInitials(review.name) + '</div>' +
@@ -568,6 +548,7 @@
 
     function goToSlide(index) {
       var slides = track.querySelectorAll('.testimonial-card');
+      if (slides.length === 0) return;
       if (index < 0) index = slides.length - 1;
       if (index >= slides.length) index = 0;
       currentIndex = index;
@@ -604,10 +585,30 @@
     if (prevBtn) prevBtn.addEventListener('click', function() { goToSlide(currentIndex - 1); startAutoPlay(); });
     if (nextBtn) nextBtn.addEventListener('click', function() { goToSlide(currentIndex + 1); startAutoPlay(); });
 
-    buildSlides();
-    buildDots();
-    goToSlide(0);
-    startAutoPlay();
+    fetch('/api/testimonials')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success && data.data && data.data.length > 0) {
+          reviews = data.data
+            .filter(function(t) { return t.isActive && t.displayOnHome; })
+            .map(function(t) {
+              return { name: t.name, role: t.title || '', text: t.content, rating: t.rating || 5 };
+            });
+        }
+        if (reviews.length > 0) {
+          buildSlides();
+          buildDots();
+          goToSlide(0);
+          startAutoPlay();
+        } else {
+          var section = track.closest('.section--testimonials');
+          if (section) section.style.display = 'none';
+        }
+      })
+      .catch(function() {
+        var section = track.closest('.section--testimonials');
+        if (section) section.style.display = 'none';
+      });
   })();
 
 })();
