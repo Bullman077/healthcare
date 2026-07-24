@@ -179,6 +179,34 @@ exports.updateSettings = async (req, res, next) => {
       'value2_title', 'value2_text',
       'value3_title', 'value3_text',
       'homepage_provider_quote',
+      'hero_floating_name', 'hero_floating_title',
+      'hero_stat1_number', 'hero_stat1_label',
+      'hero_stat2_number', 'hero_stat2_label',
+      'hero_stat3_number', 'hero_stat3_label',
+      'hero_stat4_number', 'hero_stat4_label',
+      'why_choose_title', 'why_choose_subtitle', 'why_choose_badge',
+      'benefit1_title', 'benefit1_desc',
+      'benefit2_title', 'benefit2_desc',
+      'benefit3_title', 'benefit3_desc',
+      'how_dpc_title', 'how_dpc_subtitle',
+      'dpc_step1_title', 'dpc_step1_desc',
+      'dpc_step2_title', 'dpc_step2_desc',
+      'dpc_step3_title', 'dpc_step3_desc',
+      'homepage_services_title', 'homepage_services_subtitle',
+      'homepage_wellness_title', 'homepage_wellness_subtitle',
+      'wellness1_title', 'wellness1_desc',
+      'wellness2_title', 'wellness2_desc',
+      'wellness3_title', 'wellness3_desc',
+      'comparison_title', 'comparison_subtitle',
+      'faq_title', 'faq_intro',
+      'cta_title', 'cta_text',
+      'telehealth_hero_title', 'telehealth_hero_subtitle',
+      'telehealth_step1_title', 'telehealth_step1_desc',
+      'telehealth_step2_title', 'telehealth_step2_desc',
+      'telehealth_step3_title', 'telehealth_step3_desc',
+      'telehealth_conditions_title', 'telehealth_conditions_subtitle',
+      'contact_heading', 'contact_intro',
+      'footer_brand_desc',
     ];
     const updates = req.body;
     const keys = Object.keys(updates).filter((k) => allowedKeys.includes(k));
@@ -207,20 +235,9 @@ exports.getPublicServices = async (req, res, next) => {
   }
 };
 
-exports.getAboutContent = async (req, res, next) => {
+exports.getSiteContent = async (req, res, next) => {
   try {
-    const aboutKeys = [
-      'provider_name', 'provider_credentials', 'provider_photo_url',
-      'provider_bio_p1', 'provider_bio_p2',
-      'provider_philosophy_title', 'provider_philosophy_text',
-      'value1_title', 'value1_text',
-      'value2_title', 'value2_text',
-      'value3_title', 'value3_text',
-      'homepage_provider_quote',
-    ];
-    const settings = await Setting.findAll({
-      where: { key: aboutKeys },
-    });
+    const settings = await Setting.findAll({ order: [['key', 'ASC']] });
     const result = {};
     settings.forEach((s) => { result[s.key] = s.value; });
     res.json({ success: true, data: result });

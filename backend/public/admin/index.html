@@ -572,104 +572,666 @@
 
     <!-- ===== SETTINGS ===== -->
     <section id="page-settings" class="page-section">
-      <div class="card settings-card">
-        <div class="card-header">
-          <span class="card-title">Clinic Settings</span>
+      <div class="card" style="overflow:visible;">
+        <div class="settings-nav" id="settingsNav">
+          <button class="settings-nav-item active" onclick="switchSettingsTab('profile', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Clinic Profile
+          </button>
+          <button class="settings-nav-item" onclick="switchSettingsTab('homepage', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Homepage
+          </button>
+          <button class="settings-nav-item" onclick="switchSettingsTab('about', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            About Page
+          </button>
+          <button class="settings-nav-item" onclick="switchSettingsTab('contact', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Contact &amp; Footer
+          </button>
+          <button class="settings-nav-item" onclick="switchSettingsTab('telehealth', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.553-2.276A1 1 0 0 1 21 8.618v6.764a1 1 0 0 1-1.447.894L15 14"/><rect x="3" y="6" width="12" height="12" rx="2" ry="2"/></svg>
+            Telehealth
+          </button>
+          <button class="settings-nav-item" onclick="switchSettingsTab('legal', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Legal Pages
+          </button>
         </div>
-        <div class="settings-tabs">
-          <button class="settings-tab active" onclick="switchSettingsTab('profile')">Clinic Profile</button>
-          <button class="settings-tab" onclick="switchSettingsTab('content')">Homepage Content</button>
-          <button class="settings-tab" onclick="switchSettingsTab('about')">About Page</button>
-          <button class="settings-tab" onclick="switchSettingsTab('legal')">Legal Pages</button>
-        </div>
-        <div class="modal-body">
+        <div class="settings-divider"></div>
+        <div class="settings-body">
           <div id="settingsSuccess" class="profile-success" style="display:none;"></div>
           <div id="settingsError" class="login-error profile-error" style="display:none;"></div>
 
+          <!-- ===== Profile Tab ===== -->
           <div id="settingsTab-profile" class="settings-panel">
-            <label class="form-label">Clinic Name</label>
-            <input type="text" id="set_clinic_name" class="form-input" placeholder="UHS Healthcare">
-            <label class="form-label" style="margin-top:14px;">Tagline</label>
-            <input type="text" id="set_clinic_tagline" class="form-input" placeholder="Direct Primary Care & Telehealth">
-            <label class="form-label" style="margin-top:14px;">Phone Number</label>
-            <input type="tel" id="set_clinic_phone" class="form-input" placeholder="(803) 555-0123">
-            <label class="form-label" style="margin-top:14px;">Email Address</label>
-            <input type="email" id="set_clinic_email" class="form-input" placeholder="info@uhshealthcare.com">
-            <label class="form-label" style="margin-top:14px;">Address</label>
-            <textarea id="set_clinic_address" class="form-input" rows="2" placeholder="123 Main St, Columbia, SC 29201"></textarea>
-            <label class="form-label" style="margin-top:14px;">Business Hours</label>
-            <textarea id="set_clinic_hours" class="form-input" rows="3" placeholder="Mon-Fri: 8AM-6PM&#10;Sat: 9AM-2PM&#10;Sun: Closed"></textarea>
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon navy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Clinic Identity</div>
+                  <div class="section-editor-subtitle">Basic contact information and branding</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Clinic Name</label>
+                    <input type="text" id="set_clinic_name" placeholder="UHS Healthcare">
+                  </div>
+                  <div class="visual-field">
+                    <label>Tagline</label>
+                    <input type="text" id="set_clinic_tagline" placeholder="Direct Primary Care &amp; Telehealth">
+                  </div>
+                </div>
+                <div class="visual-fields visual-fields--2col" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Phone Number</label>
+                    <input type="tel" id="set_clinic_phone" placeholder="(803) 381-7489">
+                  </div>
+                  <div class="visual-field">
+                    <label>Email Address</label>
+                    <input type="email" id="set_clinic_email" placeholder="info@uhshealthcare.com">
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Address</label>
+                    <textarea id="set_clinic_address" rows="2" placeholder="2638 Two Notch Rd, Columbia, SC 29201"></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Business Hours</label>
+                    <textarea id="set_clinic_hours" rows="3" placeholder="Mon-Fri: 8AM-6PM&#10;Sat: 9AM-2PM&#10;Sun: Closed"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div id="settingsTab-content" class="settings-panel" style="display:none;">
-            <label class="form-label">Hero Title</label>
-            <input type="text" id="set_hero_title" class="form-input" placeholder="Your Health, Your Schedule">
-            <label class="form-label" style="margin-top:14px;">Hero Subtitle</label>
-            <textarea id="set_hero_subtitle" class="form-input" rows="2" placeholder="Direct primary care..."></textarea>
-            <label class="form-label" style="margin-top:14px;">About Text</label>
-            <textarea id="set_about_text" class="form-input" rows="5" placeholder="Tell patients about your practice..."></textarea>
+          <!-- ===== Homepage Tab ===== -->
+          <div id="settingsTab-homepage" class="settings-panel" style="display:none;">
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon indigo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Hero Section</div>
+                  <div class="section-editor-subtitle">Floating card and stat counters on the homepage hero</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Floating Card Name</label>
+                    <input type="text" id="set_hero_floating_name" placeholder="Nacole Brown, MSN, AGPCNP-BC">
+                  </div>
+                  <div class="visual-field">
+                    <label>Floating Card Title</label>
+                    <input type="text" id="set_hero_floating_title" placeholder="Adult-Gerontology Primary Care Specialist">
+                  </div>
+                </div>
+                <div class="section-preview" style="margin-top:20px;">
+                  <div class="section-preview-label">Stat Counters</div>
+                  <div class="visual-fields visual-fields--2col" style="margin-top:8px;">
+                    <div class="visual-field">
+                      <label>Stat 1 Number</label>
+                      <input type="text" id="set_hero_stat1_number" placeholder="15+">
+                    </div>
+                    <div class="visual-field">
+                      <label>Stat 1 Label</label>
+                      <input type="text" id="set_hero_stat1_label" placeholder="Years Experience">
+                    </div>
+                  </div>
+                  <div class="visual-fields visual-fields--2col" style="margin-top:12px;">
+                    <div class="visual-field">
+                      <label>Stat 2 Number</label>
+                      <input type="text" id="set_hero_stat2_number" placeholder="500+">
+                    </div>
+                    <div class="visual-field">
+                      <label>Stat 2 Label</label>
+                      <input type="text" id="set_hero_stat2_label" placeholder="Patients Served">
+                    </div>
+                  </div>
+                  <div class="visual-fields visual-fields--2col" style="margin-top:12px;">
+                    <div class="visual-field">
+                      <label>Stat 3 Number</label>
+                      <input type="text" id="set_hero_stat3_number" placeholder="24/7">
+                    </div>
+                    <div class="visual-field">
+                      <label>Stat 3 Label</label>
+                      <input type="text" id="set_hero_stat3_label" placeholder="Access">
+                    </div>
+                  </div>
+                  <div class="visual-fields visual-fields--2col" style="margin-top:12px;">
+                    <div class="visual-field">
+                      <label>Stat 4 Number</label>
+                      <input type="text" id="set_hero_stat4_number" placeholder="$99">
+                    </div>
+                    <div class="visual-field">
+                      <label>Stat 4 Label</label>
+                      <input type="text" id="set_hero_stat4_label" placeholder="Per Month">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon teal">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Why Choose Us / Benefits</div>
+                  <div class="section-editor-subtitle">Badge, heading and three benefit cards</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--3col">
+                  <div class="visual-field">
+                    <label>Badge Text</label>
+                    <input type="text" id="set_why_choose_badge" placeholder="The Direct Care Difference">
+                  </div>
+                  <div class="visual-field">
+                    <label>Title</label>
+                    <input type="text" id="set_why_choose_title" placeholder="Healthcare Designed Around You.">
+                  </div>
+                  <div class="visual-field">
+                    <label>Subtitle</label>
+                    <textarea id="set_why_choose_subtitle" rows="2"></textarea>
+                  </div>
+                </div>
+                <div class="section-preview" style="margin-top:20px;">
+                  <div class="section-preview-label">Benefit Cards</div>
+                  <div class="visual-fields visual-fields--3col" style="margin-top:8px;">
+                    <div class="visual-field">
+                      <label>Benefit 1 Title</label>
+                      <input type="text" id="set_benefit1_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_benefit1_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Benefit 2 Title</label>
+                      <input type="text" id="set_benefit2_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_benefit2_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Benefit 3 Title</label>
+                      <input type="text" id="set_benefit3_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_benefit3_desc" rows="2"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon gold">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">How DPC Works</div>
+                  <div class="section-editor-subtitle">Three-step process section</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Section Title</label>
+                    <input type="text" id="set_how_dpc_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>Section Subtitle</label>
+                    <input type="text" id="set_how_dpc_subtitle">
+                  </div>
+                </div>
+                <div class="section-preview" style="margin-top:20px;">
+                  <div class="section-preview-label">Steps</div>
+                  <div class="visual-fields visual-fields--3col" style="margin-top:8px;">
+                    <div class="visual-field">
+                      <label>Step 1 Title</label>
+                      <input type="text" id="set_dpc_step1_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_dpc_step1_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Step 2 Title</label>
+                      <input type="text" id="set_dpc_step2_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_dpc_step2_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Step 3 Title</label>
+                      <input type="text" id="set_dpc_step3_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_dpc_step3_desc" rows="2"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon violet">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Specialized Wellness</div>
+                  <div class="section-editor-subtitle">Three wellness service cards</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Section Title</label>
+                    <input type="text" id="set_homepage_wellness_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>Section Subtitle</label>
+                    <input type="text" id="set_homepage_wellness_subtitle">
+                  </div>
+                </div>
+                <div class="section-preview" style="margin-top:20px;">
+                  <div class="section-preview-label">Wellness Cards</div>
+                  <div class="visual-fields visual-fields--3col" style="margin-top:8px;">
+                    <div class="visual-field">
+                      <label>Wellness 1 Title</label>
+                      <input type="text" id="set_wellness1_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_wellness1_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Wellness 2 Title</label>
+                      <input type="text" id="set_wellness2_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_wellness2_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Wellness 3 Title</label>
+                      <input type="text" id="set_wellness3_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_wellness3_desc" rows="2"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon navy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Comparison, FAQ &amp; CTA</div>
+                  <div class="section-editor-subtitle">DPC vs Traditional comparison, common questions, and call to action</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Comparison Title</label>
+                    <input type="text" id="set_comparison_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>Comparison Subtitle</label>
+                    <input type="text" id="set_comparison_subtitle">
+                  </div>
+                </div>
+                <div class="visual-fields visual-fields--2col" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>FAQ Title</label>
+                    <input type="text" id="set_faq_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>FAQ Intro</label>
+                    <textarea id="set_faq_intro" rows="2"></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields visual-fields--2col" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>CTA Title</label>
+                    <input type="text" id="set_cta_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>CTA Text</label>
+                    <textarea id="set_cta_text" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
+          <!-- ===== About Tab ===== -->
           <div id="settingsTab-about" class="settings-panel" style="display:none;">
-            <div style="background:var(--bg-secondary); border-radius:10px; padding:16px; margin-bottom:20px; border:1px solid var(--border);">
-              <p style="font-size:13px; color:var(--text-secondary); margin:0;">Content here controls the About page (<code>about.html</code>) and the Provider Spotlight section on the homepage.</p>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon navy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Provider Information</div>
+                  <div class="section-editor-subtitle">Displayed on the About page and homepage provider spotlight</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Provider Name</label>
+                    <input type="text" id="set_provider_name" placeholder="Nacole Brown, MSN, AGPCNP-BC">
+                  </div>
+                  <div class="visual-field">
+                    <label>Credentials / Title</label>
+                    <input type="text" id="set_provider_credentials" placeholder="Adult-Gerontology Primary Care Nurse Practitioner">
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Bio Paragraph 1</label>
+                    <textarea id="set_provider_bio_p1" rows="4" placeholder="First paragraph about the provider..."></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Bio Paragraph 2</label>
+                    <textarea id="set_provider_bio_p2" rows="3" placeholder="Second paragraph about the provider..."></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Provider Photo URL</label>
+                    <input type="text" id="set_provider_photo_url" placeholder="/assets/images/nacole-brown-provider.png">
+                    <span class="field-hint">Path to the provider photo displayed on the About page and homepage.</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <label class="form-label">Provider Name</label>
-            <input type="text" id="set_provider_name" class="form-input" placeholder="Nacole Brown, MSN, AGPCNP-BC">
-            <label class="form-label" style="margin-top:14px;">Credentials / Title</label>
-            <input type="text" id="set_provider_credentials" class="form-input" placeholder="Adult-Gerontology Primary Care Nurse Practitioner">
-            <label class="form-label" style="margin-top:14px;">Bio Paragraph 1</label>
-            <textarea id="set_provider_bio_p1" class="form-input" rows="4" placeholder="First paragraph about the provider..."></textarea>
-            <label class="form-label" style="margin-top:14px;">Bio Paragraph 2</label>
-            <textarea id="set_provider_bio_p2" class="form-input" rows="3" placeholder="Second paragraph about the provider..."></textarea>
-
-            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
-              <label class="form-label">Philosophy of Care Title</label>
-              <input type="text" id="set_provider_philosophy_title" class="form-input" placeholder="Philosophy of Care">
-              <label class="form-label" style="margin-top:14px;">Philosophy of Care Quote</label>
-              <textarea id="set_provider_philosophy_text" class="form-input" rows="3" placeholder="The provider's philosophy of care statement..."></textarea>
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon indigo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Philosophy of Care</div>
+                  <div class="section-editor-subtitle">Provider mission and homepage quote</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Philosophy Title</label>
+                    <input type="text" id="set_provider_philosophy_title" placeholder="Philosophy of Care">
+                  </div>
+                  <div class="visual-field">
+                    <label>Homepage Provider Quote</label>
+                    <textarea id="set_homepage_provider_quote" rows="2" placeholder="Quote shown on the homepage provider card..."></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Philosophy of Care Statement</label>
+                    <textarea id="set_provider_philosophy_text" rows="3" placeholder="The provider's philosophy of care statement..."></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
-              <label class="form-label">Homepage Provider Quote</label>
-              <textarea id="set_homepage_provider_quote" class="form-input" rows="2" placeholder="Quote shown on the homepage provider card..."></textarea>
-            </div>
-
-            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
-              <label class="form-label" style="font-weight:700;">Core Values (displayed on About page)</label>
-
-              <label class="form-label" style="margin-top:14px;">Value 1 Title</label>
-              <input type="text" id="set_value1_title" class="form-input" placeholder="Compassion & Dignity">
-              <label class="form-label" style="margin-top:14px;">Value 1 Description</label>
-              <textarea id="set_value1_text" class="form-input" rows="2" placeholder="Treating every patient as a whole person..."></textarea>
-
-              <label class="form-label" style="margin-top:14px;">Value 2 Title</label>
-              <input type="text" id="set_value2_title" class="form-input" placeholder="Integrity & Transparency">
-              <label class="form-label" style="margin-top:14px;">Value 2 Description</label>
-              <textarea id="set_value2_text" class="form-input" rows="2" placeholder="Clear flat pricing, no surprise bills..."></textarea>
-
-              <label class="form-label" style="margin-top:14px;">Value 3 Title</label>
-              <input type="text" id="set_value3_title" class="form-input" placeholder="Direct Accessibility">
-              <label class="form-label" style="margin-top:14px;">Value 3 Description</label>
-              <textarea id="set_value3_text" class="form-input" rows="2" placeholder="Same-day appointments, 24/7 direct messaging..."></textarea>
-            </div>
-
-            <div style="border-top:1px solid var(--border); margin:24px 0; padding-top:20px;">
-              <label class="form-label">Provider Photo URL</label>
-              <input type="text" id="set_provider_photo_url" class="form-input" placeholder="/assets/images/nacole-brown-provider.png">
-              <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Path to the provider photo displayed on the About page and homepage.</p>
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon teal">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Core Values</div>
+                  <div class="section-editor-subtitle">Displayed as cards on the About page</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="section-preview">
+                  <div class="section-preview-label">Values Grid</div>
+                  <div class="visual-fields visual-fields--3col" style="margin-top:8px;">
+                    <div class="visual-field">
+                      <label>Value 1 Title</label>
+                      <input type="text" id="set_value1_title" placeholder="Compassion &amp; Dignity">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_value1_text" rows="2" placeholder="Treating every patient as a whole person..."></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Value 2 Title</label>
+                      <input type="text" id="set_value2_title" placeholder="Integrity &amp; Transparency">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_value2_text" rows="2" placeholder="Clear flat pricing, no surprise bills..."></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Value 3 Title</label>
+                      <input type="text" id="set_value3_title" placeholder="Direct Accessibility">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_value3_text" rows="2" placeholder="Same-day appointments, 24/7 direct messaging..."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
+          <!-- ===== Contact & Footer Tab ===== -->
+          <div id="settingsTab-contact" class="settings-panel" style="display:none;">
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon gold">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Contact Page</div>
+                  <div class="section-editor-subtitle">Heading and intro text on the Contact page</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--3col">
+                  <div class="visual-field">
+                    <label>Badge Text</label>
+                    <input type="text" id="set_contact_badge" placeholder="Get In Touch">
+                  </div>
+                  <div class="visual-field">
+                    <label>Page Heading</label>
+                    <input type="text" id="set_contact_heading" placeholder="Reach UHS Healthcare">
+                  </div>
+                  <div class="visual-field">
+                    <label>Page Intro</label>
+                    <textarea id="set_contact_intro" rows="2" placeholder="We are here to answer your questions..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon navy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Footer &amp; Site-wide</div>
+                  <div class="section-editor-subtitle">Displayed in the footer across all public pages</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields">
+                  <div class="visual-field">
+                    <label>Footer Brand Description</label>
+                    <textarea id="set_footer_brand_desc" rows="2" placeholder="Short description shown in the footer..."></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields visual-fields--3col" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Clinic Address</label>
+                    <textarea id="set_clinic_address_footer" rows="2" placeholder="2638 Two Notch Rd, Columbia, SC 29201"></textarea>
+                  </div>
+                  <div class="visual-field">
+                    <label>Footer Phone</label>
+                    <input type="text" id="set_clinic_phone_footer" placeholder="(803) 381-7489">
+                  </div>
+                  <div class="visual-field">
+                    <label>Footer Email</label>
+                    <input type="text" id="set_clinic_email_footer" placeholder="info@uhshealthcare.com">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Telehealth Tab ===== -->
+          <div id="settingsTab-telehealth" class="settings-panel" style="display:none;">
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon indigo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Hero Section</div>
+                  <div class="section-editor-subtitle">Top banner on the Telehealth page</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--3col">
+                  <div class="visual-field">
+                    <label>Badge Text</label>
+                    <input type="text" id="set_telehealth_hero_badge">
+                  </div>
+                  <div class="visual-field">
+                    <label>Title</label>
+                    <input type="text" id="set_telehealth_hero_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>Description</label>
+                    <textarea id="set_telehealth_hero_text" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon teal">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">How It Works</div>
+                  <div class="section-editor-subtitle">Three-step process section</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Section Title</label>
+                    <input type="text" id="set_telehealth_steps_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>Section Subtitle</label>
+                    <input type="text" id="set_telehealth_steps_subtitle">
+                  </div>
+                </div>
+                <div class="section-preview" style="margin-top:20px;">
+                  <div class="section-preview-label">Steps</div>
+                  <div class="visual-fields visual-fields--3col" style="margin-top:8px;">
+                    <div class="visual-field">
+                      <label>Step 1 Title</label>
+                      <input type="text" id="set_telehealth_step1_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_telehealth_step1_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Step 2 Title</label>
+                      <input type="text" id="set_telehealth_step2_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_telehealth_step2_desc" rows="2"></textarea>
+                    </div>
+                    <div class="visual-field">
+                      <label>Step 3 Title</label>
+                      <input type="text" id="set_telehealth_step3_title">
+                      <label style="margin-top:10px;">Description</label>
+                      <textarea id="set_telehealth_step3_desc" rows="2"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon gold">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Conditions Section</div>
+                  <div class="section-editor-subtitle">Heading for the conditions treated grid</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field">
+                    <label>Section Title</label>
+                    <input type="text" id="set_telehealth_conditions_title">
+                  </div>
+                  <div class="visual-field">
+                    <label>Section Subtitle</label>
+                    <input type="text" id="set_telehealth_conditions_subtitle">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Legal Tab ===== -->
           <div id="settingsTab-legal" class="settings-panel" style="display:none;">
-            <label class="form-label">Privacy Policy</label>
-            <textarea id="set_privacy_policy" class="form-input" rows="8" placeholder="Privacy policy content..."></textarea>
-            <label class="form-label" style="margin-top:14px;">Terms of Service</label>
-            <textarea id="set_terms_of_service" class="form-input" rows="8" placeholder="Terms of service content..."></textarea>
+            <div class="section-editor">
+              <div class="section-editor-header">
+                <div class="section-editor-icon navy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div>
+                  <div class="section-editor-title">Legal Pages</div>
+                  <div class="section-editor-subtitle">Privacy Policy and Terms of Service content</div>
+                </div>
+              </div>
+              <div class="section-editor-body">
+                <div class="visual-fields">
+                  <div class="visual-field">
+                    <label>Privacy Policy</label>
+                    <textarea id="set_privacy_policy" rows="10" placeholder="Privacy policy content..."></textarea>
+                  </div>
+                </div>
+                <div class="visual-fields" style="margin-top:16px;">
+                  <div class="visual-field">
+                    <label>Terms of Service</label>
+                    <textarea id="set_terms_of_service" rows="10" placeholder="Terms of service content..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <button class="login-btn save-settings-btn" onclick="saveSettings()">Save Settings</button>
+          <div class="save-bar">
+            <span id="settingsBarMsg" class="save-bar-msg"></span>
+            <button class="save-btn" onclick="saveSettings()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Settings
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -1808,34 +2370,27 @@ function populateProfile(admin) {
   document.getElementById('adminName').textContent = name;
   document.getElementById('adminAvatar').textContent = initial;
 
+  const defaultPhoto = '/assets/images/nacole-brown-provider.png';
+  const photoSrc = admin.profilePhoto || defaultPhoto;
+
   const photoImg = document.getElementById('profilePhotoImg');
   const avatarLg = document.getElementById('profileAvatarLg');
-  if (admin.profilePhoto) {
-    photoImg.src = admin.profilePhoto;
-    photoImg.style.display = 'block';
-    avatarLg.style.display = 'none';
-  } else {
-    photoImg.style.display = 'none';
-    avatarLg.style.display = 'flex';
-  }
+  photoImg.src = photoSrc;
+  photoImg.style.display = 'block';
+  avatarLg.style.display = 'none';
 
   const sidebarAvatar = document.getElementById('adminAvatar');
   if (sidebarAvatar) {
     const existing = sidebarAvatar.querySelector('img');
-    if (admin.profilePhoto) {
-      sidebarAvatar.textContent = '';
-      if (!existing) {
-        const img = document.createElement('img');
-        img.src = admin.profilePhoto;
-        img.alt = 'Admin';
-        img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover;';
-        sidebarAvatar.appendChild(img);
-      } else {
-        existing.src = admin.profilePhoto;
-      }
+    sidebarAvatar.textContent = '';
+    if (!existing) {
+      const img = document.createElement('img');
+      img.src = photoSrc;
+      img.alt = admin.name || 'Admin';
+      img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover;';
+      sidebarAvatar.appendChild(img);
     } else {
-      if (existing) existing.remove();
-      sidebarAvatar.textContent = initial;
+      existing.src = photoSrc;
     }
   }
 }
@@ -1892,9 +2447,7 @@ async function saveProfileInfo() {
     document.getElementById('editInfoBtn').style.display = 'inline-flex';
     state.admin.name = name;
     document.getElementById('adminName').textContent = name;
-    document.getElementById('adminAvatar').textContent = name[0].toUpperCase();
     document.getElementById('profileHeaderName').textContent = name;
-    document.getElementById('profileAvatarLg').textContent = name[0].toUpperCase();
     toast('Profile updated.', 'success');
     setTimeout(() => { okEl.style.display = 'none'; }, 3000);
   } else {
@@ -2252,10 +2805,10 @@ function deleteTestimonial(id) {
 /* =========================================================
    SETTINGS
    ========================================================= */
-function switchSettingsTab(tab) {
-  document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+function switchSettingsTab(tab, btn) {
+  document.querySelectorAll('.settings-nav-item').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.settings-panel').forEach(p => p.style.display = 'none');
-  event.target.classList.add('active');
+  btn.classList.add('active');
   document.getElementById('settingsTab-' + tab).style.display = 'block';
 }
 
@@ -2263,17 +2816,14 @@ async function loadSettings() {
   const data = await apiFetch('/settings');
   if (!data.success) return;
   const s = data.data || {};
+  /* Profile */
   document.getElementById('set_clinic_name').value = s.clinic_name || '';
   document.getElementById('set_clinic_tagline').value = s.clinic_tagline || '';
   document.getElementById('set_clinic_phone').value = s.clinic_phone || '';
   document.getElementById('set_clinic_email').value = s.clinic_email || '';
   document.getElementById('set_clinic_address').value = s.clinic_address || '';
   document.getElementById('set_clinic_hours').value = s.clinic_hours || '';
-  document.getElementById('set_hero_title').value = s.hero_title || '';
-  document.getElementById('set_hero_subtitle').value = s.hero_subtitle || '';
-  document.getElementById('set_about_text').value = s.about_text || '';
-  document.getElementById('set_privacy_policy').value = s.privacy_policy || '';
-  document.getElementById('set_terms_of_service').value = s.terms_of_service || '';
+  /* About */
   document.getElementById('set_provider_name').value = s.provider_name || '';
   document.getElementById('set_provider_credentials').value = s.provider_credentials || '';
   document.getElementById('set_provider_photo_url').value = s.provider_photo_url || '';
@@ -2288,13 +2838,79 @@ async function loadSettings() {
   document.getElementById('set_value2_text').value = s.value2_text || '';
   document.getElementById('set_value3_title').value = s.value3_title || '';
   document.getElementById('set_value3_text').value = s.value3_text || '';
+  /* Legal */
+  document.getElementById('set_privacy_policy').value = s.privacy_policy || '';
+  document.getElementById('set_terms_of_service').value = s.terms_of_service || '';
+  /* Homepage */
+  document.getElementById('set_hero_floating_name').value = s.hero_floating_name || '';
+  document.getElementById('set_hero_floating_title').value = s.hero_floating_title || '';
+  document.getElementById('set_hero_stat1_number').value = s.hero_stat1_number || '';
+  document.getElementById('set_hero_stat1_label').value = s.hero_stat1_label || '';
+  document.getElementById('set_hero_stat2_number').value = s.hero_stat2_number || '';
+  document.getElementById('set_hero_stat2_label').value = s.hero_stat2_label || '';
+  document.getElementById('set_hero_stat3_number').value = s.hero_stat3_number || '';
+  document.getElementById('set_hero_stat3_label').value = s.hero_stat3_label || '';
+  document.getElementById('set_hero_stat4_number').value = s.hero_stat4_number || '';
+  document.getElementById('set_hero_stat4_label').value = s.hero_stat4_label || '';
+  document.getElementById('set_why_choose_badge').value = s.why_choose_badge || '';
+  document.getElementById('set_why_choose_title').value = s.why_choose_title || '';
+  document.getElementById('set_why_choose_subtitle').value = s.why_choose_subtitle || '';
+  document.getElementById('set_benefit1_title').value = s.benefit1_title || '';
+  document.getElementById('set_benefit1_desc').value = s.benefit1_desc || '';
+  document.getElementById('set_benefit2_title').value = s.benefit2_title || '';
+  document.getElementById('set_benefit2_desc').value = s.benefit2_desc || '';
+  document.getElementById('set_benefit3_title').value = s.benefit3_title || '';
+  document.getElementById('set_benefit3_desc').value = s.benefit3_desc || '';
+  document.getElementById('set_how_dpc_title').value = s.how_dpc_title || '';
+  document.getElementById('set_how_dpc_subtitle').value = s.how_dpc_subtitle || '';
+  document.getElementById('set_dpc_step1_title').value = s.dpc_step1_title || '';
+  document.getElementById('set_dpc_step1_desc').value = s.dpc_step1_desc || '';
+  document.getElementById('set_dpc_step2_title').value = s.dpc_step2_title || '';
+  document.getElementById('set_dpc_step2_desc').value = s.dpc_step2_desc || '';
+  document.getElementById('set_dpc_step3_title').value = s.dpc_step3_title || '';
+  document.getElementById('set_dpc_step3_desc').value = s.dpc_step3_desc || '';
+  document.getElementById('set_homepage_wellness_title').value = s.homepage_wellness_title || '';
+  document.getElementById('set_homepage_wellness_subtitle').value = s.homepage_wellness_subtitle || '';
+  document.getElementById('set_wellness1_title').value = s.wellness1_title || '';
+  document.getElementById('set_wellness1_desc').value = s.wellness1_desc || '';
+  document.getElementById('set_wellness2_title').value = s.wellness2_title || '';
+  document.getElementById('set_wellness2_desc').value = s.wellness2_desc || '';
+  document.getElementById('set_wellness3_title').value = s.wellness3_title || '';
+  document.getElementById('set_wellness3_desc').value = s.wellness3_desc || '';
+  document.getElementById('set_comparison_title').value = s.comparison_title || '';
+  document.getElementById('set_comparison_subtitle').value = s.comparison_subtitle || '';
+  document.getElementById('set_faq_title').value = s.faq_title || '';
+  document.getElementById('set_faq_intro').value = s.faq_intro || '';
+  document.getElementById('set_cta_title').value = s.cta_title || '';
+  document.getElementById('set_cta_text').value = s.cta_text || '';
+  /* Contact & Footer */
+  document.getElementById('set_contact_badge').value = s.contact_badge || '';
+  document.getElementById('set_contact_heading').value = s.contact_heading || '';
+  document.getElementById('set_contact_intro').value = s.contact_intro || '';
+  document.getElementById('set_footer_brand_desc').value = s.footer_brand_desc || '';
+  document.getElementById('set_clinic_address_footer').value = s.clinic_address || '';
+  document.getElementById('set_clinic_phone_footer').value = s.clinic_phone || '';
+  document.getElementById('set_clinic_email_footer').value = s.clinic_email || '';
+  /* Telehealth */
+  document.getElementById('set_telehealth_hero_badge').value = s.telehealth_hero_badge || '';
+  document.getElementById('set_telehealth_hero_title').value = s.telehealth_hero_title || '';
+  document.getElementById('set_telehealth_hero_text').value = s.telehealth_hero_text || '';
+  document.getElementById('set_telehealth_steps_title').value = s.telehealth_steps_title || '';
+  document.getElementById('set_telehealth_steps_subtitle').value = s.telehealth_steps_subtitle || '';
+  document.getElementById('set_telehealth_step1_title').value = s.telehealth_step1_title || '';
+  document.getElementById('set_telehealth_step1_desc').value = s.telehealth_step1_desc || '';
+  document.getElementById('set_telehealth_step2_title').value = s.telehealth_step2_title || '';
+  document.getElementById('set_telehealth_step2_desc').value = s.telehealth_step2_desc || '';
+  document.getElementById('set_telehealth_step3_title').value = s.telehealth_step3_title || '';
+  document.getElementById('set_telehealth_step3_desc').value = s.telehealth_step3_desc || '';
+  document.getElementById('set_telehealth_conditions_title').value = s.telehealth_conditions_title || '';
+  document.getElementById('set_telehealth_conditions_subtitle').value = s.telehealth_conditions_subtitle || '';
 }
 
 async function saveSettings() {
-  const errEl = document.getElementById('settingsError');
-  const okEl = document.getElementById('settingsSuccess');
-  errEl.style.display = 'none';
-  okEl.style.display = 'none';
+  const msgEl = document.getElementById('settingsBarMsg');
+  msgEl.className = 'save-bar-msg';
+  msgEl.textContent = '';
 
   const payload = {
     clinic_name: document.getElementById('set_clinic_name').value.trim(),
@@ -2303,11 +2919,6 @@ async function saveSettings() {
     clinic_email: document.getElementById('set_clinic_email').value.trim(),
     clinic_address: document.getElementById('set_clinic_address').value.trim(),
     clinic_hours: document.getElementById('set_clinic_hours').value.trim(),
-    hero_title: document.getElementById('set_hero_title').value.trim(),
-    hero_subtitle: document.getElementById('set_hero_subtitle').value.trim(),
-    about_text: document.getElementById('set_about_text').value.trim(),
-    privacy_policy: document.getElementById('set_privacy_policy').value.trim(),
-    terms_of_service: document.getElementById('set_terms_of_service').value.trim(),
     provider_name: document.getElementById('set_provider_name').value.trim(),
     provider_credentials: document.getElementById('set_provider_credentials').value.trim(),
     provider_photo_url: document.getElementById('set_provider_photo_url').value.trim(),
@@ -2322,16 +2933,76 @@ async function saveSettings() {
     value2_text: document.getElementById('set_value2_text').value.trim(),
     value3_title: document.getElementById('set_value3_title').value.trim(),
     value3_text: document.getElementById('set_value3_text').value.trim(),
+    privacy_policy: document.getElementById('set_privacy_policy').value.trim(),
+    terms_of_service: document.getElementById('set_terms_of_service').value.trim(),
+    hero_floating_name: document.getElementById('set_hero_floating_name').value.trim(),
+    hero_floating_title: document.getElementById('set_hero_floating_title').value.trim(),
+    hero_stat1_number: document.getElementById('set_hero_stat1_number').value.trim(),
+    hero_stat1_label: document.getElementById('set_hero_stat1_label').value.trim(),
+    hero_stat2_number: document.getElementById('set_hero_stat2_number').value.trim(),
+    hero_stat2_label: document.getElementById('set_hero_stat2_label').value.trim(),
+    hero_stat3_number: document.getElementById('set_hero_stat3_number').value.trim(),
+    hero_stat3_label: document.getElementById('set_hero_stat3_label').value.trim(),
+    hero_stat4_number: document.getElementById('set_hero_stat4_number').value.trim(),
+    hero_stat4_label: document.getElementById('set_hero_stat4_label').value.trim(),
+    why_choose_badge: document.getElementById('set_why_choose_badge').value.trim(),
+    why_choose_title: document.getElementById('set_why_choose_title').value.trim(),
+    why_choose_subtitle: document.getElementById('set_why_choose_subtitle').value.trim(),
+    benefit1_title: document.getElementById('set_benefit1_title').value.trim(),
+    benefit1_desc: document.getElementById('set_benefit1_desc').value.trim(),
+    benefit2_title: document.getElementById('set_benefit2_title').value.trim(),
+    benefit2_desc: document.getElementById('set_benefit2_desc').value.trim(),
+    benefit3_title: document.getElementById('set_benefit3_title').value.trim(),
+    benefit3_desc: document.getElementById('set_benefit3_desc').value.trim(),
+    how_dpc_title: document.getElementById('set_how_dpc_title').value.trim(),
+    how_dpc_subtitle: document.getElementById('set_how_dpc_subtitle').value.trim(),
+    dpc_step1_title: document.getElementById('set_dpc_step1_title').value.trim(),
+    dpc_step1_desc: document.getElementById('set_dpc_step1_desc').value.trim(),
+    dpc_step2_title: document.getElementById('set_dpc_step2_title').value.trim(),
+    dpc_step2_desc: document.getElementById('set_dpc_step2_desc').value.trim(),
+    dpc_step3_title: document.getElementById('set_dpc_step3_title').value.trim(),
+    dpc_step3_desc: document.getElementById('set_dpc_step3_desc').value.trim(),
+    homepage_wellness_title: document.getElementById('set_homepage_wellness_title').value.trim(),
+    homepage_wellness_subtitle: document.getElementById('set_homepage_wellness_subtitle').value.trim(),
+    wellness1_title: document.getElementById('set_wellness1_title').value.trim(),
+    wellness1_desc: document.getElementById('set_wellness1_desc').value.trim(),
+    wellness2_title: document.getElementById('set_wellness2_title').value.trim(),
+    wellness2_desc: document.getElementById('set_wellness2_desc').value.trim(),
+    wellness3_title: document.getElementById('set_wellness3_title').value.trim(),
+    wellness3_desc: document.getElementById('set_wellness3_desc').value.trim(),
+    comparison_title: document.getElementById('set_comparison_title').value.trim(),
+    comparison_subtitle: document.getElementById('set_comparison_subtitle').value.trim(),
+    faq_title: document.getElementById('set_faq_title').value.trim(),
+    faq_intro: document.getElementById('set_faq_intro').value.trim(),
+    cta_title: document.getElementById('set_cta_title').value.trim(),
+    cta_text: document.getElementById('set_cta_text').value.trim(),
+    contact_badge: document.getElementById('set_contact_badge').value.trim(),
+    contact_heading: document.getElementById('set_contact_heading').value.trim(),
+    contact_intro: document.getElementById('set_contact_intro').value.trim(),
+    footer_brand_desc: document.getElementById('set_footer_brand_desc').value.trim(),
+    telehealth_hero_badge: document.getElementById('set_telehealth_hero_badge').value.trim(),
+    telehealth_hero_title: document.getElementById('set_telehealth_hero_title').value.trim(),
+    telehealth_hero_text: document.getElementById('set_telehealth_hero_text').value.trim(),
+    telehealth_steps_title: document.getElementById('set_telehealth_steps_title').value.trim(),
+    telehealth_steps_subtitle: document.getElementById('set_telehealth_steps_subtitle').value.trim(),
+    telehealth_step1_title: document.getElementById('set_telehealth_step1_title').value.trim(),
+    telehealth_step1_desc: document.getElementById('set_telehealth_step1_desc').value.trim(),
+    telehealth_step2_title: document.getElementById('set_telehealth_step2_title').value.trim(),
+    telehealth_step2_desc: document.getElementById('set_telehealth_step2_desc').value.trim(),
+    telehealth_step3_title: document.getElementById('set_telehealth_step3_title').value.trim(),
+    telehealth_step3_desc: document.getElementById('set_telehealth_step3_desc').value.trim(),
+    telehealth_conditions_title: document.getElementById('set_telehealth_conditions_title').value.trim(),
+    telehealth_conditions_subtitle: document.getElementById('set_telehealth_conditions_subtitle').value.trim(),
   };
 
   const data = await apiFetch('/settings', 'PUT', payload);
   if (data.success) {
-    okEl.textContent = 'Settings saved successfully!';
-    okEl.style.display = 'block';
+    msgEl.textContent = 'Settings saved successfully!';
+    msgEl.className = 'save-bar-msg success';
     toast('Settings saved.', 'success');
   } else {
-    errEl.textContent = data.message || 'Error saving settings.';
-    errEl.style.display = 'block';
+    msgEl.textContent = data.message || 'Error saving settings.';
+    msgEl.className = 'save-bar-msg error';
     toast('Error saving settings.', 'danger');
   }
 }

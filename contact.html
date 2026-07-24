@@ -62,7 +62,7 @@
     <section class="hero" style="min-height:45vh; padding:140px 0 50px;">
       <div class="hero__gradient-overlay"></div>
       <div class="container text-center" style="position:relative; z-index:2; max-width:800px; margin:0 auto;">
-        <span class="badge badge--white" style="margin-bottom:1rem;">Get In Touch</span>
+        <span class="badge badge--white" style="margin-bottom:1rem;" data-content="contact_badge">Get In Touch</span>
         <h1 class="hero__title" style="font-size:clamp(2.2rem, 4.5vw, 3.5rem);">
           Contact <span class="hero__title-serif">Our Practice.</span>
         </h1>
@@ -85,7 +85,7 @@
               <div style="background:var(--color-slate-50); padding:1.5rem; border-radius:18px; border:1px solid var(--color-border);">
                 <div>
                   <h4 style="font-size:1.1rem; font-weight:700; color:var(--color-navy); margin-bottom:0.25rem; font-family:var(--font-heading);">Clinic Address</h4>
-                  <p style="font-size:0.95rem; color:var(--color-slate-600); margin:0;">
+                  <p style="font-size:0.95rem; color:var(--color-slate-600); margin:0;" id="contact-clinic-address">
                     2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204
                   </p>
                 </div>
@@ -197,7 +197,7 @@
               <span class="nav__logo-subtitle">Heights of Strength</span>
             </div>
           </div>
-          <p class="footer-brand__desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+          <p class="footer-brand__desc" data-content="footer_brand_desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
         </div>
         <div>
           <h4 class="footer-column__title">Quick Links</h4>
@@ -210,9 +210,9 @@
         </div>
         <div>
           <h4 class="footer-column__title">Contact</h4>
-          <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6;">
-            2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
-            <strong>Phone:</strong> (803) 381-7489
+            <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6;">
+            <span id="footer-clinic-address">2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204</span><br><br>
+            <strong>Phone:</strong> <span id="footer-clinic-phone">(803) 381-7489</span>
           </p>
         </div>
       </div>
@@ -226,6 +226,7 @@
     </div>
   </footer>
 
+  <script src="js/site-content.js"></script>
   <script src="js/main.js"></script>
   <script src="js/contact.js"></script>
 </body>

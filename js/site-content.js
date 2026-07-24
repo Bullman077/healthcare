@@ -1,0 +1,112 @@
+/**
+ * site-content.js
+ * Shared dynamic content loader for all public pages.
+ * Fetches /api/site-content and applies values to elements with data-content attributes.
+ *
+ * Usage in HTML:
+ *   <span data-content="clinic_phone"></span>         → replaces textContent
+ *   <div data-content-html="privacy_policy"></div>     → replaces innerHTML
+ *   <a data-content-href="clinic_phone_href">...</a>  → replaces href
+ */
+(function () {
+  'use strict';
+
+  var cache = null;
+
+  function applyContent(data) {
+    if (!data) return;
+
+    /* --- textContent replacements --- */
+    document.querySelectorAll('[data-content]').forEach(function (el) {
+      var key = el.getAttribute('data-content');
+      if (data[key]) el.textContent = data[key];
+    });
+
+    /* --- innerHTML replacements --- */
+    document.querySelectorAll('[data-content-html]').forEach(function (el) {
+      var key = el.getAttribute('data-content-html');
+      if (data[key]) el.innerHTML = data[key];
+    });
+
+    /* --- href replacements (phone links) --- */
+    document.querySelectorAll('[data-content-href]').forEach(function (el) {
+      var key = el.getAttribute('data-content-href');
+      if (data[key]) el.href = data[key];
+    });
+
+    /* --- Privacy page: inject full policy content --- */
+    var privacyArticle = document.getElementById('privacy-article-body');
+    if (privacyArticle && data.privacy_policy) {
+      privacyArticle.innerHTML = data.privacy_policy;
+    }
+
+    /* --- Terms page: inject full terms content --- */
+    var termsArticle = document.getElementById('terms-article-body');
+    if (termsArticle && data.terms_of_service) {
+      termsArticle.innerHTML = data.terms_of_service;
+    }
+
+    /* --- Footer: dynamic contact block (all pages) --- */
+    var footerAddress = document.getElementById('footer-clinic-address');
+    if (footerAddress && data.clinic_address) {
+      footerAddress.innerHTML = data.clinic_address.replace(/\n/g, '<br>');
+    }
+
+    var footerPhone = document.getElementById('footer-clinic-phone');
+    if (footerPhone && data.clinic_phone) {
+      footerPhone.textContent = data.clinic_phone;
+      var phoneLink = footerPhone.closest('a') || footerPhone.querySelector('a');
+      if (phoneLink) phoneLink.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+    }
+
+    var footerEmail = document.getElementById('footer-clinic-email');
+    if (footerEmail && data.clinic_email) {
+      footerEmail.textContent = data.clinic_email;
+      var emailLink = footerEmail.closest('a') || footerEmail.querySelector('a');
+      if (emailLink) emailLink.href = 'mailto:' + data.clinic_email;
+    }
+
+    /* --- Nav call pill --- */
+    var navPills = document.querySelectorAll('.nav__call-pill');
+    navPills.forEach(function (pill) {
+      if (data.clinic_phone) {
+        pill.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ' + data.clinic_phone;
+        pill.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+      }
+    });
+
+    /* --- Contact page: hours block --- */
+    var hoursBlock = document.getElementById('contact-clinic-hours');
+    if (hoursBlock && data.clinic_hours) {
+      hoursBlock.innerHTML = data.clinic_hours.replace(/\n/g, '<br>');
+    }
+
+    /* --- Contact page: address block --- */
+    var contactAddress = document.getElementById('contact-clinic-address');
+    if (contactAddress && data.clinic_address) {
+      contactAddress.innerHTML = data.clinic_address.replace(/\n/g, '<br>');
+    }
+  }
+
+  function loadSiteContent() {
+    if (cache) {
+      applyContent(cache);
+      return;
+    }
+    fetch('/api/site-content')
+      .then(function (r) { return r.json(); })
+      .then(function (json) {
+        if (json.success && json.data) {
+          cache = json.data;
+          applyContent(cache);
+        }
+      })
+      .catch(function () {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadSiteContent);
+  } else {
+    loadSiteContent();
+  }
+})();

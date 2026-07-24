@@ -4,13 +4,14 @@ const {
   submitMessage,
   getTestimonials,
   getPublicServices,
-  getAboutContent,
+  getSiteContent,
 } = require('../controllers/contentController');
 
 /* ----- Public ----- */
 router.post('/messages', submitMessage);
 router.get('/testimonials', getTestimonials);
 router.get('/services', getPublicServices);
-router.get('/about-content', getAboutContent);
+router.get('/site-content', getSiteContent);
+router.get('/about-content', getSiteContent);
 
 module.exports = router;

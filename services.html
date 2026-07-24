@@ -64,10 +64,10 @@
     <section class="hero" style="min-height:50vh; padding:150px 0 60px;">
       <div class="hero__gradient-overlay"></div>
       <div class="container text-center" style="position:relative; z-index:2; max-width:800px; margin:0 auto;">
-        <h1 class="hero__title" style="font-size:clamp(2.2rem, 4.5vw, 3.5rem);">
+        <h1 class="hero__title" style="font-size:clamp(2.2rem, 4.5vw, 3.5rem);" data-content="services_hero_title">
           Our Healthcare <span class="hero__title-serif">Services.</span>
         </h1>
-        <p class="hero__text" style="margin:0 auto 1.5rem; text-align:center;">
+        <p class="hero__text" style="margin:0 auto 1.5rem; text-align:center;" data-content="services_hero_text">
           From primary care memberships and DOT physicals to medical weight management, patch therapy, and virtual care.
         </p>
       </div>
@@ -77,9 +77,9 @@
     <section class="section section--services" aria-labelledby="all-services-title">
       <div class="container">
         <div class="section-header section-header--light animate">
-          <span class="section-header__subtitle">Medical Care Options</span>
-          <h2 id="all-services-title" class="section-header__title">Specialized Care Designed for You</h2>
-          <p class="section-header__desc">Explore our full suite of primary care and specialty medical services.</p>
+          <span class="section-header__subtitle" data-content="services_section_subtitle">Medical Care Options</span>
+          <h2 id="all-services-title" class="section-header__title" data-content="services_section_title">Specialized Care Designed for You</h2>
+          <p class="section-header__desc" data-content="services_section_desc">Explore our full suite of primary care and specialty medical services.</p>
         </div>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem;" class="animate">
@@ -261,7 +261,7 @@
               <span class="nav__logo-subtitle">Heights of Strength</span>
             </div>
           </div>
-          <p class="footer-brand__desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+          <p class="footer-brand__desc" data-content="footer_brand_desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
         </div>
         <div>
           <h4 class="footer-column__title">Quick Links</h4>
@@ -275,8 +275,8 @@
         <div>
           <h4 class="footer-column__title">Contact</h4>
           <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6;">
-            2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
-            <strong>Phone:</strong> (803) 381-7489
+            <span id="footer-clinic-address">2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204</span><br><br>
+            <strong>Phone:</strong> <span id="footer-clinic-phone">(803) 381-7489</span>
           </p>
         </div>
       </div>
@@ -290,6 +290,7 @@
     </div>
   </footer>
 
+  <script src="js/site-content.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

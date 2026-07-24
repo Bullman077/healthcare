@@ -116,7 +116,7 @@
     <!-- ===== PRIVACY CONTENT ===== -->
     <section class="section" aria-labelledby="privacy-heading">
       <div class="container" style="max-width:800px;margin-inline:auto">
-        <article class="privacy-content">
+        <article class="privacy-content" id="privacy-article-body">
 
           <h2 id="introduction" class="privacy-content__heading">Introduction</h2>
           <p>
@@ -217,7 +217,7 @@
               <span class="nav__logo-subtitle">Direct Primary Care</span>
             </div>
           </div>
-          <p class="footer-brand__desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
+          <p class="footer-brand__desc" data-content="footer_brand_desc">Dedicated compassionate primary care in Columbia, SC by Nacole Brown, MSN AGPCNP-BC.</p>
         </div>
         <div>
           <h4 class="footer-column__title">Quick Links</h4>
@@ -242,10 +242,9 @@
         <div>
           <h4 class="footer-column__title">Contact &amp; Clinic</h4>
           <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:1rem;">
-            2638 Two Notch Rd. Suite 210 Unit 10<br>
-            Columbia, SC 29204<br><br>
-            <strong>Phone:</strong> (803) 381-7489<br>
-            <strong>Email:</strong> info@uhshealthcare.com
+            <span id="footer-clinic-address">2638 Two Notch Rd. Suite 210 Unit 10<br>Columbia, SC 29204</span><br><br>
+            <strong>Phone:</strong> <span id="footer-clinic-phone">(803) 381-7489</span><br>
+            <strong>Email:</strong> <span id="footer-clinic-email">info@uhshealthcare.com</span>
           </p>
         </div>
       </div>
@@ -259,6 +258,7 @@
     </div>
   </footer>
 
+  <script src="js/site-content.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
