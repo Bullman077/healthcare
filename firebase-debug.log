@@ -1,0 +1,39 @@
+[debug] [2026-07-25T11:47:43.488Z] ----------------------------------------------------------------------
+[debug] [2026-07-25T11:47:43.495Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2026-07-25T11:47:43.496Z] CLI Version:   15.11.0
+[debug] [2026-07-25T11:47:43.496Z] Platform:      win32
+[debug] [2026-07-25T11:47:43.496Z] Node Version:  v24.14.0
+[debug] [2026-07-25T11:47:43.497Z] Time:          Sat Jul 25 2026 14:47:43 GMT+0300 (East Africa Time)
+[debug] [2026-07-25T11:47:43.497Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-07-25T11:47:43.503Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-07-25T11:48:35.192Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-07-25T11:48:35.192Z] > authorizing via signed-in user (deliloalex20@gmail.com)
+[debug] [2026-07-25T11:48:35.192Z] [iam] checking project uhs-healthcare-ea3b4 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-07-25T11:48:35.195Z] Checked if tokens are valid: false, expires at: 1774611515305
+[debug] [2026-07-25T11:48:35.195Z] Checked if tokens are valid: false, expires at: 1774611515305
+[debug] [2026-07-25T11:48:35.195Z] > refreshing access token with scopes: []
+[debug] [2026-07-25T11:48:35.197Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-07-25T11:48:35.197Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-07-25T11:48:35.571Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-07-25T11:48:35.572Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-07-25T11:48:35.639Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/uhs-healthcare-ea3b4:testIamPermissions [none]
+[debug] [2026-07-25T11:48:35.639Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/uhs-healthcare-ea3b4:testIamPermissions  x-goog-user-project=uhs-healthcare-ea3b4
+[debug] [2026-07-25T11:48:35.639Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/uhs-healthcare-ea3b4:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-07-25T11:48:37.045Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-07-25T11:48:37.045Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-07-25T11:48:37.724Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/uhs-healthcare-ea3b4:testIamPermissions 403
+[debug] [2026-07-25T11:48:37.724Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/uhs-healthcare-ea3b4:testIamPermissions {"error":{"code":403,"message":"Caller does not have required permission to use project uhs-healthcare-ea3b4. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=uhs-healthcare-ea3b4 and then retry. Propagation of the new permission may take a few minutes.","status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"USER_PROJECT_DENIED","domain":"googleapis.com","metadata":{"consoleUrl":"https://console.developers.google.com/iam-admin/iam?project=uhs-healthcare-ea3b4","service":"cloudresourcemanager.googleapis.com","consumer":"projects/uhs-healthcare-ea3b4","containerInfo":"uhs-healthcare-ea3b4"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Caller does not have required permission to use project uhs-healthcare-ea3b4. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=uhs-healthcare-ea3b4 and then retry. Propagation of the new permission may take a few minutes."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developer console IAM admin","url":"https://console.developers.google.com/iam-admin/iam?project=uhs-healthcare-ea3b4"}]}]}}
+[debug] [2026-07-25T11:48:37.725Z] [iam] error while checking permissions, command may fail: Request to https://cloudresourcemanager.googleapis.com/v1/projects/uhs-healthcare-ea3b4:testIamPermissions had HTTP Error: 403, Caller does not have required permission to use project uhs-healthcare-ea3b4. Grant the caller the roles/serviceusage.serviceUsageConsumer role, or a custom role with the serviceusage.services.use permission, by visiting https://console.developers.google.com/iam-admin/iam?project=uhs-healthcare-ea3b4 and then retry. Propagation of the new permission may take a few minutes.
+[debug] [2026-07-25T11:48:37.726Z] Checked if tokens are valid: true, expires at: 1784983714572
+[debug] [2026-07-25T11:48:37.726Z] Checked if tokens are valid: true, expires at: 1784983714572
+[debug] [2026-07-25T11:48:37.727Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/uhs-healthcare-ea3b4 [none]
+[debug] [2026-07-25T11:48:38.306Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/uhs-healthcare-ea3b4 403
+[debug] [2026-07-25T11:48:38.306Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/uhs-healthcare-ea3b4 {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-07-25T11:48:38.307Z] Request to https://firebase.googleapis.com/v1beta1/projects/uhs-healthcare-ea3b4 had HTTP Error: 403, The caller does not have permission
+[debug] [2026-07-25T11:48:38.898Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/uhs-healthcare-ea3b4 had HTTP Error: 403, The caller does not have permission
+    at responseToError (C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:53:12)
+    at RetryOperation._fn (C:\Users\USER\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:333:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[error] 
+[error] Error: Failed to get Firebase project uhs-healthcare-ea3b4. Please make sure the project exists and your account has permission to access it.
