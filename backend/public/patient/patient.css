@@ -105,6 +105,15 @@ a { text-decoration: none; }
   text-decoration: none;
   color: var(--slate-900);
   flex-shrink: 0;
+  min-width: 0;
+}
+
+.nav__logo img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .nav__logo-title {
@@ -115,6 +124,21 @@ a { text-decoration: none; }
   color: var(--slate-900);
   line-height: 1.2;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.nav__logo-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-royal-blue);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .nav__list {
