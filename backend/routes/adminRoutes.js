@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {
   login,
+  refresh,
+  logout,
   getAppointments,
   getAppointment,
   updateAppointmentStatus,
@@ -37,10 +39,8 @@ const { protect } = require('../middleware/auth');
 const { authLimiter, adminWriteLimiter } = require('../middleware/security');
 
 router.post('/login', authLimiter, login);
-router.post('/logout', (req, res) => {
-  res.clearCookie('token', { httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', signed: true });
-  res.json({ success: true, message: 'Logged out.' });
-});
+router.post('/refresh', refresh);
+router.post('/logout', logout);
 
 router.use(protect);
 

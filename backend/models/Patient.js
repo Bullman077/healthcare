@@ -22,6 +22,7 @@ const Patient = sequelize.define('Patient', {
   reminders: { type: DataTypes.JSONB, defaultValue: [] },
   resetPasswordToken: { type: DataTypes.STRING(255) },
   resetPasswordExpires: { type: DataTypes.DATE },
+  refreshToken: { type: DataTypes.STRING(255) },
 }, {
   timestamps: true,
   indexes: [

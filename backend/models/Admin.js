@@ -14,6 +14,7 @@ const Admin = sequelize.define('Admin', {
   // Brute-force protection — DB-backed so it survives restarts & PM2 cluster mode
   loginAttempts: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
   loginLockedUntil: { type: DataTypes.DATE, allowNull: true },
+  refreshToken: { type: DataTypes.STRING, allowNull: true },
 }, {
   timestamps: true,
   hooks: {

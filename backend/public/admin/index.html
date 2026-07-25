@@ -1747,7 +1747,30 @@ async function apiFetch(endpoint, method = 'GET', body = null, skipAuth = false)
     opts.headers['Authorization'] = 'Bearer ' + state.token;
   }
   if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(API + endpoint, opts);
+  
+  let res = await fetch(API + endpoint, opts);
+  
+  if (res.status === 401 && !skipAuth && endpoint !== '/admin/login' && endpoint !== '/admin/refresh') {
+    try {
+      const refreshRes = await fetch(API + '/admin/refresh', { method: 'POST', credentials: 'include' });
+      if (refreshRes.ok) {
+        const refreshData = await refreshRes.json();
+        if (refreshData.success && refreshData.token) {
+          state.token = refreshData.token;
+          localStorage.setItem('adminToken', refreshData.token);
+          opts.headers['Authorization'] = 'Bearer ' + state.token;
+          res = await fetch(API + endpoint, opts); // Retry original request
+        } else {
+          logout();
+        }
+      } else {
+        logout();
+      }
+    } catch (e) {
+      logout();
+    }
+  }
+  
   return res.json();
 }
 

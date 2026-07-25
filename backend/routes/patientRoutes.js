@@ -7,7 +7,8 @@ const {
   updateMe,
   getMyAppointments,
   getMyProgress,
-  logoutPatient,
+  refresh,
+  logout,
   getSession,
   forgotPassword,
   resetPassword,
@@ -17,7 +18,8 @@ const { authLimiter, adminWriteLimiter } = require('../middleware/security');
 
 router.post('/register', authLimiter, registerPatient);
 router.post('/login', authLimiter, loginPatient);
-router.post('/logout', logoutPatient);
+router.post('/refresh', refresh);
+router.post('/logout', logout);
 router.post('/forgot-password', authLimiter, forgotPassword);
 router.post('/reset-password', authLimiter, resetPassword);
 

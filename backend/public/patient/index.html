@@ -430,7 +430,7 @@
       }
 
       try {
-        const res = await fetch(API + endpoint, {
+        const res = await apiFetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -451,7 +451,7 @@
 
     async function checkSession() {
       try {
-        const res = await fetch(API + '/session', { credentials: 'include' });
+        const res = await apiFetch('/session', { credentials: 'include' });
         const data = await res.json();
         if (data.success && data.patient) {
           showPortal(data.patient);
@@ -478,7 +478,7 @@
     async function loadPortalData() {
       // 1. Load Progress Notes & Reminders
       try {
-        const resP = await fetch(API + '/progress', { credentials: 'include' });
+        const resP = await apiFetch('/progress', { credentials: 'include' });
         const dataP = await resP.json();
         if (dataP.success) {
           document.getElementById('progressContent').textContent = dataP.progressNotes || 'No specific progress notes recorded yet by your care provider.';
@@ -510,7 +510,7 @@
 
       // 2. Load Appointments
       try {
-        const resA = await fetch(API + '/appointments', { credentials: 'include' });
+        const resA = await apiFetch('/appointments', { credentials: 'include' });
         const dataA = await resA.json();
         const apptContainer = document.getElementById('appointmentsList');
         if (!dataA.success || !dataA.appointments || dataA.appointments.length === 0) {
@@ -694,7 +694,7 @@
     }
 
     async function logout() {
-      await fetch(API + '/logout', { method: 'POST', credentials: 'include' });
+      await apiFetch('/logout', { method: 'POST', credentials: 'include' });
       document.getElementById('portalView').classList.add('hidden');
       document.getElementById('portal-header-patient').style.display = 'none';
       document.getElementById('authView').classList.remove('hidden');
@@ -723,7 +723,7 @@
       errEl.style.display = 'none'; sucEl.style.display = 'none';
       if (!email) { errEl.textContent = 'Please enter your email.'; errEl.style.display = 'block'; return; }
       try {
-        const res = await fetch(API + '/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+        const res = await apiFetch('/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
         const data = await res.json();
         if (data.success) {
           sucEl.textContent = data.message || 'If an account exists, a reset link has been sent.';
@@ -744,7 +744,7 @@
       errEl.style.display = 'none'; sucEl.style.display = 'none';
       if (!token || !password) { errEl.textContent = 'Please enter the token and new password.'; errEl.style.display = 'block'; return; }
       try {
-        const res = await fetch(API + '/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password }) });
+        const res = await apiFetch('/reset-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password }) });
         const data = await res.json();
         if (data.success) {
           showPortal(data.patient);
@@ -769,7 +769,7 @@
     /* ===== PROFILE ===== */
     async function loadProfile() {
       try {
-        const res = await fetch(API + '/me', { credentials: 'include' });
+        const res = await apiFetch('/me', { credentials: 'include' });
         const data = await res.json();
         if (!data.success) return;
         var p = data.patient;
@@ -798,7 +798,7 @@
         emergencyContact: { name: document.getElementById('profEmergencyName').value.trim(), phone: document.getElementById('profEmergencyPhone').value.trim() },
       };
       try {
-        const res = await fetch(API + '/me', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(payload) });
+        const res = await apiFetch('/me', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(payload) });
         const data = await res.json();
         if (data.success) {
           msgEl.textContent = 'Profile updated successfully!';
@@ -818,7 +818,7 @@
     /* ===== MY HEALTH ===== */
     async function loadHealthData() {
       try {
-        const res = await fetch(API + '/me', { credentials: 'include' });
+        const res = await apiFetch('/me', { credentials: 'include' });
         const data = await res.json();
         if (!data.success) return;
         var p = data.patient;

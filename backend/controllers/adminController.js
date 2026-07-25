@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -53,8 +54,12 @@ exports.logAudit = logAudit;
 
 function signToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+    expiresIn: process.env.JWT_EXPIRES_IN || '15m', // Short-lived access token
   });
+}
+
+function generateRefreshToken() {
+  return crypto.randomBytes(40).toString('hex');
 }
 
 const MAX_LOGIN_ATTEMPTS = 3;
@@ -118,6 +123,10 @@ exports.login = async (req, res, next) => {
     await admin.save({ fields: ['loginAttempts', 'loginLockedUntil', 'lastLogin', 'lastLoginIp'] });
 
     const token = signToken(admin.id);
+    const refreshToken = generateRefreshToken();
+
+    admin.refreshToken = refreshToken;
+    await admin.save({ fields: ['loginAttempts', 'loginLockedUntil', 'lastLogin', 'lastLoginIp', 'refreshToken'] });
 
     await logAudit(admin, 'login', 'auth', admin.id, { email: admin.email, method: 'password' }, req);
 
@@ -126,9 +135,17 @@ exports.login = async (req, res, next) => {
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 15 * 60 * 1000, // 15 minutes for access token cookie if used
+    };
+    const refreshCookieOptions = {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      signed: true,
+      maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
     };
     res.cookie('token', token, cookieOptions);
+    res.cookie('adminRefreshToken', refreshToken, refreshCookieOptions);
 
     res.json({
       success: true,
@@ -858,4 +875,37 @@ exports.uploadProfilePhoto = [
   },
 ];
 
+/* ===== REFRESH TOKEN ===== */
+exports.refresh = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.adminRefreshToken;
+    if (!refreshToken) {
+      return res.status(401).json({ success: false, message: 'No refresh token provided.' });
+    }
 
+    const admin = await Admin.findOne({ where: { refreshToken } });
+    if (!admin || !admin.isActive) {
+      return res.status(401).json({ success: false, message: 'Invalid or expired refresh token.' });
+    }
+
+    const newToken = signToken(admin.id);
+    const cookieOptions = {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      signed: true,
+      maxAge: 15 * 60 * 1000,
+    };
+    res.cookie('token', newToken, cookieOptions);
+
+    res.json({ success: true, token: newToken });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.logout = (req, res) => {
+  res.clearCookie('token');
+  res.clearCookie('adminRefreshToken');
+  res.json({ success: true, message: 'Logged out successfully.' });
+};
