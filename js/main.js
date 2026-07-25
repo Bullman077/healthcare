@@ -588,7 +588,7 @@
     if (prevBtn) prevBtn.addEventListener('click', function() { goToSlide(currentIndex - 1); startAutoPlay(); });
     if (nextBtn) nextBtn.addEventListener('click', function() { goToSlide(currentIndex + 1); startAutoPlay(); });
 
-    fetch('/api/testimonials')
+    fetch(API_URL + '/api/testimonials')
       .then(function(res) { return res.json(); })
       .then(function(data) {
         if (data.success && data.data && data.data.length > 0) {
@@ -633,7 +633,7 @@
       return d.innerHTML;
     }
 
-    fetch('/api/services')
+    fetch(API_URL + '/api/services')
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data.success || !data.services || data.services.length === 0) {

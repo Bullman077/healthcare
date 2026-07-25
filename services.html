@@ -198,7 +198,7 @@
     }
 
     function init() {
-      fetch('/api/services')
+      fetch('https://uhs-backen.onrender.com/api/services')
         .then(function(r) { return r.json(); })
         .then(function(data) {
           var grid = document.getElementById('servicesGrid');
