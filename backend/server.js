@@ -20,6 +20,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 const { limiter, csrfProtect } = require('./middleware/security');
 const { startScheduler } = require('./scheduler');
 const { Setting } = require('./models');
+const { runMigrations } = require('./migrate');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -293,7 +294,7 @@ async function start() {
   try {
     validateEnv();
     await connectDB();
-    await sequelize.sync();
+    await runMigrations();   // Umzug-managed schema migrations (replaces sequelize.sync)
     await seedSiteDefaults();
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT} [${process.env.NODE_ENV || 'development'}]`);

@@ -11,6 +11,9 @@ const Admin = sequelize.define('Admin', {
   profilePhoto: { type: DataTypes.STRING(500) },
   lastLogin: { type: DataTypes.DATE },
   lastLoginIp: { type: DataTypes.STRING(45) },
+  // Brute-force protection — DB-backed so it survives restarts & PM2 cluster mode
+  loginAttempts: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+  loginLockedUntil: { type: DataTypes.DATE, allowNull: true },
 }, {
   timestamps: true,
   hooks: {

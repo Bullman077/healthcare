@@ -108,14 +108,11 @@ exports.createAppointment = async (req, res, next) => {
 
 exports.getAppointmentsByEmail = async (req, res, next) => {
   try {
-    const { email } = req.query;
-    if (!email) return next(new AppError('Email query parameter is required.', 400));
-
-    const patient = await Patient.findOne({ where: { email: email.toLowerCase() } });
-    if (!patient) return res.json({ success: true, data: [] });
-
+    // SECURITY: Always use the authenticated patient's own ID from the JWT.
+    // Never trust a user-supplied email query param — doing so would let any
+    // authenticated patient look up another patient's appointment history.
     const appointments = await Appointment.findAll({
-      where: { patientId: patient.id },
+      where: { patientId: req.patient.id },
       include: [
         { association: 'patient', attributes: ['firstName', 'lastName', 'email', 'phone'] },
         { association: 'service', attributes: ['name', 'duration'] },

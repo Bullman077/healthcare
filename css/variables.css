@@ -10,14 +10,15 @@
   --color-royal-blue-light: #EBF3FB;
   --color-royal-blue-muted: #D1E3F6;
 
-  --color-navy: #092B52;
-  --color-navy-light: #0E437D;
-  --color-purple: #4B1D6D;
-  --color-purple-dark: #371353;
-  --color-purple-light: #F3EBF9;
-  --color-royal: #0E437D;
-  --color-teal: #0E437D;
-  --color-teal-light: #EBF3FB;
+  /* Semantic Aliases & Compatibility Tokens */
+  --color-navy: var(--color-royal-blue-dark);
+  --color-navy-light: var(--color-royal-blue);
+  --color-purple: var(--color-plum);
+  --color-purple-dark: var(--color-plum-dark);
+  --color-purple-light: var(--color-plum-light);
+  --color-royal: var(--color-royal-blue);
+  --color-teal: var(--color-royal-blue); /* Theme alias for royal blue accent */
+  --color-teal-light: var(--color-royal-blue-light);
   --color-gold: #D97706;
   --color-gold-light: #FEF3C7;
 
@@ -33,10 +34,10 @@
   --color-slate-100: #F1F5F9;
   --color-slate-50: #F8FAFC;
 
-  --color-blue: #0E437D;
-  --color-blue-dark: #092B52;
-  --color-indigo: #4B1D6D;
-  --color-indigo-light: #F3EBF9;
+  --color-blue: var(--color-royal-blue);
+  --color-blue-dark: var(--color-royal-blue-dark);
+  --color-indigo: var(--color-plum);
+  --color-indigo-light: var(--color-plum-light);
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #4B1D6D 0%, #0E437D 100%);

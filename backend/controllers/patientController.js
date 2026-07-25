@@ -187,12 +187,34 @@ exports.updateMe = async (req, res, next) => {
       'address', 'insurance', 'emergencyContact',
       'allergies', 'medications',
     ];
+
+    // String field length limits to prevent oversized payloads
+    const STRING_LIMITS = {
+      firstName: 50,
+      lastName: 50,
+      phone: 20,
+    };
+
     const patient = await Patient.findByPk(req.patient.id);
     if (!patient) return next(new AppError('Patient not found.', 404));
 
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) patient[field] = req.body[field];
+      if (req.body[field] === undefined) return;
+
+      let value = req.body[field];
+
+      // Trim and enforce max length on string fields
+      if (typeof value === 'string') {
+        value = value.trim();
+        const limit = STRING_LIMITS[field];
+        if (limit && value.length > limit) {
+          return; // silently ignore oversized values (validator will report if needed)
+        }
+      }
+
+      patient[field] = value;
     });
+
     await patient.save();
 
     res.json({

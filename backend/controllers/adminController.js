@@ -57,7 +57,8 @@ function signToken(id) {
   });
 }
 
-const failedAttemptsMap = new Map();
+const MAX_LOGIN_ATTEMPTS = 3;
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 
 exports.login = async (req, res, next) => {
   try {
@@ -67,51 +68,54 @@ exports.login = async (req, res, next) => {
     }
 
     const ip = req.ip || req.connection?.remoteAddress || 'unknown';
-    const key = `${email.toLowerCase()}_${ip}`;
 
-    // Check lockout status
-    const record = failedAttemptsMap.get(key);
-    if (record && record.lockUntil) {
-      if (Date.now() < record.lockUntil) {
-        const minsLeft = Math.ceil((record.lockUntil - Date.now()) / 60000);
-        return res.status(429).json({
-          success: false,
-          message: `Account temporarily locked due to 3 failed login attempts. Please wait ${minsLeft} minute(s) before trying again.`,
-        });
-      } else {
-        failedAttemptsMap.delete(key);
-      }
+    // Find admin by email (include inactive so we can give a correct error, but check isActive after)
+    const admin = await Admin.findOne({ where: { email: email.toLowerCase() } });
+
+    // --- DB-backed brute-force lockout check ---
+    // Check lockout BEFORE password verification to prevent timing-based bypasses.
+    // This persists across server restarts and works in PM2 cluster mode.
+    if (admin && admin.loginLockedUntil && admin.loginLockedUntil > new Date()) {
+      const minsLeft = Math.ceil((admin.loginLockedUntil - Date.now()) / 60000);
+      return res.status(429).json({
+        success: false,
+        message: `Account temporarily locked due to ${MAX_LOGIN_ATTEMPTS} failed login attempts. Please wait ${minsLeft} minute(s) before trying again.`,
+      });
     }
 
-    const admin = await Admin.findOne({ where: { email, isActive: true } });
-    if (!admin || !(await admin.comparePassword(password))) {
-      const current = failedAttemptsMap.get(key) || { count: 0 };
-      current.count += 1;
-      current.lastAttempt = Date.now();
-      
-      if (current.count >= 3) {
-        current.lockUntil = Date.now() + 15 * 60 * 1000; // 15 minutes lockout
-        failedAttemptsMap.set(key, current);
-        return res.status(429).json({
-          success: false,
-          message: 'Too many failed login attempts. Your access is locked for 15 minutes.',
-        });
-      } else {
-        failedAttemptsMap.set(key, current);
-        const remaining = 3 - current.count;
+    // Validate credentials
+    const passwordValid = admin && (await admin.comparePassword(password));
+
+    if (!admin || !admin.isActive || !passwordValid) {
+      // Increment failed attempt counter on the DB record (if admin exists)
+      if (admin) {
+        const attempts = (admin.loginAttempts || 0) + 1;
+        const updates = { loginAttempts: attempts };
+        if (attempts >= MAX_LOGIN_ATTEMPTS) {
+          updates.loginLockedUntil = new Date(Date.now() + LOCKOUT_DURATION_MS);
+          await admin.update(updates, { fields: ['loginAttempts', 'loginLockedUntil'] });
+          return res.status(429).json({
+            success: false,
+            message: 'Too many failed login attempts. Your account is locked for 15 minutes.',
+          });
+        }
+        await admin.update(updates, { fields: ['loginAttempts', 'loginLockedUntil'] });
+        const remaining = MAX_LOGIN_ATTEMPTS - attempts;
         return res.status(401).json({
           success: false,
           message: `Invalid email or password. You have ${remaining} attempt(s) remaining before a 15-minute lockout.`,
         });
       }
+      // Generic message when admin account doesn't exist (prevent email enumeration)
+      return res.status(401).json({ success: false, message: 'Invalid email or password.' });
     }
 
-    // Success -> Clear failed attempts counter
-    failedAttemptsMap.delete(key);
-
+    // Success — reset failed attempts counter and update login metadata
+    admin.loginAttempts = 0;
+    admin.loginLockedUntil = null;
     admin.lastLogin = new Date();
     admin.lastLoginIp = ip;
-    await admin.save({ fields: ['lastLogin', 'lastLoginIp'] });
+    await admin.save({ fields: ['loginAttempts', 'loginLockedUntil', 'lastLogin', 'lastLoginIp'] });
 
     const token = signToken(admin.id);
 
@@ -311,7 +315,7 @@ exports.exportAppointments = async (req, res, next) => {
       return [
         a.referenceNumber, name, (p.email || ''), (p.phone || ''),
         `"${s.name || ''}"`,
-        new Date(a.date).toISOString().split('T')[0],
+        a.date,
         a.time, a.status, a.duration || '',
         new Date(a.createdAt).toISOString(),
       ].join(',');

@@ -44,7 +44,7 @@ function extractAppointmentData(appointment) {
   const patientEmail = patient.email || '';
   const serviceName = service.name || 'Healthcare Visit';
   const isTelehealth = service.category === 'telehealth' || serviceName.toLowerCase().includes('telehealth') || serviceName.toLowerCase().includes('virtual');
-  const dateStr = new Date(appointment.date).toLocaleDateString('en-US', {
+  const dateStr = new Date(appointment.date + 'T12:00:00').toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
 
@@ -260,7 +260,7 @@ async function sendFollowUpReminderEmail(patient, reminder) {
       
       <div style="background:#F0FDF4;border-left:4px solid #0F766E;padding:16px;margin:20px 0;border-radius:8px;">
         <div style="font-size:12px;text-transform:uppercase;font-weight:700;color:#0F766E;">Agreed Follow-Up Timeframe</div>
-        <div style="font-size:18px;font-weight:700;color:#166534;margin:4px 0;">${reminder.timeframe || 'Follow-Up Visit'} (${reminder.followUpDate ? new Date(reminder.followUpDate).toLocaleDateString() : 'As discussed'})</div>
+        <div style="font-size:18px;font-weight:700;color:#166534;margin:4px 0;">${reminder.timeframe || 'Follow-Up Visit'} (${reminder.followUpDate ? new Date(reminder.followUpDate + 'T12:00:00').toLocaleDateString() : 'As discussed'})</div>
         <hr style="border:none;border-top:1px solid #BBF7D0;margin:12px 0;">
         <div style="font-size:12px;text-transform:uppercase;font-weight:700;color:#0F766E;">Message from NP Nacole Brown:</div>
         <div style="font-size:15px;color:#1E293B;margin-top:4px;">"${reminder.message || 'Please return for your scheduled follow-up consultation.'}"</div>

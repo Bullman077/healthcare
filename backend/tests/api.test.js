@@ -192,7 +192,7 @@ describe('Appointments', () => {
       .send({
         name: 'Test Patient',
         phone: '(803) 555-0100',
-        email: 'testpatient@example.com',
+        email: 'testauth@example.com',
         service: 'DOT Physical',
         date: '2026-08-15',
         time: '10:00 AM',
@@ -239,13 +239,13 @@ describe('Appointments', () => {
 
   it('GET /api/appointments/by-email should require auth', async () => {
     const res = await request(app)
-      .get('/api/appointments/by-email?email=testpatient@example.com');
+      .get('/api/appointments/by-email');
     expect(res.status).toBe(401);
   });
 
-  it('GET /api/appointments/by-email should return appointments with auth', async () => {
+  it('GET /api/appointments/by-email should return appointments for authenticated patient', async () => {
     const res = await request(app)
-      .get('/api/appointments/by-email?email=testpatient@example.com')
+      .get('/api/appointments/by-email')
       .set('Authorization', `Bearer ${patientToken}`);
 
     expect(res.status).toBe(200);

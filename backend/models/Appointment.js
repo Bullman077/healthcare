@@ -37,7 +37,9 @@ const Appointment = sequelize.define('Appointment', {
   ],
   getterMethods: {
     dateFormatted() {
-      return new Date(this.date).toLocaleDateString('en-US', {
+      // Anchor to noon to prevent UTC→local timezone rollover (e.g. '2025-08-15' parsing
+      // as UTC midnight and displaying as Aug 14 in US Eastern/Central/Pacific time zones).
+      return new Date(this.date + 'T12:00:00').toLocaleDateString('en-US', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
       });
     },

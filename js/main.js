@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  // Backend API base URL — use relative path (frontend served from same origin)
-  const API_URL = 'https://uhs-backen.onrender.com';
+  // Backend API base URL — update this whenever the Render service URL changes
+  const API_URL = 'https://uhs-backend.onrender.com';
 
   function esc(str) {
     if (str == null) return '';
