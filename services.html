@@ -55,7 +55,7 @@
 
         <div class="nav__actions">
           <a href="tel:+18033817489" class="nav__call-pill">(803) 381-7489</a>
-          <a href="https://uhs-backend.onrender.com/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
+          <a href="https://uhs-backen.onrender.com/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
           <span id="patient-nav" style="display:none;"></span>
           <button class="btn btn--primary btn--sm" data-open-modal data-service="">Book Appointment</button>
         </div>
@@ -199,7 +199,7 @@
     }
 
     function init() {
-      fetch('https://uhs-backend.onrender.com/api/services')
+      fetch('https://uhs-backen.onrender.com/api/services')
         .then(function(r) { return r.json(); })
         .then(function(data) {
           var grid = document.getElementById('servicesGrid');

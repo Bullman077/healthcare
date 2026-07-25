@@ -2,7 +2,7 @@
   'use strict';
 
   // Backend API base URL — update this whenever the Render service URL changes
-  const API_URL = 'https://uhs-backend.onrender.com';
+  const API_URL = 'https://uhs-backen.onrender.com';
 
   function esc(str) {
     if (str == null) return '';
