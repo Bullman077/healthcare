@@ -13,15 +13,11 @@
   <!-- ================= AUTH VIEW ================= -->
   <div id="authView" class="auth-container hidden">
     <div class="auth-card">
-      <div class="auth-logo">
-        <div class="auth-logo-icon">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-          </svg>
-        </div>
-        <div>
-          <div class="auth-title">Unmeasurable Heights of Strength Healthcare Services</div>
-          <div style="font-size:12px;color:#4B1D6D;font-weight:700;">Patient Access Portal</div>
+      <div class="auth-logo" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <div class="auth-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1; font-family:var(--font-heading);">Unmeasurable Heights of Strength</div>
+          <div style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services &bull; Patient Portal</div>
         </div>
       </div>
       <div class="auth-subtitle">Sign in to view your medical progress, notes, and appointments</div>
@@ -85,14 +81,11 @@
   <!-- ================= FORGOT PASSWORD VIEW ================= -->
   <div id="forgotView" class="auth-container hidden">
     <div class="auth-card">
-      <div class="auth-logo">
-        <div class="auth-logo-icon">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-          </svg>
-        </div>
-        <div>
-          <div class="auth-title">Reset Password</div>
+      <div class="auth-logo" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <div class="auth-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1; font-family:var(--font-heading);">Reset Password</div>
+          <div style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Unmeasurable Heights of Strength</div>
         </div>
       </div>
       <div class="auth-subtitle">Enter your email and we'll send you a reset link</div>
@@ -130,8 +123,8 @@
    <div id="portalView" class="hidden">
      <header class="nav" role="banner">
        <div class="nav__inner">
-         <a href="/patient/" class="nav__logo" aria-label="Home">
-           <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+         <a href="/patient/" class="nav__logo" aria-label="Unmeasurable Heights of Strength Healthcare Services Home">
+           <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
            <div style="display:flex; flex-direction:column; justify-content:center;">
              <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
              <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
@@ -252,13 +245,13 @@
       <div class="container">
         <div class="footer-grid">
           <div>
-            <div class="nav__logo" style="margin-bottom:1rem;">
-              <img src="/assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
+            <a href="/patient/" class="nav__logo" style="margin-bottom:1rem; display:inline-flex;">
+              <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
               <div style="display:flex; flex-direction:column; justify-content:center;">
                 <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
                 <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
               </div>
-            </div>
+            </a>
             <p class="footer-brand__desc">
               Unmeasurable Heights of Strength Healthcare Services. Dedicated compassionate care by Nacole Brown, MSN AGPCNP-BC in Columbia, SC.
             </p>
