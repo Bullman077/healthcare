@@ -459,6 +459,25 @@ exports.updatePatient = async (req, res, next) => {
   }
 };
 
+exports.deletePatient = async (req, res, next) => {
+  try {
+    const patient = await Patient.findByPk(req.params.id);
+    if (!patient) return next(new AppError('No patient found with that ID.', 404));
+
+    // Delete all appointments belonging to this patient first
+    await Appointment.destroy({ where: { patientId: patient.id } });
+
+    const patientName = `${patient.firstName} ${patient.lastName}`;
+    await patient.destroy();
+    await logAudit(req.admin, 'delete', 'patient', req.params.id, { name: patientName, email: patient.email }, req);
+
+    res.json({ success: true, message: `Patient "${patientName}" deleted successfully.` });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 exports.getServices = async (req, res, next) => {
   try {
     const services = await Service.findAll({ order: [['category', 'ASC'], ['name', 'ASC']] });

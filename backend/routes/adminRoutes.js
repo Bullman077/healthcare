@@ -15,6 +15,7 @@ const {
   getPatients,
   getPatient,
   updatePatient,
+  deletePatient,
   getServices,
   createService,
   updateService,
@@ -60,6 +61,7 @@ router.delete('/appointments/:id', adminWriteLimiter, deleteAppointment);
 router.get('/patients', getPatients);
 router.get('/patients/:id', getPatient);
 router.put('/patients/:id', adminWriteLimiter, updatePatient);
+router.delete('/patients/:id', adminWriteLimiter, deletePatient);
 router.put('/patients/:id/progress', adminWriteLimiter, updatePatientProgress);
 router.post('/patients/:id/reminders', adminWriteLimiter, addPatientReminder);
 

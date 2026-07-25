@@ -917,6 +917,9 @@ table.data-table tr:hover td { background: rgba(79, 70, 229, 0.025); }
 .action-btn.edit:hover { background: #D1FAE5; }
 .action-btn.del   { background: #FEF2F2; color: #DC2626; }
 .action-btn.del:hover  { background: #FEE2E2; }
+.action-btn.danger   { background: #FEF2F2; color: #DC2626; }
+.action-btn.danger:hover  { background: #FEE2E2; }
+
 
 .status-select {
   height: 30px;

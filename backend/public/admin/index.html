@@ -1849,14 +1849,14 @@ async function loadTodaySchedule() {
       return;
     }
     el.innerHTML = data.appointments.map(a => {
-      const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
-      const svcColor = a.Service?.color || '#4F46E5';
+      const name = a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : '—';
+      const svcColor = a.service?.color || '#4F46E5';
       return `
         <div class="schedule-item" onclick="viewAppt(${JSON.stringify(a).replace(/"/g,'&quot;')})" style="border-left:3px solid ${svcColor};">
           <div class="schedule-time">${a.time}</div>
           <div class="schedule-info">
             <div class="schedule-name">${name}</div>
-            <div class="schedule-service">${a.Service?.name || '—'}</div>
+            <div class="schedule-service">${a.service?.name || '—'}</div>
           </div>
           <div class="schedule-status">${badgeHtml(a.status)}</div>
         </div>
@@ -2113,11 +2113,11 @@ function showCalDay(dateStr) {
     el.innerHTML = `
       <div class="cal-day-header">${fmtDate(dateStr)} — ${dayAppts.length} appointment${dayAppts.length>1?'s':''}</div>
       ${dayAppts.map(a => {
-        const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
+        const name = a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : '—';
         return `<div class="cal-appt-row" onclick="viewAppt(${JSON.stringify(a).replace(/"/g,'&quot;')})">
           <span class="cal-appt-time">${a.time}</span>
           <span class="cal-appt-name">${name}</span>
-          <span class="cal-appt-svc">${a.Service?.name||'—'}</span>
+          <span class="cal-appt-svc">${a.service?.name||'—'}</span>
           ${badgeHtml(a.status)}
         </div>`;
       }).join('')}
@@ -2136,10 +2136,10 @@ function renderTable(tbodyId, data, showActions) {
     return;
   }
   tbody.innerHTML = data.appointments.map(a => {
-    const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
-    const email = a.Patient?.email || '—';
-    const phone = a.Patient?.phone || '—';
-    const service = a.Service?.name || '—';
+    const name = a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : '—';
+    const email = a.patient?.email || '—';
+    const phone = a.patient?.phone || '—';
+    const service = a.service?.name || '—';
     const actions = showActions ? `
       <div class="row-actions">
         <select class="status-select" onchange="changeStatus('${a.id}', this.value)">
@@ -2173,18 +2173,18 @@ function renderTable(tbodyId, data, showActions) {
    VIEW APPOINTMENT MODAL
    ========================================================= */
 function viewAppt(a) {
-  const name = a.Patient ? `${a.Patient.firstName} ${a.Patient.lastName}` : '—';
+  const name = a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : '—';
   document.getElementById('apptModalBody').innerHTML = `
     <div class="detail-grid">
       <div class="detail-field"><div class="detail-field-label">Reference</div><div class="detail-field-value" style="color:var(--indigo);font-family:monospace;">${a.referenceNumber||'—'}</div></div>
       <div class="detail-field"><div class="detail-field-label">Status</div><div class="detail-field-value">${badgeHtml(a.status)}</div></div>
       <div class="detail-field"><div class="detail-field-label">Patient Name</div><div class="detail-field-value">${name}</div></div>
-      <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value">${a.Patient?.email||'—'}</div></div>
-      <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${a.Patient?.phone||'—'}</div></div>
-      <div class="detail-field"><div class="detail-field-label">Date of Birth</div><div class="detail-field-value">${a.Patient?.dob ? fmtDate(a.Patient.dob) : '—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Email</div><div class="detail-field-value">${a.patient?.email||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Phone</div><div class="detail-field-value">${a.patient?.phone||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Date of Birth</div><div class="detail-field-value">${a.patient?.dob ? fmtDate(a.patient.dob) : '—'}</div></div>
       <div class="detail-field"><div class="detail-field-label">Date</div><div class="detail-field-value">${fmtDate(a.date)}</div></div>
       <div class="detail-field"><div class="detail-field-label">Time</div><div class="detail-field-value">${a.time}</div></div>
-      <div class="detail-field"><div class="detail-field-label">Service</div><div class="detail-field-value">${a.Service?.name||'—'}</div></div>
+      <div class="detail-field"><div class="detail-field-label">Service</div><div class="detail-field-value">${a.service?.name||'—'}</div></div>
       <div class="detail-field"><div class="detail-field-label">Duration</div><div class="detail-field-value">${a.duration||30} minutes</div></div>
       <div class="detail-field detail-field-full"><div class="detail-field-label">Patient Notes</div><div class="detail-field-value" style="white-space:pre-wrap">${a.patientNotes||'None'}</div></div>
       <div class="detail-field detail-field-full">
@@ -2277,12 +2277,27 @@ async function loadPatients(page = state.pages.patients) {
           <button class="action-btn view" title="View Patient" onclick="viewPatient('${p.id}')">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
+          <button class="action-btn danger" title="Delete Patient" onclick="deletePatient('${p.id}', '${p.firstName} ${p.lastName}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
         </div>
       </td>
     </tr>
   `).join('');
   renderPagination('patientPagination', data, page, loadPatients);
 }
+
+async function deletePatient(id, name) {
+  if (!confirm(`Are you sure you want to permanently delete patient "${name}" and all their appointments? This cannot be undone.`)) return;
+  const res = await apiFetch('/patients/' + id, { method: 'DELETE' });
+  if (res.success) {
+    toast(res.message || 'Patient deleted.', 'success');
+    loadPatients();
+  } else {
+    toast(res.message || 'Failed to delete patient.', 'danger');
+  }
+}
+
 
 async function viewPatient(id) {
   const data = await apiFetch('/patients/' + id);
