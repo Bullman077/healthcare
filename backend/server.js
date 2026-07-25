@@ -101,6 +101,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   etag: true,
   lastModified: true,
 }));
+app.use(express.static(path.join(__dirname, '..'), {
+  maxAge: isProd ? '7d' : '0',
+  etag: true,
+  lastModified: true,
+}));
 
 
 /* ----- API Routes ----- */

@@ -49,7 +49,25 @@
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
-        <input type="password" id="authPassword" class="form-input" placeholder="••••••••">
+        <div class="password-wrapper">
+          <input type="password" id="authPassword" class="form-input" placeholder="••••••••" autocomplete="new-password">
+          <button type="button" class="password-toggle" onclick="togglePassword('authPassword', this)" tabindex="-1">
+            <svg class="eye-open" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-closed hidden" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group" id="confirmPasswordField" style="display:none;">
+        <label class="form-label">Confirm Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="authConfirmPassword" class="form-input" placeholder="Re-enter your password" autocomplete="new-password">
+          <button type="button" class="password-toggle" onclick="togglePassword('authConfirmPassword', this)" tabindex="-1">
+            <svg class="eye-open" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-closed hidden" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <div id="passwordMismatch" style="display:none;color:#991b1b;font-size:12px;margin-top:4px;">Passwords do not match.</div>
       </div>
 
       <button id="authBtn" class="btn-primary" onclick="handleAuthSubmit()">Sign In to Portal</button>
@@ -230,10 +248,21 @@
     function toggleAuthMode() {
       isRegisterMode = !isRegisterMode;
       document.getElementById('registerFields').classList.toggle('hidden', !isRegisterMode);
+      document.getElementById('confirmPasswordField').style.display = isRegisterMode ? 'block' : 'none';
+      document.getElementById('passwordMismatch').style.display = 'none';
+      document.getElementById('authConfirmPassword').value = '';
       document.getElementById('authBtn').textContent = isRegisterMode ? 'Create Portal Account' : 'Sign In to Portal';
       document.getElementById('toggleText').textContent = isRegisterMode ? 'Already have an account?' : 'First time here?';
       document.getElementById('toggleLink').textContent = isRegisterMode ? 'Sign In' : 'Create Patient Account';
       document.getElementById('authError').style.display = 'none';
+    }
+
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      btn.querySelector('.eye-open').classList.toggle('hidden', !isPassword);
+      btn.querySelector('.eye-closed').classList.toggle('hidden', isPassword);
     }
 
     async function handleAuthSubmit() {
@@ -241,11 +270,25 @@
       const password = document.getElementById('authPassword').value;
       const errEl = document.getElementById('authError');
       errEl.style.display = 'none';
+      document.getElementById('passwordMismatch').style.display = 'none';
 
       if (!email || !password) {
         errEl.textContent = 'Please enter your email and password.';
         errEl.style.display = 'block';
         return;
+      }
+
+      if (isRegisterMode) {
+        const confirm = document.getElementById('authConfirmPassword').value;
+        if (password !== confirm) {
+          document.getElementById('passwordMismatch').style.display = 'block';
+          return;
+        }
+        if (password.length < 8) {
+          errEl.textContent = 'Password must be at least 8 characters.';
+          errEl.style.display = 'block';
+          return;
+        }
       }
 
       const endpoint = isRegisterMode ? '/register' : '/login';

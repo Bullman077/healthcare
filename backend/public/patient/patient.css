@@ -111,6 +111,35 @@ body {
   box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
 }
 
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper .form-input {
+  padding-right: 44px;
+}
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--slate-400);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+.password-toggle:hover {
+  color: var(--slate-600);
+}
+.password-toggle .hidden {
+  display: none;
+}
+
 .btn-primary {
   width: 100%;
   padding: 14px;
