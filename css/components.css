@@ -473,12 +473,18 @@
 }
 
 .section--alt {
-  background: var(--color-bg-alt);
+  background: linear-gradient(135deg, #F5EBFB 0%, #EBF3FB 100%);
 }
 
 .section--navy {
-  background: var(--color-bg-alt);
-  color: var(--color-text);
+  background: linear-gradient(135deg, #092B52 0%, #371353 100%);
+  color: #FFFFFF;
+}
+
+.section--navy .section-header__title,
+.section--navy .section-header__subtitle,
+.section--navy .section-header__desc {
+  color: #FFFFFF !important;
 }
 
 .section-header {
@@ -1126,28 +1132,29 @@
   margin: 2.5rem auto 0;
   position: relative;
   z-index: 3;
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
+  background: linear-gradient(135deg, #4B1D6D 0%, #0E437D 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   padding: 2rem 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-glow);
+  color: #FFFFFF;
 }
 
 .faq-cta__text h3 {
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--color-slate-900);
+  color: #FFFFFF;
   margin-bottom: 0.25rem;
 }
 
 .faq-cta__text p {
   font-size: 0.92rem;
-  color: var(--color-slate-500);
+  color: rgba(255, 255, 255, 0.88);
   margin: 0;
 }
 
@@ -1177,7 +1184,7 @@
 
 /* ----- TESTIMONIALS SECTION ----- */
 .section--testimonials {
-  background: #ffffff;
+  background: linear-gradient(180deg, #F3EBF9 0%, #FFFFFF 100%);
   padding: 80px 24px;
 }
 
@@ -1398,10 +1405,10 @@
 
 /* ----- FOOTER ----- */
 .footer {
-  background: var(--color-white);
-  color: var(--color-text);
+  background: linear-gradient(135deg, #092B52 0%, #371353 100%);
+  color: #FFFFFF;
   padding: 5rem 0 2rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-plum);
 }
 
 .footer-grid {
@@ -1412,7 +1419,7 @@
 }
 
 .footer-brand__desc {
-  color: var(--color-slate-600);
+  color: rgba(255, 255, 255, 0.82);
   font-size: var(--fs-sm);
   margin-top: 1rem;
   line-height: var(--lh-relaxed);
@@ -1422,7 +1429,7 @@
   font-family: var(--font-heading);
   font-size: var(--fs-base);
   font-weight: var(--fw-bold);
-  color: var(--color-slate-900);
+  color: #FFFFFF;
   margin-bottom: 1.25rem;
 }
 
@@ -1436,24 +1443,24 @@
 }
 
 .footer-links a {
-  color: var(--color-slate-600);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-size: var(--fs-sm);
   transition: color var(--transition-fast);
 }
 
 .footer-links a:hover {
-  color: var(--color-royal-blue);
+  color: #FFFFFF;
 }
 
 .footer-bottom {
   padding-top: 2rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: var(--fs-xs);
-  color: var(--color-slate-400);
+  color: rgba(255, 255, 255, 0.65);
 }
 
 /* ----- PRELOADER & SCROLL TO TOP ----- */
@@ -1643,6 +1650,7 @@
 .core-service-card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-royal-blue);
   border-radius: var(--radius-xl);
   padding: 2rem;
   display: flex;
@@ -1710,6 +1718,7 @@
 .wellness-card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-plum);
   border-radius: var(--radius-2xl);
   overflow: hidden;
   transition: box-shadow var(--transition-fast), transform var(--transition-fast);
