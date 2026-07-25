@@ -1,6 +1,9 @@
 (function () {
   'use strict';
 
+  // Backend API base URL — deployed on Render
+  const API_URL = 'https://uhs-backen.onrender.com';
+
   function esc(str) {
     if (str == null) return '';
     return String(str).replace(/[<>&"']/g, function(c) {
@@ -130,12 +133,12 @@
   // =========================================================
   // 8. BOOKING MODAL — FULLY WIRED TO POST /api/appointments
   // =========================================================
-  const API_BASE = '/api/appointments';
+  const API_BASE = API_URL + '/api/appointments';
   let availableServices = [];
 
   async function loadServices() {
     try {
-      const res = await fetch('/api/services');
+      const res = await fetch(API_URL + '/api/services');
       const data = await res.json();
       if (data.success && data.services && data.services.length) {
         availableServices = data.services;
@@ -237,7 +240,7 @@
 
     // Fetch past appointments for this email silently
     if (email) {
-      fetch('/api/appointments/by-email?email=' + encodeURIComponent(email))
+      fetch(API_URL + '/api/appointments/by-email?email=' + encodeURIComponent(email))
         .then(r => r.json())
         .then(function(d) {
           var past = (d.data || []).filter(function(a) { return a.referenceNumber !== appt.referenceNumber; });
@@ -414,7 +417,7 @@
   function initPatientAuth() {
     if (patientAuthChecked) return Promise.resolve();
     patientAuthChecked = true;
-    return fetch('/api/patient/session', { credentials: 'include' })
+    return fetch(API_URL + '/api/patient/session', { credentials: 'include' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.success && data.patient) {
@@ -446,7 +449,7 @@
     span.innerHTML =
       '<a href="/patient/" style="color:#fff;font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;">' +
       patient.firstName + ' \u25BC</a>' +
-      '<a href="/api/patient/logout" onclick="event.preventDefault();fetch(this.href,{method:\'POST\',credentials:\'include\'}).then(function(){window.location.reload();}).catch(function(){});" style="color:rgba(255,255,255,0.7);font-size:0.82rem;text-decoration:none;">Logout</a>';
+      '<a href="' + API_URL + '/api/patient/logout" onclick="event.preventDefault();fetch(this.href,{method:\'POST\',credentials:\'include\'}).then(function(){window.location.reload();}).catch(function(){});" style="color:rgba(255,255,255,0.7);font-size:0.82rem;text-decoration:none;">Logout</a>';
   }
 
   function prefillPatientFields() {
@@ -466,7 +469,7 @@
 
   // Re-check auth (no guard — used for bfcache restore)
   function refreshAuth() {
-    fetch('/api/patient/session', { credentials: 'include' })
+    fetch(API_URL + '/api/patient/session', { credentials: 'include' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.success && data.patient) {

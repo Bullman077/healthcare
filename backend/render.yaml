@@ -1,9 +1,10 @@
 services:
   - type: web
     name: uhs-backend
-    env: node
+    runtime: node
     region: oregon
     plan: free
+    rootDir: backend
     buildCommand: npm install
     startCommand: node server.js
     healthCheckPath: /api/health
