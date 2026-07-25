@@ -115,6 +115,13 @@ app.use('/api/patient', patientRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', contentRoutes);
 
+/* ----- Root Redirect ----- */
+app.get('/', (_req, res) => {
+  const raw = process.env.FRONTEND_URL || 'https://uhs-healthcare-ea3b4.web.app';
+  const frontendUrl = raw.split(',')[0].trim();
+  res.redirect(302, frontendUrl);
+});
+
 /* ----- Health Check ----- */
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'UHS Healthcare API is running.' });
