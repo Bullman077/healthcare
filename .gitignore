@@ -7,3 +7,9 @@ backend/.env
 .env*
 backend/server.log
 backend/server.err
+backend/server.pid
+
+.firebase/
+.agents/
+skills-lock.json
+functions/
