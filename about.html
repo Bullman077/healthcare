@@ -186,7 +186,7 @@
   <script>
   (async function() {
     try {
-      const res = await fetch('/api/about-content');
+      const res = await fetch('https://uhs-backen.onrender.com/api/about-content');
       const json = await res.json();
       if (!json.success || !json.data) return;
       const d = json.data;

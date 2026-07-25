@@ -708,7 +708,7 @@
   <script>
   (async function() {
     try {
-      var res = await fetch('/api/about-content');
+      var res = await fetch('https://uhs-backen.onrender.com/api/about-content');
       var json = await res.json();
       if (!json.success || !json.data) return;
       var d = json.data;

@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  var API_URL = 'https://uhs-backen.onrender.com';
   var form = document.getElementById('contact-form');
   if (!form) return;
 
@@ -47,7 +48,7 @@
     }
 
     try {
-      var res = await fetch('/api/messages', {
+      var res = await fetch(API_URL + '/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
