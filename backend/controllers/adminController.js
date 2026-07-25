@@ -345,7 +345,7 @@ exports.getStats = async (req, res, next) => {
     const todayEnd = new Date(); todayEnd.setHours(23, 59, 59, 999);
 
     const [totalPatients, totalAppointments, statusCounts, todayCount, unreadMessages, totalServices] = await Promise.all([
-      Patient.count({ where: { status: 'active' } }),
+      Patient.count(),
       Appointment.count(),
       Appointment.findAll({
         attributes: ['status', [fn('COUNT', col('status')), 'count']],
@@ -397,7 +397,7 @@ exports.getPatients = async (req, res, next) => {
 
     const { count, rows } = await Patient.findAndCountAll({
       where, order: [['createdAt', 'DESC']], offset, limit: parseInt(limit, 10), distinct: true,
-      attributes: { exclude: ['resetPasswordToken', 'resetPasswordExpires'] },
+      attributes: { exclude: ['resetPasswordToken', 'resetPasswordExpires', 'passwordHash'] },
     });
 
     res.json({

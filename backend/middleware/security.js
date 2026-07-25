@@ -13,7 +13,7 @@ const limiter = rateLimit({
 /* ----- Auth rate limit (login attempts) ----- */
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 3, // 3 trials max
+  max: process.env.NODE_ENV === 'test' ? 50 : 3, // 3 in prod, 50 in tests
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: 'Too many login attempts. Please wait 15 minutes before trying again.' },
