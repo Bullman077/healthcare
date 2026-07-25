@@ -93,7 +93,7 @@
       applyContent(cache);
       return;
     }
-    fetch('https://uhs-backen.onrender.com/api/site-content')
+    fetch('/api/site-content')
       .then(function (r) { return r.json(); })
       .then(function (json) {
         if (json.success && json.data) {
