@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Portal – Unmeasurable Heights of Strength Healthcare Services</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="patient.css">
 </head>
 <body>
@@ -21,7 +21,7 @@
         </div>
         <div>
           <div class="auth-title">Unmeasurable Heights of Strength Healthcare Services</div>
-          <div style="font-size:12px;color:#0f766e;font-weight:700;">Patient Access Portal</div>
+          <div style="font-size:12px;color:#4B1D6D;font-weight:700;">Patient Access Portal</div>
         </div>
       </div>
       <div class="auth-subtitle">Sign in to view your medical progress, notes, and appointments</div>
@@ -121,33 +121,48 @@
       </div>
 
       <div class="auth-toggle" style="margin-top:16px;">
-        <a onclick="backToLogin()" style="color:var(--teal-600);font-weight:600;cursor:pointer;">&larr; Back to Sign In</a>
+        <a onclick="backToLogin()" style="color:#4B1D6D;font-weight:600;cursor:pointer;">&larr; Back to Sign In</a>
       </div>
     </div>
   </div>
 
   <!-- ================= PORTAL DASHBOARD VIEW ================= -->
   <div id="portalView" class="hidden">
-    <nav class="portal-navbar">
-      <div class="portal-brand">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
-        <span>Unmeasurable Heights of Strength Healthcare Services &nbsp;·&nbsp; Patient Portal</span>
+    <header class="nav" role="banner">
+      <div class="nav__inner">
+        <a href="/" class="nav__logo" aria-label="Home">
+          <img src="/assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+          <div style="display:flex; flex-direction:column; justify-content:center;">
+            <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+            <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+          </div>
+        </a>
+        <button class="nav__toggle" aria-label="Toggle navigation" onclick="document.querySelector('.nav__right').classList.toggle('nav__right--open')">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav__right">
+          <ul class="nav__list">
+            <li><a href="/" class="nav__link">Home</a></li>
+            <li><a href="/services.html" class="nav__link">Services</a></li>
+            <li><a href="/telehealth.html" class="nav__link">Telehealth</a></li>
+            <li><a href="/about.html" class="nav__link">About NP Brown</a></li>
+            <li><a href="/contact.html" class="nav__link">Contact</a></li>
+          </ul>
+          <div class="nav__actions">
+            <a href="tel:+18033817489" class="nav__call-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              (803) 381-7489
+            </a>
+            <span id="userDisplayName" style="display:none;"></span>
+      <div id="portal-header-patient" style="display:none;align-items:center;gap:12px;">
+              <span id="portalHeaderName" style="font-weight:700;font-size:0.88rem;color:var(--color-slate-700);font-family:var(--font-heading);white-space:nowrap;"></span>
+              <button onclick="logout()" style="background:var(--color-plum);color:white;border:none;padding:7px 18px;border-radius:9999px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);transition:all 0.2s;">Sign Out</button>
+            </div>
+            <a href="/appointment.html" class="btn btn--primary btn--sm">Book Appointment</a>
+          </div>
+        </div>
       </div>
-      <div class="portal-nav-links">
-        <a href="/">Home</a>
-        <a href="/services.html">Services</a>
-        <a href="/telehealth.html">Telehealth</a>
-        <a href="/about.html">About</a>
-        <a href="/appointment.html">Book</a>
-        <a href="/contact.html">Contact</a>
-      </div>
-      <div class="portal-user">
-        <span id="userDisplayName" class="portal-user-name">Patient</span>
-        <button class="btn-logout" onclick="logout()">Sign Out</button>
-      </div>
-    </nav>
+    </header>
 
     <div class="portal-layout">
       <div class="welcome-banner">
@@ -231,6 +246,61 @@
         </div>
       </div>
     </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="nav__logo" style="margin-bottom:1rem;">
+              <img src="/assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
+              <div style="display:flex; flex-direction:column; justify-content:center;">
+                <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+                <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+              </div>
+            </div>
+            <p class="footer-brand__desc">
+              Unmeasurable Heights of Strength Healthcare Services. Dedicated compassionate care by Nacole Brown, MSN AGPCNP-BC in Columbia, SC.
+            </p>
+          </div>
+          <div>
+            <h4 class="footer-column__title">Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/services.html">Medical Services</a></li>
+              <li><a href="/telehealth.html">Virtual Telehealth</a></li>
+              <li><a href="/about.html">About NP Brown</a></li>
+              <li><a href="/contact.html">Contact Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-column__title">Services</h4>
+            <ul class="footer-links">
+              <li><a href="/services.html">Primary &amp; Preventive Care</a></li>
+              <li><a href="/services.html">Medical Weight Loss</a></li>
+              <li><a href="/services.html">DOT &amp; Sports Physicals</a></li>
+              <li><a href="/telehealth.html">Telehealth Consults</a></li>
+              <li><a href="/services.html">Iontophoresis Patch Therapy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-column__title">Contact &amp; Clinic</h4>
+            <p style="font-size:0.88rem; color:var(--color-slate-600); line-height:1.6; margin-bottom:1rem;">
+              2638 Two Notch Rd, Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
+              <strong>Phone:</strong> (803) 381-7489<br>
+              <strong>Email:</strong> info@uhshealthcare.com
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div>&copy; 2026 Unmeasurable Heights of Strength Healthcare Services. All rights reserved.</div>
+          <div style="display:flex; gap:1.5rem;">
+            <a href="/privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
+            <a href="/terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
 
   <!-- ================= APPOINTMENT DETAIL POPUP ================= -->
@@ -334,6 +404,9 @@
       document.getElementById('portalView').classList.remove('hidden');
       document.getElementById('welcomeTitle').textContent = `Welcome, ${patient.firstName}!`;
       document.getElementById('userDisplayName').textContent = `${patient.firstName} ${patient.lastName}`;
+      document.getElementById('portalHeaderName').textContent = `${patient.firstName} ${patient.lastName}`;
+      document.getElementById('portal-header-patient').style.display = 'flex';
+      window.scrollTo(0, 0);
       loadPortalData();
     }
 
@@ -355,7 +428,7 @@
             remindersContent.innerHTML = reminders.map(r => `
               <div class="reminder-card">
                 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-                  <strong style="color:var(--teal-700);font-size:15px;">⏱️ Agreed Follow-Up: ${esc(r.timeframe || 'Follow-Up Visit')}</strong>
+                  <strong style="color:#4B1D6D;font-size:15px;">⏱️ Agreed Follow-Up: ${esc(r.timeframe || 'Follow-Up Visit')}</strong>
                   <span style="font-size:12px;color:var(--slate-400);white-space:nowrap;margin-left:10px;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
                 </div>
                 <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${esc(r.message)}&rdquo;</p>
@@ -478,7 +551,9 @@
     async function logout() {
       await fetch(API + '/logout', { method: 'POST', credentials: 'include' });
       document.getElementById('portalView').classList.add('hidden');
+      document.getElementById('portal-header-patient').style.display = 'none';
       document.getElementById('authView').classList.remove('hidden');
+      window.scrollTo(0, 0);
     }
 
     /* ===== FORGOT PASSWORD ===== */
