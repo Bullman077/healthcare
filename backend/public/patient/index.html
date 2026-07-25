@@ -158,7 +158,7 @@
               <span id="portalHeaderName" style="font-weight:700;font-size:0.88rem;color:var(--color-slate-700);font-family:var(--font-heading);white-space:nowrap;"></span>
               <button onclick="logout()" style="background:var(--color-plum);color:white;border:none;padding:7px 18px;border-radius:9999px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);transition:all 0.2s;">Sign Out</button>
             </div>
-            <a href="https://uhs-healthcare-ea3b4.web.app/appointment.html" class="btn btn--primary btn--sm">Book Appointment</a>
+            <button onclick="openBookingModal()" class="btn btn--primary btn--sm" style="cursor:pointer;border:none;">Book Appointment</button>
           </div>
         </div>
       </div>
@@ -311,6 +311,73 @@
     </div>
   </div>
 
+  <!-- ================= BOOKING MODAL FOR PATIENTS ================= -->
+  <div id="bookingModalOverlay" class="popup-overlay hidden" onclick="if(event.target===this)closeBookingModal()">
+    <div class="popup-card" style="max-width:550px; padding:24px;">
+      <button class="popup-close" onclick="closeBookingModal()">&times;</button>
+      <div style="margin-bottom:16px;">
+        <h2 style="font-size:1.3rem; font-weight:800; color:var(--color-plum); font-family:var(--font-heading); margin-bottom:4px;">Book an Appointment</h2>
+        <p style="font-size:0.85rem; color:var(--slate-500);">Schedule your next visit or follow-up with NP Brown.</p>
+      </div>
+
+      <div id="bookingModalError" style="display:none; background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:10px 14px; border-radius:10px; font-size:13px; margin-bottom:16px;"></div>
+      <div id="bookingModalSuccess" style="display:none; background:#d1fae5; border:1px solid #6ee7b7; color:#065f46; padding:16px; border-radius:10px; font-size:14px; margin-bottom:16px;"></div>
+
+      <form id="patientBookingForm" onsubmit="handlePatientBookingSubmit(event)">
+        <div style="margin-bottom:14px;">
+          <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px; color:var(--slate-700);">Medical Service *</label>
+          <select id="bmService" required style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--slate-200); font-size:0.9rem; background:var(--slate-50); color:var(--slate-800); outline:none;">
+            <option value="">-- Select Requested Care --</option>
+            <option value="Direct Primary Care Consultation">Direct Primary Care Consultation</option>
+            <option value="DOT Physical">DOT Physical Exam</option>
+            <option value="Non-DOT Physical">Non-DOT Physical Exam</option>
+            <option value="Sports Physical">Sports Physical Exam</option>
+            <option value="Work Physical">Work Physical Exam</option>
+            <option value="BLS CPR Training">BLS CPR Training Class</option>
+            <option value="TB Skin Testing">TB Skin Testing</option>
+            <option value="Weight Management">Weight Management (GLP-1 Support)</option>
+            <option value="Iontophoresis Patch Therapy">Iontophoresis Patch Therapy</option>
+            <option value="Chronic Pain Relief">Chronic Pain Relief Consultation</option>
+            <option value="Telehealth Visit">Virtual Telehealth Visit</option>
+            <option value="Preventive Wellness">Preventive Wellness Visit</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div>
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px; color:var(--slate-700);">Preferred Date *</label>
+            <input type="date" id="bmDate" required style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--slate-200); font-size:0.9rem; background:var(--slate-50); color:var(--slate-800); outline:none;">
+          </div>
+          <div>
+            <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px; color:var(--slate-700);">Preferred Time *</label>
+            <select id="bmTime" required style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--slate-200); font-size:0.9rem; background:var(--slate-50); color:var(--slate-800); outline:none;">
+              <option value="">-- Select Time Slot --</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="9:00 AM">9:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:00 PM">2:00 PM</option>
+              <option value="3:00 PM">3:00 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:00 PM">5:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <label style="display:block; font-weight:600; font-size:0.85rem; margin-bottom:4px; color:var(--slate-700);">Notes / Reason for Visit</label>
+          <textarea id="bmNotes" rows="3" placeholder="Any specific symptoms or visit requests..." style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--slate-200); font-size:0.9rem; background:var(--slate-50); color:var(--slate-800); outline:none; resize:vertical;"></textarea>
+        </div>
+
+        <button type="submit" id="bmSubmitBtn" style="width:100%; background:var(--gradient-primary); color:white; font-size:0.95rem; font-weight:700; padding:12px; border:none; border-radius:10px; cursor:pointer; font-family:var(--font-heading); box-shadow:0 4px 12px rgba(75,29,109,0.25);">
+          Submit Booking Request
+        </button>
+      </form>
+    </div>
+  </div>
+
   <script>
     let isRegisterMode = false;
     const API = '/api/patient';
@@ -401,7 +468,10 @@
       document.getElementById('authView').classList.remove('hidden');
     }
 
+    let currentPatientData = null;
+
     function showPortal(patient) {
+      currentPatientData = patient;
       document.getElementById('authView').classList.add('hidden');
       document.getElementById('portalView').classList.remove('hidden');
       document.getElementById('welcomeTitle').textContent = `Welcome, ${patient.firstName}!`;
@@ -434,7 +504,7 @@
                   <span style="font-size:12px;color:var(--slate-400);white-space:nowrap;margin-left:10px;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
                 </div>
                 <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${esc(r.message)}&rdquo;</p>
-                <a href="https://uhs-healthcare-ea3b4.web.app/appointment.html" class="btn-book">🗓️ Schedule Follow-Up</a>
+                <button onclick="openBookingModal('${esc(r.timeframe || 'Follow-Up Visit')}')" class="btn-book" style="cursor:pointer;border:none;">🗓️ Schedule Follow-Up</button>
               </div>
             `).join('');
           } else {
@@ -548,6 +618,86 @@
 
     function closeApptPopup() {
       document.getElementById('apptPopupOverlay').classList.add('hidden');
+    }
+
+    /* ===== BOOKING MODAL FUNCTIONS ===== */
+    function openBookingModal(presetReason) {
+      document.getElementById('bookingModalError').style.display = 'none';
+      document.getElementById('bookingModalSuccess').style.display = 'none';
+      document.getElementById('patientBookingForm').style.display = 'block';
+      if (presetReason) {
+        document.getElementById('bmNotes').value = 'Follow-Up Visit: ' + presetReason;
+      } else {
+        document.getElementById('bmNotes').value = '';
+      }
+      var tm = new Date(); tm.setDate(tm.getDate() + 1);
+      var dateInput = document.getElementById('bmDate');
+      if (dateInput) dateInput.min = tm.toISOString().split('T')[0];
+      document.getElementById('bookingModalOverlay').classList.remove('hidden');
+    }
+
+    function closeBookingModal() {
+      document.getElementById('bookingModalOverlay').classList.add('hidden');
+    }
+
+    async function handlePatientBookingSubmit(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('bookingModalError');
+      const sucEl = document.getElementById('bookingModalSuccess');
+      const btn = document.getElementById('bmSubmitBtn');
+
+      errEl.style.display = 'none';
+      sucEl.style.display = 'none';
+
+      const service = document.getElementById('bmService').value;
+      const date = document.getElementById('bmDate').value;
+      const time = document.getElementById('bmTime').value;
+      const notes = document.getElementById('bmNotes').value.trim();
+
+      if (!service || !date || !time) {
+        errEl.textContent = 'Please select a service, date, and time slot.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting Request...';
+
+      try {
+        const payload = {
+          name: currentPatientData ? (currentPatientData.firstName + ' ' + currentPatientData.lastName) : '',
+          email: currentPatientData ? currentPatientData.email : '',
+          phone: currentPatientData ? currentPatientData.phone : '',
+          service,
+          date,
+          time,
+          message: notes
+        };
+
+        const res = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          document.getElementById('patientBookingForm').style.display = 'none';
+          sucEl.innerHTML = '<strong>Appointment Requested Successfully!</strong><br><div style="font-size:13px;margin-top:6px;">Reference #: <strong style="font-family:monospace;color:var(--color-plum);">' + esc(data.data.referenceNumber) + '</strong><br>Date: ' + esc(data.data.date) + ' at ' + esc(data.data.time) + '</div><br><button type="button" onclick="closeBookingModal()" class="btn btn--primary btn--sm" style="border:none;cursor:pointer;">Done</button>';
+          sucEl.style.display = 'block';
+          loadPortalData();
+        } else {
+          errEl.textContent = data.message || 'Error submitting booking request. Please try again.';
+          errEl.style.display = 'block';
+        }
+      } catch (err) {
+        errEl.textContent = 'Network error. Please try again or call the clinic.';
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit Booking Request';
+      }
     }
 
     async function logout() {
