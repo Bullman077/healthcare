@@ -11,7 +11,7 @@
 <body>
 
   <!-- ================= AUTH VIEW ================= -->
-  <div id="authView" class="auth-container">
+  <div id="authView" class="auth-container hidden">
     <div class="auth-card">
       <div class="auth-logo">
         <div class="auth-logo-icon">
@@ -395,8 +395,10 @@
         const data = await res.json();
         if (data.success && data.patient) {
           showPortal(data.patient);
+          return;
         }
       } catch(e) {}
+      document.getElementById('authView').classList.remove('hidden');
     }
 
     function showPortal(patient) {
