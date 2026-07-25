@@ -372,7 +372,7 @@ exports.getStats = async (req, res, next) => {
       },
     };
 
-    statsCache = { data: responseData, expiresAt: Date.now() + 15000 };
+    statsCache = { data: responseData, expiresAt: Date.now() + 60000 };
     res.json(responseData);
   } catch (err) {
     next(err);

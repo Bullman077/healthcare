@@ -2570,11 +2570,7 @@ function openServiceModal(svc) {
   document.getElementById('serviceRequiresPrep').checked = svc?.requiresPreparation || false;
   document.getElementById('servicePrepInstructions').value = svc?.preparationInstructions || '';
   document.getElementById('servicePrepFields').style.display = svc?.requiresPreparation ? 'block' : 'none';
-  
-  const modalOverlay = document.getElementById('serviceModal');
-  if (modalOverlay) {
-    modalOverlay.classList.add('open');
-  }
+  openModal('serviceModal');
 }
 
 document.addEventListener('change', function(e) {
@@ -2610,8 +2606,7 @@ async function saveService() {
   const data = await apiFetch(endpoint, method, payload);
   if (data.success) {
     toast('Service saved.', 'success');
-    const modal = document.getElementById('serviceModal');
-    if (modal) modal.classList.remove('active');
+    closeModal('serviceModal');
     loadServices();
   } else {
     toast(data.message || 'Error saving service.', 'danger');

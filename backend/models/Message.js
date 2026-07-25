@@ -10,6 +10,7 @@ const Message = sequelize.define('Message', {
   isRead: { type: DataTypes.BOOLEAN, defaultValue: false },
 }, {
   timestamps: true,
+  indexes: [{ fields: ['isRead'] }],
 });
 
 module.exports = Message;

@@ -1357,12 +1357,19 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-slate-300) transparent;
   box-shadow: var(--shadow-xl);
   padding: 2.5rem;
   position: relative;
   transform: translateY(20px);
   transition: transform var(--transition-base);
 }
+
+.modal-card::-webkit-scrollbar { width: 4px; }
+.modal-card::-webkit-scrollbar-track { background: transparent; }
+.modal-card::-webkit-scrollbar-thumb { background: var(--color-slate-300); border-radius: 4px; }
+.modal-card::-webkit-scrollbar-thumb:hover { background: var(--color-slate-400); }
 
 .modal-overlay.active .modal-card {
   transform: translateY(0);
