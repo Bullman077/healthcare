@@ -88,12 +88,14 @@
     }
   }
 
+  var API_URL = (typeof window !== 'undefined' && window.API_URL) ? window.API_URL : 'https://uhs-backen.onrender.com';
+
   function loadSiteContent() {
     if (cache) {
       applyContent(cache);
       return;
     }
-    fetch('/api/site-content')
+    fetch(API_URL + '/api/site-content')
       .then(function (r) { return r.json(); })
       .then(function (json) {
         if (json.success && json.data) {

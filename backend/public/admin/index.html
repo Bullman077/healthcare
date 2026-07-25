@@ -1596,7 +1596,9 @@
 /* =========================================================
    CONSTANTS & STATE
    ========================================================= */
-const API = '/api/admin';
+const API = (window.location.origin.includes('onrender.com') || window.location.port === '5000')
+  ? '/api/admin'
+  : 'https://uhs-backen.onrender.com/api/admin';
 let state = {
   token: null,
   admin: null,

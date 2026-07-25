@@ -315,7 +315,9 @@
 
   <script>
     let isRegisterMode = false;
-    const API = '/api/patient';
+    const API = (window.location.origin.includes('onrender.com') || window.location.port === '5000')
+      ? '/api/patient'
+      : 'https://uhs-backen.onrender.com/api/patient';
 
     function toggleAuthMode() {
       isRegisterMode = !isRegisterMode;
@@ -553,11 +555,10 @@
     }
 
     async function logout() {
-      await fetch(API + '/logout', { method: 'POST', credentials: 'include' });
-      document.getElementById('portalView').classList.add('hidden');
-      document.getElementById('portal-header-patient').style.display = 'none';
-      document.getElementById('authView').classList.remove('hidden');
-      window.scrollTo(0, 0);
+      try {
+        await fetch(API + '/logout', { method: 'POST', credentials: 'include' });
+      } catch (_) {}
+      window.location.href = 'https://uhs-healthcare-ea3b4.web.app/';
     }
 
     /* ===== FORGOT PASSWORD ===== */
