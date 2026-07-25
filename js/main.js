@@ -445,11 +445,11 @@
     link.style.display = 'none';
     span.style.display = 'inline-flex';
     span.style.alignItems = 'center';
-    span.style.gap = '8px';
+    span.style.gap = '10px';
     span.innerHTML =
-      '<a href=" + API_URL + "/patient/" style="color:#fff;font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;">' +
+      '<a href="' + API_URL + '/patient/" style="color:var(--color-plum);font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;">' +
       patient.firstName + ' \u25BC</a>' +
-      '<a href="' + API_URL + '/api/patient/logout" onclick="event.preventDefault();fetch(this.href,{method:\'POST\',credentials:\'include\'}).then(function(){window.location.reload();}).catch(function(){});" style="color:rgba(255,255,255,0.7);font-size:0.82rem;text-decoration:none;">Logout</a>';
+      '<a href="' + API_URL + '/api/patient/logout" onclick="event.preventDefault();fetch(this.href,{method:\'POST\',credentials:\'include\'}).then(function(){window.location.reload();}).catch(function(){});" style="color:var(--color-slate-500);font-size:0.82rem;text-decoration:none;">Logout</a>';
   }
 
   function prefillPatientFields() {
