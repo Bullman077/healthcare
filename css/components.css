@@ -22,7 +22,7 @@
 
 .skip-link:focus {
   top: 0;
-  outline: 2px solid var(--color-teal);
+  outline: 2px solid var(--color-plum);
   outline-offset: 2px;
 }
 
@@ -47,7 +47,7 @@
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(75, 29, 109, 0.15); /* Plum shadow */
 }
 
 .btn:active {
@@ -111,7 +111,7 @@
 
 .btn--dark-outline:hover {
   background: var(--color-slate-100);
-  border-color: var(--color-navy);
+  border-color: var(--color-plum);
 }
 
 .btn--sm {
@@ -165,7 +165,7 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-plum-muted);
   transition: all var(--transition-base);
 }
 
@@ -385,7 +385,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-plum-muted);
 }
 
 .stat-item {
@@ -420,14 +420,14 @@
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   border-radius: 18px;
   padding: 1rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 0.85rem;
   max-width: 320px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 25px rgba(75, 29, 109, 0.2); /* Plum shadow */
 }
 
 .hero-floating-icon {
@@ -544,8 +544,8 @@
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--color-border);
+  box-shadow: 0 20px 40px rgba(75, 29, 109, 0.25); /* Plum shadow */
+  border: 1px solid var(--color-plum-muted);
 }
 
 .split-image-wrap img {
@@ -574,7 +574,7 @@
   text-transform: uppercase;
   background: var(--color-slate-100);
   color: var(--color-royal-blue);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   align-self: flex-start;
 }
 
@@ -600,16 +600,18 @@
   display: flex;
   gap: 1rem;
   background: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   border-radius: 12px;
   padding: 1.25rem;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  /* Plum focus state added by script */
+
   box-shadow: var(--shadow-sm);
 }
 
 .benefit-row:hover {
   border-color: var(--color-royal-blue);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(75, 29, 109, 0.15); /* Plum shadow */
 }
 
 .benefit-row__icon {
@@ -666,7 +668,7 @@
   background: var(--color-slate-100);
   padding: 4px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
 }
 
 .pricing-toggle__btn {
@@ -708,13 +710,13 @@
 
 .pricing-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 20px 40px rgba(75, 29, 109, 0.25); /* Plum shadow */
   border-color: var(--color-indigo);
 }
 
 .pricing-card--popular {
   border-color: var(--color-indigo);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 25px rgba(75, 29, 109, 0.2); /* Plum shadow */
   background: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%);
 }
 
@@ -876,7 +878,7 @@
   font-size: var(--fs-xs);
   font-weight: 700;
   background: var(--color-slate-100);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   color: var(--color-slate-700);
 }
 
@@ -1236,9 +1238,9 @@
   flex-shrink: 0;
   background: var(--color-white);
   border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   padding: 2rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(75, 29, 109, 0.15); /* Plum shadow */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1292,7 +1294,7 @@
   height: 42px;
   border-radius: 50%;
   background: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   color: var(--color-slate-600);
   display: flex;
   align-items: center;
@@ -1366,7 +1368,7 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-slate-300) transparent;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 20px 40px rgba(75, 29, 109, 0.25); /* Plum shadow */
   padding: 2.5rem;
   position: relative;
   transform: translateY(20px);
@@ -1503,7 +1505,7 @@
 
 .step-card {
   background: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   border-radius: var(--radius-2xl);
   padding: 2rem 2rem 2.5rem;
   text-align: center;
@@ -1512,7 +1514,7 @@
 }
 
 .step-card:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 25px rgba(75, 29, 109, 0.2); /* Plum shadow */
   transform: translateY(-3px);
 }
 
@@ -1547,10 +1549,10 @@
 /* ----- DPC vs TRADITIONAL COMPARISON ----- */
 .comparison-card {
   background: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   border-radius: var(--radius-2xl);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(75, 29, 109, 0.15); /* Plum shadow */
 }
 
 .comparison-table {
@@ -1649,7 +1651,7 @@
 
 .core-service-card {
   background: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   border-top: 4px solid var(--color-royal-blue);
   border-radius: var(--radius-xl);
   padding: 2rem;
@@ -1660,7 +1662,7 @@
 }
 
 .core-service-card:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 25px rgba(75, 29, 109, 0.2); /* Plum shadow */
   border-color: var(--color-royal-blue);
 }
 
@@ -1717,7 +1719,7 @@
 
 .wellness-card {
   background: var(--color-white);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-plum-muted);
   border-top: 4px solid var(--color-plum);
   border-radius: var(--radius-2xl);
   overflow: hidden;
@@ -1725,7 +1727,7 @@
 }
 
 .wellness-card:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 25px rgba(75, 29, 109, 0.2); /* Plum shadow */
   transform: translateY(-4px);
 }
 
