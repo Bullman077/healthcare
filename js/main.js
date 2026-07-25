@@ -12,13 +12,15 @@
   }
 
   // 1. Preloader Hide
-  window.addEventListener('load', function () {
+  function hidePreloader() {
     const preloader = document.querySelector('.preloader');
     if (preloader) {
       preloader.classList.add('hidden');
       setTimeout(() => preloader.style.display = 'none', 400);
     }
-  });
+  }
+  window.addEventListener('load', hidePreloader);
+  setTimeout(hidePreloader, 5000);
 
   // 2. Sticky Glass Navbar & Mobile Toggle
   const nav = document.querySelector('.nav');
