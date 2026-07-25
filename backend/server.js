@@ -130,7 +130,19 @@ app.get('/api/health', (_req, res) => {
 
 /* ----- 404 ----- */
 app.all('*', (req, res) => {
-  res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found.` });
+  const url = req.originalUrl;
+
+  // Unknown /api/* routes → return JSON 404 (expected)
+  if (url.startsWith('/api/')) {
+    return res.status(404).json({ success: false, message: `Route ${url} not found.` });
+  }
+
+  // Any other path (e.g. /index.html, /services.html) means the user
+  // landed on the backend URL instead of Firebase. Redirect them to the
+  // correct page on the Firebase-hosted frontend.
+  const raw = process.env.FRONTEND_URL || 'https://uhs-healthcare-ea3b4.web.app';
+  const frontendBase = raw.split(',')[0].trim().replace(/\/$/, '');
+  return res.redirect(302, frontendBase + url);
 });
 
 /* ----- Error Handler ----- */
