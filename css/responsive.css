@@ -413,3 +413,130 @@
     padding: 0.3rem 0.6rem;
   }
 }
+
+/* ===== Very Small Phones (360px and below) ===== */
+@media (max-width: 360px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .hero {
+    padding: 80px 0 40px;
+  }
+
+  .hero__title {
+    font-size: 1.5rem !important;
+  }
+
+  .hero__text {
+    font-size: 0.85rem !important;
+  }
+
+  .hero__stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .hero-floating-card {
+    padding: 0.5rem !important;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .section {
+    padding: 2rem 0 !important;
+  }
+
+  .section-header__title {
+    font-size: 1.25rem !important;
+  }
+
+  .section-header__desc {
+    font-size: 0.8rem !important;
+  }
+
+  .btn--lg {
+    padding: 0.75rem 1.25rem;
+    font-size: var(--fs-sm);
+  }
+
+  .pricing-grid {
+    gap: 0.75rem;
+  }
+
+  .card {
+    padding: 1rem !important;
+  }
+
+  .nav__right {
+    top: 60px;
+  }
+
+  .nav__logo-title {
+    font-size: 0.85rem !important;
+  }
+
+  .nav__logo img {
+    height: 28px !important;
+  }
+
+  .modal-card {
+    margin: 0.25rem !important;
+    padding: 1rem !important;
+    border-radius: 8px !important;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.5rem 0.5rem;
+    font-size: var(--fs-xs);
+  }
+
+  .provider-card__media {
+    min-height: 180px;
+  }
+
+  .provider-card__details {
+    padding: 1rem !important;
+  }
+
+  .footer {
+    padding: 2rem 0 1rem !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .career-trail {
+    flex-direction: column;
+  }
+
+  .testimonial-card {
+    padding: 1rem !important;
+  }
+
+  .testimonial-card__text {
+    font-size: 0.85rem !important;
+  }
+
+  /* Ensure buttons and links are at least 44px touch target on tiny screens */
+  .btn,
+  .btn--primary,
+  .btn--outline,
+  .btn--dark,
+  .btn--lg,
+  .btn--sm,
+  a[role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent text overflow */
+  h1, h2, h3 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
