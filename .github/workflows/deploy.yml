@@ -2,90 +2,27 @@ name: Deploy UHS Healthcare
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check HTML validity
-        run: |
-          sudo apt-get install -y tidy
-          for f in *.html; do
-            echo "Validating $f..."
-            tidy -e -q "$f" 2>/dev/null || echo "  -> warnings in $f"
-          done
-
-  build:
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: |
-          npm ci
-          cd backend && npm ci
-
-      - name: Build frontend assets
-        run: npm run build
-
-      - name: Upload frontend artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
   deploy-frontend:
-    if: github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    permissions:
-      pages: write
-      id-token: write
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-
-  deploy-backend:
-    if: github.ref == 'refs/heads/main'
-    needs: build
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install backend deps
-        run: cd backend && npm ci
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
 
-      - name: Deploy to server via rsync
-        uses: burnett01/rsync-deployments@7.0.1
-        with:
-          switches: -avzr --delete --exclude='node_modules' --exclude='.git' --exclude='.env'
-          path: ./
-          remote_path: /var/www/uhshealthcare
-          remote_host: ${{ secrets.SERVER_HOST }}
-          remote_user: ${{ secrets.SERVER_USER }}
-          remote_key: ${{ secrets.SERVER_SSH_KEY }}
+      - name: Deploy to Firebase Hosting
+        run: npx firebase-tools deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
-      - name: Install deps & restart PM2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /var/www/uhshealthcare/backend
-            npm ci --only=production
-            pm2 startOrReload ecosystem.config.js --env production
-            sudo systemctl reload nginx
+  # Backend auto-deploys on Render via GitHub webhook (no CI needed)

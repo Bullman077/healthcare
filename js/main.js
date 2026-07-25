@@ -2,7 +2,7 @@
   'use strict';
 
   // Backend API base URL — use relative path (frontend served from same origin)
-  const API_URL = '';
+  const API_URL = 'https://uhs-backen.onrender.com';
 
   function esc(str) {
     if (str == null) return '';
