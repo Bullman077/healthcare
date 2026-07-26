@@ -486,11 +486,14 @@
     }
 
     async function loadPortalData() {
-      // 1. Load Progress Notes & Reminders
+      const [resP, resA] = await Promise.all([
+        apiFetch('/progress', { credentials: 'include' }).catch(() => null),
+        apiFetch('/appointments', { credentials: 'include' }).catch(() => null),
+      ]);
+
       try {
-        const resP = await apiFetch('/progress', { credentials: 'include' });
-        const dataP = await resP.json();
-        if (dataP.success) {
+        const dataP = resP ? await resP.json() : null;
+        if (dataP && dataP.success) {
           document.getElementById('progressContent').textContent = dataP.progressNotes || 'No specific progress notes recorded yet by your care provider.';
           
           // Render Doctor Reminders
@@ -518,12 +521,10 @@
         document.getElementById('progressContent').textContent = 'Unable to load progress notes.';
       }
 
-      // 2. Load Appointments
       try {
-        const resA = await apiFetch('/appointments', { credentials: 'include' });
-        const dataA = await resA.json();
+        const dataA = resA ? await resA.json() : null;
         const apptContainer = document.getElementById('appointmentsList');
-        if (!dataA.success || !dataA.appointments || dataA.appointments.length === 0) {
+        if (!dataA || !dataA.success || !dataA.appointments || dataA.appointments.length === 0) {
           apptContainer.innerHTML = '<div style="color:#64748b;font-size:14px;padding:12px;">No appointments found.</div>';
           return;
         }
@@ -705,10 +706,7 @@
 
     async function logout() {
       await apiFetch('/logout', { method: 'POST', credentials: 'include' });
-      document.getElementById('portalView').classList.add('hidden');
-      document.getElementById('portal-header-patient').style.display = 'none';
-      document.getElementById('authView').classList.remove('hidden');
-      window.scrollTo(0, 0);
+      window.location.href = '/';
     }
 
     /* ===== FORGOT PASSWORD ===== */
