@@ -4,12 +4,6 @@
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-padding);
-  overflow: hidden;
-}
-
-main, #main-content {
-  overflow-x: hidden;
-  width: 100%;
 }
 
 .container--narrow {
