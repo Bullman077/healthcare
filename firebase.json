@@ -62,7 +62,7 @@
     "rewrites": [
       {
         "source": "/patient/**",
-        "destination": "https://uhs-backend.onrender.com/:splat"
+        "destination": "https://uhs-backen.onrender.com/:splat"
       },
       {
         "source": "**",
