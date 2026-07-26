@@ -88,7 +88,7 @@
     }
   }
 
-  var API_URL = (typeof window !== 'undefined' && window.API_URL) ? window.API_URL : 'https://uhs-backen.onrender.com';
+  var API_URL = (typeof window !== 'undefined' && window.API_URL) ? window.API_URL : 'https://uhs-backend.onrender.com';
 
   function loadSiteContent() {
     if (cache) {
