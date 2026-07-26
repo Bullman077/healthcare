@@ -103,6 +103,10 @@
     display: none;
   }
 
+  #patient-portal-link {
+    display: block !important;
+  }
+
   .nav__actions .btn--outline {
     color: var(--color-slate-900) !important;
     border-color: var(--color-slate-300) !important;
