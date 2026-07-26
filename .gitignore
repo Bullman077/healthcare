@@ -13,3 +13,7 @@ backend/server.pid
 .agents/
 skills-lock.json
 functions/
+
+# Build artifacts
+css/styles.min.css
+js/app.min.js

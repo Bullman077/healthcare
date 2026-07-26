@@ -52,9 +52,9 @@ async function logAudit(admin, action, resource, resourceId, details, req) {
 }
 exports.logAudit = logAudit;
 
-function signToken(id) {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '15m', // Short-lived access token
+function signToken(id, tokenVersion) {
+  return jwt.sign({ id, tokenVersion }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || '15m',
   });
 }
 
@@ -122,7 +122,7 @@ exports.login = async (req, res, next) => {
     admin.lastLoginIp = ip;
     await admin.save({ fields: ['loginAttempts', 'loginLockedUntil', 'lastLogin', 'lastLoginIp'] });
 
-    const token = signToken(admin.id);
+    const token = signToken(admin.id, admin.tokenVersion || 0);
     const refreshToken = generateRefreshToken();
 
     admin.refreshToken = refreshToken;
@@ -135,14 +135,16 @@ exports.login = async (req, res, next) => {
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
-      maxAge: 15 * 60 * 1000, // 15 minutes for access token cookie if used
+      maxAge: 15 * 60 * 1000,
+      path: '/',
     };
     const refreshCookieOptions = {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
-      maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
+      maxAge: 60 * 24 * 60 * 60 * 1000,
+      path: '/',
     };
     res.cookie('token', token, cookieOptions);
     res.cookie('adminRefreshToken', refreshToken, refreshCookieOptions);
@@ -541,6 +543,8 @@ exports.updateProfile = async (req, res, next) => {
       const isMatch = await admin.comparePassword(currentPassword);
       if (!isMatch) return next(new AppError('Current password is incorrect.', 401));
       admin.password = newPassword;
+      // Invalidate all outstanding tokens
+      admin.tokenVersion = (admin.tokenVersion || 0) + 1;
     }
     
     if (name) admin.name = name;
@@ -888,15 +892,30 @@ exports.refresh = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid or expired refresh token.' });
     }
 
-    const newToken = signToken(admin.id);
+    // Rotate refresh token (invalidate old one)
+    const newRefreshToken = generateRefreshToken();
+    admin.refreshToken = newRefreshToken;
+    await admin.save({ fields: ['refreshToken'] });
+
+    const newToken = signToken(admin.id, admin.tokenVersion || 0);
     const cookieOptions = {
       httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
       maxAge: 15 * 60 * 1000,
+      path: '/',
+    };
+    const refreshCookieOptions = {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      signed: true,
+      maxAge: 60 * 24 * 60 * 60 * 1000,
+      path: '/',
     };
     res.cookie('token', newToken, cookieOptions);
+    res.cookie('adminRefreshToken', newRefreshToken, refreshCookieOptions);
 
     res.json({ success: true, token: newToken });
   } catch (err) {
@@ -904,8 +923,13 @@ exports.refresh = async (req, res, next) => {
   }
 };
 
-exports.logout = (req, res) => {
-  res.clearCookie('token');
-  res.clearCookie('adminRefreshToken');
+exports.logout = async (req, res) => {
+  // Invalidate all outstanding tokens by incrementing tokenVersion
+  if (req.admin) {
+    await req.admin.update({ tokenVersion: (req.admin.tokenVersion || 0) + 1 });
+  }
+  const cookieOptions = { httpOnly: true, sameSite: 'strict', path: '/' };
+  res.clearCookie('token', cookieOptions);
+  res.clearCookie('adminRefreshToken', cookieOptions);
   res.json({ success: true, message: 'Logged out successfully.' });
 };

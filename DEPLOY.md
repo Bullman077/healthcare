@@ -14,31 +14,35 @@
                                           │  └────┬─────┘│
                                           │       │       │
                                           │  ┌────▼─────┐│
-                                          │  │ MongoDB  ││
-                                          │  │  Atlas   ││
+                                          │  │PostgreSQL││
+                                          │  │          ││
                                           │  └──────────┘│
                                           └──────────────┘
 ```
 
 - **Frontend**: Static HTML/CSS/JS → served by Nginx → cached by Cloudflare
 - **Backend**: Node.js (Express) → managed by PM2 (cluster mode) → behind Nginx reverse proxy
-- **Database**: MongoDB Atlas (M0 free tier or higher)
+- **Database**: PostgreSQL (via Sequelize ORM)
 - **Email**: SendGrid / Amazon SES / Mailgun
 - **SSL**: Let's Encrypt (via Certbot) or Cloudflare Edge Certificates
 
 ---
 
-## 1. MongoDB Atlas Setup
+## 1. PostgreSQL Setup
 
-1. Go to [mongodb.com/atlas](https://mongodb.com/atlas) and create a free M0 cluster
-2. In **Network Access**, add `0.0.0.0/0` (allow all) — or restrict to your server IP
-3. In **Database Access**, create a database user with read/write privileges
-4. Click **Connect** → **Connect your application** → copy the connection string
-5. Replace `<password>` with your user's password
-6. Set this as `MONGO_URI` in `.env.production`
+1. Install PostgreSQL 14+ on your server: `sudo apt install -y postgresql postgresql-contrib`
+2. Create a database and user:
+   ```bash
+   sudo -u postgres psql
+   CREATE USER uhs_admin WITH PASSWORD 'your_secure_password';
+   CREATE DATABASE uhs_healthcare OWNER uhs_admin;
+   GRANT ALL PRIVILEGES ON DATABASE uhs_healthcare TO uhs_admin;
+   \q
+   ```
+3. Set this as `DATABASE_URL` in `.env.production`
 
 ```
-MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/uhs_healthcare?retryWrites=true&w=majority
+DATABASE_URL=postgresql://uhs_admin:your_secure_password@localhost:5432/uhs_healthcare
 ```
 
 ---
@@ -235,7 +239,7 @@ sudo systemctl reload nginx
 - [ ] Google Fonts preloaded + preconnected
 - [ ] CSS minified + single bundle
 - [ ] JS minified + tree-shaken
-- [ ] MongoDB indexes in place
+- [ ] PostgreSQL indexes in place
 - [ ] Rate limiting active (100 req/15min global, 10 req/15min auth)
 - [ ] HTTPS enforced (redirect + HSTS)
 - [ ] Gzip compression active
@@ -266,7 +270,7 @@ curl -w "DNS: %{time_namelookup}s, Connect: %{time_connect}s, SSL: %{time_appcon
 |----------|----------|-------------|
 | `PORT` | Yes | API port (default 5000) |
 | `NODE_ENV` | Yes | `production` |
-| `MONGO_URI` | Yes | MongoDB Atlas connection string |
+| `DATABASE_URL` | Yes | PostgreSQL connection string |
 | `JWT_SECRET` | Yes | 64-char hex key for JWT signing |
 | `COOKIE_SECRET` | Yes | 64-char hex key for cookie signing |
 | `ADMIN_EMAIL` | Seed only | Default admin email |

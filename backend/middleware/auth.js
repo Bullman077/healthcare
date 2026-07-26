@@ -53,6 +53,11 @@ async function protect(req, res, next) {
       return next(new AppError('Admin account has been deactivated.', 401));
     }
 
+    // Token revocation: reject tokens issued before last password change
+    if (decoded.tokenVersion !== undefined && decoded.tokenVersion !== (admin.tokenVersion || 0)) {
+      return next(new AppError('Session invalidated. Please log in again.', 401));
+    }
+
     req.admin = admin;
     req.token = token;
     next();

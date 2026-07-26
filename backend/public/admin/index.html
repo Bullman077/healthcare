@@ -11,6 +11,9 @@
 </head>
 <body>
 
+<!-- ====================== SESSION PRELOADER ====================== -->
+<div id="sessionPreloader" class="session-preloader"><div class="spinner"></div></div>
+
 <!-- ====================== TOAST ====================== -->
 <div id="toast"></div>
 
@@ -1598,7 +1601,7 @@
    ========================================================= */
 const API = (window.location.origin.includes('onrender.com') || window.location.port === '5000')
   ? '/api/admin'
-  : 'https://uhs-backend.onrender.com/api/admin';
+  : 'https://uhs-backen.onrender.com/api/admin';
 let state = {
   token: null,
   admin: null,
@@ -1641,6 +1644,7 @@ async function login() {
 
   btn.textContent = 'Signing in…';
   btn.disabled = true;
+  btn.classList.add('loading');
   err.classList.remove('show');
 
   try {
@@ -1648,7 +1652,14 @@ async function login() {
     if (res && res.success) {
       state.token = res.token;
       state.admin = res.admin;
-      showApp(res.admin);
+      // Animate login card out, then show app
+      const loginPage = document.getElementById('loginPage');
+      loginPage.classList.add('view-exit');
+      setTimeout(() => {
+        showApp(res.admin);
+        document.getElementById('app').classList.add('view-enter');
+        toast('Welcome back, ' + (res.admin.name || 'Admin') + '!', 'success');
+      }, 300);
     } else {
       showErr(err, res.message || 'Invalid credentials. Please try again.');
     }
@@ -1657,10 +1668,12 @@ async function login() {
   }
   btn.textContent = 'Sign In to Dashboard';
   btn.disabled = false;
+  btn.classList.remove('loading');
 }
 
 function showApp(admin) {
   document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('view-exit');
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('adminName').textContent = admin.name || 'Admin';
   document.getElementById('adminAvatar').textContent = (admin.name || 'A')[0].toUpperCase();
@@ -1670,13 +1683,20 @@ function showApp(admin) {
 }
 
 async function logout() {
+  const app = document.getElementById('app');
+  app.classList.add('view-exit');
   try { await apiFetch('/logout', 'POST', null, true); } catch(e) {}
   state.token = null;
   state.admin = null;
-  document.getElementById('app').classList.add('hidden');
-  document.getElementById('loginPage').classList.remove('hidden');
-  document.getElementById('loginEmail').value = '';
-  document.getElementById('loginPassword').value = '';
+  setTimeout(() => {
+    app.classList.add('hidden');
+    app.classList.remove('view-exit');
+    document.getElementById('loginPage').classList.remove('hidden');
+    document.getElementById('loginPage').classList.add('view-enter');
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+    setTimeout(() => document.getElementById('loginPage').classList.remove('view-enter'), 400);
+  }, 300);
 }
 
 document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
@@ -3720,6 +3740,37 @@ function badgeHtml(status) {
   const cls = map[status] || 'badge-pending';
   return `<span class="status-badge ${cls}">${status || '—'}</span>`;
 }
+
+/* =========================================================
+   SESSION RESTORE — check cookie-based session on page load
+   ========================================================= */
+window.addEventListener('DOMContentLoaded', async () => {
+  // Show preloader while checking session
+  const preloader = document.getElementById('sessionPreloader');
+  try {
+    const res = await fetch(API + '/me', { credentials: 'include' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.admin) {
+        state.admin = data.admin;
+        // Fade out preloader, then show app
+        if (preloader) {
+          preloader.classList.add('fade-out');
+          setTimeout(() => preloader.remove(), 300);
+        }
+        showApp(data.admin);
+        document.getElementById('app').classList.add('view-enter');
+        return;
+      }
+    }
+  } catch (e) { /* not logged in */ }
+  // Not logged in — fade out preloader, show login
+  if (preloader) {
+    preloader.classList.add('fade-out');
+    setTimeout(() => preloader.remove(), 300);
+  }
+  document.getElementById('loginPage').classList.remove('hidden');
+});
 </script>
 </body>
 </html>

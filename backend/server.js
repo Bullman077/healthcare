@@ -18,9 +18,11 @@ const patientRoutes = require('./routes/patientRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 const { limiter, csrfProtect } = require('./middleware/security');
+const { cspNonce } = require('./middleware/cspNonce');
 const { startScheduler } = require('./scheduler');
 const { Setting } = require('./models');
 const { runMigrations } = require('./migrate');
+const { serveSpa, adminHtml, patientHtml } = require('./middleware/serveSpa');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,14 +35,16 @@ if (parseInt(process.env.TRUST_PROXY, 10) === 1) {
    Security Middleware Stack
    ============================================================ */
 
-/* 1. Helmet — secure HTTP headers */
+/* 1. CSP Nonce — generate per-request nonce before Helmet */
+app.use(cspNonce);
+
+/* 2. Helmet — secure HTTP headers with nonce-based CSP */
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
+      styleSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`, 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:', 'http:'],
       connectSrc: ["'self'"],
@@ -87,12 +91,22 @@ app.use('/api', csrfProtect);
 
 /* ----- Static Files (Admin Dashboard, Patient Portal & Frontend) ----- */
 const isProd = process.env.NODE_ENV === 'production';
+
+// Serve admin/patient HTML with CSP nonces (must come before static middleware)
+app.get('/admin', serveSpa(adminHtml, 'admin'));
+app.get('/admin/', serveSpa(adminHtml, 'admin'));
+app.get('/patient', serveSpa(patientHtml, 'patient'));
+app.get('/patient/', serveSpa(patientHtml, 'patient'));
+
+// Static assets for admin/patient (CSS, JS, images)
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), {
+  index: false, // Don't serve index.html automatically — handled above
   maxAge: isProd ? '7d' : '1h',
   etag: true,
   lastModified: true,
 }));
 app.use('/patient', express.static(path.join(__dirname, 'public', 'patient'), {
+  index: false,
   maxAge: isProd ? '7d' : '1h',
   etag: true,
   lastModified: true,
@@ -188,10 +202,10 @@ async function seedSiteDefaults() {
 
     /* Provider / About */
     provider_name: 'Nacole Brown, MSN, AGPCNP-BC',
-    provider_credentials: 'Adult-Gerontology Primary Care Nurse Practitioner',
+    provider_credentials: 'Adult-Gerontology Nurse Practitioner',
     provider_photo_url: '/assets/images/nacole-brown-provider.png',
-    provider_bio_p1: 'Nacole Brown is the founder of <strong>Unmeasurable Heights of Strength (UHS) Healthcare Services</strong>. Beginning her healthcare career as a Licensed Practical Nurse (LPN), Nacole systematically advanced her education to earn an Associate Degree in Nursing (ADN), Bachelor of Science in Nursing (BSN), and a Master of Science in Nursing (MSN) as an Adult-Gerontology Primary Care Nurse Practitioner (AGPCNP-BC).',
-    provider_bio_p2: 'Her extensive clinical experience spans hospice, home health, long-term care, outpatient primary care, and chronic disease management.',
+    provider_bio_p1: 'Nacole Brown is the founder of <strong>Unmeasurable Heights of Strength (UHS) Healthcare Services</strong>. Beginning her healthcare career as a Licensed Practical Nurse (LPN), Nacole systematically advanced her education to earn an Associate Degree in Nursing (ADN), Bachelor of Science in Nursing (BSN), and a Master of Science in Nursing (MSN) as an Adult-Gerontology Nurse Practitioner (AGPCNP-BC).',
+    provider_bio_p2: 'Her extensive clinical experience spans hospice, home health, long-term care, outpatient occupational health, and chronic disease management.',
     provider_philosophy_title: 'Philosophy of Care',
     provider_philosophy_text: 'Every patient deserves unhurried time, respectful listening, and personalized treatment. UHS Healthcare was created to eliminate the barriers of traditional insurance medicine and deliver care centered around you.',
     value1_title: 'Compassion & Dignity',
@@ -204,7 +218,7 @@ async function seedSiteDefaults() {
 
     /* Homepage Hero */
     hero_floating_name: 'Nacole Brown, MSN, AGPCNP-BC',
-    hero_floating_title: 'Adult-Gerontology Primary Care Specialist',
+    hero_floating_title: 'Adult-Gerontology Nurse Practitioner',
     hero_stat1_number: '15+',
     hero_stat1_label: 'Years Experience',
     hero_stat2_number: '0 min',
@@ -215,26 +229,26 @@ async function seedSiteDefaults() {
     hero_stat4_label: 'Transparent Pricing',
 
     /* Homepage Why Choose Us */
-    why_choose_badge: 'The Direct Care Difference',
+    why_choose_badge: 'The Occupational Health Difference',
     why_choose_title: 'Healthcare Designed Around You.',
-    why_choose_subtitle: 'Experience accessible, unhurried, and transparent primary care tailored to your life.',
+    why_choose_subtitle: 'Experience accessible, unhurried, and transparent wellness care tailored to your life.',
     benefit1_title: 'Unhurried 30–60 Min Visits',
     benefit1_desc: 'Forget 8-minute rushed appointments. Take time to discuss your health with a provider who truly listens.',
     benefit2_title: 'Direct Provider Access',
     benefit2_desc: 'Skip the phone trees and answering services. Reach out via direct text, phone, or virtual telehealth visits.',
     benefit3_title: 'Transparent Pricing & Wholesale Savings',
-    benefit3_desc: '$0 copays, predictable direct-pay options, and up to 80–90% wholesale savings on labs and medications.',
+    benefit3_desc: '$0 copays, predictable direct-pay options, and up to 80–90% wholesale savings on medications.',
 
-    /* Homepage How DPC Works */
-    how_dpc_title: 'How DPC Works',
-    how_dpc_subtitle: 'Direct Primary Care',
-    how_dpc_desc: 'Simple, transparent, and built around you — get started in three easy steps.',
-    dpc_step1_title: 'Select Your Plan',
-    dpc_step1_desc: 'Choose a DPC membership for unlimited access or a one-time service for your specific needs — no insurance required.',
+    /* Homepage How It Works */
+    how_dpc_title: 'How It Works',
+    how_dpc_subtitle: 'Simple & Transparent',
+    how_dpc_desc: 'Straightforward, predictable, and built around you — get started in three easy steps.',
+    dpc_step1_title: 'Select Your Service',
+    dpc_step1_desc: 'Choose from our occupational health and wellness services or a one-time visit for your specific needs — no insurance required.',
     dpc_step2_title: 'Direct NP Access',
     dpc_step2_desc: 'Reach NP Brown directly via text, phone, or virtual visit — no phone trees, no answering services, no delays.',
     dpc_step3_title: 'Experience Better Health',
-    dpc_step3_desc: 'Enjoy 30–60 minute unhurried visits, $0 copays, wholesale lab pricing, and a provider who truly knows your history.',
+    dpc_step3_desc: 'Enjoy 30–60 minute unhurried visits, $0 copays, wholesale medication pricing, and a provider who truly knows your history.',
 
     /* Homepage Core Services */
     homepage_services_title: 'Services Tailored to Your Life',
@@ -251,12 +265,12 @@ async function seedSiteDefaults() {
     wellness3_desc: 'Individualized care plans combining advanced therapies and lifestyle strategies for lasting relief.',
 
     /* Homepage Comparison */
-    comparison_title: 'DPC vs. Traditional Healthcare',
-    comparison_subtitle: 'Why Choose DPC',
+    comparison_title: 'Occupational Health vs. Traditional Healthcare',
+    comparison_subtitle: 'Why Choose UHS Healthcare',
 
     /* Homepage FAQ */
     faq_title: 'Frequently Asked Questions',
-    faq_intro: 'Find clear answers about our direct primary care, telehealth, and clinic services.',
+    faq_intro: 'Find clear answers about our occupational health, telehealth, and clinic services.',
 
     /* Homepage CTA */
     cta_title: 'Experience Healthcare Built Around You',
@@ -290,10 +304,10 @@ async function seedSiteDefaults() {
 
     /* Services Page */
     services_hero_title: 'Our Healthcare Services.',
-    services_hero_text: 'From primary care memberships and DOT physicals to medical weight management, patch therapy, and virtual care.',
+    services_hero_text: 'From DOT physicals and occupational health screenings to medical weight management, patch therapy, and virtual care.',
     services_section_title: 'Specialized Care Designed for You',
     services_section_subtitle: 'Medical Care Options',
-    services_section_desc: 'Explore our full suite of primary care and specialty medical services.',
+    services_section_desc: 'Explore our full suite of occupational and specialty medical services.',
 
     /* Privacy & Terms */
     privacy_policy: '',
