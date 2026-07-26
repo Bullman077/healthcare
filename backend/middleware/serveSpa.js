@@ -12,11 +12,16 @@ function injectNonce(html, nonce) {
     .replace(/<style(?! nonce=)(>|\s)/gi, `<style nonce="${nonce}"$1`);
 }
 
-const getAdminHtml = () => fs.readFileSync(path.join(__dirname, '..', 'public', 'admin', 'index.html'), 'utf8');
-const getPatientHtml = () => fs.readFileSync(path.join(__dirname, '..', 'public', 'patient', 'index.html'), 'utf8');
+const getAdminHtml = () => {
+  const adminPath = path.join(__dirname, '..', 'public', 'admin', 'index.html');
+  if (fs.existsSync(adminPath)) {
+    return fs.readFileSync(adminPath, 'utf8');
+  }
+  return '<!DOCTYPE html><html><body><h1>Admin Panel Not Found</h1></body></html>';
+};
 
 /**
- * Serve admin and patient HTML with per-request CSP nonces injected.
+ * Serve admin HTML with per-request CSP nonces injected.
  * Must be called AFTER cspNonce middleware and Helmet.
  */
 function serveSpa(getHtml, spaName) {
@@ -28,5 +33,6 @@ function serveSpa(getHtml, spaName) {
   };
 }
 
-module.exports = { serveSpa, adminHtml: getAdminHtml(), patientHtml: getPatientHtml(), getAdminHtml, getPatientHtml };
+module.exports = { serveSpa, getAdminHtml };
+
 
