@@ -57,7 +57,7 @@
           <a href="tel:+18033817489" class="nav__call-pill">(803) 381-7489</a>
           <a href="/patient/" class="btn btn--outline btn--sm" style="border-color:rgba(255,255,255,0.4);color:#fff;margin-right:0;" id="patient-portal-link">Patient Portal</a>
           <span id="patient-nav" style="display:none;"></span>
-          <button class="btn btn--primary btn--sm" data-open-modal data-service="">Book Appointment</button>
+
         </div>
       </div>
     </div>
@@ -117,13 +117,6 @@
       </div>
     </section>
   </main>
-
-  <!-- ===== UNIVERSAL BOOKING MODAL ===== -->
-  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
-    </div>
-  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
@@ -196,7 +189,7 @@
       var catLabel = CATEGORY_LABEL[s.category] || s.category;
       var cta = s.category === 'telehealth'
         ? '<a href="/telehealth.html" class="btn btn--primary">Explore Telehealth</a>'
-        : '<button class="btn btn--primary" data-open-modal data-service="' + esc(s.name) + '">' + esc(CATEGORY_CTA[s.category] || 'Book Now') + '</button>';
+        : '<a href="/appointment.html" class="btn btn--primary">' + esc(CATEGORY_CTA[s.category] || 'Book Now') + '</a>';
       var prepNote = s.requiresPreparation
         ? '<p style="font-size:0.85rem; color:var(--color-gold); font-weight:600; margin-bottom:1rem;">⚠ Preparation Required</p>'
         : '';
