@@ -3,12 +3,9 @@
    ========================================================================== */
 
 /* ----- Prevent nav overlap at mid-range screens ----- */
-@media (max-width: 1280px) {
-  #patient-portal-link {
-    display: none !important;
-  }
+@media (max-width: 900px) {
   .nav__list {
-    gap: 1.5rem;
+    gap: 1rem;
   }
   .nav__actions {
     gap: 0.5rem;
@@ -167,7 +164,6 @@
   /* ===== COMPARISON TABLE ===== */
   .comparison-card {
     overflow-x: auto;
-    margin: 0 -1rem;
     border-radius: 0;
   }
 
