@@ -22,7 +22,7 @@ const { cspNonce } = require('./middleware/cspNonce');
 const { startScheduler } = require('./scheduler');
 const { Setting } = require('./models');
 const { runMigrations } = require('./migrate');
-const { serveSpa, getAdminHtml, getPatientHtml } = require('./middleware/serveSpa');
+const { serveSpa, getAdminHtml } = require('./middleware/serveSpa');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -89,23 +89,19 @@ app.use(hpp({ whitelist: ['date', 'time', 'status', 'page', 'limit'] }));
 /* 8. CSRF protection — Origin/Referer check on mutating requests */
 app.use('/api', csrfProtect);
 
-/* ----- Static Files (Admin Dashboard, Patient Portal & Frontend) ----- */
+/* ----- Static Files (Admin Dashboard) ----- */
 const isProd = process.env.NODE_ENV === 'production';
 
-// Serve admin/patient HTML with CSP nonces (must come before static middleware)
+// Serve admin HTML with CSP nonce injection
 app.get('/admin', (req, res) => res.redirect(301, '/admin/'));
 app.get('/admin/', serveSpa(getAdminHtml, 'admin'));
-app.get('/patient', (req, res) => res.redirect(301, '/patient/'));
-app.get('/patient/', serveSpa(getPatientHtml, 'patient'));
 
-// Static assets for admin/patient (CSS, JS, images)
+// Redirect /patient to the frontend (Firebase Hosting)
+app.get('/patient', (req, res) => res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/'));
+app.get('/patient/', (req, res) => res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/'));
+
+// Static assets for admin
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), {
-  index: false, // Don't serve index.html automatically — handled above
-  maxAge: isProd ? '7d' : '1h',
-  etag: true,
-  lastModified: true,
-}));
-app.use('/patient', express.static(path.join(__dirname, 'public', 'patient'), {
   index: false,
   maxAge: isProd ? '7d' : '1h',
   etag: true,
