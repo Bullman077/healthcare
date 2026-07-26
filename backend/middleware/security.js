@@ -82,4 +82,22 @@ const adminWriteLimiter = rateLimit({
   message: { success: false, message: 'Too many admin operations. Slow down.' },
 });
 
-module.exports = { limiter, authLimiter, apiLimiter, adminWriteLimiter, csrfProtect };
+/* ----- Password reset / forgot-password rate limit (very strict) ----- */
+const passwordResetLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: process.env.NODE_ENV === 'test' ? 50 : 3, // 3 per hour in prod
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many password reset attempts. Please try again in 1 hour.' },
+});
+
+/* ----- Patient registration rate limit ----- */
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: process.env.NODE_ENV === 'test' ? 50 : 5, // 5 per hour in prod
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many registration attempts. Please try again later.' },
+});
+
+module.exports = { limiter, authLimiter, apiLimiter, adminWriteLimiter, passwordResetLimiter, registerLimiter, csrfProtect };

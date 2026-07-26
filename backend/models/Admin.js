@@ -15,6 +15,7 @@ const Admin = sequelize.define('Admin', {
   loginAttempts: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
   loginLockedUntil: { type: DataTypes.DATE, allowNull: true },
   refreshToken: { type: DataTypes.STRING, allowNull: true },
+  tokenVersion: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
 }, {
   timestamps: true,
   hooks: {

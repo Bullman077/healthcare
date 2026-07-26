@@ -12,11 +12,11 @@ function validatePassword(password) {
   return null;
 }
 
-function generateToken(id) {
+function generateToken(id, tokenVersion) {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET environment variable is not configured.');
   }
-  return jwt.sign({ id, role: 'patient' }, process.env.JWT_SECRET, {
+  return jwt.sign({ id, role: 'patient', tokenVersion }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '15m',
   });
 }
@@ -26,25 +26,27 @@ function generateRefreshToken() {
 }
 
 async function sendPatientToken(patient, statusCode, res) {
-  const token = generateToken(patient.id);
+  const token = generateToken(patient.id, patient.tokenVersion || 0);
   const refreshToken = generateRefreshToken();
   
   patient.refreshToken = refreshToken;
   await patient.save({ fields: ['refreshToken'] });
+
+  const isProd = process.env.NODE_ENV === 'production';
   const cookieOptions = {
-    expires: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes
+    maxAge: 15 * 60 * 1000, // 15 minutes
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
+    secure: isProd,
+    path: '/',
   };
   const refreshCookieOptions = {
-    expires: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days
+    maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
+    secure: isProd,
+    path: '/',
   };
-  if (process.env.NODE_ENV === 'production') {
-    cookieOptions.secure = true;
-    refreshCookieOptions.secure = true;
-  }
 
   res.cookie('patientToken', token, cookieOptions);
   res.cookie('patientRefreshToken', refreshToken, refreshCookieOptions);
@@ -188,12 +190,13 @@ exports.getMyProgress = async (req, res, next) => {
 };
 
 exports.logoutPatient = async (req, res) => {
-  res.cookie('patientToken', 'none', {
-    expires: new Date(Date.now() + 5 * 1000),
-    httpOnly: true,
-    sameSite: 'lax',
-    path: '/',
-  });
+  // Invalidate all outstanding tokens
+  if (req.patient) {
+    await req.patient.update({ tokenVersion: (req.patient.tokenVersion || 0) + 1 });
+  }
+  const cookieOptions = { httpOnly: true, sameSite: 'strict', path: '/' };
+  res.cookie('patientToken', 'none', { ...cookieOptions, maxAge: 5 * 1000 });
+  res.cookie('patientRefreshToken', 'none', { ...cookieOptions, maxAge: 5 * 1000 });
   res.json({ success: true, message: 'Logged out successfully.' });
 };
 
@@ -295,14 +298,28 @@ exports.refresh = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid or expired refresh token.' });
     }
 
-    const newToken = generateToken(patient.id);
+    // Rotate refresh token (invalidate old one)
+    const newRefreshToken = generateRefreshToken();
+    patient.refreshToken = newRefreshToken;
+    await patient.save({ fields: ['refreshToken'] });
+
+    const newToken = generateToken(patient.id, patient.tokenVersion || 0);
     const cookieOptions = {
-      expires: new Date(Date.now() + 15 * 60 * 1000),
+      maxAge: 15 * 60 * 1000,
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
     };
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    const refreshCookieOptions = {
+      maxAge: 60 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+    };
     res.cookie('patientToken', newToken, cookieOptions);
+    res.cookie('patientRefreshToken', newRefreshToken, refreshCookieOptions);
 
     res.json({ success: true, token: newToken });
   } catch (err) {
@@ -310,9 +327,14 @@ exports.refresh = async (req, res, next) => {
   }
 };
 
-exports.logout = (req, res) => {
-  res.clearCookie('patientToken');
-  res.clearCookie('patientRefreshToken');
+exports.logout = async (req, res) => {
+  // Invalidate all outstanding tokens if patient is authenticated
+  if (req.patient) {
+    await req.patient.update({ tokenVersion: (req.patient.tokenVersion || 0) + 1 });
+  }
+  const cookieOptions = { httpOnly: true, sameSite: 'strict', path: '/' };
+  res.clearCookie('patientToken', cookieOptions);
+  res.clearCookie('patientRefreshToken', cookieOptions);
   res.json({ success: true, message: 'Logged out successfully.' });
 };
 
@@ -338,6 +360,8 @@ exports.resetPassword = async (req, res, next) => {
     await patient.setPassword(password);
     patient.resetPasswordToken = null;
     patient.resetPasswordExpires = null;
+    // Invalidate all outstanding tokens
+    patient.tokenVersion = (patient.tokenVersion || 0) + 1;
     await patient.save();
 
     await sendPatientToken(patient, 200, res);

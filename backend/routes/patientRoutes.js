@@ -14,14 +14,14 @@ const {
   resetPassword,
 } = require('../controllers/patientController');
 const { protectPatient, optionalPatientAuth } = require('../middleware/patientAuth');
-const { authLimiter, adminWriteLimiter } = require('../middleware/security');
+const { authLimiter, adminWriteLimiter, passwordResetLimiter, registerLimiter } = require('../middleware/security');
 
-router.post('/register', authLimiter, registerPatient);
+router.post('/register', registerLimiter, registerPatient);
 router.post('/login', authLimiter, loginPatient);
 router.post('/refresh', refresh);
 router.post('/logout', logout);
-router.post('/forgot-password', authLimiter, forgotPassword);
-router.post('/reset-password', authLimiter, resetPassword);
+router.post('/forgot-password', passwordResetLimiter, forgotPassword);
+router.post('/reset-password', passwordResetLimiter, resetPassword);
 
 // Session check (no auth required — returns patient if cookie is valid, null otherwise)
 router.get('/session', optionalPatientAuth, getSession);

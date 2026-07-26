@@ -18,9 +18,11 @@ const patientRoutes = require('./routes/patientRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 const { limiter, csrfProtect } = require('./middleware/security');
+const { cspNonce } = require('./middleware/cspNonce');
 const { startScheduler } = require('./scheduler');
 const { Setting } = require('./models');
 const { runMigrations } = require('./migrate');
+const { serveSpa, adminHtml, patientHtml } = require('./middleware/serveSpa');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,14 +35,16 @@ if (parseInt(process.env.TRUST_PROXY, 10) === 1) {
    Security Middleware Stack
    ============================================================ */
 
-/* 1. Helmet — secure HTTP headers */
+/* 1. CSP Nonce — generate per-request nonce before Helmet */
+app.use(cspNonce);
+
+/* 2. Helmet — secure HTTP headers with nonce-based CSP */
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
+      styleSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`, 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:', 'http:'],
       connectSrc: ["'self'"],
@@ -87,12 +91,22 @@ app.use('/api', csrfProtect);
 
 /* ----- Static Files (Admin Dashboard, Patient Portal & Frontend) ----- */
 const isProd = process.env.NODE_ENV === 'production';
+
+// Serve admin/patient HTML with CSP nonces (must come before static middleware)
+app.get('/admin', serveSpa(adminHtml, 'admin'));
+app.get('/admin/', serveSpa(adminHtml, 'admin'));
+app.get('/patient', serveSpa(patientHtml, 'patient'));
+app.get('/patient/', serveSpa(patientHtml, 'patient'));
+
+// Static assets for admin/patient (CSS, JS, images)
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), {
+  index: false, // Don't serve index.html automatically — handled above
   maxAge: isProd ? '7d' : '1h',
   etag: true,
   lastModified: true,
 }));
 app.use('/patient', express.static(path.join(__dirname, 'public', 'patient'), {
+  index: false,
   maxAge: isProd ? '7d' : '1h',
   etag: true,
   lastModified: true,

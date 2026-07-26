@@ -23,6 +23,10 @@ exports.optionalPatientAuth = async (req, res, next) => {
     const decoded = jwt.verify(token, getJwtSecret());
     const patient = await Patient.findByPk(decoded.id);
     if (patient && patient.status !== 'archived') {
+      // Token revocation check
+      if (decoded.tokenVersion !== undefined && decoded.tokenVersion !== (patient.tokenVersion || 0)) {
+        return next();
+      }
       req.patient = patient;
     }
   } catch (_) { /* ignore invalid token */ }
@@ -47,6 +51,11 @@ exports.protectPatient = async (req, res, next) => {
 
     if (!patient || patient.status === 'archived') {
       return next(new AppError('Patient account not found or deactivated.', 401));
+    }
+
+    // Token revocation check
+    if (decoded.tokenVersion !== undefined && decoded.tokenVersion !== (patient.tokenVersion || 0)) {
+      return next(new AppError('Session invalidated. Please sign in again.', 401));
     }
 
     req.patient = patient;
