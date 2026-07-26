@@ -320,7 +320,7 @@
       btn.disabled = true;
       btn.textContent = 'Submitting Request...';
 
-      var API_URL = 'https://uhs-backend.onrender.com';
+      var API_URL = 'https://uhs-backen.onrender.com';
       try {
         var res = await fetch(API_URL + '/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(payload) });
         var data = await res.json();
