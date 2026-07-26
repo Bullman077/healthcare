@@ -22,7 +22,7 @@ const { cspNonce } = require('./middleware/cspNonce');
 const { startScheduler } = require('./scheduler');
 const { Setting } = require('./models');
 const { runMigrations } = require('./migrate');
-const { serveSpa, adminHtml, patientHtml } = require('./middleware/serveSpa');
+const { serveSpa, getAdminHtml, getPatientHtml } = require('./middleware/serveSpa');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -93,10 +93,10 @@ app.use('/api', csrfProtect);
 const isProd = process.env.NODE_ENV === 'production';
 
 // Serve admin/patient HTML with CSP nonces (must come before static middleware)
-app.get('/admin', serveSpa(adminHtml, 'admin'));
-app.get('/admin/', serveSpa(adminHtml, 'admin'));
-app.get('/patient', serveSpa(patientHtml, 'patient'));
-app.get('/patient/', serveSpa(patientHtml, 'patient'));
+app.get('/admin', (req, res) => res.redirect(301, '/admin/'));
+app.get('/admin/', serveSpa(getAdminHtml, 'admin'));
+app.get('/patient', (req, res) => res.redirect(301, '/patient/'));
+app.get('/patient/', serveSpa(getPatientHtml, 'patient'));
 
 // Static assets for admin/patient (CSS, JS, images)
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), {

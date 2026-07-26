@@ -6,7 +6,7 @@
   <title>Patient Portal – Unmeasurable Heights of Strength Healthcare Services</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="patient.css">
+  <link rel="stylesheet" href="/patient/patient.css">
 </head>
 <body>
 
@@ -538,7 +538,7 @@
                   <span style="font-size:12px;color:var(--slate-400);white-space:nowrap;margin-left:10px;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
                 </div>
                 <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${esc(r.message)}&rdquo;</p>
-                <button onclick="openBookingModal('${esc(r.timeframe || 'Follow-Up Visit')}')" class="btn-book" style="cursor:pointer;border:none;">🗓️ Schedule Follow-Up</button>
+                <button onclick="openBookingModal(this.getAttribute('data-timeframe'))" data-timeframe="${esc(r.timeframe || 'Follow-Up Visit')}" class="btn-book" style="cursor:pointer;border:none;">🗓️ Schedule Follow-Up</button>
               </div>
             `).join('');
           } else {
@@ -565,7 +565,7 @@
           var dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
           var statusBadge = 'badge-' + (a.status || 'pending');
           var encoded = encodeURIComponent(JSON.stringify(a));
-          return '<div class="appt-card" onclick="openApptDetail(this, \'' + encoded + '\')">'
+          return '<div class="appt-card" data-appt="' + encoded + '" onclick="openApptDetail(this)">'
             + '<div class="appt-card-left">'
               + '<div class="appt-service">' + esc(serviceName)
                 + ' <span class="badge ' + esc(statusBadge) + '">' + esc(a.status || 'pending') + '</span>'
@@ -588,9 +588,11 @@
     }
 
     function openApptDetail(el, encoded) {
-      if (!el || !encoded) return;
+      if (!el) return;
+      var str = encoded || el.getAttribute('data-appt');
+      if (!str) return;
       var a;
-      try { a = JSON.parse(decodeURIComponent(encoded)); } catch(e) { return; }
+      try { a = JSON.parse(decodeURIComponent(str)); } catch(e) { return; }
       if (!a) return;
 
       var serviceName = a.service?.name || 'Healthcare Service';
