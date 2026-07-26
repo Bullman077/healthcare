@@ -69,12 +69,12 @@
         "destination": "https://uhs-backen.onrender.com/admin/:splat"
       },
       {
-        "source": "/patient/**",
-        "destination": "https://uhs-backen.onrender.com/patient/:splat"
-      },
-      {
         "source": "/uploads/**",
         "destination": "https://uhs-backen.onrender.com/uploads/:splat"
+      },
+      {
+        "source": "/patient/**",
+        "destination": "/patient.html"
       },
       {
         "source": "**",

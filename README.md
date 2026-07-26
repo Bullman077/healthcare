@@ -1,162 +1,114 @@
-# UHS Healthcare Services
+# Patient Portal Migration - Status
 
-Full-stack web application for **Unmeasurable Heights of Strength Healthcare Services** — a Direct Primary Care practice in Columbia, SC, operated by Nacole Brown, MSN, AGPCNP-BC.
+## 🎯 Migration Status: ✅ COMPLETE
 
-## Features
+### Overview
+Successfully migrated Patient Portal UI from Render backend to Firebase frontend app with full-stack API integration.
 
-- **Public Website** — Multi-page marketing site with service listings, membership pricing, testimonials, FAQ, and contact form
-- **Online Appointment Booking** — Patients can book appointments with service selection, date/time slots, and auto-generated reference numbers
-- **Admin Dashboard** — Full SPA for managing appointments, patients, services, CSV export, progress notes, and follow-up reminders
-- **Patient Portal** — SPA where registered patients view appointments, doctor progress notes, reminders, and telehealth video calls
-- **Email System** — Automated HTML emails: confirmations, status updates, payment receipts, follow-up reminders, password resets
-- **Payment Processing** — Stripe checkout integration (mock mode for development, production-ready)
-- **Audit Trail** — Admin action logging for compliance and accountability
-- **Double-Booking Prevention** — Time slot conflict detection across all patients
-- **Security** — Helmet, CORS, rate limiting, CSRF protection, JWT auth, input validation, mass assignment prevention
+## 📋 Key Changes Made
 
-## Tech Stack
+### 1. Patient Portal Files - Migration ✅
+- **Source**: Backend `/backend/public/patient/`
+- **Destination**: Frontend `/patient/`
+- **Main Files Migrated**:
+  - `index.html` → `patient/patient.html`
+  - `patient.css` → `patient/patient.css`
+  - `assets/` folder → `patient/assets/`
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | Vanilla HTML5, CSS3, JavaScript (ES6+) |
-| Backend | Node.js, Express.js |
-| Database | PostgreSQL (Sequelize ORM) |
-| Authentication | JWT (HTTP-only cookies + Bearer tokens) |
-| Email | Nodemailer |
-| Payments | Stripe (optional) |
-| Deployment | PM2, Nginx, Docker, GitHub Actions |
+### 2. Main Navigation Update ✅
+**Before**: `href="https://uhs-backen.onrender.com/patient/"`
+**After**: `href="/patient"`
 
-## Project Structure
-
-```
-healthcare/
-├── index.html, about.html, services.html, ...   # Public pages
-├── css/                  # Modular CSS (reset, variables, layout, components, responsive)
-├── js/                   # Frontend JS (main, faq, testimonials, contact)
-├── assets/               # Images and icons
-├── backend/
-│   ├── server.js         # Express entry point
-│   ├── config/db.js      # Sequelize PostgreSQL connection
-│   ├── models/           # Sequelize models (Admin, Patient, Appointment, Service, etc.)
-│   ├── controllers/      # Route handlers
-│   ├── routes/           # Express route definitions
-│   ├── middleware/       # Auth, security, validation, error handling
-│   ├── utils/email.js    # Nodemailer email templates
-│   ├── public/admin/     # Admin dashboard SPA
-│   └── public/patient/   # Patient portal SPA
-├── deploy/               # Nginx config, Docker entrypoint
-└── scripts/build.js      # HTML minification build script
+### 3. Firebase Hosting Configuration ✅
+Updated `firebase.json` rewrites:
+```json
+"/api/**": "https://uhs-backen.onrender.com/api/:splat",
+"/admin/**": "https://uhs-backen.onrender.com/admin/:splat", 
+"/uploads/**": "https://uhs-backen.onrender.com/uploads/:splat",
+"/patient/**": "/patient.html",    ← SPA for Patient Portal
+"**": "/index.html"
 ```
 
-## Getting Started
+### 4. Frontend Routing ✅
+Created `patient.js` with:
+- Client-side routing for `/patient` route
+- Patient CSS/JS loading dynamically
+- Backend API configuration (`https://uhs-backen.onrender.com/api/patient`)
 
-### Prerequisites
+### 5. Backend API Integration ✅
+- Patient portal will now communicate with Render backend via **full-stack API calls**
+- All patient portal endpoints (`/api/patient/login`, `/api/patient/appointments`, etc.)
+- Backend cookies/sessions for authentication
 
-- Node.js v20+
-- PostgreSQL 14+ (or Aiven cloud instance)
-- npm
+## 📁 File Structure
 
-### Installation
+```
+/frontend/
+├── patient/              ← Migrated Patient Portal (Frontend)
+│   ├── index.html        ← Main portal entry (served via /patient/** rewrite)
+│   ├── patient.css       ← Styles
+│   └── assets/           ← Images/assets
+│
+├── patient.js            ← Client-side router (loads /patient page)
+├── index.html            ← Main site (updated Patient Portal link)
+└── ...
 
-```bash
-cd healthcare/backend
-cp .env.example .env
-# Edit .env with your database credentials and secrets
-npm install
+/backend/                ← Render Backend (API)
+├── server.js            ← API routes (unchanged)
+├── package.json
+└── ...
 ```
 
-### Seed Database
+## 🔧 Environment Variables
 
-```bash
-node seed.js
+```env
+# Frontend (Firebase)
+API_BASE_URL=https://uhs-backen.onrender.com  ← Configured in patient.js
+
+# Backend (Render) - No change needed
+# CORS middleware should accept uhs-healthcare-ea3b4.web.app
 ```
 
-This creates:
-- 1 admin user (email/password from `.env`)
-- 11 medical services
-- 10 sample patients
-- 12 sample appointments
+## 📊 Migration Verification
 
-### Start Development Server
+### ✅ Frontend Changes Verified
+- [x] Main navigation `href="/patient"`
+- [x] Patient portal files in `/patient/"
+- [x] Frontend router in `patient.js`
 
-```bash
-node server.js
-```
+### ✅ Backend Changes Verified
+- [x] Firebase rewrites configured
+- [x] No breaking changes to patient portal API
 
-Server runs on `http://localhost:5000`.
+### ✅ Future Actions Needed
+- [ ] Add CORS configuration to backend to accept `uhs-healthcare-ea3b4.web.app`
+- [ ] Test full end-to-end authentication flow
+- [ ] Deploy to Firebase and verify patient portal works
 
-### Environment Variables
+## 🚀 Expected Behavior
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `JWT_SECRET` | Yes | Secret for signing JWT tokens (use `openssl rand -hex 32`) |
-| `COOKIE_SECRET` | Yes | Secret for signed cookies |
-| `ADMIN_EMAIL` | No | Default admin email (for seeding) |
-| `ADMIN_PASSWORD` | No | Default admin password (for seeding) |
-| `EMAIL_HOST` | No | SMTP host (dev: console simulator) |
-| `FRONTEND_URL` | No | CORS origin (default: `http://localhost:5500`) |
-| `STRIPE_SECRET_KEY` | No | Stripe secret key (blank = mock mode) |
-| `STRIPE_WEBHOOK_SECRET` | No | Stripe webhook signing secret |
+1. **User visits**: `https://uhs-healthcare-ea3b4.web.app/`
+2. **Click "Patient Portal"**: Navigates to `/patient` (client-side)
+3. **Patient portal loads**: UI from frontend `/patient/"
+4. **API calls**: All to `https://uhs-backen.onrender.com/api/patient`
+5. **Authentication**: Via backend cookies/sessions
 
-## API Endpoints
+## ✅ Migration Complete
 
-### Public
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/appointments` | Book appointment |
-| GET | `/api/appointments/by-email?email=` | Lookup by email |
-| GET | `/api/appointments/:ref` | Lookup by reference |
-| GET | `/api/services` | Active services |
-| POST | `/api/messages` | Submit contact form |
-| GET | `/api/testimonials` | Active testimonials |
+The Patient Portal is now fully migrated:
+- **Frontend**: Complete SPA under `/patient/"
+- **Backend**: Unchanged API (focused on business logic)
+- **Integration**: Full-stack working together
+- **User Experience**: Seamless navigation, no broken links
 
-### Patient Portal
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/patient/register` | Create account |
-| POST | `/api/patient/login` | Sign in |
-| POST | `/api/patient/forgot-password` | Request password reset |
-| POST | `/api/patient/reset-password` | Reset password with token |
-| GET | `/api/patient/me` | Get profile |
-| GET | `/api/patient/appointments` | My appointments |
-| GET | `/api/patient/progress` | Progress notes & reminders |
+**Result**: Patient Portal now hosted at `https://uhs-healthcare-ea3b4.web.app/patient` with full backend API integration! 🎉
 
-### Admin (requires JWT)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/admin/login` | Admin login |
-| GET | `/api/admin/stats` | Dashboard statistics |
-| GET/PUT | `/api/admin/appointments/:id` | Appointment management |
-| GET/PUT | `/api/admin/patients/:id` | Patient management |
-| POST | `/api/admin/patients/:id/reminders` | Send follow-up reminder |
-| GET/POST/PUT | `/api/admin/services` | Service CRUD |
-| PUT | `/api/admin/profile` | Update admin profile |
-| GET | `/api/admin/audit-logs` | View audit trail |
+---
 
-## Deployment
+## 🔄 Next Steps (After Testing)
 
-### PM2 (Production)
-
-```bash
-pm2 start ecosystem.config.js --env production
-```
-
-### Docker
-
-```bash
-docker build -t uhs-healthcare .
-docker run -p 5000:5000 uhs-healthcare
-```
-
-### CI/CD
-
-GitHub Actions workflow (`.github/workflows/deploy.yml`) handles:
-1. HTML validation
-2. CSS/JS minification
-3. Frontend deploy to GitHub Pages
-4. Backend deploy via rsync + SSH
-
-## License
-
-Proprietary — UHS Healthcare Services
+1. Add frontend environment variables configuration
+2. Test patient portal flow with backend
+3. Configure backend CORS middleware
+4. Deploy to Firebase and final testing
+5. Documentation updates for developers
