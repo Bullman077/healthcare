@@ -230,7 +230,7 @@
             Submitting…
           </span>
         </button>
-        <p style="text-align:center;font-size:0.8rem;color:var(--color-slate-400);margin-top:0.75rem;">${loggedIn ? '' : 'Already have a patient account? <a href=" + API_URL + "/patient/" style="color:var(--color-teal);font-weight:600;text-decoration:none;">Sign in to your portal \u2192</a>'}</p>
+        <p style="text-align:center;font-size:0.8rem;color:var(--color-slate-400);margin-top:0.75rem;">${loggedIn ? '' : `Already have a patient account? <a href="${API_URL}/patient/" style="color:var(--color-teal);font-weight:600;text-decoration:none;">Sign in to your portal \u2192</a>`}</p>
       </form>
       <style>@keyframes uhsSpin{to{transform:rotate(360deg)}}</style>
     `;
@@ -284,10 +284,10 @@
         </div>
         <p id="past-appt-count" style="font-size:0.82rem;color:var(--color-slate-500);margin-bottom:1rem;"></p>
         ${window.currentPatient
-          ? '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments & progress</p><a href=" + API_URL + "/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard \u2192</a></div>'
-          : '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress & appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href=" + API_URL + "/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account \u2192</a></div>'
+          ? `<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments & progress</p><a href="${API_URL}/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard \u2192</a></div>`
+          : `<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress & appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href="${API_URL}/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account \u2192</a></div>`
         }
-        <button class="btn btn--dark-outline btn--sm" onclick="document.getElementById('booking-modal').classList.remove('active')">Close</button>
+        <button class="btn btn--dark-outline btn--sm" onclick="document.getElementById('booking-modal').classList.remove('active')">Close</button>`
       </div>
     `;
   }
