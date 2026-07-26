@@ -10,6 +10,9 @@
 </head>
 <body>
 
+  <!-- ================= SESSION PRELOADER ================= -->
+  <div id="sessionPreloader" class="session-preloader"><div class="spinner"></div></div>
+
   <!-- ================= AUTH VIEW ================= -->
   <div id="authView" class="auth-container hidden">
     <div class="auth-card">
@@ -409,6 +412,7 @@
       const email = document.getElementById('authEmail').value.trim();
       const password = document.getElementById('authPassword').value;
       const errEl = document.getElementById('authError');
+      const btn = document.getElementById('authBtn');
       errEl.style.display = 'none';
       document.getElementById('passwordMismatch').style.display = 'none';
 
@@ -439,6 +443,10 @@
         payload.phone = document.getElementById('regPhone').value.trim();
       }
 
+      btn.classList.add('loading');
+      btn.textContent = isRegisterMode ? 'Creating Account…' : 'Signing In…';
+      btn.disabled = true;
+
       try {
         const res = await apiFetch(endpoint, {
           method: 'POST',
@@ -448,7 +456,13 @@
         });
         const data = await res.json();
         if (data.success) {
-          showPortal(data.patient);
+          // Animate auth card out, then show portal
+          const authView = document.getElementById('authView');
+          authView.classList.add('view-exit');
+          setTimeout(() => {
+            showPortal(data.patient);
+            document.getElementById('portalView').classList.add('view-enter');
+          }, 300);
         } else {
           errEl.textContent = data.message || 'Authentication failed.';
           errEl.style.display = 'block';
@@ -457,17 +471,30 @@
         errEl.textContent = 'Server error. Please try again.';
         errEl.style.display = 'block';
       }
+      btn.classList.remove('loading');
+      btn.textContent = isRegisterMode ? 'Create Portal Account' : 'Sign In to Portal';
+      btn.disabled = false;
     }
 
     async function checkSession() {
+      const preloader = document.getElementById('sessionPreloader');
       try {
         const res = await apiFetch('/session', { credentials: 'include' });
         const data = await res.json();
         if (data.success && data.patient) {
+          if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => preloader.remove(), 300);
+          }
           showPortal(data.patient);
+          document.getElementById('portalView').classList.add('view-enter');
           return;
         }
       } catch(e) {}
+      if (preloader) {
+        preloader.classList.add('fade-out');
+        setTimeout(() => preloader.remove(), 300);
+      }
       document.getElementById('authView').classList.remove('hidden');
     }
 
@@ -476,6 +503,7 @@
     function showPortal(patient) {
       currentPatientData = patient;
       document.getElementById('authView').classList.add('hidden');
+      document.getElementById('authView').classList.remove('view-exit');
       document.getElementById('portalView').classList.remove('hidden');
       document.getElementById('welcomeTitle').textContent = `Welcome, ${patient.firstName}!`;
       document.getElementById('userDisplayName').textContent = `${patient.firstName} ${patient.lastName}`;
@@ -704,8 +732,12 @@
     }
 
     async function logout() {
+      const portalView = document.getElementById('portalView');
+      portalView.classList.add('view-exit');
       await apiFetch('/logout', { method: 'POST', credentials: 'include' });
-      window.location.href = '/';
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 300);
     }
 
     /* ===== FORGOT PASSWORD ===== */
