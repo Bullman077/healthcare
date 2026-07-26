@@ -253,6 +253,10 @@
         }).catch(function(){});
     }
 
+    var portalBlock = window.currentPatient
+      ? '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments &amp; progress</p><a href="' + API_URL + '/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard &#x2192;</a></div>'
+      : '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress &amp; appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href="' + API_URL + '/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account &#x2192;</a></div>';
+
     mc.innerHTML = `
       <div style="text-align:center;padding:1rem 0;">
         <div style="width:72px;height:72px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(16,185,129,.35);">
@@ -269,8 +273,8 @@
               <div style="font-size:1rem;font-weight:800;color:var(--color-indigo);font-family:monospace;">${esc(appt.referenceNumber)}</div>
             </div>
             <div>
-              <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Date & Time</div>
-              <div style="font-size:.9rem;font-weight:600;color:var(--color-slate-800);">${new Date(appt.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} · ${appt.time}</div>
+              <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Date &amp; Time</div>
+              <div style="font-size:.9rem;font-weight:600;color:var(--color-slate-800);">${new Date(appt.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} &middot; ${appt.time}</div>
             </div>
             <div>
               <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Service</div>
@@ -278,16 +282,13 @@
             </div>
             <div>
               <div style="font-size:10px;font-weight:700;color:var(--color-slate-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;">Status</div>
-              <div style="font-size:.9rem;font-weight:700;color:#065F46;">✓ Confirmed</div>
+              <div style="font-size:.9rem;font-weight:700;color:#065F46;">&#10003; Confirmed</div>
             </div>
           </div>
         </div>
         <p id="past-appt-count" style="font-size:0.82rem;color:var(--color-slate-500);margin-bottom:1rem;"></p>
-        ${window.currentPatient
-          ? `<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments & progress</p><a href="${API_URL}/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard \u2192</a></div>`
-          : `<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress & appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href="${API_URL}/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account \u2192</a></div>`
-        }
-        <button class="btn btn--dark-outline btn--sm" onclick="document.getElementById('booking-modal').classList.remove('active')">Close</button>`
+        ${portalBlock}
+        <button class="btn btn--dark-outline btn--sm" onclick="document.getElementById('booking-modal').classList.remove('active')">Close</button>
       </div>
     `;
   }
