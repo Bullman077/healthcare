@@ -3720,6 +3720,24 @@ function badgeHtml(status) {
   const cls = map[status] || 'badge-pending';
   return `<span class="status-badge ${cls}">${status || '—'}</span>`;
 }
+
+/* =========================================================
+   SESSION RESTORE — check cookie-based session on page load
+   ========================================================= */
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch(API + '/me', { credentials: 'include' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.admin) {
+        state.admin = data.admin;
+        showApp(data.admin);
+        return;
+      }
+    }
+  } catch (e) { /* not logged in — show login page */ }
+  document.getElementById('loginPage').classList.remove('hidden');
+});
 </script>
 </body>
 </html>

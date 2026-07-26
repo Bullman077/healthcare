@@ -705,10 +705,7 @@
 
     async function logout() {
       await apiFetch('/logout', { method: 'POST', credentials: 'include' });
-      document.getElementById('portalView').classList.add('hidden');
-      document.getElementById('portal-header-patient').style.display = 'none';
-      document.getElementById('authView').classList.remove('hidden');
-      window.scrollTo(0, 0);
+      window.location.href = '/';
     }
 
     /* ===== FORGOT PASSWORD ===== */
