@@ -43,6 +43,7 @@ body {
   font-family: var(--font);
   background: var(--slate-50);
   color: var(--slate-900);
+  height: 100vh;
   overflow: hidden;
   font-size: 14px;
   line-height: 1.5;
@@ -311,7 +312,10 @@ select.form-input option {
    APP LAYOUT
    ========================================================= */
 .app {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* =========================================================
@@ -475,7 +479,9 @@ select.form-input option {
   margin-left: var(--sidebar-w);
   padding: 28px 32px;
   background: var(--slate-50);
-  min-height: 100vh;
+  flex: 1;
+  overflow-y: auto;
+  height: calc(100vh - var(--topbar-h));
 }
 
 .page-section { display: none; }
@@ -485,6 +491,7 @@ select.form-input option {
    TOP BAR
    ========================================================= */
 .topbar {
+  margin-left: var(--sidebar-w);
   background: var(--white);
   height: var(--topbar-h);
   padding: 0 28px;
@@ -492,10 +499,9 @@ select.form-input option {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--slate-200);
-  position: sticky;
-  top: 0;
   z-index: 100;
   box-shadow: 0 1px 3px rgba(11, 26, 48, 0.04);
+  flex-shrink: 0;
 }
 
 .topbar-left { display: flex; align-items: center; gap: 14px; }
@@ -2546,4 +2552,25 @@ table.data-table tr:hover td { background: rgba(79, 70, 229, 0.025); }
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 6px;
+}
+
+/* =========================================================
+   SLEEK SCROLLBARS FOR ADMIN
+   ========================================================= */
+.main-content::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.main-content::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.main-content::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 99px;
+}
+.main-content::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
 }
