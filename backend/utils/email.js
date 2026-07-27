@@ -92,19 +92,19 @@ async function sendConfirmation(appointment) {
       <p style="margin:6px 0 0;opacity:0.92;font-size:14px;">UHS Healthcare Services &bull; Direct Primary Care</p>
     </div>
     <div class="body">
-      <p>Dear <strong>${patientName}</strong>,</p>
+      <p>Dear <strong>${escHtml(patientName)}</strong>,</p>
       <p>Your appointment has been successfully scheduled. Below are your appointment details and reference number:</p>
 
       <div class="ref-box">
         <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#166534;font-weight:700;margin-bottom:4px;">Booking Reference</div>
-        <div class="ref-code">${referenceNumber}</div>
+        <div class="ref-code">${escHtml(referenceNumber)}</div>
       </div>
 
       <table class="details">
-        <tr><td>Service</td><td><strong>${serviceName}</strong></td></tr>
-        <tr><td>Date</td><td>${dateStr}</td></tr>
-        <tr><td>Time</td><td>${time}</td></tr>
-        <tr><td>Provider</td><td>${appointment.provider || 'Nacole Brown, MSN, AGPCNP-BC'}</td></tr>
+        <tr><td>Service</td><td><strong>${escHtml(serviceName)}</strong></td></tr>
+        <tr><td>Date</td><td>${escHtml(dateStr)}</td></tr>
+        <tr><td>Time</td><td>${escHtml(time)}</td></tr>
+        <tr><td>Provider</td><td>${escHtml(appointment.provider || 'Nacole Brown, MSN, AGPCNP-BC')}</td></tr>
         <tr><td>Type</td><td>${isTelehealth ? '📹 Telehealth (Virtual Visit)' : '🏥 In-Person Clinic Visit'}</td></tr>
       </table>
 
@@ -170,13 +170,13 @@ async function sendReminderEmail(appointment) {
 <body>
   <div class="container">
     <h2 style="color:#0F766E;margin-top:0;">⏰ Appointment Reminder - UHS Healthcare</h2>
-    <p>Dear ${patientName},</p>
+    <p>Dear ${escHtml(patientName)},</p>
     <p>This is a reminder for your upcoming appointment:</p>
     <ul style="line-height:1.8;">
-      <li><strong>Service:</strong> ${serviceName}</li>
-      <li><strong>Date:</strong> ${dateStr}</li>
-      <li><strong>Time:</strong> ${time}</li>
-      <li><strong>Reference:</strong> ${referenceNumber}</li>
+      <li><strong>Service:</strong> ${escHtml(serviceName)}</li>
+      <li><strong>Date:</strong> ${escHtml(dateStr)}</li>
+      <li><strong>Time:</strong> ${escHtml(time)}</li>
+      <li><strong>Reference:</strong> ${escHtml(referenceNumber)}</li>
     </ul>
     ${isTelehealth ? `<p><a href="${meetUrl}" class="btn-video">Join Video Call (Google Meet)</a></p>` : '<p>Clinic Address: 2638 Two Notch Rd. Suite 210 Unit 10, Columbia, SC 29204</p>'}
     <p>We look forward to seeing you!</p>
@@ -198,11 +198,11 @@ async function sendPaymentConfirmation(paymentData) {
   const patientHtml = `
   <div style="font-family:sans-serif;padding:20px;max-width:600px;margin:auto;border:1px solid #E2E8F0;border-radius:12px;">
     <h2 style="color:#0F766E;">Payment Confirmation & Receipt</h2>
-    <p>Dear ${patientName},</p>
+    <p>Dear ${escHtml(patientName)},</p>
     <p>Thank you for your payment. Your payment has been successfully processed.</p>
     <table style="width:100%;border-collapse:collapse;margin:15px 0;">
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;"><strong>Reference:</strong></td><td>${referenceNumber}</td></tr>
-      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;"><strong>Service:</strong></td><td>${serviceName}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;"><strong>Reference:</strong></td><td>${escHtml(referenceNumber)}</td></tr>
+      <tr><td style="padding:8px 0;border-bottom:1px solid #eee;"><strong>Service:</strong></td><td>${escHtml(serviceName)}</td></tr>
       <tr><td style="padding:8px 0;border-bottom:1px solid #eee;"><strong>Amount Paid:</strong></td><td><strong>$${(amount / 100).toFixed(2)} ${currency.toUpperCase()}</strong></td></tr>
       <tr><td style="padding:8px 0;border-bottom:1px solid #eee;"><strong>Status:</strong></td><td><span style="color:#166534;font-weight:bold;">Paid / Verified</span></td></tr>
     </table>
@@ -214,9 +214,9 @@ async function sendPaymentConfirmation(paymentData) {
     <h2 style="color:#0F766E;">💰 Payment Received Notification</h2>
     <p>A new payment has been received for an appointment:</p>
     <ul>
-      <li><strong>Patient:</strong> ${patientName} (${patientEmail})</li>
-      <li><strong>Service:</strong> ${serviceName}</li>
-      <li><strong>Reference:</strong> ${referenceNumber}</li>
+      <li><strong>Patient:</strong> ${escHtml(patientName)} (${escHtml(patientEmail)})</li>
+      <li><strong>Service:</strong> ${escHtml(serviceName)}</li>
+      <li><strong>Reference:</strong> ${escHtml(referenceNumber)}</li>
       <li><strong>Amount Received:</strong> $${(amount / 100).toFixed(2)} ${currency.toUpperCase()}</li>
     </ul>
   </div>`;
@@ -236,7 +236,7 @@ async function sendPaymentConfirmation(paymentData) {
   await getTransporter().sendMail({
     from: `"UHS Payments" <${process.env.EMAIL_FROM || 'noreply@uhshealthcare.com'}>`,
     to: adminEmail,
-    subject: `💰 Payment Received: $${(amount / 100).toFixed(2)} from ${patientName}`,
+    subject: `💰 Payment Received: $${(amount / 100).toFixed(2)} from ${escHtml(patientName)}`,
     html: doctorHtml,
   });
 }
@@ -255,15 +255,15 @@ async function sendFollowUpReminderEmail(patient, reminder) {
       <p style="margin:6px 0 0;opacity:0.9;font-size:14px;">UHS Healthcare Services &bull; Nacole Brown MSN AGPCNP-BC</p>
     </div>
     <div style="padding:28px 24px;color:#1E293B;">
-      <p>Dear <strong>${patientName}</strong>,</p>
+      <p>Dear <strong>${escHtml(patientName)}</strong>,</p>
       <p>This is a reminder from your healthcare provider regarding your recommended follow-up visit:</p>
       
       <div style="background:#F0FDF4;border-left:4px solid #0F766E;padding:16px;margin:20px 0;border-radius:8px;">
         <div style="font-size:12px;text-transform:uppercase;font-weight:700;color:#0F766E;">Agreed Follow-Up Timeframe</div>
-        <div style="font-size:18px;font-weight:700;color:#166534;margin:4px 0;">${reminder.timeframe || 'Follow-Up Visit'} (${reminder.followUpDate ? new Date(reminder.followUpDate + 'T12:00:00').toLocaleDateString() : 'As discussed'})</div>
+        <div style="font-size:18px;font-weight:700;color:#166534;margin:4px 0;">${escHtml(reminder.timeframe || 'Follow-Up Visit')} (${reminder.followUpDate ? escHtml(new Date(reminder.followUpDate + 'T12:00:00').toLocaleDateString()) : 'As discussed'})</div>
         <hr style="border:none;border-top:1px solid #BBF7D0;margin:12px 0;">
         <div style="font-size:12px;text-transform:uppercase;font-weight:700;color:#0F766E;">Message from NP Nacole Brown:</div>
-        <div style="font-size:15px;color:#1E293B;margin-top:4px;">"${reminder.message || 'Please return for your scheduled follow-up consultation.'}"</div>
+        <div style="font-size:15px;color:#1E293B;margin-top:4px;">"${escHtml(reminder.message || 'Please return for your scheduled follow-up consultation.')}"</div>
       </div>
 
       <p style="text-align:center;margin-top:28px;">
@@ -329,16 +329,16 @@ async function sendStatusUpdate(appointment) {
       <p style="margin:6px 0 0;opacity:0.92;font-size:14px;">UHS Healthcare Services &bull; Direct Primary Care</p>
     </div>
     <div class="body">
-      <p>Dear <strong>${patientName}</strong>,</p>
+      <p>Dear <strong>${escHtml(patientName)}</strong>,</p>
       <p>Your appointment status has been updated:</p>
       <div style="text-align:center;margin:20px 0;">
-        <span class="status-badge">${isConfirmed ? '✅ Confirmed' : status.charAt(0).toUpperCase() + status.slice(1)}</span>
+        <span class="status-badge">${isConfirmed ? '✅ Confirmed' : escHtml(status.charAt(0).toUpperCase() + status.slice(1))}</span>
       </div>
       <table class="details">
-        <tr><td>Reference</td><td><strong style="font-family:monospace;color:${statusColor};">${referenceNumber}</strong></td></tr>
-        <tr><td>Service</td><td><strong>${serviceName}</strong></td></tr>
-        <tr><td>Date</td><td>${dateStr}</td></tr>
-        <tr><td>Time</td><td>${time}</td></tr>
+        <tr><td>Reference</td><td><strong style="font-family:monospace;color:${statusColor};">${escHtml(referenceNumber)}</strong></td></tr>
+        <tr><td>Service</td><td><strong>${escHtml(serviceName)}</strong></td></tr>
+        <tr><td>Date</td><td>${escHtml(dateStr)}</td></tr>
+        <tr><td>Time</td><td>${escHtml(time)}</td></tr>
       </table>
       ${isConfirmed ? `
       <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:20px;text-align:center;margin:24px 0;">
@@ -380,7 +380,7 @@ async function sendPasswordResetEmail(patient, resetToken) {
       <p style="margin:6px 0 0;opacity:0.9;font-size:14px;">UHS Healthcare Services</p>
     </div>
     <div style="padding:28px 24px;color:#1E293B;">
-      <p>Dear <strong>${patientName}</strong>,</p>
+      <p>Dear <strong>${escHtml(patientName)}</strong>,</p>
       <p>We received a request to reset your patient portal password. Click the button below to set a new password:</p>
       <p style="text-align:center;margin:24px 0;">
         <a href="${resetUrl}" style="display:inline-block;padding:14px 28px;background:#0F766E;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:15px;">Reset My Password</a>

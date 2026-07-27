@@ -13,6 +13,21 @@
 
   var cache = null;
 
+  /* Sanitize HTML: strip dangerous tags/attributes while keeping safe formatting */
+  function sanitizeHtml(html) {
+    if (!html) return '';
+    return String(html)
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+      .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+      .replace(/<embed\b[^>]*>/gi, '')
+      .replace(/<form\b[^<]*(?:(?!<\/form>)<[^<]*)*<\/form>/gi, '')
+      .replace(/on\w+\s*=/gi, 'data-xss-blocked=')
+      .replace(/javascript:/gi, 'data-xss-blocked:')
+      .replace(/vbscript:/gi, 'data-xss-blocked:')
+      .replace(/data:text\/html/gi, 'data-xss-blocked');
+  }
+
   function applyContent(data) {
     if (!data) return;
 
@@ -22,10 +37,10 @@
       if (data[key]) el.textContent = data[key];
     });
 
-    /* --- innerHTML replacements --- */
+    /* --- innerHTML replacements (sanitized) --- */
     document.querySelectorAll('[data-content-html]').forEach(function (el) {
       var key = el.getAttribute('data-content-html');
-      if (data[key]) el.innerHTML = data[key];
+      if (data[key]) el.innerHTML = sanitizeHtml(data[key]);
     });
 
     /* --- href replacements (phone links) --- */
@@ -34,22 +49,22 @@
       if (data[key]) el.href = data[key];
     });
 
-    /* --- Privacy page: inject full policy content --- */
+    /* --- Privacy page: inject full policy content (sanitized) --- */
     var privacyArticle = document.getElementById('privacy-article-body');
     if (privacyArticle && data.privacy_policy) {
-      privacyArticle.innerHTML = data.privacy_policy;
+      privacyArticle.innerHTML = sanitizeHtml(data.privacy_policy);
     }
 
-    /* --- Terms page: inject full terms content --- */
+    /* --- Terms page: inject full terms content (sanitized) --- */
     var termsArticle = document.getElementById('terms-article-body');
     if (termsArticle && data.terms_of_service) {
-      termsArticle.innerHTML = data.terms_of_service;
+      termsArticle.innerHTML = sanitizeHtml(data.terms_of_service);
     }
 
-    /* --- Footer: dynamic contact block (all pages) --- */
+    /* --- Footer: dynamic contact block (all pages, sanitized) --- */
     var footerAddress = document.getElementById('footer-clinic-address');
     if (footerAddress && data.clinic_address) {
-      footerAddress.innerHTML = data.clinic_address.replace(/\n/g, '<br>');
+      footerAddress.innerHTML = sanitizeHtml(data.clinic_address.replace(/\n/g, '<br>'));
     }
 
     var footerPhone = document.getElementById('footer-clinic-phone');
@@ -75,16 +90,16 @@
       }
     });
 
-    /* --- Contact page: hours block --- */
+    /* --- Contact page: hours block (sanitized) --- */
     var hoursBlock = document.getElementById('contact-clinic-hours');
     if (hoursBlock && data.clinic_hours) {
-      hoursBlock.innerHTML = data.clinic_hours.replace(/\n/g, '<br>');
+      hoursBlock.innerHTML = sanitizeHtml(data.clinic_hours.replace(/\n/g, '<br>'));
     }
 
-    /* --- Contact page: address block --- */
+    /* --- Contact page: address block (sanitized) --- */
     var contactAddress = document.getElementById('contact-clinic-address');
     if (contactAddress && data.clinic_address) {
-      contactAddress.innerHTML = data.clinic_address.replace(/\n/g, '<br>');
+      contactAddress.innerHTML = sanitizeHtml(data.clinic_address.replace(/\n/g, '<br>'));
     }
   }
 

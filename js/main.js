@@ -598,13 +598,13 @@
         card.innerHTML =
           '<div>' +
             '<div class="stars-rating">' + renderStars(review.rating) + '</div>' +
-            '<p class="testimonial-card__text">\u201C' + review.text + '\u201D</p>' +
+            '<p class="testimonial-card__text">\u201C' + esc(review.text) + '\u201D</p>' +
           '</div>' +
           '<div class="testimonial-card__author">' +
             '<div class="testimonial-card__avatar">' + getInitials(review.name) + '</div>' +
             '<div>' +
-              '<div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">' + review.name + '</div>' +
-              '<div style="font-size:0.8rem; color:var(--color-slate-500);">' + review.role + '</div>' +
+              '<div style="font-weight:700; font-size:0.95rem; color:var(--color-navy);">' + esc(review.name) + '</div>' +
+              '<div style="font-size:0.8rem; color:var(--color-slate-500);">' + esc(review.role) + '</div>' +
             '</div>' +
           '</div>';
         track.appendChild(card);

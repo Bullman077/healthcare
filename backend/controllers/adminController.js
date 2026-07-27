@@ -151,7 +151,6 @@ exports.login = async (req, res, next) => {
 
     res.json({
       success: true,
-      token,
       admin: {
         id: admin.id,
         email: admin.email,
@@ -327,16 +326,26 @@ exports.exportAppointments = async (req, res, next) => {
     });
 
     const header = 'Reference Number,Patient Name,Email,Phone,Service,Date,Time,Status,Duration,Booked At';
+
+    // Prefix cells starting with formula-triggering characters to prevent CSV injection in Excel
+    function safeCsvCell(val) {
+      const str = String(val || '');
+      if (/^[=+\-@\t\r]/.test(str)) {
+        return "'" + str;
+      }
+      return str;
+    }
+
     const rows = appointments.map((a) => {
       const p = a.patient || {};
       const s = a.service || {};
-      const name = `"${(p.firstName || '') + ' ' + (p.lastName || '')}"`;
+      const name = `"${safeCsvCell((p.firstName || '') + ' ' + (p.lastName || ''))}"`;
       return [
-        a.referenceNumber, name, (p.email || ''), (p.phone || ''),
-        `"${s.name || ''}"`,
-        a.date,
-        a.time, a.status, a.duration || '',
-        new Date(a.createdAt).toISOString(),
+        safeCsvCell(a.referenceNumber), name, safeCsvCell(p.email || ''), safeCsvCell(p.phone || ''),
+        `"${safeCsvCell(s.name || '')}"`,
+        safeCsvCell(a.date),
+        safeCsvCell(a.time), safeCsvCell(a.status), safeCsvCell(a.duration || ''),
+        safeCsvCell(new Date(a.createdAt).toISOString()),
       ].join(',');
     });
 
@@ -917,7 +926,7 @@ exports.refresh = async (req, res, next) => {
     res.cookie('token', newToken, cookieOptions);
     res.cookie('adminRefreshToken', newRefreshToken, refreshCookieOptions);
 
-    res.json({ success: true, token: newToken });
+    res.json({ success: true });
   } catch (err) {
     next(err);
   }

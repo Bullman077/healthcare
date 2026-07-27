@@ -53,7 +53,6 @@ async function sendPatientToken(patient, statusCode, res) {
 
   res.status(statusCode).json({
     success: true,
-    token,
     patient: {
       id: patient.id,
       firstName: patient.firstName,
@@ -77,7 +76,7 @@ exports.registerPatient = async (req, res, next) => {
     let patient = await Patient.findOne({ where: { email: email.toLowerCase() } });
     if (patient) {
       if (patient.passwordHash) {
-        return next(new AppError('An account with this email already exists. Please sign in.', 400));
+        return next(new AppError('Please sign in to your existing account, or use a different email to register.', 400));
       }
       // Link existing booking record to new portal account
       patient.firstName = firstName;
@@ -102,6 +101,9 @@ exports.registerPatient = async (req, res, next) => {
   }
 };
 
+const MAX_PATIENT_LOGIN_ATTEMPTS = 3;
+const PATIENT_LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
+
 exports.loginPatient = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -110,9 +112,46 @@ exports.loginPatient = async (req, res, next) => {
     }
 
     const patient = await Patient.findOne({ where: { email: email.toLowerCase() } });
-    if (!patient || !(await patient.comparePassword(password))) {
-      return next(new AppError('Invalid email or password.', 401));
+
+    // Brute-force lockout check (before password verification to prevent timing bypass)
+    if (patient && patient.loginLockedUntil && patient.loginLockedUntil > new Date()) {
+      const minsLeft = Math.ceil((patient.loginLockedUntil - Date.now()) / 60000);
+      return res.status(429).json({
+        success: false,
+        message: `Account temporarily locked due to ${MAX_PATIENT_LOGIN_ATTEMPTS} failed login attempts. Please wait ${minsLeft} minute(s) before trying again.`,
+      });
     }
+
+    const passwordValid = patient && (await patient.comparePassword(password));
+
+    if (!patient || !passwordValid) {
+      // Increment failed attempt counter on the DB record
+      if (patient) {
+        const attempts = (patient.loginAttempts || 0) + 1;
+        const updates = { loginAttempts: attempts };
+        if (attempts >= MAX_PATIENT_LOGIN_ATTEMPTS) {
+          updates.loginLockedUntil = new Date(Date.now() + PATIENT_LOCKOUT_DURATION_MS);
+          await patient.update(updates, { fields: ['loginAttempts', 'loginLockedUntil'] });
+          return res.status(429).json({
+            success: false,
+            message: 'Too many failed login attempts. Your account is locked for 15 minutes.',
+          });
+        }
+        await patient.update(updates, { fields: ['loginAttempts', 'loginLockedUntil'] });
+        const remaining = MAX_PATIENT_LOGIN_ATTEMPTS - attempts;
+        return res.status(401).json({
+          success: false,
+          message: `Invalid email or password. You have ${remaining} attempt(s) remaining before a 15-minute lockout.`,
+        });
+      }
+      // Generic message when account doesn't exist (prevent email enumeration)
+      return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+    }
+
+    // Success — reset failed attempts counter
+    patient.loginAttempts = 0;
+    patient.loginLockedUntil = null;
+    await patient.save({ fields: ['loginAttempts', 'loginLockedUntil'] });
 
     await sendPatientToken(patient, 200, res);
   } catch (err) {
@@ -321,7 +360,7 @@ exports.refresh = async (req, res, next) => {
     res.cookie('patientToken', newToken, cookieOptions);
     res.cookie('patientRefreshToken', newRefreshToken, refreshCookieOptions);
 
-    res.json({ success: true, token: newToken });
+    res.json({ success: true });
   } catch (err) {
     next(err);
   }

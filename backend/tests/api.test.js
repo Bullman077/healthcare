@@ -1,4 +1,5 @@
 const request = require('supertest');
+const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/db');
 const { Admin, Patient, Service, Appointment, Message, AuditLog } = require('../models');
 const bcrypt = require('bcryptjs');
@@ -8,6 +9,16 @@ let adminToken;
 let patientToken;
 let testAdmin;
 let testService;
+
+const JWT_SECRET = 'test_jwt_secret_for_testing_only_32chars!!';
+
+function generateAdminToken(admin) {
+  return jwt.sign({ id: admin.id, tokenVersion: admin.tokenVersion || 0 }, JWT_SECRET, { expiresIn: '15m' });
+}
+
+function generatePatientToken(patient) {
+  return jwt.sign({ id: patient.id, role: 'patient', tokenVersion: patient.tokenVersion || 0 }, JWT_SECRET, { expiresIn: '15m' });
+}
 
 beforeAll(async () => {
   process.env.NODE_ENV = 'test';
@@ -63,9 +74,11 @@ describe('Admin Authentication', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
-    expect(res.body.token).toBeDefined();
     expect(res.body.admin.email).toBe('test@uhshealthcare.com');
-    adminToken = res.body.token;
+    // Token is now only in httpOnly cookie, generate for subsequent test requests
+    const admin = await Admin.findOne({ where: { email: 'test@uhshealthcare.com' } });
+    adminToken = generateAdminToken(admin);
+    expect(adminToken).toBeDefined();
   });
 
   it('POST /api/admin/login should fail with wrong password', async () => {
@@ -181,7 +194,8 @@ describe('Appointments', () => {
           password: 'TestAuth123!',
         });
       if (res.status === 201) {
-        patientToken = res.body.token;
+        const p = await Patient.findOne({ where: { email: 'testauth@example.com' } });
+        patientToken = generatePatientToken(p);
       }
     }
   });
@@ -268,7 +282,8 @@ describe('Patient Portal', () => {
     expect(res.status).toBe(201);
     expect(res.body.success).toBe(true);
     expect(res.body.patient.firstName).toBe('Jane');
-    patientToken = res.body.token;
+    const patient = await Patient.findOne({ where: { email: 'jane.doe@example.com' } });
+    patientToken = generatePatientToken(patient);
   });
 
   it('POST /api/patient/register should reject duplicate email', async () => {
@@ -292,7 +307,9 @@ describe('Patient Portal', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
-    patientToken = res.body.token;
+    const patient = await Patient.findOne({ where: { email: 'jane.doe@example.com' } });
+    patientToken = generatePatientToken(patient);
+    expect(patientToken).toBeDefined();
   });
 
   it('GET /api/patient/me should return patient profile', async () => {

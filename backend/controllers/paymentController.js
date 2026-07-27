@@ -84,17 +84,23 @@ exports.createCheckoutSession = async (req, res, next) => {
 
 exports.handleStripeWebhook = async (req, res, next) => {
   try {
-    let event = req.body;
+    if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) {
+      console.error('Stripe webhook received but STRIPE_WEBHOOK_SECRET not configured.');
+      return res.status(500).json({ error: 'Webhook not configured.' });
+    }
 
-    if (stripe && process.env.STRIPE_WEBHOOK_SECRET && req.headers['stripe-signature']) {
-      const sig = req.headers['stripe-signature'];
-      try {
-        const rawBody = Buffer.isBuffer(req.body) ? req.body : Buffer.from(JSON.stringify(req.body));
-        event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
-      } catch (err) {
-        console.error('Webhook signature verification failed:', err.message);
-        return res.status(400).json({ error: 'Webhook signature verification failed.' });
-      }
+    if (!req.headers['stripe-signature']) {
+      return res.status(400).json({ error: 'Missing stripe-signature header.' });
+    }
+
+    const sig = req.headers['stripe-signature'];
+    const rawBody = Buffer.isBuffer(req.body) ? req.body : Buffer.from(JSON.stringify(req.body));
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err.message);
+      return res.status(400).json({ error: 'Webhook signature verification failed.' });
     }
 
     if (event.type === 'checkout.session.completed') {

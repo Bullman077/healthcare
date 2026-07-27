@@ -24,6 +24,8 @@ const Patient = sequelize.define('Patient', {
   resetPasswordExpires: { type: DataTypes.DATE },
   refreshToken: { type: DataTypes.STRING(255) },
   tokenVersion: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+  loginAttempts: { type: DataTypes.INTEGER, defaultValue: 0, allowNull: false },
+  loginLockedUntil: { type: DataTypes.DATE, allowNull: true },
 }, {
   timestamps: true,
   indexes: [
