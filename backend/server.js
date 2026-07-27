@@ -92,9 +92,10 @@ app.use('/api', csrfProtect);
 /* ----- Static Files (Admin Dashboard) ----- */
 const isProd = process.env.NODE_ENV === 'production';
 
-// Serve admin HTML with CSP nonce injection
-app.get('/admin', (req, res) => res.redirect(301, '/admin/'));
-app.get('/admin/', serveSpa(getAdminHtml, 'admin'));
+// Serve admin HTML with CSP nonce injection (both with and without trailing slash)
+const serveAdmin = serveSpa(getAdminHtml, 'admin');
+app.get('/admin', serveAdmin);
+app.get('/admin/', serveAdmin);
 
 // Redirect /patient to the frontend (Firebase Hosting)
 app.get('/patient', (req, res) => res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/'));
