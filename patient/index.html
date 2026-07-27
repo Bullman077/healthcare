@@ -16,6 +16,12 @@
   <!-- ================= AUTH VIEW ================= -->
   <div id="authView" class="auth-container hidden">
     <div class="auth-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <a href="/" style="display:inline-flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; color:var(--color-plum); text-decoration:none; padding:6px 14px; background:rgba(75,29,109,0.08); border-radius:20px; transition:all 0.2s ease;" title="Return to main website">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Back to Main Website
+        </a>
+      </div>
       <div class="auth-logo" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
         <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
         <div style="display:flex; flex-direction:column; justify-content:center;">
@@ -138,7 +144,7 @@
         </button>
         <div class="nav__right">
           <ul class="nav__list">
-            <li><a href="/patient/" class="nav__link">Home</a></li>
+            <li><a href="/" class="nav__link">Home</a></li>
             <li><a href="/services.html" class="nav__link">Services</a></li>
             <li><a href="/telehealth.html" class="nav__link">Telehealth</a></li>
             <li><a href="/about.html" class="nav__link">About NP Brown</a></li>
@@ -380,9 +386,14 @@
 
     async function apiFetch(endpoint, options = {}) {
       const url = API + endpoint;
+      const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+      const token = localStorage.getItem('patientToken');
+      if (token) {
+        headers['Authorization'] = 'Bearer ' + token;
+      }
       const res = await fetch(url, {
         ...options,
-        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        headers,
         credentials: 'include',
       });
       return res;
@@ -456,6 +467,9 @@
         });
         const data = await res.json();
         if (data.success) {
+          if (data.token) {
+            localStorage.setItem('patientToken', data.token);
+          }
           // Animate auth card out, then show portal
           const authView = document.getElementById('authView');
           authView.classList.add('view-exit');
@@ -735,11 +749,12 @@
     }
 
     async function logout() {
+      localStorage.removeItem('patientToken');
       const portalView = document.getElementById('portalView');
       portalView.classList.add('view-exit');
-      await apiFetch('/logout', { method: 'POST', credentials: 'include' });
+      await apiFetch('/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
       setTimeout(() => {
-        window.location.href = 'https://uhs-healthcare-ea3b4.web.app';
+        window.location.href = '/patient/';
       }, 300);
     }
 

@@ -11,10 +11,10 @@ function getJwtSecret() {
 
 exports.optionalPatientAuth = async (req, res, next) => {
   let token;
-  if (req.cookies && req.cookies.patientToken) {
-    token = req.cookies.patientToken;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies && req.cookies.patientToken) {
+    token = req.cookies.patientToken;
   }
 
   if (!token) return next();
@@ -35,10 +35,10 @@ exports.optionalPatientAuth = async (req, res, next) => {
 
 exports.protectPatient = async (req, res, next) => {
   let token;
-  if (req.cookies && req.cookies.patientToken) {
-    token = req.cookies.patientToken;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies && req.cookies.patientToken) {
+    token = req.cookies.patientToken;
   }
 
   if (!token) {
