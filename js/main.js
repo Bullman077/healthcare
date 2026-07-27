@@ -514,11 +514,12 @@
     link.style.display = 'none';
     span.style.display = 'inline-flex';
     span.style.alignItems = 'center';
-    span.style.gap = '10px';
+    span.style.gap = '12px';
     span.innerHTML =
-      '<a href="/patient/" style="color:var(--color-plum);font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;">' +
-      patient.firstName + ' \u25BC</a>' +
-      '<a href="' + API_URL + '/api/patient/logout" onclick="event.preventDefault();fetch(this.href,{method:\'POST\',credentials:\'include\'}).then(function(){window.location.reload();}).catch(function(){});" style="color:var(--color-slate-500);font-size:0.82rem;text-decoration:none;">Logout</a>';
+      '<a href="/patient/" style="font-weight:700;font-size:0.88rem;color:var(--color-plum);text-decoration:none;white-space:nowrap;font-family:var(--font-heading);">' +
+      esc(patient.firstName) + '</a>' +
+      '<button onclick="event.preventDefault();fetch(\'' + API_URL + '/api/patient/logout\',{method:\'POST\',credentials:\'include\'}).then(function(){localStorage.removeItem(\'patientToken\');window.location.reload();}).catch(function(){});" ' +
+      'style="background:var(--color-plum);color:white;border:none;padding:7px 18px;border-radius:9999px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);transition:all 0.2s;">Sign Out</button>';
   }
 
   function prefillPatientFields() {
