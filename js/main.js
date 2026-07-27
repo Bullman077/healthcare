@@ -135,7 +135,7 @@
   // =========================================================
   // 8. BOOKING MODAL — FULLY WIRED TO POST /api/appointments
   // =========================================================
-  const API_BASE = API_URL + '/api/appointments';
+  const API_BASE = '/api/appointments';
   let availableServices = [];
 
   async function loadServices() {
@@ -148,12 +148,18 @@
       }
     } catch (e) { /* fallback below */ }
     availableServices = [
-      { name: 'DOT Physical' }, { name: 'Non-DOT Physical' },
-      { name: 'Sports Physical' }, { name: 'Work Physical' },
-      { name: 'BLS CPR Training' }, { name: 'TB Skin Testing' },
-      { name: 'Weight Management' }, { name: 'Iontophoresis Patch Therapy' },
-      { name: 'Chronic Pain Relief' }, { name: 'Telehealth Visit' },
-      { name: 'Preventive Wellness' }
+      { name: 'Healthcare Consultation' },
+      { name: 'Weight Loss Consultation' },
+      { name: 'Prescription Refill' },
+      { name: 'TB Skin Test' },
+      { name: 'Weekly Vitamin B12 Injection' },
+      { name: 'Iontophoresis Patch (1 Patch)' },
+      { name: 'Combination Therapy with Heat (2 Patches)' },
+      { name: 'Target Back Pain / Knee Pain with Heat Therapy' },
+      { name: 'DOT Physical' },
+      { name: 'Non-DOT Physical' },
+      { name: 'Comprehensive Health Assessment' },
+      { name: 'BLS CPR Training' }
     ];
   }
 
@@ -230,7 +236,7 @@
             Submitting…
           </span>
         </button>
-        <p style="text-align:center;font-size:0.8rem;color:var(--color-slate-400);margin-top:0.75rem;">${loggedIn ? '' : `Already have a patient account? <a href="${API_URL}/patient/" style="color:var(--color-teal);font-weight:600;text-decoration:none;">Sign in to your portal \u2192</a>`}</p>
+        <p style="text-align:center;font-size:0.8rem;color:var(--color-slate-400);margin-top:0.75rem;">${loggedIn ? '' : `Already have a patient account? <a href="/patient/" style="color:var(--color-teal);font-weight:600;text-decoration:none;">Sign in to your portal \u2192</a>`}</p>
       </form>
       <style>@keyframes uhsSpin{to{transform:rotate(360deg)}}</style>
     `;
@@ -242,7 +248,7 @@
 
     // Fetch past appointments for this email silently
     if (email) {
-      fetch(API_URL + '/api/appointments/by-email?email=' + encodeURIComponent(email))
+      fetch('/api/appointments/by-email?email=' + encodeURIComponent(email))
         .then(r => r.json())
         .then(function(d) {
           var past = (d.data || []).filter(function(a) { return a.referenceNumber !== appt.referenceNumber; });
@@ -254,8 +260,8 @@
     }
 
     var portalBlock = window.currentPatient
-      ? '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments &amp; progress</p><a href="' + API_URL + '/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard &#x2192;</a></div>'
-      : '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress &amp; appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href="' + API_URL + '/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account &#x2192;</a></div>';
+      ? '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments &amp; progress</p><a href="/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard &#x2192;</a></div>'
+      : '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress &amp; appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href="/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account &#x2192;</a></div>';
 
     mc.innerHTML = `
       <div style="text-align:center;padding:1rem 0;">
@@ -348,7 +354,6 @@
       const res  = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ name, phone, email, service, date, time, message }),
       });
       const data = await res.json();
@@ -364,7 +369,7 @@
         if (btnTxt)  btnTxt.style.display = 'inline';
         if (btnSpin) btnSpin.style.display = 'none';
       }
-    } catch {
+    } catch (err) {
       if (errBanner) {
         errBanner.textContent = 'Network error. Please call us at (803) 381-7489.';
         errBanner.style.display = 'block';
@@ -380,35 +385,41 @@
     const modalCard = document.querySelector('.modal-card');
     if (!overlay || !modalCard) return;
 
-    document.querySelectorAll('[data-open-modal]').forEach(trigger => {
-      // Prevent duplicate listeners
-      trigger.removeEventListener('click', trigger._modalHandler);
-      trigger._modalHandler = function (e) {
-        e.preventDefault();
-        const svc = trigger.dataset.service || '';
-        modalCard.innerHTML = buildModalForm(svc);
-
-        const di = document.getElementById('b-date');
-        if (di) {
-          const tm = new Date(); tm.setDate(tm.getDate() + 1);
-          di.min = tm.toISOString().split('T')[0];
-        }
-
-        prefillPatientFields();
-
-        document.getElementById('booking-api-form')
-          ?.addEventListener('submit', handleBookingSubmit);
-
-        overlay.classList.add('active');
-        navList?.classList.remove('open');
-        navToggle?.classList.remove('active');
-      };
-      trigger.addEventListener('click', trigger._modalHandler);
+    // Close on backdrop click
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.classList.remove('active');
     });
 
-    // Close on X or backdrop click
-    overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('active'); };
-    overlay.querySelector?.('.modal-close-btn')?.addEventListener('click', () => overlay.classList.remove('active'));
+    // Close on X button click
+    const closeBtn = overlay.querySelector('.modal-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+    }
+
+    // Global event delegation for all static and dynamically added [data-open-modal] buttons
+    document.addEventListener('click', function(e) {
+      const trigger = e.target.closest('[data-open-modal]');
+      if (!trigger) return;
+
+      e.preventDefault();
+      const svc = trigger.dataset.service || '';
+      modalCard.innerHTML = buildModalForm(svc);
+
+      const di = document.getElementById('b-date');
+      if (di) {
+        const tm = new Date(); tm.setDate(tm.getDate() + 1);
+        di.min = tm.toISOString().split('T')[0];
+      }
+
+      prefillPatientFields();
+
+      document.getElementById('booking-api-form')
+        ?.addEventListener('submit', handleBookingSubmit);
+
+      overlay.classList.add('active');
+      navList?.classList.remove('open');
+      navToggle?.classList.remove('active');
+    });
   }
 
   // =========================================================
@@ -450,7 +461,7 @@
     span.style.alignItems = 'center';
     span.style.gap = '10px';
     span.innerHTML =
-      '<a href="' + API_URL + '/patient/" style="color:var(--color-plum);font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;">' +
+      '<a href="/patient/" style="color:var(--color-plum);font-weight:700;font-size:0.88rem;text-decoration:none;white-space:nowrap;">' +
       patient.firstName + ' \u25BC</a>' +
       '<a href="' + API_URL + '/api/patient/logout" onclick="event.preventDefault();fetch(this.href,{method:\'POST\',credentials:\'include\'}).then(function(){window.location.reload();}).catch(function(){});" style="color:var(--color-slate-500);font-size:0.82rem;text-decoration:none;">Logout</a>';
   }
@@ -629,7 +640,7 @@
       therapy: 'Book Session', preventive: 'Schedule', telehealth: 'Access Telehealth', diagnostic: 'Schedule Test'
     };
 
-    function esc(s) {
+    function escSvc(s) {
       if (!s) return '';
       var d = document.createElement('div');
       d.appendChild(document.createTextNode(s));
@@ -646,10 +657,10 @@
         var html = data.services.map(function(s) {
           var btn = s.category === 'telehealth'
             ? '<a href="telehealth.html" class="core-service-card__btn">Access Telehealth</a>'
-            : '<button class="core-service-card__btn" data-open-modal data-service="' + esc(s.name) + '">' + esc(CATEGORY_BTN[s.category] || 'Learn More') + '</button>';
+            : '<button class="core-service-card__btn" data-open-modal data-service="' + escSvc(s.name) + '">' + escSvc(CATEGORY_BTN[s.category] || 'Learn More') + '</button>';
           return '<div class="core-service-card">' +
-            '<h3 class="core-service-card__title">' + esc(s.name) + '</h3>' +
-            '<p class="core-service-card__desc">' + esc(s.description || '') + '</p>' +
+            '<h3 class="core-service-card__title">' + escSvc(s.name) + '</h3>' +
+            '<p class="core-service-card__desc">' + escSvc(s.description || '') + '</p>' +
             btn +
           '</div>';
         }).join('');
