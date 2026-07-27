@@ -957,10 +957,10 @@ a { text-decoration: none; }
 
 /* ================= FOOTER ================= */
 .footer {
-  background: var(--color-white);
-  color: var(--color-text);
+  background: linear-gradient(135deg, #092B52 0%, #371353 100%);
+  color: #FFFFFF;
   padding: 5rem 0 2rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-plum);
 }
 
 .footer-grid {
@@ -971,7 +971,7 @@ a { text-decoration: none; }
 }
 
 .footer-brand__desc {
-  color: var(--slate-600);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 0.875rem;
   margin-top: 1rem;
   line-height: 1.7;
@@ -981,7 +981,7 @@ a { text-decoration: none; }
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--slate-900);
+  color: #FFFFFF;
   margin-bottom: 1.25rem;
 }
 
@@ -995,22 +995,22 @@ a { text-decoration: none; }
 }
 
 .footer-links a {
-  color: var(--slate-600);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-size: 0.875rem;
   transition: color var(--transition-fast);
 }
 
-.footer-links a:hover { color: var(--color-plum); }
+.footer-links a:hover { color: #FFFFFF; }
 
 .footer-bottom {
   padding-top: 2rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: var(--slate-400);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 /* ================= RESPONSIVE ================= */
