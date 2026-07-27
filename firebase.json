@@ -52,13 +52,7 @@
         ]
       }
     ],
-    "redirects": [
-      {
-        "source": "/appointment",
-        "destination": "/appointment.html",
-        "type": 301
-      }
-    ],
+    "redirects": [],
     "rewrites": [
       {
         "source": "/api/**",
