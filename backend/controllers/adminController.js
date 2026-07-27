@@ -132,7 +132,7 @@ exports.login = async (req, res, next) => {
 
     const cookieOptions = {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
       maxAge: 15 * 60 * 1000,
@@ -140,7 +140,7 @@ exports.login = async (req, res, next) => {
     };
     const refreshCookieOptions = {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
       maxAge: 60 * 24 * 60 * 60 * 1000,
@@ -900,7 +900,7 @@ exports.refresh = async (req, res, next) => {
     const newToken = signToken(admin.id, admin.tokenVersion || 0);
     const cookieOptions = {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
       maxAge: 15 * 60 * 1000,
@@ -908,7 +908,7 @@ exports.refresh = async (req, res, next) => {
     };
     const refreshCookieOptions = {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
       maxAge: 60 * 24 * 60 * 60 * 1000,
@@ -928,7 +928,7 @@ exports.logout = async (req, res) => {
   if (req.admin) {
     await req.admin.update({ tokenVersion: (req.admin.tokenVersion || 0) + 1 });
   }
-  const cookieOptions = { httpOnly: true, sameSite: 'strict', path: '/' };
+  const cookieOptions = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', signed: true, path: '/' };
   res.clearCookie('token', cookieOptions);
   res.clearCookie('adminRefreshToken', cookieOptions);
   res.json({ success: true, message: 'Logged out successfully.' });

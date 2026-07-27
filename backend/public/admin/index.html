@@ -1772,7 +1772,7 @@ async function apiFetch(endpoint, method = 'GET', body = null, skipAuth = false)
   
   if (res.status === 401 && !skipAuth && endpoint !== '/admin/login' && endpoint !== '/admin/refresh') {
     try {
-      const refreshRes = await fetch(API + '/admin/refresh', { method: 'POST', credentials: 'include' });
+      const refreshRes = await fetch(API + '/refresh', { method: 'POST', credentials: 'include' });
       if (refreshRes.ok) {
         const refreshData = await refreshRes.json();
         if (refreshData.success && refreshData.token) {
