@@ -118,6 +118,13 @@
     </section>
   </main>
 
+  <!-- ===== UNIVERSAL BOOKING MODAL ===== -->
+  <div id="booking-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+
   <!-- ===== FOOTER ===== -->
 
   <footer class="footer">
@@ -212,7 +219,7 @@
       var catLabel = CATEGORY_LABEL[s.category] || s.category;
       var cta = s.category === 'telehealth'
         ? '<a href="/telehealth.html" class="btn btn--primary">Explore Telehealth</a>'
-        : '<a href="/appointment.html" class="btn btn--primary">' + esc(CATEGORY_CTA[s.category] || 'Book Now') + '</a>';
+        : '<a href="/appointment.html?service=' + encodeURIComponent(s.name) + '" class="btn btn--primary">' + esc(CATEGORY_CTA[s.category] || 'Book Now') + '</a>';
       var prepNote = s.requiresPreparation
         ? '<p style="font-size:0.85rem; color:var(--color-gold); font-weight:600; margin-bottom:1rem;">⚠ Preparation Required</p>'
         : '';
