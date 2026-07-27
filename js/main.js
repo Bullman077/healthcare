@@ -483,7 +483,10 @@
   function initPatientAuth() {
     if (patientAuthChecked) return Promise.resolve();
     patientAuthChecked = true;
-    return fetch(API_URL + '/api/patient/session', { credentials: 'include' })
+    var headers = { 'Content-Type': 'application/json' };
+    var token = localStorage.getItem('patientToken');
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return fetch(API_URL + '/api/patient/session', { credentials: 'include', headers: headers })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.success && data.patient) {
@@ -535,7 +538,10 @@
 
   // Re-check auth (no guard — used for bfcache restore)
   function refreshAuth() {
-    fetch(API_URL + '/api/patient/session', { credentials: 'include' })
+    var headers = { 'Content-Type': 'application/json' };
+    var token = localStorage.getItem('patientToken');
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    fetch(API_URL + '/api/patient/session', { credentials: 'include', headers: headers })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.success && data.patient) {
