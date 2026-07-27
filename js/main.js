@@ -174,9 +174,56 @@
     ].map(t => `<option value="${t}">${t}</option>`).join('');
 
     var loggedIn = window.currentPatient;
-    var badgeText = loggedIn
-      ? 'Welcome back, ' + loggedIn.firstName + ' \u2014 Booking as ' + loggedIn.firstName + ' ' + loggedIn.lastName
-      : 'Free Appointment \u2014 No Account Required';
+
+    if (loggedIn) {
+      return `
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <span class="badge badge--indigo" style="margin-bottom:0.5rem;">Welcome back, ${esc(loggedIn.firstName)} \u2014 Booking as ${esc(loggedIn.firstName)} ${esc(loggedIn.lastName)}</span>
+          <h3 style="font-size:1.75rem; font-weight:800; color:var(--color-navy);">Quick Book Appointment</h3>
+          <p style="font-size:0.9rem; color:var(--color-slate-500);">We already have your details. Just pick a service and time.</p>
+        </div>
+        <div id="booking-api-error" style="display:none; background:#fef2f2; border:1px solid #fca5a5; color:#991b1b; padding:12px 16px; border-radius:10px; font-size:13px; margin-bottom:14px;"></div>
+        <form id="booking-api-form" novalidate>
+          <div style="margin-bottom:1rem;">
+            <label style="display:block;font-weight:600;font-size:0.88rem;margin-bottom:0.4rem;color:var(--color-slate-800);">Service Requested *</label>
+            <select id="b-service" required style="width:100%;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid var(--color-slate-300);font-size:0.95rem;background:#fff;font-family:inherit;">
+              <option value="">-- Choose a Care Service --</option>
+              ${serviceOptions}
+            </select>
+            <div id="err-service" style="color:#dc2626;font-size:12px;margin-top:4px;display:none;"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+            <div>
+              <label style="display:block;font-weight:600;font-size:0.88rem;margin-bottom:0.4rem;color:var(--color-slate-800);">Preferred Date *</label>
+              <input type="date" id="b-date" required style="width:100%;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid var(--color-slate-300);font-size:0.95rem;font-family:inherit;">
+              <div id="err-date" style="color:#dc2626;font-size:12px;margin-top:4px;display:none;"></div>
+            </div>
+            <div>
+              <label style="display:block;font-weight:600;font-size:0.88rem;margin-bottom:0.4rem;color:var(--color-slate-800);">Preferred Time *</label>
+              <select id="b-time" required style="width:100%;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid var(--color-slate-300);font-size:0.95rem;background:#fff;font-family:inherit;">
+                <option value="">-- Select Time --</option>
+                ${timeSlots}
+              </select>
+              <div id="err-time" style="color:#dc2626;font-size:12px;margin-top:4px;display:none;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:1.5rem;">
+            <label style="display:block;font-weight:600;font-size:0.88rem;margin-bottom:0.4rem;color:var(--color-slate-800);">Notes / Reason for Visit <span style="font-weight:400;color:var(--color-slate-500)">(optional)</span></label>
+            <textarea id="b-message" rows="3" placeholder="Any specific symptoms or visit requests\u2026" style="width:100%;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid var(--color-slate-300);font-size:0.95rem;font-family:inherit;resize:vertical;"></textarea>
+          </div>
+          <button type="submit" id="b-submit-btn" class="btn btn--primary" style="width:100%;gap:8px;">
+            <span id="b-btn-text">Confirm Appointment Request</span>
+            <span id="b-btn-spin" style="display:none;align-items:center;gap:6px;">
+              <svg style="animation:uhsSpin .7s linear infinite;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+              Submitting\u2026
+            </span>
+          </button>
+        </form>
+        <style>@keyframes uhsSpin{to{transform:rotate(360deg)}}</style>
+      `;
+    }
+
+    var badgeText = 'Free Appointment \u2014 No Account Required';
     return `
       <div style="text-align:center; margin-bottom:1.5rem;">
         <span class="badge badge--indigo" style="margin-bottom:0.5rem;">${badgeText}</span>
@@ -227,16 +274,16 @@
         </div>
         <div style="margin-bottom:1.5rem;">
           <label style="display:block;font-weight:600;font-size:0.88rem;margin-bottom:0.4rem;color:var(--color-slate-800);">Additional Notes <span style="font-weight:400;color:var(--color-slate-500)">(optional)</span></label>
-          <textarea id="b-message" rows="3" placeholder="Any health history or questions…" style="width:100%;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid var(--color-slate-300);font-size:0.95rem;font-family:inherit;resize:vertical;"></textarea>
+          <textarea id="b-message" rows="3" placeholder="Any health history or questions\u2026" style="width:100%;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid var(--color-slate-300);font-size:0.95rem;font-family:inherit;resize:vertical;"></textarea>
         </div>
         <button type="submit" id="b-submit-btn" class="btn btn--primary" style="width:100%;gap:8px;">
           <span id="b-btn-text">Confirm Appointment Request</span>
           <span id="b-btn-spin" style="display:none;align-items:center;gap:6px;">
             <svg style="animation:uhsSpin .7s linear infinite;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-            Submitting…
+            Submitting\u2026
           </span>
         </button>
-        <p style="text-align:center;font-size:0.8rem;color:var(--color-slate-400);margin-top:0.75rem;">${loggedIn ? '' : `Already have a patient account? <a href="/patient/" style="color:var(--color-teal);font-weight:600;text-decoration:none;">Sign in to your portal \u2192</a>`}</p>
+        <p style="text-align:center;font-size:0.8rem;color:var(--color-slate-400);margin-top:0.75rem;">Already have a patient account? <a href="/patient/" style="color:var(--color-teal);font-weight:600;text-decoration:none;">Sign in to your portal \u2192</a></p>
       </form>
       <style>@keyframes uhsSpin{to{transform:rotate(360deg)}}</style>
     `;
@@ -311,9 +358,10 @@
     if (errBanner) errBanner.style.display = 'none';
 
     const val = id => document.getElementById(id)?.value?.trim() || '';
-    const name    = val('b-name');
-    const phone   = val('b-phone');
-    const email   = val('b-email');
+    var loggedIn = window.currentPatient;
+    const name    = loggedIn ? (loggedIn.firstName + ' ' + loggedIn.lastName) : val('b-name');
+    const phone   = loggedIn ? (loggedIn.phone || '') : val('b-phone');
+    const email   = loggedIn ? (loggedIn.email || '') : val('b-email');
     const service = val('b-service');
     const date    = val('b-date');
     const time    = val('b-time');
@@ -327,9 +375,11 @@
       ok = false;
     };
 
-    if (name.length < 2)  fieldErr('err-name',    'Please enter your full name (min 2 characters).');
-    if (!phone)           fieldErr('err-phone',   'Phone number is required.');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fieldErr('err-email', 'Please enter a valid email address.');
+    if (!loggedIn) {
+      if (name.length < 2)  fieldErr('err-name',    'Please enter your full name (min 2 characters).');
+      if (!phone)           fieldErr('err-phone',   'Phone number is required.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fieldErr('err-email', 'Please enter a valid email address.');
+    }
     if (!service)         fieldErr('err-service', 'Please select a service.');
     if (!date) {
       fieldErr('err-date', 'Please select a date.');
@@ -351,11 +401,13 @@
 
     try {
       // Book appointment directly — no account required
-      const res  = await fetch(API_BASE, {
+      const fetchOpts = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, email, service, date, time, message }),
-      });
+      };
+      if (loggedIn) fetchOpts.credentials = 'include';
+      const res  = await fetch(API_BASE, fetchOpts);
       const data = await res.json();
 
       if (res.ok && data.success) {
