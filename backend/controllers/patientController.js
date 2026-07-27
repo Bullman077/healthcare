@@ -36,14 +36,14 @@ async function sendPatientToken(patient, statusCode, res) {
   const cookieOptions = {
     maxAge: 15 * 60 * 1000, // 15 minutes
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: isProd,
     path: '/',
   };
   const refreshCookieOptions = {
     maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
     httpOnly: true,
-    sameSite: 'strict',
+    sameSite: 'lax',
     secure: isProd,
     path: '/',
   };
@@ -194,7 +194,7 @@ exports.logoutPatient = async (req, res) => {
   if (req.patient) {
     await req.patient.update({ tokenVersion: (req.patient.tokenVersion || 0) + 1 });
   }
-  const cookieOptions = { httpOnly: true, sameSite: 'strict', path: '/' };
+  const cookieOptions = { httpOnly: true, sameSite: 'lax', path: '/' };
   res.cookie('patientToken', 'none', { ...cookieOptions, maxAge: 5 * 1000 });
   res.cookie('patientRefreshToken', 'none', { ...cookieOptions, maxAge: 5 * 1000 });
   res.json({ success: true, message: 'Logged out successfully.' });
@@ -307,14 +307,14 @@ exports.refresh = async (req, res, next) => {
     const cookieOptions = {
       maxAge: 15 * 60 * 1000,
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
     };
     const refreshCookieOptions = {
       maxAge: 60 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
     };
@@ -332,7 +332,7 @@ exports.logout = async (req, res) => {
   if (req.patient) {
     await req.patient.update({ tokenVersion: (req.patient.tokenVersion || 0) + 1 });
   }
-  const cookieOptions = { httpOnly: true, sameSite: 'strict', path: '/' };
+  const cookieOptions = { httpOnly: true, sameSite: 'lax', path: '/' };
   res.clearCookie('patientToken', cookieOptions);
   res.clearCookie('patientRefreshToken', cookieOptions);
   res.json({ success: true, message: 'Logged out successfully.' });
