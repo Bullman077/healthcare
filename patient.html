@@ -250,63 +250,67 @@
     </div>
 
      <!-- ===== FOOTER ===== -->
-     <footer class="footer">
-       <div class="container">
-         <div class="footer-grid">
-           <div>
-             <a href="/patient/" class="nav__logo" style="margin-bottom:1rem; display:inline-flex;">
-               <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='/assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
-               <div style="display:flex; flex-direction:column; justify-content:center;">
-                 <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
-                 <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
-               </div>
-             </a>
-             <p class="footer-brand__desc">
-               Unmeasurable Heights of Strength Healthcare Services. Dedicated compassionate care by Nacole Brown, MSN, AGPCNP-BC in Columbia, SC.
-             </p>
-           </div>
-           <div>
-             <h4 class="footer-column__title">Quick Links</h4>
-             <ul class="footer-links">
-               <li><a href="/">Home</a></li>
-               <li><a href="/services.html">Medical Services</a></li>
-               <li><a href="/telehealth.html">Virtual Telehealth</a></li>
-               <li><a href="/about.html">About NP Brown</a></li>
-               <li><a href="/contact.html">Contact Us</a></li>
-             </ul>
-           </div>
-           <div>
-             <h4 class="footer-column__title">Services</h4>
-             <ul class="footer-links">
-               <li><a href="/services.html">Primary &amp; Preventive Care</a></li>
-               <li><a href="/services.html">Medical Weight Loss</a></li>
-               <li><a href="/services.html">DOT &amp; Sports Physicals</a></li>
-               <li><a href="/telehealth.html">Telehealth Consults</a></li>
-               <li><a href="/services.html">Iontophoresis Patch Therapy</a></li>
-             </ul>
-           </div>
-           <div>
-             <h4 class="footer-column__title">Contact &amp; Clinic</h4>
-             <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:1rem;">
-                2638 Two Notch Rd, Suite 210 Unit 10<br>Columbia, SC 29204<br><br>
-                <strong>Phone:</strong> (803) 381-7489<br>
-                <strong>Email:</strong> info@uhshealthcare.com
-              </p>
-           </div>
-         </div>
-           <div style="text-align:center; padding:1rem 0; border-top:1px solid rgba(255,255,255,0.15); margin-top:0.5rem;">
-             <span style="font-family:'Dancing Script', cursive; font-size:1.15rem; color:var(--color-gold, #F59E0B);">Rising Above. Empowering Wellness. Serving Our Community.</span>
-           </div>
-
-           <div class="footer-bottom">
-             <div>&copy; 2026 Unmeasurable Heights of Strength Healthcare Services. All rights reserved.</div>
-             <div style="display:flex; gap:1.5rem;">
-               <a href="/privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
-               <a href="/terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
-             </div>
-           </div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="nav__logo" style="margin-bottom:1rem;">
+            <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+              <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
+              <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+            </div>
+          </div>
+          <p class="footer-brand__desc" id="footer-brand-desc" data-content="footer_brand_desc">
+            Unmeasurable Heights of Strength Healthcare Services. Dedicated compassionate care by Nacole Brown, MSN AGPCNP-BC in Columbia, SC.
+          </p>
         </div>
-      </footer>
+
+        <div>
+          <h4 class="footer-column__title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#pricing">Membership Plans</a></li>
+            <li><a href="services.html">Medical Services</a></li>
+            <li><a href="telehealth.html">Virtual Telehealth</a></li>
+            <li><a href="about.html">About NP Brown</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-column__title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="services.html">Primary &amp; Preventive Care</a></li>
+            <li><a href="services.html">Medical Weight Loss</a></li>
+            <li><a href="services.html">DOT &amp; Sports Physicals</a></li>
+            <li><a href="telehealth.html">Telehealth Consults</a></li>
+            <li><a href="services.html">Iontophoresis Patch Therapy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-column__title">Contact &amp; Clinic</h4>
+          <p style="font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:1rem;">
+            <span id="footer-clinic-address">2638 Two Notch Rd, Suite 210 Unit 10<br>Columbia, SC 29204</span><br><br>
+            <strong>Phone:</strong> <span id="footer-clinic-phone">(803) 381-7489</span><br>
+            <strong>Email:</strong> <span id="footer-clinic-email">info@uhshealthcare.com</span>
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align:center; padding:1rem 0; border-top:1px solid rgba(255,255,255,0.15); margin-top:0.5rem;">
+        <span style="font-family:'Dancing Script', cursive; font-size:1.15rem; color:var(--color-gold, #F59E0B);">Rising Above. Empowering Wellness. Serving Our Community.</span>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Unmeasurable Heights of Strength Healthcare Services. All rights reserved.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
+          <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
     </div>
 
   <!-- ================= APPOINTMENT DETAIL POPUP ================= -->
