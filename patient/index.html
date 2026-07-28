@@ -401,22 +401,37 @@
 
   <script>
     let isRegisterMode = false;
-    const API_BASE = window.API_URL || 'https://uhs-backen.onrender.com';
-    const API = API_BASE + '/api/patient';
+    const PRIMARY_API = '/api/patient';
+    const FALLBACK_API = (window.API_URL || 'https://uhs-backen.onrender.com') + '/api/patient';
 
     async function apiFetch(endpoint, options = {}) {
-      const url = API + endpoint;
-      const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+      const requestInit = {
+        ...options,
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        credentials: 'include',
+      };
+
       const token = localStorage.getItem('patientToken');
       if (token) {
-        headers['Authorization'] = 'Bearer ' + token;
+        requestInit.headers.Authorization = 'Bearer ' + token;
       }
-      const res = await fetch(url, {
-        ...options,
-        headers,
-        credentials: 'include',
-      });
-      return res;
+
+      const targets = [PRIMARY_API + endpoint, FALLBACK_API + endpoint];
+      let lastError = null;
+
+      for (let i = 0; i < targets.length; i += 1) {
+        try {
+          const response = await fetch(targets[i], requestInit);
+          if (response.status === 404 && i < targets.length - 1) {
+            continue;
+          }
+          return response;
+        } catch (error) {
+          lastError = error;
+        }
+      }
+
+      throw lastError || new Error('Unable to reach the patient portal API.');
     }
 
     function toggleAuthMode() {
@@ -485,7 +500,13 @@
           credentials: 'include',
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
+        const raw = await res.text();
+        let data = {};
+        try {
+          data = raw ? JSON.parse(raw) : {};
+        } catch (parseError) {
+          data = { success: false, message: raw || 'Authentication failed.' };
+        }
         if (data.success) {
           if (data.token) {
             localStorage.setItem('patientToken', data.token);
