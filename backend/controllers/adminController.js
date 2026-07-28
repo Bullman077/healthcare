@@ -143,7 +143,7 @@ exports.login = async (req, res, next) => {
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
-      maxAge: 60 * 24 * 60 * 60 * 1000,
+      maxAge: 8 * 60 * 60 * 1000,
       path: '/',
     };
     res.cookie('token', token, cookieOptions);
@@ -920,7 +920,7 @@ exports.refresh = async (req, res, next) => {
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       signed: true,
-      maxAge: 60 * 24 * 60 * 60 * 1000,
+      maxAge: 8 * 60 * 60 * 1000,
       path: '/',
     };
     res.cookie('token', newToken, cookieOptions);

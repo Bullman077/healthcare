@@ -41,7 +41,7 @@ async function sendPatientToken(patient, statusCode, res) {
     path: '/',
   };
   const refreshCookieOptions = {
-    maxAge: 60 * 24 * 60 * 60 * 1000, // 60 days
+    maxAge: 8 * 60 * 60 * 1000, // 8 hours
     httpOnly: true,
     sameSite: 'lax',
     secure: isProd,
@@ -351,7 +351,7 @@ exports.refresh = async (req, res, next) => {
       path: '/',
     };
     const refreshCookieOptions = {
-      maxAge: 60 * 24 * 60 * 60 * 1000,
+      maxAge: 8 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',

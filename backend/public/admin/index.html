@@ -1770,15 +1770,14 @@ async function apiFetch(endpoint, method = 'GET', body = null, skipAuth = false)
   
   let res = await fetch(API + endpoint, opts);
   
-  if (res.status === 401 && !skipAuth && endpoint !== '/admin/login' && endpoint !== '/admin/refresh') {
+   if (res.status === 401 && !skipAuth && endpoint !== '/login' && endpoint !== '/refresh') {
     try {
       const refreshRes = await fetch(API + '/refresh', { method: 'POST', credentials: 'include' });
       if (refreshRes.ok) {
         const refreshData = await refreshRes.json();
-        if (refreshData.success && refreshData.token) {
-          state.token = refreshData.token;
-          localStorage.setItem('adminToken', refreshData.token);
-          opts.headers['Authorization'] = 'Bearer ' + state.token;
+         if (refreshData.success && refreshData.token) {
+           state.token = refreshData.token;
+           opts.headers['Authorization'] = 'Bearer ' + state.token;
           res = await fetch(API + endpoint, opts); // Retry original request
         } else {
           logout();
@@ -3743,28 +3742,42 @@ function badgeHtml(status) {
 
 /* =========================================================
    SESSION RESTORE — check cookie-based session on page load
+   Only restore session on refresh (F5/ctrl+R), not on normal
+   navigation or back/forward. This ensures users must re-login
+   after navigating away from the admin dashboard.
    ========================================================= */
 window.addEventListener('DOMContentLoaded', async () => {
   // Show preloader while checking session
   const preloader = document.getElementById('sessionPreloader');
-  try {
-    const res = await fetch(API + '/me', { credentials: 'include' });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.admin) {
-        state.admin = data.admin;
-        // Fade out preloader, then show app
-        if (preloader) {
-          preloader.classList.add('fade-out');
-          setTimeout(() => preloader.remove(), 300);
+  
+  // Determine navigation type:
+  // 0 = normal navigation (entering from another page or new tab)
+  // 1 = reload (F5/ctrl+R)
+  // 2 = back/forward
+  const navType = (performance.navigation && performance.navigation.type) || 0;
+  
+  // Only restore session on refresh — not on initial navigation or back/forward
+  if (navType === 1) {
+    try {
+      const res = await fetch(API + '/me', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.admin) {
+          state.admin = data.admin;
+          // Fade out preloader, then show app
+          if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => preloader.remove(), 300);
+          }
+          showApp(data.admin);
+          document.getElementById('app').classList.add('view-enter');
+          return;
         }
-        showApp(data.admin);
-        document.getElementById('app').classList.add('view-enter');
-        return;
       }
-    }
-  } catch (e) { /* not logged in */ }
-  // Not logged in — fade out preloader, show login
+    } catch (e) { /* not logged in */ }
+  }
+  
+  // Not logged in or navigated away — fade out preloader, show login
   if (preloader) {
     preloader.classList.add('fade-out');
     setTimeout(() => preloader.remove(), 300);
