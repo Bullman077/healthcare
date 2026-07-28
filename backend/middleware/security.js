@@ -42,14 +42,19 @@ function csrfProtect(req, res, next) {
   const origin = req.headers.origin;
   const referer = req.headers.referer;
 
-  // Allow requests with no origin/referer (e.g. server-to-server, curl)
+  // Allow requests with no origin/referer (e.g. server-to-server, Firebase proxy, curl)
   if (!origin && !referer) {
-    // In production, reject requests without origin/referer for mutating methods
-    if (process.env.NODE_ENV === 'production') {
-      return next(new AppError('CSRF: Request origin is required.', 403));
+    // Firebase Hosting rewrites forward requests without Origin/Referer headers.
+    // Allow these by checking for the x-forwarded-for header (set by Firebase/Render proxies)
+    const forwardedFor = req.headers['x-forwarded-for'];
+    if (forwardedFor) {
+      return next();
     }
-    // In development, allow (for Postman, curl testing)
-    return next();
+    // In development, allow all (for Postman, curl testing)
+    if (process.env.NODE_ENV !== 'production') {
+      return next();
+    }
+    return next(new AppError('CSRF: Request origin is required.', 403));
   }
 
   const source = origin || referer;
