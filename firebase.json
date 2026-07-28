@@ -18,8 +18,7 @@
       "ecosystem.config.js",
       "package-lock.json",
       "package.json",
-      "robots.txt",
-      "sitemap.xml"
+
     ],
     "cleanUrls": true,
     "trailingSlash": false,
