@@ -53,6 +53,7 @@ async function sendPatientToken(patient, statusCode, res) {
 
   res.status(statusCode).json({
     success: true,
+    token,
     patient: {
       id: patient.id,
       firstName: patient.firstName,
@@ -360,7 +361,7 @@ exports.refresh = async (req, res, next) => {
     res.cookie('patientToken', newToken, cookieOptions);
     res.cookie('patientRefreshToken', newRefreshToken, refreshCookieOptions);
 
-    res.json({ success: true });
+    res.json({ success: true, token: newToken });
   } catch (err) {
     next(err);
   }
