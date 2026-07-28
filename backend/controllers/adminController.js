@@ -875,6 +875,10 @@ exports.uploadProfilePhoto = [
       admin.profilePhoto = `/uploads/profiles/${req.file.filename}`;
       await admin.save({ fields: ['profilePhoto'] });
 
+      // Sync provider_photo_url setting so the about/homepage shows the updated photo
+      const { Setting } = require('../models');
+      await Setting.upsert({ key: 'provider_photo_url', value: admin.profilePhoto });
+
       await logAudit(req.admin, 'upload_photo', 'profile', admin.id, { filename: req.file.filename }, req);
 
       res.json({
