@@ -17,9 +17,7 @@
       "Dockerfile",
       "ecosystem.config.js",
       "package-lock.json",
-      "package.json",
-      "robots.txt",
-      "sitemap.xml"
+      "package.json"
     ],
     "cleanUrls": true,
     "trailingSlash": false,
