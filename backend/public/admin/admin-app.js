@@ -8,6 +8,7 @@
     settings: {},
     isLoading: false,
     currentPage: 'dashboard',
+    currentSettingsTab: 'home',
     appointments: [],
     patients: [],
     services: [],
@@ -116,6 +117,184 @@
     return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
   }
 
+  const SETTINGS_TABS = [
+    {
+      id: 'home',
+      title: 'Home',
+      description: 'Homepage hero, provider, and brand copy.',
+      icon: 'home',
+      fields: [
+        { key: 'clinic_name', label: 'Clinic Name', type: 'text' },
+        { key: 'clinic_phone', label: 'Clinic Phone', type: 'text' },
+        { key: 'clinic_email', label: 'Clinic Email', type: 'email' },
+        { key: 'clinic_address', label: 'Clinic Address', type: 'textarea', wide: true },
+        { key: 'clinic_tagline', label: 'Clinic Tagline', type: 'text' },
+        { key: 'footer_brand_desc', label: 'Footer Brand Description', type: 'textarea', wide: true },
+        { key: 'provider_name', label: 'Provider Name', type: 'text' },
+        { key: 'provider_credentials', label: 'Provider Credentials', type: 'text' },
+        {
+          key: 'provider_photo_url',
+          label: 'Provider Photo URL',
+          type: 'text',
+          wide: true,
+          hint: 'This same image appears on the public About page and the profile header.',
+        },
+        { key: 'homepage_provider_quote', label: 'Provider Quote', type: 'textarea', wide: true },
+        { key: 'hero_floating_name', label: 'Hero Floating Name', type: 'text' },
+        { key: 'hero_floating_title', label: 'Hero Floating Title', type: 'text' },
+      ],
+    },
+    {
+      id: 'telehealth',
+      title: 'Telehealth',
+      description: 'Virtual care page copy and treatment details.',
+      icon: 'telehealth',
+      fields: [
+        { key: 'telehealth_hero_badge', label: 'Hero Badge', type: 'text' },
+        { key: 'telehealth_hero_title', label: 'Hero Title', type: 'textarea', wide: true },
+        { key: 'telehealth_hero_text', label: 'Hero Text', type: 'textarea', wide: true },
+        { key: 'telehealth_steps_subtitle', label: 'Steps Subtitle', type: 'text' },
+        { key: 'telehealth_steps_title', label: 'Steps Title', type: 'text' },
+        { key: 'telehealth_steps_desc', label: 'Steps Description', type: 'textarea', wide: true },
+        { key: 'telehealth_step1_title', label: 'Step 1 Title', type: 'text' },
+        { key: 'telehealth_step1_desc', label: 'Step 1 Description', type: 'textarea', wide: true },
+        { key: 'telehealth_step2_title', label: 'Step 2 Title', type: 'text' },
+        { key: 'telehealth_step2_desc', label: 'Step 2 Description', type: 'textarea', wide: true },
+        { key: 'telehealth_step3_title', label: 'Step 3 Title', type: 'text' },
+        { key: 'telehealth_step3_desc', label: 'Step 3 Description', type: 'textarea', wide: true },
+        { key: 'telehealth_conditions_subtitle', label: 'Conditions Subtitle', type: 'text' },
+        { key: 'telehealth_conditions_title', label: 'Conditions Title', type: 'text' },
+        { key: 'telehealth_conditions_desc', label: 'Conditions Description', type: 'textarea', wide: true },
+      ],
+    },
+    {
+      id: 'contact',
+      title: 'Contact',
+      description: 'Contact page callouts and public contact details.',
+      icon: 'contact',
+      fields: [
+        { key: 'contact_badge', label: 'Contact Badge', type: 'text' },
+        { key: 'contact_heading', label: 'Contact Heading', type: 'text' },
+        { key: 'contact_intro', label: 'Contact Intro', type: 'textarea', wide: true },
+        { key: 'clinic_phone', label: 'Clinic Phone', type: 'text' },
+        { key: 'clinic_email', label: 'Clinic Email', type: 'email' },
+        { key: 'clinic_address', label: 'Clinic Address', type: 'textarea', wide: true },
+        { key: 'clinic_hours', label: 'Clinic Hours', type: 'textarea', wide: true },
+      ],
+    },
+  ];
+
+  function getSettingValue(key) {
+    return adminState.settings[key] ?? '';
+  }
+
+  function getProviderPhotoUrl() {
+    return String(adminState.settings.provider_photo_url || adminState.admin?.profilePhoto || '').trim();
+  }
+
+  function renderSettingsField(field) {
+    const fieldId = `set_${field.key}`;
+    const value = escapeHtml(getSettingValue(field.key));
+    const fieldClass = field.wide ? 'visual-field settings-field settings-field--wide' : 'visual-field settings-field';
+    const control = field.type === 'textarea'
+      ? `<textarea id="${fieldId}" rows="${field.rows || 4}">${value}</textarea>`
+      : `<input id="${fieldId}" type="${field.type || 'text'}" value="${value}">`;
+    return `
+      <div class="${fieldClass}">
+        <label for="${fieldId}">${escapeHtml(field.label)}</label>
+        ${control}
+        ${field.hint ? `<div class="field-hint">${escapeHtml(field.hint)}</div>` : ''}
+      </div>
+    `;
+  }
+
+  function activateSettingsTab(tabId) {
+    adminState.currentSettingsTab = tabId;
+    const panel = document.getElementById('settingsPage');
+    if (!panel) return;
+
+    panel.querySelectorAll('[data-settings-tab]').forEach((item) => {
+      item.classList.toggle('active', item.dataset.settingsTab === tabId);
+    });
+    panel.querySelectorAll('[data-settings-pane]').forEach((pane) => {
+      pane.classList.toggle('active', pane.dataset.settingsPane === tabId);
+    });
+  }
+
+  function renderSettingsPanel(activeTab = adminState.currentSettingsTab || 'home') {
+    const panel = document.getElementById('settingsPage');
+    if (!panel) return;
+
+    adminState.currentSettingsTab = activeTab;
+
+    panel.innerHTML = `
+      <div class="settings-shell__intro">
+        <div>
+          <div class="settings-kicker">Public site sync</div>
+          <h2>Site Settings</h2>
+          <p>Manage the content that feeds the Home, Telehealth, and Contact pages.</p>
+        </div>
+        <div class="settings-hero-note">
+          <strong>Shared provider photo</strong>
+          <span>The photo below is the same image shown on the public About page and in the admin profile.</span>
+        </div>
+      </div>
+      <form id="settingsForm" class="settings-panel">
+        <div class="settings-nav" role="tablist" aria-label="Settings sections">
+          ${SETTINGS_TABS.map((tab) => `
+            <button type="button" class="settings-nav-item${tab.id === activeTab ? ' active' : ''}" data-settings-tab="${tab.id}" aria-controls="settings-pane-${tab.id}">
+              <span>${escapeHtml(tab.title)}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-body">
+          ${SETTINGS_TABS.map((tab) => `
+            <section class="settings-section-pane${tab.id === activeTab ? ' active' : ''}" id="settings-pane-${tab.id}" data-settings-pane="${tab.id}">
+              <div class="section-editor">
+                <div class="section-editor-header">
+                  <div class="section-editor-icon ${tab.icon === 'telehealth' ? 'indigo' : tab.icon === 'contact' ? 'teal' : 'navy'}">
+                    ${tab.icon === 'telehealth'
+                      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v10H7l-3 3V5z"></path></svg>'
+                      : tab.icon === 'contact'
+                        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>'
+                        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5 10.5V20h14v-9.5"></path></svg>'}
+                  </div>
+                  <div>
+                    <div class="section-editor-title">${escapeHtml(tab.title)}</div>
+                    <div class="section-editor-subtitle">${escapeHtml(tab.description)}</div>
+                  </div>
+                </div>
+                <div class="section-editor-body">
+                  <div class="visual-fields visual-fields--2col">
+                    ${tab.fields.map((field) => renderSettingsField(field)).join('')}
+                  </div>
+                </div>
+              </div>
+            </section>
+          `).join('')}
+
+          <div class="save-bar">
+            <div class="save-bar-msg" id="settingsMsg">Changes are saved to the public website.</div>
+            <button class="save-btn" type="submit">Save Settings</button>
+          </div>
+        </div>
+      </form>
+    `;
+
+    panel.querySelectorAll('[data-settings-tab]').forEach((button) => {
+      button.addEventListener('click', () => activateSettingsTab(button.dataset.settingsTab));
+    });
+
+    panel.querySelector('#settingsForm')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      saveSettings();
+    });
+
+    activateSettingsTab(activeTab);
+    populateSettingsForm();
+  }
+
   function bridgeSettingsToUI() {
     document.querySelectorAll('[data-content], [data-content-html], [data-content-href]').forEach((el) => {
       const key = el.dataset.content || el.dataset.contentHtml || el.dataset.contentHref || el.id;
@@ -139,6 +318,7 @@
   function renderProfilePanel() {
     const panel = document.getElementById('profilePage');
     if (!panel || !adminState.profile) return;
+    const sharedPhoto = getProviderPhotoUrl();
 
     panel.innerHTML = `
       <form id="profileForm" class="profile-shell">
@@ -148,11 +328,13 @@
             <div class="profile-header-card" style="margin-bottom:24px;">
               <div class="profile-header-content">
                 <div class="profile-photo-wrapper" style="background:var(--slate-100);">
-                  ${adminState.profile.profilePhoto ? `<img class="profile-photo-img" src="${escapeHtml(adminState.profile.profilePhoto)}" alt="Profile photo">` : `<div class="profile-avatar-lg">${escapeHtml(getAvatarText(adminState.profile.name))}</div>`}
+                  ${sharedPhoto ? `<img class="profile-photo-img" src="${escapeHtml(sharedPhoto)}" alt="Clinic profile photo">` : `<div class="profile-avatar-lg">${escapeHtml(getAvatarText(adminState.profile.name))}</div>`}
+                  <div class="profile-photo-overlay">Shared photo<br>public About page</div>
                 </div>
                 <div class="profile-header-info">
                   <h3 class="profile-header-name">${escapeHtml(adminState.profile.name || '')}</h3>
                   <div class="profile-role-badge">${escapeHtml(adminState.profile.role || 'admin')}</div>
+                  <div class="profile-photo-sync-note">Changes here update the same image used publicly on the About page.</div>
                 </div>
               </div>
             </div>
@@ -170,7 +352,7 @@
                     <input id="profileEmailInput" class="form-input profile-field-input" type="email" value="${escapeHtml(adminState.profile.email || '')}">
                   </div>
                   <div class="profile-field">
-                    <label class="profile-field-label" for="profilePhotoInput">Profile Photo</label>
+                    <label class="profile-field-label" for="profilePhotoInput">Public About Photo</label>
                     <input id="profilePhotoInput" class="form-input profile-field-input" type="file" accept="image/*">
                     <small class="profile-field-note">PNG, JPG, GIF, or WebP under 5 MB.</small>
                   </div>
@@ -254,7 +436,7 @@
       const data = await response.json();
       if (response.ok && data.success) {
         showToast('Profile photo updated.');
-        await loadProfileData();
+        await Promise.all([loadSettings(), loadProfileData()]);
       } else {
         showToast(data?.message || 'Photo upload failed.', 'danger');
       }
@@ -272,12 +454,16 @@
   async function loadSettings() {
     if (adminState.isLoading) return;
     adminState.isLoading = true;
+    renderSettingsPanel(adminState.currentSettingsTab || 'home');
     try {
       const { response, data } = await requestJson(API + '/settings');
       if (response.ok && data.success) {
         adminState.settings = data.data || data.settings || {};
+        renderSettingsPanel(adminState.currentSettingsTab || 'home');
         bridgeSettingsToUI();
-        populateSettingsForm();
+        if (adminState.currentPage === 'profile' && adminState.profile) {
+          renderProfilePanel();
+        }
       }
     } catch (error) {
       console.error(error);
@@ -308,13 +494,26 @@
       });
       if (response.ok && data.success) {
         adminState.settings = data.data || settings;
+        renderSettingsPanel(adminState.currentSettingsTab || 'home');
         bridgeSettingsToUI();
-        populateSettingsForm();
+        if (adminState.currentPage === 'profile' && adminState.profile) {
+          renderProfilePanel();
+        }
         showToast('Settings saved successfully.');
         const msg = document.getElementById('settingsMsg');
-        if (msg) msg.textContent = 'Settings saved.';
+        if (msg) {
+          msg.textContent = 'Settings saved and synced to the public site.';
+          msg.classList.add('success');
+          msg.classList.remove('error');
+        }
       } else {
         showToast(data?.message || 'Save failed.', 'danger');
+        const msg = document.getElementById('settingsMsg');
+        if (msg) {
+          msg.textContent = data?.message || 'Save failed.';
+          msg.classList.add('error');
+          msg.classList.remove('success');
+        }
       }
     } catch (error) {
       console.error(error);
@@ -1109,6 +1308,9 @@
       adminState.profile = data.admin;
       updateTopbar(data.admin);
       renderProfilePanel();
+      if (adminState.currentPage === 'settings') {
+        renderSettingsPanel(adminState.currentSettingsTab || 'home');
+      }
     }
   }
 

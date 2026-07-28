@@ -217,61 +217,8 @@
 
       <section class="page-section" data-page-section="settings">
         <div class="card settings-card">
-          <div class="settings-header">
-            <h2>Site Settings</h2>
-            <p>Update the content that syncs to the public website.</p>
-          </div>
-          <div class="settings-divider"></div>
-          <div class="settings-body">
-            <form class="settings-panel" id="settingsForm">
-              <div class="visual-fields visual-fields--2col">
-                <div class="visual-field">
-                  <label for="set_clinic_name">Clinic Name</label>
-                  <input id="set_clinic_name" type="text">
-                </div>
-                <div class="visual-field">
-                  <label for="set_clinic_phone">Clinic Phone</label>
-                  <input id="set_clinic_phone" type="text">
-                </div>
-                <div class="visual-field">
-                  <label for="set_clinic_email">Clinic Email</label>
-                  <input id="set_clinic_email" type="email">
-                </div>
-                <div class="visual-field">
-                  <label for="set_clinic_address">Clinic Address</label>
-                  <textarea id="set_clinic_address"></textarea>
-                </div>
-                <div class="visual-field">
-                  <label for="set_footer_brand_desc">Footer Brand Description</label>
-                  <textarea id="set_footer_brand_desc"></textarea>
-                </div>
-                <div class="visual-field">
-                  <label for="set_provider_name">Provider Name</label>
-                  <input id="set_provider_name" type="text">
-                </div>
-                <div class="visual-field">
-                  <label for="set_provider_credentials">Provider Credentials</label>
-                  <input id="set_provider_credentials" type="text">
-                </div>
-                <div class="visual-field">
-                  <label for="set_provider_photo_url">Provider Photo URL</label>
-                  <input id="set_provider_photo_url" type="text">
-                </div>
-                <div class="visual-field" style="grid-column: 1 / -1;">
-                  <label for="set_testimonialText">Homepage Testimonial</label>
-                  <textarea id="set_testimonialText"></textarea>
-                </div>
-                <div class="visual-field">
-                  <label for="set_testimonialAuthor">Testimonial Author</label>
-                  <input id="set_testimonialAuthor" type="text">
-                </div>
-              </div>
-
-              <div class="save-bar">
-                <div class="save-bar-msg" id="settingsMsg">Changes are saved to the public website.</div>
-                <button class="save-btn" type="submit">Save Settings</button>
-              </div>
-            </form>
+          <div id="settingsPage" class="settings-shell">
+            <div class="empty-state">Loading settings...</div>
           </div>
         </div>
       </section>

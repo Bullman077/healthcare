@@ -131,6 +131,17 @@
     justify-content: center;
   }
 
+  .hero.hero--page {
+    padding: 120px 0 52px;
+  }
+
+  .hero.hero--page .container,
+  .page-header.page-header--panel .container,
+  .privacy-content,
+  #terms-article-body {
+    border-radius: 20px;
+  }
+
   .hero__stats {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
@@ -327,6 +338,13 @@
 
   .hero__text {
     font-size: 0.95rem !important;
+  }
+
+  .hero.hero--page .container,
+  .page-header.page-header--panel .container,
+  .privacy-content,
+  #terms-article-body {
+    padding: 1.25rem !important;
   }
 
   .section {
