@@ -60,7 +60,9 @@
 
         <div class="sidebar-section-label">Content</div>
         <button class="nav-item" data-page="testimonials"><span class="nav-icon">★</span>Testimonials</button>
+        <button class="nav-item" data-page="services"><span class="nav-icon">🩺</span>Services</button>
         <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span>Settings</button>
+        <button class="nav-item" data-page="audit-logs"><span class="nav-icon">🧾</span>Audit Logs</button>
         <button class="nav-item" data-page="profile"><span class="nav-icon">◉</span>Profile</button>
       </div>
 
@@ -158,8 +160,8 @@
       <section class="page-section" data-page-section="appointments">
         <div class="card">
           <div class="card-header"><div class="card-title">Appointments</div></div>
-          <div class="card-body" style="padding:24px;">
-            <div class="empty-state" id="appointmentsEmpty">Use the dashboard to review recent appointments.</div>
+          <div class="card-body" id="appointmentsPage" style="padding:24px;">
+            <div class="empty-state">Loading appointments...</div>
           </div>
         </div>
       </section>
@@ -167,8 +169,8 @@
       <section class="page-section" data-page-section="patients">
         <div class="card">
           <div class="card-header"><div class="card-title">Patients</div></div>
-          <div class="card-body" style="padding:24px;">
-            <div class="empty-state">Patient management loads from the API once this shell is extended.</div>
+          <div class="card-body" id="patientsPage" style="padding:24px;">
+            <div class="empty-state">Loading patients...</div>
           </div>
         </div>
       </section>
@@ -176,8 +178,8 @@
       <section class="page-section" data-page-section="messages">
         <div class="card">
           <div class="card-header"><div class="card-title">Messages</div></div>
-          <div class="card-body" style="padding:24px;">
-            <div class="empty-state">Incoming messages appear here after login.</div>
+          <div class="card-body" id="messagesPage" style="padding:24px;">
+            <div class="empty-state">Loading messages...</div>
           </div>
         </div>
       </section>
@@ -185,9 +187,30 @@
       <section class="page-section" data-page-section="testimonials">
         <div class="card">
           <div class="card-header"><div class="card-title">Testimonials</div></div>
-          <div class="card-body" style="padding:24px;">
-            <div class="testimonial-placeholder">Loading testimonial content...</div>
-            <div class="testimonial-author" style="margin-top:12px; font-weight:700; color:var(--slate-700);"></div>
+          <div class="card-body" id="testimonialsPage" style="padding:24px;">
+            <div class="empty-state">Loading testimonials...</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section" data-page-section="services">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Services</div>
+          </div>
+          <div class="card-body" id="servicesPage" style="padding:24px;">
+            <div class="empty-state">Loading services...</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section" data-page-section="audit-logs">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Audit Logs</div>
+          </div>
+          <div class="card-body" id="auditLogsPage" style="padding:24px;">
+            <div class="empty-state">Loading audit logs...</div>
           </div>
         </div>
       </section>
@@ -256,313 +279,14 @@
       <section class="page-section" data-page-section="profile">
         <div class="card">
           <div class="card-header"><div class="card-title">Profile</div></div>
-          <div class="card-body" style="padding:24px;">
-            <div class="profile-info-row"><span class="profile-info-label">Name</span><span class="profile-info-value" id="profileName">-</span></div>
-            <div class="profile-info-row"><span class="profile-info-label">Email</span><span class="profile-info-value" id="profileEmail">-</span></div>
-            <div class="profile-info-row"><span class="profile-info-label">Role</span><span class="profile-info-value" id="profileRole">-</span></div>
-            <div class="profile-info-row"><span class="profile-info-label">Last Login</span><span class="profile-info-value" id="profileLastLogin">-</span></div>
+          <div class="card-body" id="profilePage" style="padding:24px;">
+            <div class="empty-state">Loading profile...</div>
           </div>
         </div>
       </section>
     </main>
   </div>
 
-  <script>
-    const API = '/api/admin';
-
-    const adminState = {
-      admin: null,
-      settings: {},
-      isLoading: false,
-    };
-
-    function escapeHtml(value) {
-      return String(value ?? '').replace(/[<>&"']/g, (char) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' }[char]));
-    }
-
-    function showToast(message, type = 'success') {
-      const container = document.getElementById('toast');
-      const toast = document.createElement('div');
-      toast.className = 'toast-item ' + type;
-      toast.textContent = message;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    function showLogin() {
-      document.getElementById('loginView').classList.remove('hidden');
-      document.getElementById('appView').classList.add('hidden');
-    }
-
-    function showApp() {
-      document.getElementById('loginView').classList.add('hidden');
-      document.getElementById('appView').classList.remove('hidden');
-      document.body.style.overflow = '';
-    }
-
-    function updateTopbar(admin) {
-      const name = admin?.name || 'Admin';
-      document.getElementById('adminName').textContent = name;
-      document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
-      document.getElementById('welcomeGreeting').textContent = 'Welcome back, ' + name;
-      document.getElementById('profileName').textContent = name;
-      document.getElementById('profileEmail').textContent = admin?.email || '-';
-      document.getElementById('profileRole').textContent = admin?.role || '-';
-      document.getElementById('profileLastLogin').textContent = admin?.lastLogin ? new Date(admin.lastLogin).toLocaleString() : '-';
-    }
-
-    function setPage(page) {
-      document.querySelectorAll('[data-page-section]').forEach((section) => {
-        section.classList.toggle('active', section.dataset.pageSection === page);
-      });
-      document.querySelectorAll('.nav-item').forEach((item) => {
-        item.classList.toggle('active', item.dataset.page === page);
-      });
-      const labels = {
-        dashboard: 'Clinic operations at a glance',
-        appointments: 'Appointment workflow',
-        patients: 'Patient records',
-        messages: 'Inbox and contact requests',
-        testimonials: 'Homepage testimonials',
-        settings: 'Public website settings',
-        profile: 'Admin account details',
-      };
-      document.getElementById('pageTitle').textContent = page.charAt(0).toUpperCase() + page.slice(1);
-      document.getElementById('topbarSubTitle').textContent = labels[page] || '';
-      document.body.style.overflow = '';
-    }
-
-    async function loadSettings() {
-      if (adminState.isLoading) return;
-      adminState.isLoading = true;
-      try {
-        const response = await fetch(API + '/settings', { credentials: 'include' });
-        const data = await response.json();
-        if (response.ok && data.success) {
-          adminState.settings = data.data || data.settings || {};
-          bridgeSettingsToUI();
-          populateSettingsForm();
-          bridgeTestimonialsUI();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        adminState.isLoading = false;
-      }
-    }
-
-    function bridgeSettingsToUI() {
-      document.querySelectorAll('[data-content], [data-content-html], [data-content-href]').forEach((el) => {
-        const key = el.dataset.content || el.dataset.contentHtml || el.dataset.contentHref || el.id;
-        const content = adminState.settings[key];
-        if (content === undefined) return;
-        if (el.dataset.content) el.textContent = content;
-        if (el.dataset.contentHtml) el.innerHTML = content;
-        if (el.dataset.contentHref) el.href = content;
-      });
-    }
-
-    function populateSettingsForm() {
-      document.querySelectorAll('[id^="set_"]').forEach((el) => {
-        const key = el.id.replace('set_', '');
-        if (adminState.settings[key] !== undefined) {
-          el.value = adminState.settings[key];
-        }
-      });
-    }
-
-    function bridgeTestimonialsUI() {
-      const placeholder = document.querySelector('.testimonial-placeholder');
-      const author = document.querySelector('.testimonial-author');
-      if (placeholder && adminState.settings.testimonialText) {
-        placeholder.textContent = adminState.settings.testimonialText;
-      }
-      if (author && adminState.settings.testimonialAuthor) {
-        author.textContent = '— ' + adminState.settings.testimonialAuthor;
-      }
-    }
-
-    async function saveSettings() {
-      if (adminState.isLoading) return;
-      const settings = {};
-      document.querySelectorAll('[id^="set_"]').forEach((el) => {
-        settings[el.id.replace('set_', '')] = el.value;
-      });
-
-      adminState.isLoading = true;
-      const button = document.querySelector('.settings-panel .save-btn');
-      const originalText = button.textContent;
-      button.disabled = true;
-      button.textContent = 'Saving...';
-
-      try {
-        const response = await fetch(API + '/settings', {
-          method: 'PUT',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(settings),
-        });
-        const data = await response.json();
-        if (response.ok && data.success) {
-          adminState.settings = data.data || settings;
-          bridgeSettingsToUI();
-          populateSettingsForm();
-          bridgeTestimonialsUI();
-          showToast('Settings saved successfully.');
-          document.getElementById('settingsMsg').textContent = 'Settings saved.';
-        } else {
-          showToast(data.message || 'Save failed.', 'danger');
-        }
-      } catch (error) {
-        console.error(error);
-        showToast('Network error while saving settings.', 'danger');
-      } finally {
-        button.disabled = false;
-        button.textContent = originalText;
-        adminState.isLoading = false;
-      }
-    }
-
-    async function loadDashboardData() {
-      try {
-        const statsResponse = await fetch(API + '/stats', { credentials: 'include' });
-        const statsData = await statsResponse.json();
-        if (statsResponse.ok && statsData.success && statsData.stats) {
-          document.getElementById('statAppointmentsValue').textContent = statsData.stats.total ?? '-';
-          document.getElementById('statPatientsValue').textContent = statsData.stats.totalPatients ?? '-';
-          document.getElementById('statMessagesValue').textContent = statsData.stats.unreadMessages ?? '-';
-          document.getElementById('statServicesValue').textContent = statsData.stats.totalServices ?? '-';
-        }
-
-        const [appointmentsResponse, messagesResponse] = await Promise.all([
-          fetch(API + '/appointments?limit=5', { credentials: 'include' }),
-          fetch(API + '/messages?limit=5', { credentials: 'include' }),
-        ]);
-
-        const appointmentsData = await appointmentsResponse.json();
-        const messagesData = await messagesResponse.json();
-
-        const appointmentsBody = document.getElementById('recentAppointmentsBody');
-        if (appointmentsResponse.ok && appointmentsData.appointments?.length) {
-          appointmentsBody.innerHTML = appointmentsData.appointments.slice(0, 5).map((appointment) => {
-            const patient = appointment.patient ? `${escapeHtml(appointment.patient.firstName)} ${escapeHtml(appointment.patient.lastName)}` : 'Walk-in';
-            const service = appointment.service?.name || appointment.service || '-';
-            const date = appointment.date || '-';
-            return `<tr><td><code>${escapeHtml(appointment.referenceNumber || '')}</code></td><td>${patient}</td><td>${escapeHtml(service)}</td><td>${escapeHtml(date)}</td><td><span class="status-badge badge-${escapeHtml(appointment.status || 'pending')}">${escapeHtml(appointment.status || 'pending')}</span></td></tr>`;
-          }).join('');
-        } else {
-          appointmentsBody.innerHTML = '<tr><td colspan="5" class="empty-state">No recent appointments found.</td></tr>';
-        }
-
-        const messagesBody = document.getElementById('recentMessagesBody');
-        if (messagesResponse.ok && messagesData.data?.length) {
-          messagesBody.innerHTML = messagesData.data.slice(0, 5).map((message) => {
-            return `<tr><td>${escapeHtml(message.name)}</td><td>${escapeHtml(message.email)}</td><td>${escapeHtml(message.subject || '')}</td><td>${message.isRead ? 'Yes' : 'No'}</td></tr>`;
-          }).join('');
-        } else {
-          messagesBody.innerHTML = '<tr><td colspan="4" class="empty-state">No recent messages found.</td></tr>';
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    async function initAdminApp() {
-      try {
-        const response = await fetch(API + '/me', { credentials: 'include' });
-        const data = await response.json();
-        if (response.ok && data.success && data.admin) {
-          adminState.admin = data.admin;
-          updateTopbar(data.admin);
-          showApp();
-          await Promise.all([loadSettings(), loadDashboardData()]);
-          return;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      showLogin();
-    }
-
-    function startClock() {
-      const tick = () => {
-        document.getElementById('liveClock').textContent = new Date().toLocaleString();
-      };
-      tick();
-      setInterval(tick, 1000);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      startClock();
-
-      document.getElementById('adminLoginForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const errorBox = document.getElementById('loginError');
-        const button = document.getElementById('loginBtn');
-        errorBox.classList.remove('show');
-        errorBox.textContent = '';
-        button.disabled = true;
-        button.classList.add('loading');
-
-        try {
-          const response = await fetch(API + '/login', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: document.getElementById('adminEmail').value.trim(),
-              password: document.getElementById('adminPassword').value,
-            }),
-          });
-          const data = await response.json();
-          if (response.ok && data.success) {
-            showToast('Signed in successfully.');
-            await initAdminApp();
-          } else {
-            errorBox.textContent = data.message || 'Sign in failed.';
-            errorBox.classList.add('show');
-          }
-        } catch (error) {
-          console.error(error);
-          errorBox.textContent = 'Network error while signing in.';
-          errorBox.classList.add('show');
-        } finally {
-          button.disabled = false;
-          button.classList.remove('loading');
-        }
-      });
-
-      document.getElementById('settingsForm').addEventListener('submit', (event) => {
-        event.preventDefault();
-        saveSettings();
-      });
-
-      document.querySelectorAll('[data-page]').forEach((item) => {
-        item.addEventListener('click', () => setPage(item.dataset.page));
-      });
-
-      document.getElementById('logoutBtn').addEventListener('click', async () => {
-        try {
-          await fetch(API + '/logout', { method: 'POST', credentials: 'include' });
-        } catch (error) {
-          console.error(error);
-        }
-        adminState.admin = null;
-        showLogin();
-      });
-
-      document.querySelector('.sidebar-toggle').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('open');
-        document.getElementById('sidebarOverlay').classList.toggle('open');
-      });
-
-      document.getElementById('sidebarOverlay').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarOverlay').classList.remove('open');
-      });
-
-      initAdminApp();
-    });
-  </script>
+  <script src="/admin/admin-app.js"></script>
 </body>
 </html>
