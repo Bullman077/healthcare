@@ -228,10 +228,12 @@ exports.updateSettings = async (req, res, next) => {
       'telehealth_step1_title', 'telehealth_step1_desc',
       'telehealth_step2_title', 'telehealth_step2_desc',
       'telehealth_step3_title', 'telehealth_step3_desc',
-      'telehealth_conditions_title', 'telehealth_conditions_subtitle',
+      'telehealth_conditions_title', 'telehealth_conditions_subtitle', 'telehealth_conditions_desc',
+      'telehealth_steps_desc',
       'contact_badge', 'contact_heading', 'contact_intro',
       'services_hero_title', 'services_hero_text',
       'services_section_title', 'services_section_subtitle', 'services_section_desc',
+      'about_hero_subtitle', 'how_dpc_desc',
       'footer_brand_desc',
     ];
     const updates = req.body;

@@ -90,6 +90,12 @@
       }
     });
 
+    /* --- Provider photo: set img src on about page --- */
+    var providerImgs = document.querySelectorAll('[data-content-src="provider_photo_url"]');
+    providerImgs.forEach(function (img) {
+      if (data.provider_photo_url) img.src = data.provider_photo_url;
+    });
+
     /* --- Contact page: hours block (sanitized) --- */
     var hoursBlock = document.getElementById('contact-clinic-hours');
     if (hoursBlock && data.clinic_hours) {

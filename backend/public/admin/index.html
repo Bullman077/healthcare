@@ -905,6 +905,10 @@
                     <label>Section Subtitle</label>
                     <input type="text" id="set_how_dpc_subtitle">
                   </div>
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>Section Description</label>
+                    <textarea id="set_how_dpc_desc" rows="2" placeholder="Simple, transparent, and built around you..."></textarea>
+                  </div>
                 </div>
                 <div class="section-preview" style="margin-top:20px;">
                   <div class="section-preview-label">Steps</div>
@@ -1063,6 +1067,10 @@
               </div>
               <div class="section-editor-body">
                 <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>About Page Hero Subtitle</label>
+                    <input type="text" id="set_about_hero_subtitle" placeholder="Over 15 years of clinical nursing excellence...">
+                  </div>
                   <div class="visual-field">
                     <label>Provider Name</label>
                     <input type="text" id="set_provider_name" placeholder="Nacole Brown, MSN, AGPCNP-BC">
@@ -1279,6 +1287,10 @@
                     <label>Section Subtitle</label>
                     <input type="text" id="set_telehealth_steps_subtitle">
                   </div>
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>Section Description</label>
+                    <textarea id="set_telehealth_steps_desc" rows="2" placeholder="Getting high-quality care has never been easier..."></textarea>
+                  </div>
                 </div>
                 <div class="section-preview" style="margin-top:20px;">
                   <div class="section-preview-label">Steps</div>
@@ -1325,6 +1337,10 @@
                   <div class="visual-field">
                     <label>Section Subtitle</label>
                     <input type="text" id="set_telehealth_conditions_subtitle">
+                  </div>
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>Section Description</label>
+                    <textarea id="set_telehealth_conditions_desc" rows="2" placeholder="Many common medical issues can be safely evaluated..."></textarea>
                   </div>
                 </div>
               </div>
@@ -3421,6 +3437,7 @@ async function loadSettings() {
   document.getElementById('set_clinic_address').value = s.clinic_address || '';
   document.getElementById('set_clinic_hours').value = s.clinic_hours || '';
   /* About */
+  document.getElementById('set_about_hero_subtitle').value = s.about_hero_subtitle || '';
   document.getElementById('set_provider_name').value = s.provider_name || '';
   document.getElementById('set_provider_credentials').value = s.provider_credentials || '';
   document.getElementById('set_provider_photo_url').value = s.provider_photo_url || '';
@@ -3460,6 +3477,7 @@ async function loadSettings() {
   document.getElementById('set_benefit3_desc').value = s.benefit3_desc || '';
   document.getElementById('set_how_dpc_title').value = s.how_dpc_title || '';
   document.getElementById('set_how_dpc_subtitle').value = s.how_dpc_subtitle || '';
+  document.getElementById('set_how_dpc_desc').value = s.how_dpc_desc || '';
   document.getElementById('set_dpc_step1_title').value = s.dpc_step1_title || '';
   document.getElementById('set_dpc_step1_desc').value = s.dpc_step1_desc || '';
   document.getElementById('set_dpc_step2_title').value = s.dpc_step2_title || '';
@@ -3497,6 +3515,7 @@ async function loadSettings() {
   document.getElementById('set_telehealth_hero_text').value = s.telehealth_hero_text || '';
   document.getElementById('set_telehealth_steps_title').value = s.telehealth_steps_title || '';
   document.getElementById('set_telehealth_steps_subtitle').value = s.telehealth_steps_subtitle || '';
+  document.getElementById('set_telehealth_steps_desc').value = s.telehealth_steps_desc || '';
   document.getElementById('set_telehealth_step1_title').value = s.telehealth_step1_title || '';
   document.getElementById('set_telehealth_step1_desc').value = s.telehealth_step1_desc || '';
   document.getElementById('set_telehealth_step2_title').value = s.telehealth_step2_title || '';
@@ -3505,6 +3524,7 @@ async function loadSettings() {
   document.getElementById('set_telehealth_step3_desc').value = s.telehealth_step3_desc || '';
   document.getElementById('set_telehealth_conditions_title').value = s.telehealth_conditions_title || '';
   document.getElementById('set_telehealth_conditions_subtitle').value = s.telehealth_conditions_subtitle || '';
+  document.getElementById('set_telehealth_conditions_desc').value = s.telehealth_conditions_desc || '';
 }
 
 async function saveSettings() {
@@ -3519,6 +3539,7 @@ async function saveSettings() {
     clinic_email: document.getElementById('set_clinic_email').value.trim(),
     clinic_address: document.getElementById('set_clinic_address').value.trim(),
     clinic_hours: document.getElementById('set_clinic_hours').value.trim(),
+    about_hero_subtitle: document.getElementById('set_about_hero_subtitle').value.trim(),
     provider_name: document.getElementById('set_provider_name').value.trim(),
     provider_credentials: document.getElementById('set_provider_credentials').value.trim(),
     provider_photo_url: document.getElementById('set_provider_photo_url').value.trim(),
@@ -3556,6 +3577,7 @@ async function saveSettings() {
     benefit3_desc: document.getElementById('set_benefit3_desc').value.trim(),
     how_dpc_title: document.getElementById('set_how_dpc_title').value.trim(),
     how_dpc_subtitle: document.getElementById('set_how_dpc_subtitle').value.trim(),
+    how_dpc_desc: document.getElementById('set_how_dpc_desc').value.trim(),
     dpc_step1_title: document.getElementById('set_dpc_step1_title').value.trim(),
     dpc_step1_desc: document.getElementById('set_dpc_step1_desc').value.trim(),
     dpc_step2_title: document.getElementById('set_dpc_step2_title').value.trim(),
@@ -3587,6 +3609,7 @@ async function saveSettings() {
     telehealth_hero_text: document.getElementById('set_telehealth_hero_text').value.trim(),
     telehealth_steps_title: document.getElementById('set_telehealth_steps_title').value.trim(),
     telehealth_steps_subtitle: document.getElementById('set_telehealth_steps_subtitle').value.trim(),
+    telehealth_steps_desc: document.getElementById('set_telehealth_steps_desc').value.trim(),
     telehealth_step1_title: document.getElementById('set_telehealth_step1_title').value.trim(),
     telehealth_step1_desc: document.getElementById('set_telehealth_step1_desc').value.trim(),
     telehealth_step2_title: document.getElementById('set_telehealth_step2_title').value.trim(),
@@ -3595,6 +3618,7 @@ async function saveSettings() {
     telehealth_step3_desc: document.getElementById('set_telehealth_step3_desc').value.trim(),
     telehealth_conditions_title: document.getElementById('set_telehealth_conditions_title').value.trim(),
     telehealth_conditions_subtitle: document.getElementById('set_telehealth_conditions_subtitle').value.trim(),
+    telehealth_conditions_desc: document.getElementById('set_telehealth_conditions_desc').value.trim(),
   };
 
   const data = await apiFetch('/settings', 'PUT', payload);
