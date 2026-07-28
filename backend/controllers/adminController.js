@@ -540,9 +540,17 @@ exports.updateProfile = async (req, res, next) => {
     const admin = await Admin.findByPk(req.admin.id);
     if (!admin) return next(new AppError('Admin not found.', 404));
 
+    // Check if new email is already taken by another admin
+    if (email && email.toLowerCase() !== admin.email) {
+      const existing = await Admin.findOne({ where: { email: email.toLowerCase() } });
+      if (existing) {
+        return next(new AppError('This email is already in use by another account.', 400));
+      }
+    }
+
     const changes = {};
     if (name && name !== admin.name) changes.name = { from: admin.name, to: name };
-    if (email && email !== admin.email) changes.email = { from: admin.email, to: email };
+    if (email && email.toLowerCase() !== admin.email) changes.email = { from: admin.email, to: email };
     if (newPassword) changes.password = { changed: true };
     
     if (newPassword) {
@@ -557,7 +565,7 @@ exports.updateProfile = async (req, res, next) => {
     }
     
     if (name) admin.name = name;
-    if (email) admin.email = email;
+    if (email) admin.email = email.toLowerCase();
     
     await admin.save();
     

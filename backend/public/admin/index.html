@@ -485,8 +485,7 @@
             <div class="profile-field">
               <label class="profile-field-label">Email Address</label>
               <div class="profile-field-display" id="emailDisplay">—</div>
-              <input type="email" id="profileEmail" class="form-input profile-field-input" style="display:none;" disabled>
-              <span class="profile-field-note">Email cannot be changed. Contact support if needed.</span>
+              <input type="email" id="profileEmail" class="form-input profile-field-input" style="display:none;" placeholder="admin@example.com">
             </div>
 
             <div class="profile-field-actions" id="infoActions" style="display:none;">
@@ -2764,24 +2763,33 @@ function populateProfile(admin) {
 }
 
 let origProfileName = '';
+let origProfileEmail = '';
 
 function toggleEditInfo() {
-  const display = document.getElementById('nameDisplay');
-  const input = document.getElementById('profileName');
+  const nameDisplay = document.getElementById('nameDisplay');
+  const nameInput = document.getElementById('profileName');
+  const emailDisplay = document.getElementById('emailDisplay');
+  const emailInput = document.getElementById('profileEmail');
   const actions = document.getElementById('infoActions');
   const btn = document.getElementById('editInfoBtn');
-  origProfileName = input.value;
-  display.style.display = 'none';
-  input.style.display = 'block';
+  origProfileName = nameInput.value;
+  origProfileEmail = emailInput.value;
+  nameDisplay.style.display = 'none';
+  nameInput.style.display = 'block';
+  emailDisplay.style.display = 'none';
+  emailInput.style.display = 'block';
   actions.style.display = 'flex';
   btn.style.display = 'none';
-  input.focus();
+  nameInput.focus();
 }
 
 function cancelEditInfo() {
   document.getElementById('profileName').value = origProfileName;
+  document.getElementById('profileEmail').value = origProfileEmail || '';
   document.getElementById('nameDisplay').style.display = 'block';
   document.getElementById('profileName').style.display = 'none';
+  document.getElementById('emailDisplay').style.display = 'block';
+  document.getElementById('profileEmail').style.display = 'none';
   document.getElementById('infoActions').style.display = 'none';
   document.getElementById('editInfoBtn').style.display = 'inline-flex';
   document.getElementById('profileError').style.display = 'none';
@@ -2790,18 +2798,21 @@ function cancelEditInfo() {
 
 async function saveProfileInfo() {
   const name = document.getElementById('profileName').value.trim();
+  const email = document.getElementById('profileEmail').value.trim();
   const errEl = document.getElementById('profileError');
   const okEl = document.getElementById('profileSuccess');
   errEl.style.display = 'none';
   okEl.style.display = 'none';
 
   if (!name) { errEl.textContent = 'Name is required.'; errEl.style.display = 'block'; return; }
+  if (!email) { errEl.textContent = 'Email is required.'; errEl.style.display = 'block'; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return; }
 
   const btn = document.querySelector('#infoActions .btn-primary');
   btn.textContent = 'Saving...';
   btn.disabled = true;
 
-  const data = await apiFetch('/profile', 'PUT', { name });
+  const data = await apiFetch('/profile', 'PUT', { name, email });
   btn.textContent = 'Save Changes';
   btn.disabled = false;
 
@@ -2811,9 +2822,13 @@ async function saveProfileInfo() {
     document.getElementById('nameDisplay').textContent = name;
     document.getElementById('nameDisplay').style.display = 'block';
     document.getElementById('profileName').style.display = 'none';
+    document.getElementById('emailDisplay').textContent = email;
+    document.getElementById('emailDisplay').style.display = 'block';
+    document.getElementById('profileEmail').style.display = 'none';
     document.getElementById('infoActions').style.display = 'none';
     document.getElementById('editInfoBtn').style.display = 'inline-flex';
     state.admin.name = name;
+    state.admin.email = email;
     document.getElementById('adminName').textContent = name;
     document.getElementById('profileHeaderName').textContent = name;
     toast('Profile updated.', 'success');
