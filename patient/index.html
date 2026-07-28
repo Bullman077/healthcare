@@ -401,7 +401,8 @@
 
   <script>
     let isRegisterMode = false;
-    const API = '/api/patient';
+    const API_BASE = window.API_URL || 'https://uhs-backen.onrender.com';
+    const API = API_BASE + '/api/patient';
 
     async function apiFetch(endpoint, options = {}) {
       const url = API + endpoint;
