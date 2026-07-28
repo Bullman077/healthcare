@@ -1241,21 +1241,18 @@
   font-family: var(--font-body);
 }
 
-/* ----- TESTIMONIALS SLIDER ----- */
-.testimonials-slider {
-  position: relative;
-  max-width: 680px;
+/* ----- TESTIMONIALS GRID ----- */
+.testimonials-grid {
   margin: 48px auto 0;
 }
 
-.testimonials-slider__track {
-  display: flex;
-  overflow: hidden;
+.testimonials-grid__track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
 }
 
-.testimonials-slider .testimonial-card {
-  min-width: 100%;
-  flex-shrink: 0;
+.testimonials-grid .testimonial-card {
   background: var(--color-white);
   border-radius: var(--radius-2xl);
   border: 1px solid var(--color-plum-muted);
@@ -1264,7 +1261,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: opacity 0.5s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  height: 100%;
+}
+
+.testimonials-grid .testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(75, 29, 109, 0.18);
 }
 
 .stars-rating {
@@ -1299,63 +1302,6 @@
   justify-content: center;
   font-family: var(--font-heading);
   font-weight: var(--fw-bold);
-}
-
-.testimonials-slider__controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  margin-top: 2rem;
-}
-
-.testimonials-slider__arrow {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--color-white);
-  border: 1px solid var(--color-plum-muted);
-  color: var(--color-slate-600);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.testimonials-slider__arrow:hover {
-  background: var(--color-royal-blue);
-  color: var(--color-white);
-  border-color: var(--color-royal-blue);
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.2);
-}
-
-.testimonials-slider__dots {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.testimonials-slider__dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--color-slate-300);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-
-.testimonials-slider__dot:hover {
-  background: var(--color-slate-400);
-}
-
-.testimonials-slider__dot--active {
-  background: var(--color-royal-blue);
-  width: 28px;
-  border-radius: 9999px;
 }
 
 /* ----- UNIVERSAL APPOINTMENT BOOKING MODAL ----- */

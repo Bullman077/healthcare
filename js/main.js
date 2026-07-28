@@ -568,18 +568,12 @@
     refreshAuth();
   });
 
-  // ===== TESTIMONIALS CAROUSEL =====
+  // ===== TESTIMONIALS GRID =====
   (function initTestimonials() {
-    var track = document.querySelector('.testimonials-slider__track');
-    var dotsContainer = document.querySelector('.testimonials-slider__dots');
-    var prevBtn = document.querySelector('.testimonials-slider__arrow--prev');
-    var nextBtn = document.querySelector('.testimonials-slider__arrow--next');
-    if (!track || !dotsContainer) return;
+    var track = document.querySelector('.testimonials-grid__track');
+    if (!track) return;
 
     var reviews = [];
-    var currentIndex = 0;
-    var intervalId;
-    var isPaused = false;
 
     function getInitials(name) {
       var parts = name.split(' ');
@@ -611,71 +605,19 @@
       });
     }
 
-    function buildDots() {
-      dotsContainer.innerHTML = '';
-      reviews.forEach(function(_, index) {
-        var dot = document.createElement('button');
-        dot.className = 'testimonials-slider__dot' + (index === 0 ? ' testimonials-slider__dot--active' : '');
-        dot.setAttribute('aria-label', 'Go to testimonial ' + (index + 1));
-        dot.addEventListener('click', function() { goToSlide(index); });
-        dotsContainer.appendChild(dot);
-      });
-    }
-
-    function goToSlide(index) {
-      var slides = track.querySelectorAll('.testimonial-card');
-      if (slides.length === 0) return;
-      if (index < 0) index = slides.length - 1;
-      if (index >= slides.length) index = 0;
-      currentIndex = index;
-      var offset = -currentIndex * 100;
-      track.style.transform = 'translateX(' + offset + '%)';
-      track.style.transition = 'transform 0.6s ease-in-out';
-      updateDots();
-    }
-
-    function updateDots() {
-      var dots = dotsContainer.querySelectorAll('.testimonials-slider__dot');
-      dots.forEach(function(dot, index) {
-        dot.classList.toggle('testimonials-slider__dot--active', index === currentIndex);
-      });
-    }
-
-    function startAutoPlay() {
-      stopAutoPlay();
-      intervalId = setInterval(function() {
-        if (!isPaused) goToSlide(currentIndex + 1);
-      }, 4500);
-    }
-
-    function stopAutoPlay() {
-      if (intervalId) { clearInterval(intervalId); intervalId = null; }
-    }
-
-    var sliderEl = track.closest('.testimonials-slider');
-    if (sliderEl) {
-      sliderEl.addEventListener('mouseenter', function() { isPaused = true; });
-      sliderEl.addEventListener('mouseleave', function() { isPaused = false; });
-    }
-
-    if (prevBtn) prevBtn.addEventListener('click', function() { goToSlide(currentIndex - 1); startAutoPlay(); });
-    if (nextBtn) nextBtn.addEventListener('click', function() { goToSlide(currentIndex + 1); startAutoPlay(); });
-
     fetch(API_URL + '/api/testimonials')
       .then(function(res) { return res.json(); })
       .then(function(data) {
         if (data.success && data.data && data.data.length > 0) {
           reviews = data.data
             .filter(function(t) { return t.isActive && t.displayOnHome; })
+            .slice(0, 6)
             .map(function(t) {
               return { name: t.name, role: t.title || '', text: t.content, rating: t.rating || 5 };
             });
         }
         if (reviews.length > 0) {
           buildSlides();
-          buildDots();
-          goToSlide(0);
-          startAutoPlay();
         } else {
           var section = track.closest('.section--testimonials');
           if (section) section.style.display = 'none';
