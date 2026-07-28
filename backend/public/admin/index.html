@@ -485,8 +485,7 @@
             <div class="profile-field">
               <label class="profile-field-label">Email Address</label>
               <div class="profile-field-display" id="emailDisplay">—</div>
-              <input type="email" id="profileEmail" class="form-input profile-field-input" style="display:none;" disabled>
-              <span class="profile-field-note">Email cannot be changed. Contact support if needed.</span>
+              <input type="email" id="profileEmail" class="form-input profile-field-input" style="display:none;" placeholder="admin@example.com">
             </div>
 
             <div class="profile-field-actions" id="infoActions" style="display:none;">
@@ -905,6 +904,10 @@
                     <label>Section Subtitle</label>
                     <input type="text" id="set_how_dpc_subtitle">
                   </div>
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>Section Description</label>
+                    <textarea id="set_how_dpc_desc" rows="2" placeholder="Simple, transparent, and built around you..."></textarea>
+                  </div>
                 </div>
                 <div class="section-preview" style="margin-top:20px;">
                   <div class="section-preview-label">Steps</div>
@@ -1063,6 +1066,10 @@
               </div>
               <div class="section-editor-body">
                 <div class="visual-fields visual-fields--2col">
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>About Page Hero Subtitle</label>
+                    <input type="text" id="set_about_hero_subtitle" placeholder="Over 15 years of clinical nursing excellence...">
+                  </div>
                   <div class="visual-field">
                     <label>Provider Name</label>
                     <input type="text" id="set_provider_name" placeholder="Nacole Brown, MSN, AGPCNP-BC">
@@ -1279,6 +1286,10 @@
                     <label>Section Subtitle</label>
                     <input type="text" id="set_telehealth_steps_subtitle">
                   </div>
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>Section Description</label>
+                    <textarea id="set_telehealth_steps_desc" rows="2" placeholder="Getting high-quality care has never been easier..."></textarea>
+                  </div>
                 </div>
                 <div class="section-preview" style="margin-top:20px;">
                   <div class="section-preview-label">Steps</div>
@@ -1325,6 +1336,10 @@
                   <div class="visual-field">
                     <label>Section Subtitle</label>
                     <input type="text" id="set_telehealth_conditions_subtitle">
+                  </div>
+                  <div class="visual-field" style="grid-column:1/-1;">
+                    <label>Section Description</label>
+                    <textarea id="set_telehealth_conditions_desc" rows="2" placeholder="Many common medical issues can be safely evaluated..."></textarea>
                   </div>
                 </div>
               </div>
@@ -1770,15 +1785,14 @@ async function apiFetch(endpoint, method = 'GET', body = null, skipAuth = false)
   
   let res = await fetch(API + endpoint, opts);
   
-  if (res.status === 401 && !skipAuth && endpoint !== '/admin/login' && endpoint !== '/admin/refresh') {
+   if (res.status === 401 && !skipAuth && endpoint !== '/login' && endpoint !== '/refresh') {
     try {
       const refreshRes = await fetch(API + '/refresh', { method: 'POST', credentials: 'include' });
       if (refreshRes.ok) {
         const refreshData = await refreshRes.json();
-        if (refreshData.success && refreshData.token) {
-          state.token = refreshData.token;
-          localStorage.setItem('adminToken', refreshData.token);
-          opts.headers['Authorization'] = 'Bearer ' + state.token;
+         if (refreshData.success && refreshData.token) {
+           state.token = refreshData.token;
+           opts.headers['Authorization'] = 'Bearer ' + state.token;
           res = await fetch(API + endpoint, opts); // Retry original request
         } else {
           logout();
@@ -2749,24 +2763,33 @@ function populateProfile(admin) {
 }
 
 let origProfileName = '';
+let origProfileEmail = '';
 
 function toggleEditInfo() {
-  const display = document.getElementById('nameDisplay');
-  const input = document.getElementById('profileName');
+  const nameDisplay = document.getElementById('nameDisplay');
+  const nameInput = document.getElementById('profileName');
+  const emailDisplay = document.getElementById('emailDisplay');
+  const emailInput = document.getElementById('profileEmail');
   const actions = document.getElementById('infoActions');
   const btn = document.getElementById('editInfoBtn');
-  origProfileName = input.value;
-  display.style.display = 'none';
-  input.style.display = 'block';
+  origProfileName = nameInput.value;
+  origProfileEmail = emailInput.value;
+  nameDisplay.style.display = 'none';
+  nameInput.style.display = 'block';
+  emailDisplay.style.display = 'none';
+  emailInput.style.display = 'block';
   actions.style.display = 'flex';
   btn.style.display = 'none';
-  input.focus();
+  nameInput.focus();
 }
 
 function cancelEditInfo() {
   document.getElementById('profileName').value = origProfileName;
+  document.getElementById('profileEmail').value = origProfileEmail || '';
   document.getElementById('nameDisplay').style.display = 'block';
   document.getElementById('profileName').style.display = 'none';
+  document.getElementById('emailDisplay').style.display = 'block';
+  document.getElementById('profileEmail').style.display = 'none';
   document.getElementById('infoActions').style.display = 'none';
   document.getElementById('editInfoBtn').style.display = 'inline-flex';
   document.getElementById('profileError').style.display = 'none';
@@ -2775,18 +2798,21 @@ function cancelEditInfo() {
 
 async function saveProfileInfo() {
   const name = document.getElementById('profileName').value.trim();
+  const email = document.getElementById('profileEmail').value.trim();
   const errEl = document.getElementById('profileError');
   const okEl = document.getElementById('profileSuccess');
   errEl.style.display = 'none';
   okEl.style.display = 'none';
 
   if (!name) { errEl.textContent = 'Name is required.'; errEl.style.display = 'block'; return; }
+  if (!email) { errEl.textContent = 'Email is required.'; errEl.style.display = 'block'; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return; }
 
   const btn = document.querySelector('#infoActions .btn-primary');
   btn.textContent = 'Saving...';
   btn.disabled = true;
 
-  const data = await apiFetch('/profile', 'PUT', { name });
+  const data = await apiFetch('/profile', 'PUT', { name, email });
   btn.textContent = 'Save Changes';
   btn.disabled = false;
 
@@ -2796,9 +2822,13 @@ async function saveProfileInfo() {
     document.getElementById('nameDisplay').textContent = name;
     document.getElementById('nameDisplay').style.display = 'block';
     document.getElementById('profileName').style.display = 'none';
+    document.getElementById('emailDisplay').textContent = email;
+    document.getElementById('emailDisplay').style.display = 'block';
+    document.getElementById('profileEmail').style.display = 'none';
     document.getElementById('infoActions').style.display = 'none';
     document.getElementById('editInfoBtn').style.display = 'inline-flex';
     state.admin.name = name;
+    state.admin.email = email;
     document.getElementById('adminName').textContent = name;
     document.getElementById('profileHeaderName').textContent = name;
     toast('Profile updated.', 'success');
@@ -3422,6 +3452,7 @@ async function loadSettings() {
   document.getElementById('set_clinic_address').value = s.clinic_address || '';
   document.getElementById('set_clinic_hours').value = s.clinic_hours || '';
   /* About */
+  document.getElementById('set_about_hero_subtitle').value = s.about_hero_subtitle || '';
   document.getElementById('set_provider_name').value = s.provider_name || '';
   document.getElementById('set_provider_credentials').value = s.provider_credentials || '';
   document.getElementById('set_provider_photo_url').value = s.provider_photo_url || '';
@@ -3461,6 +3492,7 @@ async function loadSettings() {
   document.getElementById('set_benefit3_desc').value = s.benefit3_desc || '';
   document.getElementById('set_how_dpc_title').value = s.how_dpc_title || '';
   document.getElementById('set_how_dpc_subtitle').value = s.how_dpc_subtitle || '';
+  document.getElementById('set_how_dpc_desc').value = s.how_dpc_desc || '';
   document.getElementById('set_dpc_step1_title').value = s.dpc_step1_title || '';
   document.getElementById('set_dpc_step1_desc').value = s.dpc_step1_desc || '';
   document.getElementById('set_dpc_step2_title').value = s.dpc_step2_title || '';
@@ -3498,6 +3530,7 @@ async function loadSettings() {
   document.getElementById('set_telehealth_hero_text').value = s.telehealth_hero_text || '';
   document.getElementById('set_telehealth_steps_title').value = s.telehealth_steps_title || '';
   document.getElementById('set_telehealth_steps_subtitle').value = s.telehealth_steps_subtitle || '';
+  document.getElementById('set_telehealth_steps_desc').value = s.telehealth_steps_desc || '';
   document.getElementById('set_telehealth_step1_title').value = s.telehealth_step1_title || '';
   document.getElementById('set_telehealth_step1_desc').value = s.telehealth_step1_desc || '';
   document.getElementById('set_telehealth_step2_title').value = s.telehealth_step2_title || '';
@@ -3506,6 +3539,7 @@ async function loadSettings() {
   document.getElementById('set_telehealth_step3_desc').value = s.telehealth_step3_desc || '';
   document.getElementById('set_telehealth_conditions_title').value = s.telehealth_conditions_title || '';
   document.getElementById('set_telehealth_conditions_subtitle').value = s.telehealth_conditions_subtitle || '';
+  document.getElementById('set_telehealth_conditions_desc').value = s.telehealth_conditions_desc || '';
 }
 
 async function saveSettings() {
@@ -3520,6 +3554,7 @@ async function saveSettings() {
     clinic_email: document.getElementById('set_clinic_email').value.trim(),
     clinic_address: document.getElementById('set_clinic_address').value.trim(),
     clinic_hours: document.getElementById('set_clinic_hours').value.trim(),
+    about_hero_subtitle: document.getElementById('set_about_hero_subtitle').value.trim(),
     provider_name: document.getElementById('set_provider_name').value.trim(),
     provider_credentials: document.getElementById('set_provider_credentials').value.trim(),
     provider_photo_url: document.getElementById('set_provider_photo_url').value.trim(),
@@ -3557,6 +3592,7 @@ async function saveSettings() {
     benefit3_desc: document.getElementById('set_benefit3_desc').value.trim(),
     how_dpc_title: document.getElementById('set_how_dpc_title').value.trim(),
     how_dpc_subtitle: document.getElementById('set_how_dpc_subtitle').value.trim(),
+    how_dpc_desc: document.getElementById('set_how_dpc_desc').value.trim(),
     dpc_step1_title: document.getElementById('set_dpc_step1_title').value.trim(),
     dpc_step1_desc: document.getElementById('set_dpc_step1_desc').value.trim(),
     dpc_step2_title: document.getElementById('set_dpc_step2_title').value.trim(),
@@ -3588,6 +3624,7 @@ async function saveSettings() {
     telehealth_hero_text: document.getElementById('set_telehealth_hero_text').value.trim(),
     telehealth_steps_title: document.getElementById('set_telehealth_steps_title').value.trim(),
     telehealth_steps_subtitle: document.getElementById('set_telehealth_steps_subtitle').value.trim(),
+    telehealth_steps_desc: document.getElementById('set_telehealth_steps_desc').value.trim(),
     telehealth_step1_title: document.getElementById('set_telehealth_step1_title').value.trim(),
     telehealth_step1_desc: document.getElementById('set_telehealth_step1_desc').value.trim(),
     telehealth_step2_title: document.getElementById('set_telehealth_step2_title').value.trim(),
@@ -3596,6 +3633,7 @@ async function saveSettings() {
     telehealth_step3_desc: document.getElementById('set_telehealth_step3_desc').value.trim(),
     telehealth_conditions_title: document.getElementById('set_telehealth_conditions_title').value.trim(),
     telehealth_conditions_subtitle: document.getElementById('set_telehealth_conditions_subtitle').value.trim(),
+    telehealth_conditions_desc: document.getElementById('set_telehealth_conditions_desc').value.trim(),
   };
 
   const data = await apiFetch('/settings', 'PUT', payload);
@@ -3743,28 +3781,42 @@ function badgeHtml(status) {
 
 /* =========================================================
    SESSION RESTORE — check cookie-based session on page load
+   Only restore session on refresh (F5/ctrl+R), not on normal
+   navigation or back/forward. This ensures users must re-login
+   after navigating away from the admin dashboard.
    ========================================================= */
 window.addEventListener('DOMContentLoaded', async () => {
   // Show preloader while checking session
   const preloader = document.getElementById('sessionPreloader');
-  try {
-    const res = await fetch(API + '/me', { credentials: 'include' });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.admin) {
-        state.admin = data.admin;
-        // Fade out preloader, then show app
-        if (preloader) {
-          preloader.classList.add('fade-out');
-          setTimeout(() => preloader.remove(), 300);
+  
+  // Determine navigation type:
+  // 0 = normal navigation (entering from another page or new tab)
+  // 1 = reload (F5/ctrl+R)
+  // 2 = back/forward
+  const navType = (performance.navigation && performance.navigation.type) || 0;
+  
+  // Only restore session on refresh — not on initial navigation or back/forward
+  if (navType === 1) {
+    try {
+      const res = await fetch(API + '/me', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.admin) {
+          state.admin = data.admin;
+          // Fade out preloader, then show app
+          if (preloader) {
+            preloader.classList.add('fade-out');
+            setTimeout(() => preloader.remove(), 300);
+          }
+          showApp(data.admin);
+          document.getElementById('app').classList.add('view-enter');
+          return;
         }
-        showApp(data.admin);
-        document.getElementById('app').classList.add('view-enter');
-        return;
       }
-    }
-  } catch (e) { /* not logged in */ }
-  // Not logged in — fade out preloader, show login
+    } catch (e) { /* not logged in */ }
+  }
+  
+  // Not logged in or navigated away — fade out preloader, show login
   if (preloader) {
     preloader.classList.add('fade-out');
     setTimeout(() => preloader.remove(), 300);
