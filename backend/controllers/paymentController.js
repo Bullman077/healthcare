@@ -85,7 +85,6 @@ exports.createCheckoutSession = async (req, res, next) => {
 exports.handleStripeWebhook = async (req, res, next) => {
   try {
     if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) {
-      console.error('Stripe webhook received but STRIPE_WEBHOOK_SECRET not configured.');
       return res.status(500).json({ error: 'Webhook not configured.' });
     }
 
@@ -99,7 +98,6 @@ exports.handleStripeWebhook = async (req, res, next) => {
     try {
       event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err) {
-      console.error('Webhook signature verification failed:', err.message);
       return res.status(400).json({ error: 'Webhook signature verification failed.' });
     }
 
@@ -131,7 +129,7 @@ exports.handleStripeWebhook = async (req, res, next) => {
               serviceName: appointment.service?.name || 'Healthcare Visit',
             });
           } catch (emailErr) {
-            console.warn('Payment receipt email notification error:', emailErr.message);
+            // silent
           }
         }
       }

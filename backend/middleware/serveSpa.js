@@ -6,7 +6,7 @@ const fs = require('fs');
  * Replaces <script> with <script nonce="..."> and <style> with <style nonce="...">.
  */
 function injectNonce(html, nonce) {
-  if (!nonce) return html;
+  if (!nonce) {return html;}
   return html
     .replace(/<script(?! nonce=)(>|\s)/gi, `<script nonce="${nonce}"$1`)
     .replace(/<style(?! nonce=)(>|\s)/gi, `<style nonce="${nonce}"$1`);
@@ -24,7 +24,7 @@ const getAdminHtml = () => {
  * Serve admin HTML with per-request CSP nonces injected.
  * Must be called AFTER cspNonce middleware and Helmet.
  */
-function serveSpa(getHtml, spaName) {
+function serveSpa(getHtml) {
   return (req, res) => {
     const nonce = res.locals.nonce;
     const htmlContent = typeof getHtml === 'function' ? getHtml() : getHtml;

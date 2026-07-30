@@ -66,7 +66,7 @@ async function seed() {
   for (let i = 0; i < 12; i++) {
     const d = new Date(today);
     d.setDate(d.getDate() + 2 + i);
-    if (d.getDay() === 0) d.setDate(d.getDate() + 1);
+    if (d.getDay() === 0) {d.setDate(d.getDate() + 1);}
 
     appointments.push({
       patientId: patients[i % patients.length].id,

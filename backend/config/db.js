@@ -61,7 +61,6 @@ if (process.env.NODE_ENV === 'test' || (process.env.NODE_ENV === 'development' &
 
 async function connectDB() {
   await sequelize.authenticate();
-  console.log(`PostgreSQL connected successfully.`);
 }
 
 module.exports = { sequelize, connectDB };

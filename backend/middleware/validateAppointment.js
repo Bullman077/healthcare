@@ -53,8 +53,8 @@ const appointmentRules = [
       const d = new Date(value + 'T12:00:00'); // anchor to noon to avoid UTC timezone rollover
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      if (d <= today) throw new Error('Date must be in the future');
-      if (d.getDay() === 0) throw new Error('We are closed on Sundays');
+      if (d <= today) {throw new Error('Date must be in the future');}
+      if (d.getDay() === 0) {throw new Error('We are closed on Sundays');}
       return true;
     }),
 
@@ -63,7 +63,7 @@ const appointmentRules = [
     .notEmpty().withMessage('Time is required')
     .isIn(ALL_SLOTS).withMessage('Invalid time slot')
     .custom((value, { req }) => {
-      if (!req.body.date) return true; // date validator already handles this
+      if (!req.body.date) {return true;} // date validator already handles this
       const d = new Date(req.body.date + 'T12:00:00');
       const isSaturday = d.getDay() === 6;
       if (isSaturday && !SATURDAY_SLOTS.includes(value)) {

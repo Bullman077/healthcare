@@ -1,13 +1,13 @@
 (function () {
   'use strict';
 
-  var API_URL = (typeof window !== 'undefined' && window.UHS_API_URL) ? window.UHS_API_URL : 'https://uhs-backen.onrender.com';
-  var form = document.getElementById('contact-form');
-  if (!form) return;
+  const API_URL = (typeof window !== 'undefined' && window.UHS_API_URL) ? window.UHS_API_URL : 'https://uhs-backen.onrender.com';
+  const form = document.getElementById('contact-form');
+  if (!form) {return;}
 
-  var errEl = document.getElementById('contact-api-error');
-  var succEl = document.getElementById('contact-api-success');
-  var btn = document.getElementById('c-submit-btn');
+  const errEl = document.getElementById('contact-api-error');
+  const succEl = document.getElementById('contact-api-success');
+  const btn = document.getElementById('c-submit-btn');
 
   function isValidEmail(val) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
@@ -15,10 +15,10 @@
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
-    if (errEl) errEl.style.display = 'none';
-    if (succEl) succEl.style.display = 'none';
+    if (errEl) {errEl.style.display = 'none';}
+    if (succEl) {succEl.style.display = 'none';}
 
-    var payload = {
+    const payload = {
       name: document.getElementById('c-name').value.trim(),
       phone: document.getElementById('c-phone').value.trim(),
       email: document.getElementById('c-email').value.trim(),
@@ -48,15 +48,15 @@
     }
 
     try {
-      var res = await fetch(API_URL + '/api/messages', {
+      const res = await fetch(API_URL + '/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      var data = await res.json();
+      const data = await res.json();
       if (res.ok && data.success) {
         form.style.display = 'none';
-        if (succEl) succEl.style.display = 'block';
+        if (succEl) {succEl.style.display = 'block';}
       } else {
         if (errEl) {
           errEl.textContent = data.message || 'Error sending message. Please call (803) 381-7489.';

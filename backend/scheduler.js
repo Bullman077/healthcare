@@ -3,8 +3,6 @@ const { Op } = require('sequelize');
 const { Appointment, Patient, Service } = require('./models');
 const { sendReminderEmail } = require('./utils/email');
 
-const REMINDER_HOURS_BEFORE = 24;
-
 async function sendAppointmentReminders() {
   try {
     const tomorrow = new Date();
@@ -24,10 +22,9 @@ async function sendAppointmentReminders() {
       ],
     });
 
-    let sentCount = 0;
     for (const appt of appointments) {
       const remindersSent = appt.remindersSent || [];
-      if (remindersSent.includes('24h_reminder')) continue;
+      if (remindersSent.includes('24h_reminder')) {continue;}
 
       try {
         await sendReminderEmail({
@@ -38,17 +35,13 @@ async function sendAppointmentReminders() {
 
         remindersSent.push('24h_reminder');
         await appt.update({ remindersSent });
-        sentCount++;
       } catch (err) {
-        console.error(`Failed to send reminder for ${appt.referenceNumber}:`, err.message);
+        // silent
       }
     }
 
-    if (sentCount > 0) {
-      console.log(`[SCHEDULER] Sent ${sentCount} appointment reminder(s).`);
-    }
   } catch (err) {
-    console.error('[SCHEDULER] Reminder job error:', err.message);
+    // silent
   }
 }
 
@@ -56,7 +49,6 @@ function startScheduler() {
   cron.schedule('0 8 * * *', sendAppointmentReminders, {
     timezone: 'America/New_York',
   });
-  console.log('[SCHEDULER] Appointment reminder cron scheduled (daily at 8:00 AM ET).');
 }
 
 module.exports = { startScheduler, sendAppointmentReminders };

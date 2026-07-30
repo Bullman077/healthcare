@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-const { Op, fn, col, literal } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 const { Admin, Patient, Appointment, Service, AuditLog, Message } = require('../models');
 const { sequelize } = require('../config/db');
 const { AppError } = require('../middleware/errorHandler');
@@ -12,7 +12,7 @@ const { sendStatusUpdate, sendFollowUpReminderEmail } = require('../utils/email'
 const iLike = sequelize.dialect.name === 'sqlite' ? Op.like : Op.iLike;
 
 const uploadsDir = path.join(__dirname, '..', 'uploads', 'profiles');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+if (!fs.existsSync(uploadsDir)) {fs.mkdirSync(uploadsDir, { recursive: true });}
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadsDir),
@@ -46,9 +46,9 @@ async function logAudit(admin, action, resource, resourceId, details, req) {
       details: details || {},
       ipAddress: req ? (req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim() : null,
     });
-  } catch (err) {
-    console.error('Audit log error:', err.message);
-  }
+} catch (err) {
+  // silent
+}
 }
 exports.logAudit = logAudit;
 
@@ -192,11 +192,11 @@ exports.getAppointments = async (req, res, next) => {
     const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
     const where = {};
 
-    if (status) where.status = status;
+    if (status) {where.status = status;}
     if (dateFrom || dateTo) {
       where.date = {};
-      if (dateFrom) where.date[Op.gte] = dateFrom;
-      if (dateTo) where.date[Op.lte] = dateTo;
+      if (dateFrom) {where.date[Op.gte] = dateFrom;}
+      if (dateTo) {where.date[Op.lte] = dateTo;}
     }
 
     if (search) {
@@ -244,7 +244,7 @@ exports.getAppointment = async (req, res, next) => {
         { association: 'service', attributes: ['name', 'duration', 'price', 'description'] },
       ],
     });
-    if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
+    if (!appointment) {return next(new AppError('No appointment found with that ID.', 404));}
     res.json({ success: true, data: appointment });
   } catch (err) {
     next(err);
@@ -264,13 +264,13 @@ exports.updateAppointmentStatus = async (req, res, next) => {
         { association: 'service', attributes: ['name'] },
       ],
     });
-    if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
+    if (!appointment) {return next(new AppError('No appointment found with that ID.', 404));}
 
     const previousStatus = appointment.status;
     appointment.status = status;
     if (status === 'cancelled') {
       appointment.cancelledAt = new Date();
-      if (cancellationReason) appointment.cancellationReason = cancellationReason;
+      if (cancellationReason) {appointment.cancellationReason = cancellationReason;}
     }
     if (status === 'confirmed') {
       appointment.confirmedAt = new Date();
@@ -282,7 +282,7 @@ exports.updateAppointmentStatus = async (req, res, next) => {
     try {
       await sendStatusUpdate(appointment);
     } catch (emailErr) {
-      console.error('Status update email failed:', emailErr.message);
+      // silent
     }
 
     res.json({ success: true, message: `Appointment ${status} successfully.`, data: appointment });
@@ -294,7 +294,7 @@ exports.updateAppointmentStatus = async (req, res, next) => {
 exports.deleteAppointment = async (req, res, next) => {
   try {
     const appointment = await Appointment.findByPk(req.params.id);
-    if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
+    if (!appointment) {return next(new AppError('No appointment found with that ID.', 404));}
     const refNumber = appointment.referenceNumber;
     await appointment.destroy();
     await logAudit(req.admin, 'delete', 'appointment', req.params.id, { referenceNumber: refNumber }, req);
@@ -309,11 +309,11 @@ exports.exportAppointments = async (req, res, next) => {
     const { status, dateFrom, dateTo } = req.query;
     const where = {};
 
-    if (status) where.status = status;
+    if (status) {where.status = status;}
     if (dateFrom || dateTo) {
       where.date = {};
-      if (dateFrom) where.date[Op.gte] = dateFrom;
-      if (dateTo) where.date[Op.lte] = dateTo;
+      if (dateFrom) {where.date[Op.gte] = dateFrom;}
+      if (dateTo) {where.date[Op.lte] = dateTo;}
     }
 
     const appointments = await Appointment.findAll({
@@ -327,14 +327,13 @@ exports.exportAppointments = async (req, res, next) => {
 
     const header = 'Reference Number,Patient Name,Email,Phone,Service,Date,Time,Status,Duration,Booked At';
 
-    // Prefix cells starting with formula-triggering characters to prevent CSV injection in Excel
-    function safeCsvCell(val) {
+    const safeCsvCell = (val) => {
       const str = String(val || '');
       if (/^[=+\-@\t\r]/.test(str)) {
         return "'" + str;
       }
       return str;
-    }
+    };
 
     const rows = appointments.map((a) => {
       const p = a.patient || {};
@@ -449,7 +448,7 @@ exports.getPatient = async (req, res, next) => {
     const patient = await Patient.findByPk(req.params.id, {
       attributes: { exclude: ['resetPasswordToken', 'resetPasswordExpires', 'passwordHash'] },
     });
-    if (!patient) return next(new AppError('No patient found with that ID.', 404));
+    if (!patient) {return next(new AppError('No patient found with that ID.', 404));}
 
     const appointments = await Appointment.findAll({
       where: { patientId: patient.id },
@@ -473,10 +472,10 @@ exports.updatePatient = async (req, res, next) => {
     ];
 
     const patient = await Patient.findByPk(req.params.id);
-    if (!patient) return next(new AppError('No patient found with that ID.', 404));
+    if (!patient) {return next(new AppError('No patient found with that ID.', 404));}
 
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) patient[field] = req.body[field];
+      if (req.body[field] !== undefined) {patient[field] = req.body[field];}
     });
     await patient.save();
     await logAudit(req.admin, 'update', 'patient', req.params.id, { email: patient.email }, req);
@@ -490,7 +489,7 @@ exports.updatePatient = async (req, res, next) => {
 exports.deletePatient = async (req, res, next) => {
   try {
     const patient = await Patient.findByPk(req.params.id);
-    if (!patient) return next(new AppError('No patient found with that ID.', 404));
+    if (!patient) {return next(new AppError('No patient found with that ID.', 404));}
 
     // Delete all appointments belonging to this patient first
     await Appointment.destroy({ where: { patientId: patient.id } });
@@ -524,7 +523,7 @@ exports.createService = async (req, res, next) => {
     ];
     const filtered = {};
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) filtered[field] = req.body[field];
+      if (req.body[field] !== undefined) {filtered[field] = req.body[field];}
     });
     const service = await Service.create(filtered);
     await logAudit(req.admin, 'create', 'service', service.id, { name: service.name }, req);
@@ -538,7 +537,7 @@ exports.updateProfile = async (req, res, next) => {
   try {
     const { name, email, currentPassword, newPassword } = req.body;
     const admin = await Admin.findByPk(req.admin.id);
-    if (!admin) return next(new AppError('Admin not found.', 404));
+    if (!admin) {return next(new AppError('Admin not found.', 404));}
 
     // Check if new email is already taken by another admin
     if (email && email.toLowerCase() !== admin.email) {
@@ -549,23 +548,23 @@ exports.updateProfile = async (req, res, next) => {
     }
 
     const changes = {};
-    if (name && name !== admin.name) changes.name = { from: admin.name, to: name };
-    if (email && email.toLowerCase() !== admin.email) changes.email = { from: admin.email, to: email };
-    if (newPassword) changes.password = { changed: true };
+    if (name && name !== admin.name) {changes.name = { from: admin.name, to: name };}
+    if (email && email.toLowerCase() !== admin.email) {changes.email = { from: admin.email, to: email };}
+    if (newPassword) {changes.password = { changed: true };}
     
     if (newPassword) {
       if (!currentPassword) {
         return next(new AppError('Current password is required to set a new password.', 400));
       }
       const isMatch = await admin.comparePassword(currentPassword);
-      if (!isMatch) return next(new AppError('Current password is incorrect.', 401));
+      if (!isMatch) {return next(new AppError('Current password is incorrect.', 401));}
       admin.password = newPassword;
       // Invalidate all outstanding tokens
       admin.tokenVersion = (admin.tokenVersion || 0) + 1;
     }
     
-    if (name) admin.name = name;
-    if (email) admin.email = email.toLowerCase();
+    if (name) {admin.name = name;}
+    if (email) {admin.email = email.toLowerCase();}
     
     await admin.save();
     
@@ -601,9 +600,9 @@ exports.updateService = async (req, res, next) => {
       'color', 'icon',
     ];
     const service = await Service.findByPk(req.params.id);
-    if (!service) return next(new AppError('No service found with that ID.', 404));
+    if (!service) {return next(new AppError('No service found with that ID.', 404));}
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) service[field] = req.body[field];
+      if (req.body[field] !== undefined) {service[field] = req.body[field];}
     });
     await service.save();
     await logAudit(req.admin, 'update', 'service', req.params.id, { name: service.name }, req);
@@ -618,10 +617,10 @@ exports.updatePatientProgress = async (req, res, next) => {
     const { id } = req.params;
     const { progressNotes, medicalProgress } = req.body;
     const patient = await Patient.findByPk(id);
-    if (!patient) return next(new AppError('Patient not found.', 404));
+    if (!patient) {return next(new AppError('Patient not found.', 404));}
 
-    if (progressNotes !== undefined) patient.progressNotes = progressNotes;
-    if (medicalProgress !== undefined) patient.medicalProgress = medicalProgress;
+    if (progressNotes !== undefined) {patient.progressNotes = progressNotes;}
+    if (medicalProgress !== undefined) {patient.medicalProgress = medicalProgress;}
 
     await patient.save();
 
@@ -649,7 +648,7 @@ exports.addPatientReminder = async (req, res, next) => {
     const { id } = req.params;
     const { timeframe, followUpDate, message } = req.body;
     const patient = await Patient.findByPk(id);
-    if (!patient) return next(new AppError('Patient not found.', 404));
+    if (!patient) {return next(new AppError('Patient not found.', 404));}
 
     const reminder = {
       id: 'rem_' + Date.now(),
@@ -668,7 +667,7 @@ exports.addPatientReminder = async (req, res, next) => {
     try {
       await sendFollowUpReminderEmail(patient, reminder);
     } catch (emailErr) {
-      console.error('Follow-up reminder email failed:', emailErr.message);
+      // silent
     }
 
     await logAudit(req.admin, 'create', 'reminder', patient.id, {
@@ -695,15 +694,15 @@ exports.getAuditLogs = async (req, res, next) => {
 
     if (dateFrom || dateTo) {
       where.createdAt = {};
-      if (dateFrom) where.createdAt[Op.gte] = new Date(dateFrom);
+      if (dateFrom) {where.createdAt[Op.gte] = new Date(dateFrom);}
       if (dateTo) {
         const to = new Date(dateTo);
         to.setHours(23, 59, 59, 999);
         where.createdAt[Op.lte] = to;
       }
     }
-    if (action) where.action = action;
-    if (resource) where.resource = resource;
+    if (action) {where.action = action;}
+    if (resource) {where.resource = resource;}
 
     const { count, rows } = await AuditLog.findAndCountAll({
       where,
@@ -737,7 +736,7 @@ exports.updateAppointmentNotes = async (req, res, next) => {
         { association: 'service', attributes: ['name'] },
       ],
     });
-    if (!appointment) return next(new AppError('No appointment found with that ID.', 404));
+    if (!appointment) {return next(new AppError('No appointment found with that ID.', 404));}
 
     appointment.notes = notes;
     await appointment.save({ fields: ['notes'] });
@@ -753,7 +752,7 @@ exports.updateAppointmentNotes = async (req, res, next) => {
 exports.deleteService = async (req, res, next) => {
   try {
     const service = await Service.findByPk(req.params.id);
-    if (!service) return next(new AppError('No service found with that ID.', 404));
+    if (!service) {return next(new AppError('No service found with that ID.', 404));}
 
     const apptCount = await Appointment.count({ where: { serviceId: service.id } });
     if (apptCount > 0) {
@@ -868,10 +867,10 @@ exports.uploadProfilePhoto = [
   upload.single('photo'),
   async (req, res, next) => {
     try {
-      if (!req.file) return next(new AppError('Please upload an image file.', 400));
+      if (!req.file) {return next(new AppError('Please upload an image file.', 400));}
 
       const admin = await Admin.findByPk(req.admin.id);
-      if (!admin) return next(new AppError('Admin not found.', 404));
+      if (!admin) {return next(new AppError('Admin not found.', 404));}
 
       if (admin.profilePhoto) {
         const oldPath = path.join(__dirname, '..', admin.profilePhoto);

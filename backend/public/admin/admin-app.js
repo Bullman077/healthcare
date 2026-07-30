@@ -31,7 +31,7 @@
 
   function showToast(message, type = 'success') {
     const container = document.getElementById('toast');
-    if (!container) return;
+    if (!container) {return;}
     const toast = document.createElement('div');
     toast.className = 'toast-item ' + type;
     toast.textContent = message;
@@ -113,7 +113,7 @@
 
   function getAvatarText(name) {
     const parts = String(name || '').trim().split(/\s+/);
-    if (!parts[0]) return 'U';
+    if (!parts[0]) {return 'U';}
     return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
   }
 
@@ -211,7 +211,7 @@
   function activateSettingsTab(tabId) {
     adminState.currentSettingsTab = tabId;
     const panel = document.getElementById('settingsPage');
-    if (!panel) return;
+    if (!panel) {return;}
 
     panel.querySelectorAll('[data-settings-tab]').forEach((item) => {
       item.classList.toggle('active', item.dataset.settingsTab === tabId);
@@ -223,7 +223,7 @@
 
   function renderSettingsPanel(activeTab = adminState.currentSettingsTab || 'home') {
     const panel = document.getElementById('settingsPage');
-    if (!panel) return;
+    if (!panel) {return;}
 
     adminState.currentSettingsTab = activeTab;
 
@@ -299,10 +299,10 @@
     document.querySelectorAll('[data-content], [data-content-html], [data-content-href]').forEach((el) => {
       const key = el.dataset.content || el.dataset.contentHtml || el.dataset.contentHref || el.id;
       const content = adminState.settings[key];
-      if (content === undefined) return;
-      if (el.dataset.content) el.textContent = content;
-      if (el.dataset.contentHtml) el.innerHTML = content;
-      if (el.dataset.contentHref) el.href = content;
+      if (content === undefined) {return;}
+      if (el.dataset.content) {el.textContent = content;}
+      if (el.dataset.contentHtml) {el.innerHTML = content;}
+      if (el.dataset.contentHref) {el.href = content;}
     });
   }
 
@@ -317,7 +317,7 @@
 
   function renderProfilePanel() {
     const panel = document.getElementById('profilePage');
-    if (!panel || !adminState.profile) return;
+    if (!panel || !adminState.profile) {return;}
     const sharedPhoto = getProviderPhotoUrl();
 
     panel.innerHTML = `
@@ -398,8 +398,8 @@
       delete payload.currentPassword;
       delete payload.newPassword;
     }
-    if (!payload.name) delete payload.name;
-    if (!payload.email) delete payload.email;
+    if (!payload.name) {delete payload.name;}
+    if (!payload.email) {delete payload.email;}
 
     const { response, data } = await requestJson(API + '/profile', {
       method: 'PUT',
@@ -423,7 +423,7 @@
 
   async function handleProfilePhotoUpload(event) {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file) {return;}
     const formData = new FormData();
     formData.append('photo', file);
 
@@ -448,11 +448,11 @@
 
   function bridgeTestimonialsUI() {
     const panel = document.getElementById('testimonialsPage');
-    if (!panel || !adminState.testimonials.length) return;
+    if (!panel || !adminState.testimonials.length) {return;}
   }
 
   async function loadSettings() {
-    if (adminState.isLoading) return;
+    if (adminState.isLoading) {return;}
     adminState.isLoading = true;
     renderSettingsPanel(adminState.currentSettingsTab || 'home');
     try {
@@ -473,7 +473,7 @@
   }
 
   async function saveSettings() {
-    if (adminState.isLoading) return;
+    if (adminState.isLoading) {return;}
     const settings = {};
     document.querySelectorAll('[id^="set_"]').forEach((el) => {
       settings[el.id.replace('set_', '')] = el.value;
@@ -570,7 +570,7 @@
 
   async function loadAppointmentsPage() {
     const panel = document.getElementById('appointmentsPage');
-    if (!panel) return;
+    if (!panel) {return;}
     renderLoading(panel, 'Loading appointments...');
 
     const { response, data } = await requestJson(API + '/appointments?limit=100');
@@ -663,9 +663,9 @@
 
     tableBody.addEventListener('click', async (event) => {
       const button = event.target.closest('[data-action]');
-      if (!button) return;
+      if (!button) {return;}
       const appointment = adminState.appointments.find((item) => String(item.id) === String(button.dataset.id));
-      if (!appointment) return;
+      if (!appointment) {return;}
 
       if (button.dataset.action === 'view-appointment') {
         renderAppointmentDetail(appointment);
@@ -685,7 +685,7 @@
       }
 
       if (button.dataset.action === 'delete-appointment') {
-        if (!confirm('Delete this appointment permanently?')) return;
+        if (!confirm('Delete this appointment permanently?')) {return;}
         const { response } = await requestJson(API + `/appointments/${appointment.id}`, {
           method: 'DELETE',
         });
@@ -710,7 +710,7 @@
 
   async function loadPatientsPage() {
     const panel = document.getElementById('patientsPage');
-    if (!panel) return;
+    if (!panel) {return;}
     renderLoading(panel, 'Loading patients...');
 
     const { response, data } = await requestJson(API + '/patients?limit=100');
@@ -776,7 +776,7 @@
 
     async function renderPatientDetail(id) {
       const { response, data: patientData } = await requestJson(API + `/patients/${id}`);
-      if (!response.ok || !patientData?.patient) return;
+      if (!response.ok || !patientData?.patient) {return;}
       const patient = patientData.patient;
       const appointments = patientData.appointments || [];
       detailBody.innerHTML = `
@@ -797,9 +797,9 @@
 
     tableBody.addEventListener('click', async (event) => {
       const button = event.target.closest('[data-action]');
-      if (!button) return;
+      if (!button) {return;}
       const patient = adminState.patients.find((item) => String(item.id) === String(button.dataset.id));
-      if (!patient) return;
+      if (!patient) {return;}
 
       if (button.dataset.action === 'view-patient') {
         await renderPatientDetail(patient.id);
@@ -807,9 +807,9 @@
 
       if (button.dataset.action === 'remind-patient') {
         const timeframe = prompt('Reminder timeframe (e.g. 1 week, 1 month):', '1 week');
-        if (timeframe === null) return;
+        if (timeframe === null) {return;}
         const message = prompt('Reminder message:', 'Please follow up with the clinic.');
-        if (message === null) return;
+        if (message === null) {return;}
         const { response } = await requestJson(API + `/patients/${patient.id}/reminders`, {
           method: 'POST',
           body: JSON.stringify({ timeframe, message }),
@@ -822,7 +822,7 @@
       }
 
       if (button.dataset.action === 'delete-patient') {
-        if (!confirm('Delete this patient and their appointments?')) return;
+        if (!confirm('Delete this patient and their appointments?')) {return;}
         const { response } = await requestJson(API + `/patients/${patient.id}`, { method: 'DELETE' });
         if (response.ok) {
           showToast('Patient deleted.');
@@ -844,7 +844,7 @@
 
   async function loadMessagesPage() {
     const panel = document.getElementById('messagesPage');
-    if (!panel) return;
+    if (!panel) {return;}
     renderLoading(panel, 'Loading messages...');
 
     const { response, data } = await requestJson(API + '/messages?limit=100');
@@ -899,7 +899,7 @@
 
     async function renderMessageDetail(id) {
       const { response, data: messageData } = await requestJson(API + `/messages/${id}`);
-      if (!response.ok || !messageData?.data) return;
+      if (!response.ok || !messageData?.data) {return;}
       const message = messageData.data;
       detailBody.innerHTML = `
         <div class="detail-grid">
@@ -914,9 +914,9 @@
 
     tableBody.addEventListener('click', async (event) => {
       const button = event.target.closest('[data-action]');
-      if (!button) return;
+      if (!button) {return;}
       const message = adminState.messages.find((item) => String(item.id) === String(button.dataset.id));
-      if (!message) return;
+      if (!message) {return;}
 
       if (button.dataset.action === 'view-message') {
         await renderMessageDetail(message.id);
@@ -933,7 +933,7 @@
       }
 
       if (button.dataset.action === 'delete-message') {
-        if (!confirm('Delete this message permanently?')) return;
+        if (!confirm('Delete this message permanently?')) {return;}
         const { response } = await requestJson(API + `/messages/${message.id}`, { method: 'DELETE' });
         if (response.ok) {
           showToast('Message deleted.');
@@ -949,7 +949,7 @@
 
   async function loadServicesPage() {
     const panel = document.getElementById('servicesPage');
-    if (!panel) return;
+    if (!panel) {return;}
     renderLoading(panel, 'Loading services...');
 
     const { response, data } = await requestJson(API + '/services');
@@ -1033,9 +1033,9 @@
 
     tableBody.addEventListener('click', async (event) => {
       const button = event.target.closest('[data-action]');
-      if (!button) return;
+      if (!button) {return;}
       const service = adminState.services.find((item) => String(item.id) === String(button.dataset.id));
-      if (!service) return;
+      if (!service) {return;}
 
       if (button.dataset.action === 'edit-service') {
         serviceId.value = service.id;
@@ -1052,7 +1052,7 @@
       }
 
       if (button.dataset.action === 'delete-service') {
-        if (!confirm('Delete this service? Existing appointments will keep it and the service may be deactivated instead.')) return;
+        if (!confirm('Delete this service? Existing appointments will keep it and the service may be deactivated instead.')) {return;}
         const { response, data: deleteData } = await requestJson(API + `/services/${service.id}`, { method: 'DELETE' });
         if (response.ok) {
           showToast(deleteData?.message || 'Service updated.');
@@ -1097,7 +1097,7 @@
 
   async function loadTestimonialsPage() {
     const panel = document.getElementById('testimonialsPage');
-    if (!panel) return;
+    if (!panel) {return;}
     renderLoading(panel, 'Loading testimonials...');
 
     const { response, data } = await requestJson(API + '/testimonials/manage');
@@ -1181,9 +1181,9 @@
 
     tableBody.addEventListener('click', async (event) => {
       const button = event.target.closest('[data-action]');
-      if (!button) return;
+      if (!button) {return;}
       const testimonial = adminState.testimonials.find((item) => String(item.id) === String(button.dataset.id));
-      if (!testimonial) return;
+      if (!testimonial) {return;}
 
       if (button.dataset.action === 'edit-testimonial') {
         testimonialId.value = testimonial.id;
@@ -1197,7 +1197,7 @@
       }
 
       if (button.dataset.action === 'delete-testimonial') {
-        if (!confirm('Delete this testimonial?')) return;
+        if (!confirm('Delete this testimonial?')) {return;}
         const { response } = await requestJson(API + `/testimonials/manage/${testimonial.id}`, { method: 'DELETE' });
         if (response.ok) {
           showToast('Testimonial deleted.');
@@ -1238,7 +1238,7 @@
 
   async function loadAuditLogsPage() {
     const panel = document.getElementById('auditLogsPage');
-    if (!panel) return;
+    if (!panel) {return;}
     renderLoading(panel, 'Loading audit logs...');
 
     const { response, data } = await requestJson(API + '/audit-logs?limit=100');
@@ -1385,7 +1385,7 @@
   function startClock() {
     const tick = () => {
       const el = document.getElementById('liveClock');
-      if (el) el.textContent = new Date().toLocaleString();
+      if (el) {el.textContent = new Date().toLocaleString();}
     };
     tick();
     setInterval(tick, 1000);

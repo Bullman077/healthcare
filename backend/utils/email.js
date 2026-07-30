@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 function escHtml(str) {
-  if (!str) return '';
+  if (!str) {return '';}
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
@@ -23,7 +23,7 @@ function createTransporter() {
   // Development / fallback stream transporter (logs emails safely to console)
   return {
     sendMail: async (opts) => {
-      console.log(`[EMAIL SIMULATOR] To: ${opts.to} | Subject: ${opts.subject}`);
+      void opts;
       return { messageId: 'simulated_' + Date.now() };
     },
     close: () => {},
@@ -33,7 +33,7 @@ function createTransporter() {
 let transporter;
 
 function getTransporter() {
-  if (!transporter) transporter = createTransporter();
+  if (!transporter) {transporter = createTransporter();}
   return transporter;
 }
 
@@ -60,7 +60,6 @@ async function sendConfirmation(appointment) {
   const { referenceNumber, time } = appointment;
 
   if (!patientEmail) {
-    console.warn('No patient email found — skipping confirmation for', referenceNumber);
     return null;
   }
 
@@ -140,13 +139,6 @@ async function sendConfirmation(appointment) {
     html,
   });
 
-  if (process.env.NODE_ENV !== 'production') {
-    const preview = info.messageId && !info.messageId.startsWith('simulated_')
-      ? nodemailer.getTestMessageUrl(info)
-      : `[simulated] ${info.messageId}`;
-    console.log('Confirmation Email preview: %s', preview);
-  }
-
   return info;
 }
 
@@ -154,7 +146,7 @@ async function sendReminderEmail(appointment) {
   const { patientName, patientEmail, serviceName, isTelehealth, dateStr, meetUrl } = extractAppointmentData(appointment);
   const { referenceNumber, time } = appointment;
 
-  if (!patientEmail) return null;
+  if (!patientEmail) {return null;}
 
   const html = `
 <!DOCTYPE html>
@@ -246,7 +238,7 @@ async function sendFollowUpReminderEmail(patient, reminder) {
   const patientName = patient.fullName || `${patient.firstName} ${patient.lastName}`;
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5000';
 
-  if (!patientEmail) return;
+  if (!patientEmail) {return;}
 
   const html = `
   <div style="font-family:'Plus Jakarta Sans',Segoe UI,sans-serif;max-width:600px;margin:20px auto;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden;background:#fff;">
@@ -287,12 +279,11 @@ async function sendFollowUpReminderEmail(patient, reminder) {
 }
 
 async function sendStatusUpdate(appointment) {
-  const { patientName, patientEmail, serviceName, isTelehealth, dateStr, meetUrl } = extractAppointmentData(appointment);
+  const { patientName, patientEmail, serviceName, dateStr } = extractAppointmentData(appointment);
   const { referenceNumber, time, status } = appointment;
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5000';
 
   if (!patientEmail) {
-    console.warn('No patient email found — skipping status update for', referenceNumber);
     return null;
   }
 
@@ -371,7 +362,7 @@ async function sendPasswordResetEmail(patient, resetToken) {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5000';
   const resetUrl = `${frontendUrl}/patient/?resetToken=${resetToken}`;
 
-  if (!patientEmail) return;
+  if (!patientEmail) {return;}
 
   const html = `
   <div style="font-family:'Plus Jakarta Sans',Segoe UI,sans-serif;max-width:600px;margin:20px auto;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden;background:#fff;">

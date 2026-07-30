@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const { Message, Testimonial, Setting, Service } = require('../models');
 const { AppError } = require('../middleware/errorHandler');
 const { sendNewMessageNotification } = require('../utils/email');
@@ -29,9 +28,7 @@ exports.submitMessage = async (req, res, next) => {
       message: message.substring(0, 2000),
     });
     res.status(201).json({ success: true, message: 'Thank you! We will get back to you soon.', data: { id: msg.id } });
-    sendNewMessageNotification({ name, email, phone, subject, message }).catch((err) => {
-      console.error('Failed to send contact notification email:', err.message);
-    });
+    sendNewMessageNotification({ name, email, phone, subject, message }).catch(() => {});
     // New message added, reset stats cache to update unread count
     resetStatsCache();
   } catch (err) {
@@ -44,7 +41,7 @@ exports.getMessages = async (req, res, next) => {
     const { page = 1, limit = 20, isRead } = req.query;
     const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
     const where = {};
-    if (isRead !== undefined) where.isRead = isRead === 'true';
+    if (isRead !== undefined) {where.isRead = isRead === 'true';}
 
     const { count, rows } = await Message.findAndCountAll({
       where, order: [['createdAt', 'DESC']], offset, limit: parseInt(limit, 10),
@@ -62,7 +59,7 @@ exports.getMessages = async (req, res, next) => {
 exports.getMessage = async (req, res, next) => {
   try {
     const msg = await Message.findByPk(req.params.id);
-    if (!msg) return next(new AppError('Message not found.', 404));
+    if (!msg) {return next(new AppError('Message not found.', 404));}
     if (!msg.isRead) {
       msg.isRead = true;
       await msg.save({ fields: ['isRead'] });
@@ -78,7 +75,7 @@ exports.getMessage = async (req, res, next) => {
 exports.toggleMessageRead = async (req, res, next) => {
   try {
     const msg = await Message.findByPk(req.params.id);
-    if (!msg) return next(new AppError('Message not found.', 404));
+    if (!msg) {return next(new AppError('Message not found.', 404));}
     msg.isRead = !msg.isRead;
     await msg.save({ fields: ['isRead'] });
     await logAudit(req.admin, msg.isRead ? 'read' : 'unread', 'message', msg.id, { from: msg.name, subject: msg.subject }, req);
@@ -93,7 +90,7 @@ exports.toggleMessageRead = async (req, res, next) => {
 exports.deleteMessage = async (req, res, next) => {
   try {
     const msg = await Message.findByPk(req.params.id);
-    if (!msg) return next(new AppError('Message not found.', 404));
+    if (!msg) {return next(new AppError('Message not found.', 404));}
     await logAudit(req.admin, 'delete', 'message', msg.id, { from: msg.name, email: msg.email, subject: msg.subject }, req);
     await msg.destroy();
     // Message deleted, reset stats cache
@@ -130,7 +127,7 @@ exports.createTestimonial = async (req, res, next) => {
     const allowedFields = ['name', 'title', 'content', 'rating', 'isActive', 'displayOnHome'];
     const filtered = {};
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) filtered[field] = req.body[field];
+      if (req.body[field] !== undefined) {filtered[field] = req.body[field];}
     });
     const testimonial = await Testimonial.create(filtered);
     await logAudit(req.admin, 'create', 'testimonial', testimonial.id, { name: testimonial.name, rating: testimonial.rating }, req);
@@ -144,7 +141,7 @@ exports.updateTestimonial = async (req, res, next) => {
   try {
     const allowedFields = ['name', 'title', 'content', 'rating', 'isActive', 'displayOnHome'];
     const testimonial = await Testimonial.findByPk(req.params.id);
-    if (!testimonial) return next(new AppError('Testimonial not found.', 404));
+    if (!testimonial) {return next(new AppError('Testimonial not found.', 404));}
     const changes = {};
     allowedFields.forEach((field) => {
       if (req.body[field] !== undefined && req.body[field] !== testimonial[field]) {
@@ -152,7 +149,7 @@ exports.updateTestimonial = async (req, res, next) => {
       }
     });
     allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) testimonial[field] = req.body[field];
+      if (req.body[field] !== undefined) {testimonial[field] = req.body[field];}
     });
     await testimonial.save();
     if (Object.keys(changes).length > 0) {
@@ -167,7 +164,7 @@ exports.updateTestimonial = async (req, res, next) => {
 exports.deleteTestimonial = async (req, res, next) => {
   try {
     const testimonial = await Testimonial.findByPk(req.params.id);
-    if (!testimonial) return next(new AppError('Testimonial not found.', 404));
+    if (!testimonial) {return next(new AppError('Testimonial not found.', 404));}
     await logAudit(req.admin, 'delete', 'testimonial', testimonial.id, { name: testimonial.name, content: testimonial.content.substring(0, 100) }, req);
     await testimonial.destroy();
     res.json({ success: true, message: 'Testimonial deleted.' });

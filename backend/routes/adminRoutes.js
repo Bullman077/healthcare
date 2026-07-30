@@ -36,7 +36,7 @@ const {
   getSettings, updateSettings,
 } = require('../controllers/contentController');
 const { protect } = require('../middleware/auth');
-const { authLimiter, adminWriteLimiter, passwordResetLimiter } = require('../middleware/security');
+const { authLimiter, adminWriteLimiter } = require('../middleware/security');
 
 router.post('/login', authLimiter, login);
 router.post('/refresh', refresh);

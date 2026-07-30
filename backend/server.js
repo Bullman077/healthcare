@@ -181,10 +181,10 @@ app.use(errorHandler);
 
 /* ----- Graceful Shutdown ----- */
 async function shutdown(signal) {
-  console.log(`\nReceived ${signal}. Shutting down gracefully...`);
+  void signal;
   const { getTransporter } = require('./utils/email');
   const transporter = getTransporter();
-  if (transporter) transporter.close();
+  if (transporter) {transporter.close();}
   await sequelize.close();
   process.exit(0);
 }
@@ -194,19 +194,19 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 
 /* ----- Start ----- */
 function validateEnv() {
-  if (process.env.NODE_ENV === 'test') return;
+  if (process.env.NODE_ENV === 'test') {return;}
   // In development mode with SQLite, DATABASE_URL is intentionally empty
   const required = ['JWT_SECRET', 'COOKIE_SECRET'];
   if (process.env.NODE_ENV !== 'development') {
     required.push('DATABASE_URL');
   }
   const missing = required.filter((k) => !process.env[k]);
-  if (missing.length) {
-    console.error(`FATAL: Missing required environment variables: ${missing.join(', ')}`);
+if (missing.length) {
     process.exit(1);
   }
-  if (process.env.JWT_SECRET.length < 32) {
-    console.warn('WARNING: JWT_SECRET is shorter than 32 characters. Consider using a longer secret.');
+if (process.env.JWT_SECRET.length < 32) {
+    const warning = 'WARNING: JWT_SECRET is shorter than 32 characters. Consider using a longer secret.';
+    process.emitWarning(warning);
   }
 }
 
@@ -349,11 +349,9 @@ async function start() {
     await runMigrations();   // Umzug-managed schema migrations (replaces sequelize.sync)
     await seedSiteDefaults();
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT} [${process.env.NODE_ENV || 'development'}]`);
       startScheduler();
     });
-  } catch (err) {
-    console.error('Failed to start server:', err.message);
+} catch (err) {
     process.exit(1);
   }
 }

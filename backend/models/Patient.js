@@ -39,7 +39,7 @@ const Patient = sequelize.define('Patient', {
 });
 
 Patient.prototype.comparePassword = async function (enteredPassword) {
-  if (!this.passwordHash) return false;
+  if (!this.passwordHash) {return false;}
   return bcrypt.compare(enteredPassword, this.passwordHash);
 };
 

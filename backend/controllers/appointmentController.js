@@ -30,7 +30,7 @@ exports.createAppointment = async (req, res, next) => {
       if (patient.firstName !== firstName) { patient.firstName = firstName; needsUpdate = true; }
       if (patient.lastName !== lastName) { patient.lastName = lastName; needsUpdate = true; }
       if (patient.phone !== phone) { patient.phone = phone; needsUpdate = true; }
-      if (needsUpdate) await patient.save();
+      if (needsUpdate) {await patient.save();}
     } else {
       const nameParts = name.trim().split(/\s+/);
       const firstName = nameParts[0];
@@ -86,7 +86,7 @@ exports.createAppointment = async (req, res, next) => {
     try {
       await sendConfirmation(populated);
     } catch (emailErr) {
-      console.error('Failed to send confirmation email:', emailErr.message);
+      // silent
     }
 
     res.status(201).json({

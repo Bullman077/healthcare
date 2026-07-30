@@ -1,12 +1,12 @@
 (function () {
   'use strict';
 
-  var API_URL = 'https://uhs-backen.onrender.com';
+  const API_URL = 'https://uhs-backen.onrender.com';
 
   window.UHS_API_URL = API_URL;
 
   function esc(str) {
-    if (str == null) return '';
+    if (str === null || str === undefined) { return ''; }
     return String(str).replace(/[<>&"']/g, function(c) {
       return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' }[c];
     });
@@ -101,7 +101,7 @@
       const isActive = item.classList.contains('active');
 
       faqItems.forEach(i => i.classList.remove('active'));
-      if (!isActive) item.classList.add('active');
+      if (!isActive) {item.classList.add('active');}
     });
   });
 
@@ -174,7 +174,7 @@
       '1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'
     ].map(t => `<option value="${t}">${t}</option>`).join('');
 
-    var loggedIn = window.currentPatient;
+    const loggedIn = window.currentPatient;
 
     if (loggedIn) {
       return `
@@ -224,7 +224,7 @@
       `;
     }
 
-    var badgeText = 'Free Appointment \u2014 No Account Required';
+    const badgeText = 'Free Appointment \u2014 No Account Required';
     return `
       <div style="text-align:center; margin-bottom:1.5rem;">
         <span class="badge badge--indigo" style="margin-bottom:0.5rem;">${badgeText}</span>
@@ -292,22 +292,22 @@
 
   function showBookingSuccess(appt, email) {
     const mc = document.querySelector('.modal-card');
-    if (!mc) return;
+    if (!mc) {return;}
 
     // Fetch past appointments for this email silently
     if (email) {
       fetch('/api/appointments/by-email?email=' + encodeURIComponent(email))
         .then(r => r.json())
         .then(function(d) {
-          var past = (d.data || []).filter(function(a) { return a.referenceNumber !== appt.referenceNumber; });
+          const past = (d.data || []).filter(function(a) { return a.referenceNumber !== appt.referenceNumber; });
           if (past.length) {
-            var el = document.getElementById('past-appt-count');
-            if (el) el.textContent = 'You have ' + past.length + ' past appointment(s) on record.';
+            const el = document.getElementById('past-appt-count');
+            if (el) {el.textContent = 'You have ' + past.length + ' past appointment(s) on record.';}
           }
         }).catch(function(){});
     }
 
-    var portalBlock = window.currentPatient
+    const portalBlock = window.currentPatient
       ? '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">View all your appointments &amp; progress</p><a href="/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Go to My Dashboard &#x2192;</a></div>'
       : '<div style="background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:left;"><p style="font-size:0.85rem;color:#3730A3;margin:0;font-weight:600;">Want to track your progress &amp; appointments?</p><p style="font-size:0.82rem;color:#4338CA;margin:4px 0 10px;">Set up your free Patient Portal account to view doctor notes, reminders, and your full appointment history.</p><a href="/patient/" style="display:inline-block;padding:7px 16px;background:#4F46E5;color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:12px;">Set Up My Patient Account &#x2192;</a></div>';
 
@@ -353,13 +353,13 @@
     // Clear errors
     ['err-name','err-phone','err-email','err-service','err-date','err-time'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
+      if (el) {el.style.display = 'none';}
     });
     const errBanner = document.getElementById('booking-api-error');
-    if (errBanner) errBanner.style.display = 'none';
+    if (errBanner) {errBanner.style.display = 'none';}
 
     const val = id => document.getElementById(id)?.value?.trim() || '';
-    var loggedIn = window.currentPatient;
+    const loggedIn = window.currentPatient;
     const name    = loggedIn ? (loggedIn.firstName + ' ' + loggedIn.lastName) : val('b-name');
     const phone   = loggedIn ? (loggedIn.phone || '') : val('b-phone');
     const email   = loggedIn ? (loggedIn.email || '') : val('b-email');
@@ -377,27 +377,27 @@
     };
 
     if (!loggedIn) {
-      if (name.length < 2)  fieldErr('err-name',    'Please enter your full name (min 2 characters).');
-      if (!phone)           fieldErr('err-phone',   'Phone number is required.');
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fieldErr('err-email', 'Please enter a valid email address.');
+      if (name.length < 2)  {fieldErr('err-name',    'Please enter your full name (min 2 characters).');}
+      if (!phone)           {fieldErr('err-phone',   'Phone number is required.');}
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {fieldErr('err-email', 'Please enter a valid email address.');}
     }
-    if (!service)         fieldErr('err-service', 'Please select a service.');
+    if (!service)         {fieldErr('err-service', 'Please select a service.');}
     if (!date) {
       fieldErr('err-date', 'Please select a date.');
     } else {
       const d = new Date(date), now = new Date(); now.setHours(0,0,0,0);
-      if (d <= now)     fieldErr('err-date', 'Date must be in the future.');
-      if (d.getDay() === 0) fieldErr('err-date', 'We are closed on Sundays.');
+      if (d <= now)     {fieldErr('err-date', 'Date must be in the future.');}
+      if (d.getDay() === 0) {fieldErr('err-date', 'We are closed on Sundays.');}
     }
-    if (!time)            fieldErr('err-time',    'Please select a time slot.');
-    if (!ok) return;
+    if (!time)            {fieldErr('err-time',    'Please select a time slot.');}
+    if (!ok) {return;}
 
     // Set loading state
     const btn     = document.getElementById('b-submit-btn');
     const btnTxt  = document.getElementById('b-btn-text');
     const btnSpin = document.getElementById('b-btn-spin');
-    if (btn)     btn.disabled = true;
-    if (btnTxt)  btnTxt.style.display = 'none';
+    if (btn)     {btn.disabled = true;}
+    if (btnTxt)  {btnTxt.style.display = 'none';}
     if (btnSpin) { btnSpin.style.display = 'inline-flex'; }
 
     try {
@@ -407,7 +407,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, email, service, date, time, message }),
       };
-      if (loggedIn) fetchOpts.credentials = 'include';
+      if (loggedIn) {fetchOpts.credentials = 'include';}
       const res  = await fetch(API_BASE, fetchOpts);
       const data = await res.json();
 
@@ -418,29 +418,29 @@
           errBanner.textContent = data.message || 'Something went wrong. Please call (803) 381-7489.';
           errBanner.style.display = 'block';
         }
-        if (btn)     btn.disabled = false;
-        if (btnTxt)  btnTxt.style.display = 'inline';
-        if (btnSpin) btnSpin.style.display = 'none';
+        if (btn)     {btn.disabled = false;}
+        if (btnTxt)  {btnTxt.style.display = 'inline';}
+        if (btnSpin) {btnSpin.style.display = 'none';}
       }
     } catch (err) {
       if (errBanner) {
         errBanner.textContent = 'Network error. Please call us at (803) 381-7489.';
         errBanner.style.display = 'block';
       }
-      if (btn)     btn.disabled = false;
-      if (btnTxt)  btnTxt.style.display = 'inline';
-      if (btnSpin) btnSpin.style.display = 'none';
+      if (btn)     {btn.disabled = false;}
+      if (btnTxt)  {btnTxt.style.display = 'inline';}
+      if (btnSpin) {btnSpin.style.display = 'none';}
     }
   }
 
   function initModalTriggers() {
     const overlay   = document.getElementById('booking-modal');
     const modalCard = document.querySelector('.modal-card');
-    if (!overlay || !modalCard) return;
+    if (!overlay || !modalCard) {return;}
 
     // Close on backdrop click
     overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) overlay.classList.remove('active');
+      if (e.target === overlay) {overlay.classList.remove('active');}
     });
 
     // Close on X button click
@@ -452,7 +452,7 @@
     // Global event delegation for all static and dynamically added [data-open-modal] buttons
     document.addEventListener('click', function(e) {
       const trigger = e.target.closest('[data-open-modal]');
-      if (!trigger) return;
+      if (!trigger) {return;}
 
       e.preventDefault();
       const svc = trigger.dataset.service || '';
@@ -480,13 +480,13 @@
   // =========================================================
   window.currentPatient = null;
 
-  var patientAuthChecked = false;
+  let patientAuthChecked = false;
   function initPatientAuth() {
-    if (patientAuthChecked) return Promise.resolve();
+    if (patientAuthChecked) {return Promise.resolve();}
     patientAuthChecked = true;
-    var headers = { 'Content-Type': 'application/json' };
-    var token = localStorage.getItem('patientToken');
-    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const headers = { 'Content-Type': 'application/json' };
+    const token = localStorage.getItem('patientToken');
+    if (token) {headers['Authorization'] = 'Bearer ' + token;}
     return fetch(API_URL + '/api/v1/patient/session', { credentials: 'include', headers: headers })
       .then(function(r) { return r.json(); })
       .then(function(data) {
@@ -499,9 +499,9 @@
   }
 
   function revertNav() {
-    var link = document.getElementById('patient-portal-link');
-    var span = document.getElementById('patient-nav');
-    if (!link || !span) return;
+    const link = document.getElementById('patient-portal-link');
+    const span = document.getElementById('patient-nav');
+    if (!link || !span) {return;}
     link.style.display = '';
     span.style.display = 'none';
     span.innerHTML = '';
@@ -509,9 +509,9 @@
   }
 
   function updateNavForPatient(patient) {
-    var link = document.getElementById('patient-portal-link');
-    var span = document.getElementById('patient-nav');
-    if (!link || !span) return;
+    const link = document.getElementById('patient-portal-link');
+    const span = document.getElementById('patient-nav');
+    if (!link || !span) {return;}
     link.style.display = 'none';
     span.style.display = 'inline-flex';
     span.style.alignItems = 'center';
@@ -524,25 +524,25 @@
   }
 
   function prefillPatientFields() {
-    var p = window.currentPatient;
-    if (!p) return;
+    const p = window.currentPatient;
+    if (!p) {return;}
     ['b-name','b-phone','b-email'].forEach(function(id) {
-      var el = document.getElementById(id);
+      const el = document.getElementById(id);
       if (el) { el.readOnly = true; el.style.background = 'var(--color-slate-100)'; }
     });
-    var nameEl = document.getElementById('b-name');
-    var phoneEl = document.getElementById('b-phone');
-    var emailEl = document.getElementById('b-email');
-    if (nameEl) nameEl.value = p.firstName + ' ' + p.lastName;
-    if (phoneEl) phoneEl.value = p.phone || '';
-    if (emailEl) emailEl.value = p.email;
+    const nameEl = document.getElementById('b-name');
+    const phoneEl = document.getElementById('b-phone');
+    const emailEl = document.getElementById('b-email');
+    if (nameEl) {nameEl.value = p.firstName + ' ' + p.lastName;}
+    if (phoneEl) {phoneEl.value = p.phone || '';}
+    if (emailEl) {emailEl.value = p.email;}
   }
 
   // Re-check auth (no guard — used for bfcache restore)
   function refreshAuth() {
-    var headers = { 'Content-Type': 'application/json' };
-    var token = localStorage.getItem('patientToken');
-    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const headers = { 'Content-Type': 'application/json' };
+    const token = localStorage.getItem('patientToken');
+    if (token) {headers['Authorization'] = 'Bearer ' + token;}
     fetch(API_URL + '/api/v1/patient/session', { credentials: 'include', headers: headers })
       .then(function(r) { return r.json(); })
       .then(function(data) {
@@ -571,13 +571,13 @@
 
   // ===== TESTIMONIALS GRID =====
   (function initTestimonials() {
-    var track = document.querySelector('.testimonials-grid__track');
-    if (!track) return;
+    const track = document.querySelector('.testimonials-grid__track');
+    if (!track) {return;}
 
-    var reviews = [];
+    let reviews = [];
 
     function getInitials(name) {
-      var parts = name.split(' ');
+      const parts = name.split(' ');
       return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
     }
 
@@ -588,7 +588,7 @@
     function buildSlides() {
       track.innerHTML = '';
       reviews.forEach(function(review) {
-        var card = document.createElement('div');
+        const card = document.createElement('div');
         card.className = 'testimonial-card';
         card.innerHTML =
           '<div>' +
@@ -620,13 +620,13 @@
         if (reviews.length > 0) {
           buildSlides();
         } else {
-          var section = track.closest('.section--testimonials');
-          if (section) section.style.display = 'none';
+          const section = track.closest('.section--testimonials');
+          if (section) {section.style.display = 'none';}
         }
       })
       .catch(function() {
-        var section = track.closest('.section--testimonials');
-        if (section) section.style.display = 'none';
+        const section = track.closest('.section--testimonials');
+        if (section) {section.style.display = 'none';}
       });
   })();
 
@@ -634,17 +634,17 @@
   // 11. HOMEPAGE CORE SERVICES — dynamic from /api/services
   // =========================================================
   (function() {
-    var grid = document.getElementById('homeServicesGrid');
-    if (!grid) return;
+    const grid = document.getElementById('homeServicesGrid');
+    if (!grid) {return;}
 
-    var CATEGORY_BTN = {
+    const CATEGORY_BTN = {
       physical: 'Schedule Now', wellness: 'Get Started', training: 'Inquire',
       therapy: 'Book Session', preventive: 'Schedule', telehealth: 'Access Telehealth', diagnostic: 'Schedule Test'
     };
 
     function escSvc(s) {
-      if (!s) return '';
-      var d = document.createElement('div');
+      if (!s) {return '';}
+      const d = document.createElement('div');
       d.appendChild(document.createTextNode(s));
       return d.innerHTML;
     }
@@ -656,8 +656,8 @@
           grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:2rem; color:var(--color-slate-500);">Services are being updated.</div>';
           return;
         }
-        var html = data.services.map(function(s) {
-          var btn = s.category === 'telehealth'
+        const html = data.services.map(function(s) {
+          const btn = s.category === 'telehealth'
             ? '<a href="telehealth.html" class="core-service-card__btn">Access Telehealth</a>'
             : '<button class="core-service-card__btn" data-open-modal data-service="' + escSvc(s.name) + '">' + escSvc(CATEGORY_BTN[s.category] || 'Learn More') + '</button>';
           return '<div class="core-service-card">' +
@@ -668,7 +668,7 @@
         }).join('');
         grid.innerHTML = html;
         // Re-bind modal triggers for newly created buttons
-        if (typeof initModalTriggers === 'function') initModalTriggers();
+        if (typeof initModalTriggers === 'function') {initModalTriggers();}
       })
       .catch(function() {
         grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:2rem; color:var(--color-slate-500);">Unable to load services.</div>';

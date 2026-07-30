@@ -10,6 +10,7 @@ class AppError extends Error {
 }
 
 function errorHandler(err, req, res, _next) {
+  void _next;
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Internal server error';
 
@@ -63,14 +64,13 @@ function errorHandler(err, req, res, _next) {
 
   // Unexpected errors — don't leak details in production
   if (!err.isOperational) {
-    console.error('UNEXPECTED ERROR:', err);
     if (process.env.NODE_ENV === 'production') {
       message = 'Something went wrong. Please try again later.';
     }
   }
 
   if (process.env.NODE_ENV === 'development') {
-    console.error('ERROR:', err);
+    message = `Error: ${err.message}`;
   }
 
   res.status(statusCode).json({

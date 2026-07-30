@@ -67,7 +67,6 @@ function csrfProtect(req, res, next) {
   const isAllowed = allowedOrigins.some((allowed) => source.startsWith(allowed));
 
   if (!isAllowed) {
-    console.warn(`CSRF blocked: ${req.method} ${req.originalUrl} from origin ${source}`);
     return next(new AppError('CSRF: Request origin not allowed.', 403));
   }
 

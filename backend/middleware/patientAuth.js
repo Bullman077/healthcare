@@ -17,7 +17,7 @@ exports.optionalPatientAuth = async (req, res, next) => {
     token = req.cookies.patientToken;
   }
 
-  if (!token) return next();
+  if (!token) {return next();}
 
   try {
     const decoded = jwt.verify(token, getJwtSecret());
