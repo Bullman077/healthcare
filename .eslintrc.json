@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-var": "error",
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "eqeqeq": "error",
+    "curly": "error",
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-new-func": "error",
+    "no-prototype-builtins": "error",
+    "prefer-const": "error",
+    "no-const-assign": "error",
+    "no-dupe-keys": "error",
+    "no-duplicate-case": "error"
+  },
+  "ignorePatterns": ["node_modules/", "js/app.min.js", "css/styles.min.css", "backend/node_modules/"]
+}

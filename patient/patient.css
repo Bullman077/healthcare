@@ -955,8 +955,711 @@ a { text-decoration: none; }
   gap: 16px;
 }
 
-/* ================= FOOTER ================= */
-.footer {
+/* =========================================================
+   PORTAL COMPONENT CLASSES — replace inline styles
+   ========================================================= */
+
+/* ----- Portal Header Layout ----- */
+.portal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.portal-header__user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-header__name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--color-slate-700);
+  font-family: var(--font-heading);
+  white-space: nowrap;
+}
+
+.portal-header__signout {
+  background: var(--color-plum);
+  color: white;
+  border: none;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  transition: all 0.2s;
+}
+
+.portal-header__signout:hover {
+  background: var(--color-plum-dark);
+  transform: translateY(-1px);
+}
+
+/* ----- Profile Grid ----- */
+.portal-profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.portal-profile--full {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ----- Booking Modal Layout ----- */
+.portal-booking-form {
+  margin-bottom: 14px;
+}
+
+.portal-booking-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.portal-booking-form__group {
+  margin-bottom: 14px;
+}
+
+.portal-booking-form__label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: var(--slate-700);
+}
+
+.portal-booking-form__select,
+.portal-booking-form__input,
+.portal-booking-form__textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--slate-200);
+  font-size: 0.9rem;
+  background: var(--slate-50);
+  color: var(--slate-800);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: var(--font-body);
+}
+
+.portal-booking-form__select:focus,
+.portal-booking-form__input:focus,
+.portal-booking-form__textarea:focus {
+  border-color: var(--color-plum);
+  box-shadow: 0 0 0 3px rgba(75, 29, 109, 0.12);
+}
+
+.portal-booking-form__textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* ----- Error / Success Messages ----- */
+.portal-msg {
+  display: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.portal-msg--error {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+.portal-msg--success {
+  background: #d1fae5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+}
+
+/* ----- Skeleton Loading ----- */
+.skeleton {
+  background: linear-gradient(90deg, var(--slate-200) 25%, var(--slate-100) 50%, var(--slate-200) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton--text {
+  height: 14px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.skeleton--text-sm {
+  height: 12px;
+  width: 60%;
+  margin-bottom: 6px;
+}
+
+.skeleton--heading {
+  height: 20px;
+  width: 40%;
+  margin-bottom: 12px;
+}
+
+.skeleton--card {
+  height: 80px;
+  width: 100%;
+  border-radius: var(--radius-lg);
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ----- Error State ----- */
+.portal-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: var(--slate-500);
+}
+
+.portal-error__icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.portal-error__text {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.portal-error__retry {
+  background: var(--color-plum);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  transition: all 0.2s;
+}
+
+.portal-error__retry:hover {
+  background: var(--color-plum-dark);
+  transform: translateY(-1px);
+}
+
+/* ----- Focus Trap & Modal Accessibility ----- */
+.modal-overlay[aria-hidden="true"] {
+  display: none;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--color-plum);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip modal focus for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ----- Portal Tab Panel ----- */
+.portal-tab-panel {
+  animation: portalTabFadeIn 0.25s ease;
+}
+
+@keyframes portalTabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ----- Reminder Card ----- */
+.reminder-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.reminder-card:hover {
+  border-color: var(--color-plum);
+  box-shadow: 0 2px 8px rgba(75, 29, 109, 0.08);
+}
+
+.reminder-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.reminder-card__timeframe {
+  font-weight: 700;
+  color: var(--color-plum);
+  font-size: 15px;
+}
+
+.reminder-card__date {
+  font-size: 12px;
+  color: var(--slate-400);
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.reminder-card__message {
+  font-size: 14px;
+  color: var(--slate-700);
+  margin: 0 0 14px;
+  line-height: 1.6;
+}
+
+.reminder-card__action {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--gradient-accent);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 13px;
+  font-family: var(--font-heading);
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.reminder-card__action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(75, 29, 109, 0.3);
+}
+
+/* ----- Appointment Card ----- */
+.appt-card {
+  border: 1.5px solid var(--slate-200);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.appt-card:hover {
+  border-color: var(--color-plum);
+  box-shadow: 0 2px 12px rgba(75, 29, 109, 0.08);
+}
+
+.appt-card:focus-visible {
+  outline: 2px solid var(--color-plum);
+  outline-offset: 2px;
+}
+
+.appt-card__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.appt-card__service {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--slate-900);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.appt-card__meta {
+  font-size: 13px;
+  color: var(--slate-500);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.appt-card__meta strong {
+  color: var(--slate-700);
+}
+
+.appt-card__meta code {
+  background: var(--slate-100);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--color-plum);
+  font-weight: 700;
+}
+
+.appt-card__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* ----- Appointment Detail ----- */
+.appt-detail {
+  padding: 0;
+}
+
+.appt-detail__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.appt-detail__header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--slate-900);
+  margin-bottom: 6px;
+  font-family: var(--font-heading);
+}
+
+.appt-detail__ref {
+  font-size: 13px;
+  color: var(--slate-500);
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.appt-detail__section {
+  margin-bottom: 22px;
+}
+
+.appt-detail__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--slate-400);
+  margin-bottom: 6px;
+}
+
+.appt-detail__value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--slate-800);
+}
+
+/* Status Timeline */
+.status-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 20px 0;
+  padding-left: 24px;
+  position: relative;
+}
+
+.status-timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--slate-200);
+}
+
+.status-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  position: relative;
+}
+
+.status-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: -24px;
+  z-index: 1;
+  border: 2px solid var(--slate-200);
+  background: #fff;
+}
+
+.status-dot--done {
+  background: var(--color-plum);
+  border-color: var(--color-plum);
+  box-shadow: 0 0 0 4px rgba(75, 29, 109, 0.15);
+}
+
+.status-dot--active {
+  background: var(--amber);
+  border-color: var(--amber);
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.15);
+  animation: pulse 1.5s infinite;
+}
+
+.status-dot--future {
+  background: #fff;
+  border-color: var(--slate-200);
+}
+
+.status-step-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin: 0;
+}
+
+.status-step-info p {
+  font-size: 12px;
+  color: var(--slate-500);
+  margin: 2px 0 0;
+}
+
+.appt-detail__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ----- Progress Box ----- */
+.progress-box {
+  background: linear-gradient(135deg, var(--color-plum-light), #ecfdf5);
+  border: 1.5px solid var(--slate-200);
+  border-radius: 14px;
+  padding: 22px;
+  color: var(--slate-700);
+  font-size: 14.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  min-height: 60px;
+}
+
+/* ----- Medical Tags ----- */
+.medical-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 40px;
+}
+
+.medical-tag {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.medical-tag--red {
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.medical-tag--blue {
+  background: rgba(79, 70, 229, 0.08);
+  color: #4f46e5;
+  border: 1px solid rgba(79, 70, 229, 0.15);
+}
+
+/* ----- Profile Form ----- */
+.profile-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.profile-form__group {
+  margin-bottom: 0;
+}
+
+.profile-form__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--slate-600);
+  margin-bottom: 6px;
+  font-family: var(--font-heading);
+}
+
+.profile-form__input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s;
+  background: var(--slate-50);
+  color: var(--slate-800);
+}
+
+.profile-form__input:focus {
+  border-color: var(--color-plum);
+  box-shadow: 0 0 0 3px rgba(75, 29, 109, 0.12);
+}
+
+.profile-form__input--read-only {
+  background: var(--slate-100);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* ----- Section Card ----- */
+.portal-section {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--slate-200);
+  transition: box-shadow 0.2s;
+}
+
+.portal-section:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.portal-section__title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--slate-900);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--slate-100);
+  font-family: var(--font-heading);
+}
+
+/* ----- Booking Success State ----- */
+.booking-success {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.booking-success__icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+}
+
+.booking-success__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-navy);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-heading);
+}
+
+.booking-success__details {
+  background: var(--color-slate-50);
+  border: 1.5px solid var(--color-slate-200);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+/* ----- Password Toggle ----- */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--slate-400);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.password-toggle:hover {
+  color: var(--slate-600);
+}
+
+.password-toggle .hidden {
+  display: none;
+}
+
+/* ----- Inline form row ----- */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 480px) {
+  .form-row,
+  .portal-profile,
+  .profile-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Portal Header Responsive ---- */
+@media (max-width: 640px) {
+  .portal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .portal-header__user {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .portal-header__signout {
+    width: 100%;
+    text-align: center;
+  }
+}
   background: linear-gradient(135deg, #092B52 0%, #371353 100%);
   color: #FFFFFF;
   padding: 5rem 0 2rem;
@@ -1091,6 +1794,84 @@ a { text-decoration: none; }
   .status-dot { width: 14px; height: 14px; margin-left: -20px; }
   .appt-detail-actions { flex-direction: column; }
   .appt-detail-actions .btn { width: 100%; justify-content: center; }
-  .reminder-card { padding: 12px; }
-  .progress-box { padding: 16px; font-size: 13px; }
+   .reminder-card { padding: 12px; }
+   .progress-box { padding: 16px; font-size: 13px; }
+
+   /* Portal-specific responsive styles */
+   .portal-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+   .portal-header__user { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+   .portal-header__signout { width: 100%; text-align: center; }
+   .portal-profile { grid-template-columns: 1fr; }
+   .profile-form { grid-template-columns: 1fr; }
+   .form-row,
+   .portal-booking-form__row { grid-template-columns: 1fr; gap: 8px; }
+   .appt-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+   .appt-card__right { width: 100%; justify-content: flex-end; }
+   .appt-detail-actions { flex-direction: column; }
+   .appt-detail-actions .btn, .appt-detail-actions .btn-join { width: 100%; justify-content: center; }
+   .reminder-card__header { flex-direction: column; gap: 4px; }
+   .reminder-card__date { margin-left: 0; }
+
+   /* Modal responsive */
+   .modal-overlay { padding: 0.5rem; }
+   .modal-card { max-width: 100%; margin: 0.5rem; border-radius: 12px; }
+}
+
+/* Tablet and below: portal tabs stacked */
+@media (max-width: 768px) {
+  .portal-tabs { flex-direction: column; }
+  .portal-tab { padding: 12px; font-size: 14px; }
+}
+
+
+/* ----- PATIENT PORTAL LOGO & BUTTON ENHANCEMENTS ----- */
+.nav__logo-img {
+  height: 44px;
+  width: 44px;
+  min-width: 44px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1.5px solid rgba(75, 29, 109, 0.3);
+  box-shadow: 0 2px 8px rgba(75, 29, 109, 0.15);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.nav__logo:hover .nav__logo-img {
+  transform: scale(1.04);
+  border-color: var(--color-plum);
+}
+
+.btn-primary {
+  background: var(--gradient-primary, linear-gradient(135deg, #4B1D6D 0%, #0E437D 100%)) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(75, 29, 109, 0.25) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.btn-primary:hover {
+  background: #371353 !important;
+  box-shadow: 0 6px 20px rgba(75, 29, 109, 0.35) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-outline {
+  background: rgba(75, 29, 109, 0.06) !important;
+  color: #4B1D6D !important;
+  border: 1.5px solid #4B1D6D !important;
+  border-radius: 9999px !important;
+  padding: 0.55rem 1.15rem !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.btn-outline:hover {
+  background: #4B1D6D !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
 }

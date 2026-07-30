@@ -4,6 +4,8 @@ const { sequelize } = require('../config/db');
 const { Admin, Patient, Service, Appointment, Message, AuditLog } = require('../models');
 const bcrypt = require('bcryptjs');
 
+const API = '/api/v1';
+
 let app;
 let adminToken;
 let patientToken;
@@ -59,64 +61,63 @@ afterAll(async () => {
 });
 
 describe('Health Check', () => {
-  it('GET /api/health should return success', async () => {
-    const res = await request(app).get('/api/health');
+  it('GET /api/v1/health should return success', async () => {
+    const res = await request(app).get(`${API}/health`);
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
   });
 });
 
 describe('Admin Authentication', () => {
-  it('POST /api/admin/login should return token with valid credentials', async () => {
+  it('POST /api/v1/admin/login should return token with valid credentials', async () => {
     const res = await request(app)
-      .post('/api/admin/login')
+      .post(`${API}/admin/login`)
       .send({ email: 'test@uhshealthcare.com', password: 'TestPass123!' });
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.admin.email).toBe('test@uhshealthcare.com');
-    // Token is now only in httpOnly cookie, generate for subsequent test requests
     const admin = await Admin.findOne({ where: { email: 'test@uhshealthcare.com' } });
     adminToken = generateAdminToken(admin);
     expect(adminToken).toBeDefined();
   });
 
-  it('POST /api/admin/login should fail with wrong password', async () => {
+  it('POST /api/v1/admin/login should fail with wrong password', async () => {
     const res = await request(app)
-      .post('/api/admin/login')
+      .post(`${API}/admin/login`)
       .send({ email: 'test@uhshealthcare.com', password: 'wrongpassword' });
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBe(false);
   });
 
-  it('POST /api/admin/login should fail with missing fields', async () => {
+  it('POST /api/v1/admin/login should fail with missing fields', async () => {
     const res = await request(app)
-      .post('/api/admin/login')
+      .post(`${API}/admin/login`)
       .send({ email: 'test@uhshealthcare.com' });
 
     expect(res.status).toBe(400);
   });
 
-  it('GET /api/admin/me should return admin profile', async () => {
+  it('GET /api/v1/admin/me should return admin profile', async () => {
     const res = await request(app)
-      .get('/api/admin/me')
+      .get(`${API}/admin/me`)
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.admin.email).toBe('test@uhshealthcare.com');
   });
 
-  it('GET /api/admin/me should fail without auth', async () => {
-    const res = await request(app).get('/api/admin/me');
+  it('GET /api/v1/admin/me should fail without auth', async () => {
+    const res = await request(app).get(`${API}/admin/me`);
     expect(res.status).toBe(401);
   });
 });
 
 describe('Admin Stats', () => {
-  it('GET /api/admin/stats should return dashboard stats', async () => {
+  it('GET /api/v1/admin/stats should return dashboard stats', async () => {
     const res = await request(app)
-      .get('/api/admin/stats')
+      .get(`${API}/admin/stats`)
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
@@ -128,25 +129,25 @@ describe('Admin Stats', () => {
 });
 
 describe('Services', () => {
-  it('GET /api/services should return active public services', async () => {
-    const res = await request(app).get('/api/services');
+  it('GET /api/v1/services should return active public services', async () => {
+    const res = await request(app).get(`${API}/services`);
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
     expect(res.body.services.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('GET /api/admin/services should return all services (admin)', async () => {
+  it('GET /api/v1/admin/services should return all services (admin)', async () => {
     const res = await request(app)
-      .get('/api/admin/services')
+      .get(`${API}/admin/services`)
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.services.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('POST /api/admin/services should create a service', async () => {
+  it('POST /api/v1/admin/services should create a service', async () => {
     const res = await request(app)
-      .post('/api/admin/services')
+      .post(`${API}/admin/services`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Sports Physical',
@@ -160,9 +161,9 @@ describe('Services', () => {
     expect(res.body.data.name).toBe('Sports Physical');
   });
 
-  it('POST /api/admin/services should reject mass assignment', async () => {
+  it('POST /api/v1/admin/services should reject mass assignment', async () => {
     const res = await request(app)
-      .post('/api/admin/services')
+      .post(`${API}/admin/services`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Test Service',
@@ -182,10 +183,9 @@ describe('Appointments', () => {
   let patientId;
 
   beforeAll(async () => {
-    // Register a patient for auth-gated appointment tests
     if (!patientToken) {
       const res = await request(app)
-        .post('/api/patient/register')
+        .post(`${API}/patient/register`)
         .send({
           firstName: 'Test',
           lastName: 'Auth',
@@ -200,9 +200,9 @@ describe('Appointments', () => {
     }
   });
 
-  it('POST /api/appointments should create an appointment', async () => {
+  it('POST /api/v1/appointments should create an appointment', async () => {
     const res = await request(app)
-      .post('/api/appointments')
+      .post(`${API}/appointments`)
       .send({
         name: 'Test Patient',
         phone: '(803) 555-0100',
@@ -219,9 +219,9 @@ describe('Appointments', () => {
     expect(res.body.data.service).toBe('DOT Physical');
   });
 
-  it('POST /api/appointments should prevent double-booking same slot', async () => {
+  it('POST /api/v1/appointments should prevent double-booking same slot', async () => {
     const res = await request(app)
-      .post('/api/appointments')
+      .post(`${API}/appointments`)
       .send({
         name: 'Another Patient',
         phone: '(803) 555-0101',
@@ -235,9 +235,9 @@ describe('Appointments', () => {
     expect(res.body.message).toContain('already booked');
   });
 
-  it('POST /api/appointments should reject invalid service', async () => {
+  it('POST /api/v1/appointments should reject invalid service', async () => {
     const res = await request(app)
-      .post('/api/appointments')
+      .post(`${API}/appointments`)
       .send({
         name: 'Test',
         phone: '(803) 555-0100',
@@ -251,15 +251,15 @@ describe('Appointments', () => {
     expect(res.body.message).toMatch(/not available|invalid/i);
   });
 
-  it('GET /api/appointments/by-email should require auth', async () => {
+  it('GET /api/v1/appointments/by-email should require auth', async () => {
     const res = await request(app)
-      .get('/api/appointments/by-email');
+      .get(`${API}/appointments/by-email`);
     expect(res.status).toBe(401);
   });
 
-  it('GET /api/appointments/by-email should return appointments for authenticated patient', async () => {
+  it('GET /api/v1/appointments/by-email should return appointments for authenticated patient', async () => {
     const res = await request(app)
-      .get('/api/appointments/by-email')
+      .get(`${API}/appointments/by-email`)
       .set('Authorization', `Bearer ${patientToken}`);
 
     expect(res.status).toBe(200);
@@ -268,9 +268,9 @@ describe('Appointments', () => {
 });
 
 describe('Patient Portal', () => {
-  it('POST /api/patient/register should create account', async () => {
+  it('POST /api/v1/patient/register should create account', async () => {
     const res = await request(app)
-      .post('/api/patient/register')
+      .post(`${API}/patient/register`)
       .send({
         firstName: 'Jane',
         lastName: 'Doe',
@@ -286,9 +286,9 @@ describe('Patient Portal', () => {
     patientToken = generatePatientToken(patient);
   });
 
-  it('POST /api/patient/register should reject duplicate email', async () => {
+  it('POST /api/v1/patient/register should reject duplicate email', async () => {
     const res = await request(app)
-      .post('/api/patient/register')
+      .post(`${API}/patient/register`)
       .send({
         firstName: 'Jane',
         lastName: 'Doe',
@@ -300,9 +300,9 @@ describe('Patient Portal', () => {
     expect(res.status).toBe(400);
   });
 
-  it('POST /api/patient/login should authenticate', async () => {
+  it('POST /api/v1/patient/login should authenticate', async () => {
     const res = await request(app)
-      .post('/api/patient/login')
+      .post(`${API}/patient/login`)
       .send({ email: 'jane.doe@example.com', password: 'SecurePass123!' });
 
     expect(res.status).toBe(200);
@@ -312,18 +312,18 @@ describe('Patient Portal', () => {
     expect(patientToken).toBeDefined();
   });
 
-  it('GET /api/patient/me should return patient profile', async () => {
+  it('GET /api/v1/patient/me should return patient profile', async () => {
     const res = await request(app)
-      .get('/api/patient/me')
+      .get(`${API}/patient/me`)
       .set('Authorization', `Bearer ${patientToken}`);
 
     expect(res.status).toBe(200);
     expect(res.body.patient.email).toBe('jane.doe@example.com');
   });
 
-  it('GET /api/patient/progress should return progress data', async () => {
+  it('GET /api/v1/patient/progress should return progress data', async () => {
     const res = await request(app)
-      .get('/api/patient/progress')
+      .get(`${API}/patient/progress`)
       .set('Authorization', `Bearer ${patientToken}`);
 
     expect(res.status).toBe(200);
@@ -331,18 +331,18 @@ describe('Patient Portal', () => {
     expect(res.body.patientName).toBe('Jane Doe');
   });
 
-  it('POST /api/patient/forgot-password should accept valid email', async () => {
+  it('POST /api/v1/patient/forgot-password should accept valid email', async () => {
     const res = await request(app)
-      .post('/api/patient/forgot-password')
+      .post(`${API}/patient/forgot-password`)
       .send({ email: 'jane.doe@example.com' });
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
   });
 
-  it('POST /api/patient/forgot-password should not reveal if email exists', async () => {
+  it('POST /api/v1/patient/forgot-password should not reveal if email exists', async () => {
     const res = await request(app)
-      .post('/api/patient/forgot-password')
+      .post(`${API}/patient/forgot-password`)
       .send({ email: 'nonexistent@example.com' });
 
     expect(res.status).toBe(200);
@@ -351,9 +351,9 @@ describe('Patient Portal', () => {
 });
 
 describe('Contact Messages', () => {
-  it('POST /api/messages should create a message', async () => {
+  it('POST /api/v1/messages should create a message', async () => {
     const res = await request(app)
-      .post('/api/messages')
+      .post(`${API}/messages`)
       .send({
         name: 'John Smith',
         email: 'john@example.com',
@@ -367,9 +367,9 @@ describe('Contact Messages', () => {
 });
 
 describe('Audit Logs', () => {
-  it('GET /api/admin/audit-logs should return logs', async () => {
+  it('GET /api/v1/admin/audit-logs should return logs', async () => {
     const res = await request(app)
-      .get('/api/admin/audit-logs')
+      .get(`${API}/admin/audit-logs`)
       .set('Authorization', `Bearer ${adminToken}`);
 
     expect(res.status).toBe(200);
@@ -380,14 +380,14 @@ describe('Audit Logs', () => {
 
 describe('Security', () => {
   it('Should return 404 for unknown routes', async () => {
-    const res = await request(app).get('/api/nonexistent');
+    const res = await request(app).get(`${API}/nonexistent`);
     expect(res.status).toBe(404);
   });
 
   it('Should reject oversized payloads', async () => {
     const largePayload = { data: 'x'.repeat(20000) };
     const res = await request(app)
-      .post('/api/messages')
+      .post(`${API}/messages`)
       .send(largePayload);
 
     expect(res.status).toBeGreaterThanOrEqual(400);

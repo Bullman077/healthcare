@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API = '/api/admin';
+  const API = '/api/v1/admin';
 
   const adminState = {
     admin: null,

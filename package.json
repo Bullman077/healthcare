@@ -5,17 +5,28 @@
   "description": "UHS Healthcare – full production deployment",
   "scripts": {
     "build:css": "cleancss -o css/styles.min.css css/reset.css css/variables.css css/layout.css css/components.css css/responsive.css",
-    "build:js": "terser js/main.js js/testimonials.js js/faq.js -o js/app.min.js --compress --mangle",
+    "build:js": "terser js/main.js -o js/app.min.js --compress --mangle",
     "build": "npm run build:css && npm run build:js",
     "dev": "npm run dev:backend",
     "install:backend": "cd backend && npm install",
     "start:backend": "cd backend && npm start",
     "dev:backend": "cd backend && npm run dev",
     "seed": "cd backend && npm run seed",
-    "deploy:prepare": "npm run build && npm run install:backend"
+    "deploy:prepared": "npm run build && npm run install:backend",
+    "lint": "npx eslint js/ backend/ --ext .js --max-warnings 0 && stylelint \"css/*.css\" \"patient/patient.css\" --config .stylelintrc.json",
+    "lint:html": "node scripts/lint-html.js",
+    "test": "cd backend && npm test",
+    "test:coverage": "cd backend && npm run test:coverage",
+    "ci": "npm run lint && npm run lint:html && npm run test && npm run build",
+    "start:local": "npm run build && npm run start:backend",
+    "dev:local": "npm run build && npm run dev:backend"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",
-    "terser": "^5.31.0"
+    "terser": "^5.49.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "stylelint": "^16.1.0",
+    "stylelint-config-standard": "^36.0.0"
   }
 }

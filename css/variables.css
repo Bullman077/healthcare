@@ -127,5 +127,23 @@
   --container-max: 1600px;
   --container-narrow: 840px;
   --container-padding: 2.5rem;
+
+  /* Shortcut aliases for commonly used color tokens */
+  --slate-50: var(--color-slate-50);
+  --slate-100: var(--color-slate-100);
+  --slate-200: var(--color-slate-200);
+  --slate-300: var(--color-slate-300);
+  --slate-400: var(--color-slate-400);
+  --slate-500: var(--color-slate-500);
+  --slate-600: var(--color-slate-600);
+  --slate-700: var(--color-slate-700);
+  --slate-800: var(--color-slate-800);
+  --slate-900: var(--color-slate-900);
+
+  --amber: var(--color-gold);
+  --amber-light: var(--color-gold-light);
+  --blue-light: var(--color-royal-blue-light);
+  --green-light: #D1FAE5;
+  --red-light: #FEE2E2;
 }
 

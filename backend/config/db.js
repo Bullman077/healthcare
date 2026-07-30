@@ -1,12 +1,13 @@
+const path = require('path');
 const { Sequelize } = require('sequelize');
 const { URL } = require('url');
 
 let sequelize;
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test' || (process.env.NODE_ENV === 'development' && !process.env.DATABASE_URL)) {
   sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: ':memory:',
+    storage: process.env.NODE_ENV === 'development' ? path.join(__dirname, '..', 'data', 'uhs_dev.sqlite') : ':memory:',
     logging: false,
   });
 } else {

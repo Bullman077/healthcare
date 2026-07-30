@@ -1,8 +1,9 @@
 (function () {
   'use strict';
 
-  // Backend API base URL — update this whenever the Render service URL changes
-  const API_URL = 'https://uhs-backen.onrender.com';
+  var API_URL = 'https://uhs-backen.onrender.com';
+
+  window.UHS_API_URL = API_URL;
 
   function esc(str) {
     if (str == null) return '';
@@ -140,7 +141,7 @@
 
   async function loadServices() {
     try {
-      const res = await fetch(API_URL + '/api/services');
+      const res = await fetch(API_URL + '/api/v1/services');
       const data = await res.json();
       if (data.success && data.services && data.services.length) {
         availableServices = data.services;
@@ -486,7 +487,7 @@
     var headers = { 'Content-Type': 'application/json' };
     var token = localStorage.getItem('patientToken');
     if (token) headers['Authorization'] = 'Bearer ' + token;
-    return fetch(API_URL + '/api/patient/session', { credentials: 'include', headers: headers })
+    return fetch(API_URL + '/api/v1/patient/session', { credentials: 'include', headers: headers })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.success && data.patient) {
@@ -518,7 +519,7 @@
     span.innerHTML =
       '<a href="/patient/" style="font-weight:700;font-size:0.88rem;color:var(--color-plum);text-decoration:none;white-space:nowrap;font-family:var(--font-heading);">' +
       esc(patient.firstName) + '</a>' +
-      '<button onclick="event.preventDefault();fetch(\'' + API_URL + '/api/patient/logout\',{method:\'POST\',credentials:\'include\'}).then(function(){localStorage.removeItem(\'patientToken\');window.location.reload();}).catch(function(){});" ' +
+      '<button onclick="event.preventDefault();fetch(\'' + API_URL + '/api/v1/patient/logout\',{method:\'POST\',credentials:\'include\'}).then(function(){localStorage.removeItem(\'patientToken\');window.location.reload();}).catch(function(){});" ' +
       'style="background:var(--color-plum);color:white;border:none;padding:7px 18px;border-radius:9999px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);transition:all 0.2s;">Sign Out</button>';
   }
 
@@ -542,7 +543,7 @@
     var headers = { 'Content-Type': 'application/json' };
     var token = localStorage.getItem('patientToken');
     if (token) headers['Authorization'] = 'Bearer ' + token;
-    fetch(API_URL + '/api/patient/session', { credentials: 'include', headers: headers })
+    fetch(API_URL + '/api/v1/patient/session', { credentials: 'include', headers: headers })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data && data.success && data.patient) {
@@ -605,7 +606,7 @@
       });
     }
 
-    fetch(API_URL + '/api/testimonials')
+    fetch(API_URL + '/api/v1/testimonials')
       .then(function(res) { return res.json(); })
       .then(function(data) {
         if (data.success && data.data && data.data.length > 0) {
@@ -648,7 +649,7 @@
       return d.innerHTML;
     }
 
-    fetch(API_URL + '/api/services')
+    fetch(API_URL + '/api/v1/services')
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data.success || !data.services || data.services.length === 0) {

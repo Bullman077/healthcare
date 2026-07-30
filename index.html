@@ -29,7 +29,8 @@
   <!-- Preconnect Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet"></noscript>
 
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/variables.css">
@@ -72,10 +73,10 @@
   <header class="nav" role="banner">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo" aria-label="Unmeasurable Heights of Strength Healthcare Services Home">
-        <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
-        <div style="display:flex; flex-direction:column; justify-content:center;">
-          <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
-          <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+        <img src="assets/images/logo.png" class="nav__logo-img" alt="Unmeasurable Heights of Strength Logo">
+        <div class="nav__logo-text-col">
+          <span class="nav__logo-title">Unmeasurable Heights of Strength</span>
+          <span class="nav__logo-subtitle">Healthcare Services</span>
         </div>
       </a>
 
@@ -97,9 +98,9 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             (803) 381-7489
           </a>
-          <a href="/patient" class="btn btn--outline btn--sm" style="border-color:var(--color-plum);color:var(--color-plum);background:rgba(75,29,109,0.08);margin-right:0;" id="patient-portal-link">Patient Portal</a>
+          <a href="/patient" class="btn btn--outline btn--sm btn--patient-portal" id="patient-portal-link">Patient Portal</a>
           <span id="patient-nav" style="display:none;"></span>
-          <button class="btn btn--primary btn--sm" data-open-modal style="background:#7c3aed;border-color:#7c3aed;color:#fff;">Book Appointment</button>
+          <button class="btn btn--primary btn--sm" data-open-modal >Book Appointment</button>
         </div>
       </div>
     </div>
@@ -109,7 +110,7 @@
 
     <!-- ===== HERO SECTION ===== -->
     <section class="hero" aria-label="Hero Section">
-      <img src="assets/images/clinic-interior.png" alt="Clinic interior" class="hero__bg-img">
+      <img src="assets/images/clinic-interior.png" alt="Clinic interior" class="hero__bg-img" decoding="async" loading="eager">
       <div class="hero__gradient-overlay"></div>
 
       <div class="hero-floating-card">
@@ -619,10 +620,10 @@
       <div class="footer-grid">
         <div>
           <div class="nav__logo" style="margin-bottom:1rem;">
-            <img src="assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
-            <div style="display:flex; flex-direction:column; justify-content:center;">
-          <span class="nav__logo-title" data-content="clinic_name" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
-              <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
+            <img src="assets/images/logo.png" class="nav__logo-img" alt="Unmeasurable Heights of Strength Logo">
+            <div class="nav__logo-text-col">
+          <span class="nav__logo-title" data-content="clinic_name">Unmeasurable Heights of Strength</span>
+              <span class="nav__logo-subtitle">Healthcare Services</span>
             </div>
           </div>
           <p class="footer-brand__desc" id="footer-brand-desc" data-content="footer_brand_desc">
@@ -662,15 +663,15 @@
         </div>
       </div>
 
-      <div style="text-align:center; padding:1rem 0; border-top:1px solid rgba(255,255,255,0.15); margin-top:0.5rem;">
-        <span style="font-family:'Dancing Script', cursive; font-size:1.15rem; color:var(--color-gold, #F59E0B);">Rising Above. Empowering Wellness. Serving Our Community.</span>
+      <div class="footer-tagline">
+        <span class="footer-tagline-text">Rising Above. Empowering Wellness. Serving Our Community.</span>
       </div>
 
       <div class="footer-bottom">
         <div>&copy; 2026 Unmeasurable Heights of Strength Healthcare Services. All rights reserved.</div>
-        <div style="display:flex; gap:1.5rem;">
-          <a href="privacy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
-          <a href="terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+        <div class="footer-bottom-links">
+          <a href="privacy.html" class="footer-bottom-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-bottom-link">Terms of Service</a>
         </div>
       </div>
     </div>

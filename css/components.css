@@ -56,6 +56,13 @@
   transition: all var(--transition-base);
 }
 
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all var(--transition-base);
+}
+
 .nav.scrolled {
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
@@ -103,11 +110,11 @@
 
 .nav__logo-title {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--color-slate-900);
-  line-height: 1.2;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--color-plum);
+  line-height: 1.1;
   white-space: nowrap;
 }
 
@@ -216,6 +223,24 @@
   padding: 140px 0 80px;
   color: var(--color-slate-900);
   overflow: hidden;
+  /* Gradient background so subpages look great even without a background image */
+  background: linear-gradient(135deg, #f3ebf9 0%, #eaf2fb 40%, #f8fafc 100%);
+}
+
+/* Logo text column — used in nav and footer logo markup */
+.nav__logo-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Logo subtitle tag line */
+.nav__logo-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-royal-blue);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .hero__bg-img {
@@ -234,6 +259,15 @@
   z-index: 1;
   background: linear-gradient(90deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
 }
+
+/* Hero with background image (used on About page) */
+.hero--with-bg-image {
+  background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.95) 100%),
+              url('../assets/images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
 
 .hero__grid {
   display: grid;
@@ -1874,4 +1908,176 @@
     margin-left: 0;
     align-self: flex-start;
   }
+}
+
+
+/* ----- BUTTON VARIANTS & SYSTEM ----- */
+.btn--primary,
+.btn-primary {
+  background: var(--gradient-primary) !important;
+  color: var(--color-white) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(75, 29, 109, 0.25) !important;
+}
+
+.btn--primary:hover,
+.btn-primary:hover {
+  background: var(--color-plum-dark) !important;
+  color: var(--color-white) !important;
+  box-shadow: 0 6px 20px rgba(75, 29, 109, 0.35) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn--secondary {
+  background: var(--color-royal-blue) !important;
+  color: var(--color-white) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(14, 67, 125, 0.25) !important;
+}
+
+.btn--secondary:hover {
+  background: var(--color-royal-blue-dark) !important;
+  color: var(--color-white) !important;
+  box-shadow: 0 6px 20px rgba(14, 67, 125, 0.35) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn--accent {
+  background: var(--gradient-accent) !important;
+  color: var(--color-white) !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(14, 67, 125, 0.25) !important;
+}
+
+.btn--accent:hover {
+  filter: brightness(1.08) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(14, 67, 125, 0.35) !important;
+}
+
+.btn--outline,
+.btn-outline {
+  background: rgba(75, 29, 109, 0.06) !important;
+  color: var(--color-plum) !important;
+  border: 1.5px solid var(--color-plum) !important;
+}
+
+.btn--outline:hover,
+.btn-outline:hover {
+  background: var(--color-plum) !important;
+  color: var(--color-white) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 14px rgba(75, 29, 109, 0.2) !important;
+}
+
+.btn--sm {
+  padding: 0.55rem 1.15rem !important;
+  font-size: var(--fs-xs) !important;
+}
+
+.btn--lg {
+  padding: 1rem 2.25rem !important;
+  font-size: var(--fs-md) !important;
+}
+
+.nav__logo-img {
+  height: 44px;
+  width: 44px;
+  min-width: 44px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1.5px solid rgba(75, 29, 109, 0.3);
+  box-shadow: 0 2px 8px rgba(75, 29, 109, 0.15);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.nav__logo:hover .nav__logo-img {
+  transform: scale(1.04);
+  border-color: var(--color-plum);
+}
+
+/* Patient Portal button — plum-tinted outline variant used in nav */
+.btn--patient-portal {
+  border-color: var(--color-plum) !important;
+  color: var(--color-plum) !important;
+  background: rgba(75, 29, 109, 0.08) !important;
+  margin-right: 0 !important;
+}
+
+.btn--patient-portal:hover {
+  background: rgba(75, 29, 109, 0.15) !important;
+}
+
+/* Hero subpage sizes (for services, telehealth, contact, about pages) */
+.hero--subpage {
+  min-height: 50vh;
+  padding: 150px 0 60px;
+}
+
+/* Contact form input/textarea base styles */
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-slate-300);
+  font-size: var(--fs-base);
+  font-family: var(--font-body);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: var(--color-plum);
+  box-shadow: 0 0 0 3px rgba(75, 29, 109, 0.1);
+}
+
+.form-label {
+  display: block;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  margin-bottom: 0.4rem;
+  color: var(--color-slate-800);
+}
+
+/* Contact info cards */
+.contact-info-card {
+  background: var(--color-slate-50);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+/* Contact form card */
+.contact-form-card {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  padding: 3rem;
+  box-shadow: var(--shadow-xl);
+}
+
+/* Footer inline helpers */
+.footer-tagline {
+  text-align: center;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 0.5rem;
+}
+
+.footer-tagline-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.15rem;
+  color: var(--color-gold, #F59E0B);
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-bottom-link {
+  color: inherit;
+  text-decoration: none;
 }

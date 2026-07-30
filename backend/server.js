@@ -11,6 +11,7 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 
 const { sequelize, connectDB } = require('./config/db');
 require('./models');
+const { Setting } = require('./models');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const contentRoutes = require('./routes/contentRoutes');
@@ -20,7 +21,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 const { limiter, csrfProtect } = require('./middleware/security');
 const { cspNonce } = require('./middleware/cspNonce');
 const { startScheduler } = require('./scheduler');
-const { Setting } = require('./models');
+const { API_BASE } = require('./config/api');
 const { runMigrations } = require('./migrate');
 const { serveSpa, getAdminHtml } = require('./middleware/serveSpa');
 
@@ -43,26 +44,34 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
-      styleSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`, 'https://fonts.googleapis.com'],
+      // Nonce-only on scriptSrc blocks inline XSS. 'unsafe-inline' is a fallback for older browsers.
+      scriptSrc: ["'self'", "'unsafe-inline'", (req, res) => `'nonce-${res.locals.nonce}'`],
+      // styleSrc must NOT include a nonce — if nonce is present, browsers ignore 'unsafe-inline'
+      // per the CSP3 spec, which would block all inline style="" attributes in HTML.
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      imgSrc: ["'self'", 'data:', 'https:', 'http:'],
-      connectSrc: ["'self'"],
-      frameSrc: ["'none'"],
+      imgSrc: ["'self'", 'data:', 'https:'],
+      connectSrc: ["'self'", 'https://uhs-backen.onrender.com', 'https://meet.google.com', 'https://js.stripe.com', 'https://api.stripe.com'],
+      frameSrc: ["'self'", 'https://meet.google.com', 'https://js.stripe.com'],
+      scriptSrcAttr: ["'self'", "'unsafe-inline'"],
       objectSrc: ["'none'"],
+      mediaSrc: ["'self'", 'https:'],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+      baseUri: ["'self'"],
     },
   },
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-/* 2. Compression */
+/* 3. Compression */
 app.use(compression({ level: 6, threshold: 1024 }));
 
-/* 3. CORS */
+/* 4. CORS */
 const corsOrigins = process.env.FRONTEND_URL
   ? process.env.FRONTEND_URL.split(',').map((s) => s.trim())
-  : 'http://localhost:5500';
+  : ['http://localhost:5000', 'http://localhost:5500', 'http://127.0.0.1:5000', 'http://127.0.0.1:5500'];
 
 app.use(cors({
   origin: corsOrigins,
@@ -72,21 +81,21 @@ app.use(cors({
   exposedHeaders: ['Set-Cookie'],
 }));
 
-/* 4. Cookie parser */
+/* 5. Cookie parser */
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-/* 5. Rate limiting — global */
+/* 6. Rate limiting — global */
 app.use(limiter);
 
-/* 6. Body parsing — raw body preserved for Stripe webhooks before json parser */
+/* 7. Body parsing — raw body preserved for Stripe webhooks before json parser */
 app.use('/api/payments/webhook', express.raw({ type: 'application/json', limit: '10kb' }));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 
-/* 7. HTTP Parameter Pollution protection */
+/* 8. HTTP Parameter Pollution protection */
 app.use(hpp({ whitelist: ['date', 'time', 'status', 'page', 'limit'] }));
 
-/* 8. CSRF protection — Origin/Referer check on mutating requests */
+/* 9. CSRF protection — Origin/Referer check on mutating requests */
 app.use('/api', csrfProtect);
 
 /* ----- Static Files (Admin Dashboard) ----- */
@@ -97,9 +106,27 @@ const serveAdmin = serveSpa(getAdminHtml, 'admin');
 app.get('/admin', serveAdmin);
 app.get('/admin/', serveAdmin);
 
-// Redirect /patient to the frontend (Firebase Hosting)
-app.get('/patient', (req, res) => res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/'));
-app.get('/patient/', (req, res) => res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/'));
+// Serve frontend static files locally when not in production
+if (!isProd) {
+  app.use(express.static(path.join(__dirname, '..')));
+  app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'index.html')));
+}
+
+// Redirect /patient to the frontend (Firebase Hosting) in production, serve locally when not
+app.get('/patient', (req, res) => {
+  if (!isProd) {
+    res.sendFile(path.join(__dirname, '..', 'patient', 'index.html'));
+  } else {
+    res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/');
+  }
+});
+app.get('/patient/', (req, res) => {
+  if (!isProd) {
+    res.sendFile(path.join(__dirname, '..', 'patient', 'index.html'));
+  } else {
+    res.redirect(302, process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',')[0].trim() + '/patient/' : 'https://uhs-healthcare-ea3b4.web.app/patient/');
+  }
+});
 
 // Static assets for admin
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), {
@@ -121,21 +148,14 @@ app.use('/assets', express.static(path.join(__dirname, 'public', 'assets'), {
 
 
 /* ----- API Routes ----- */
-app.use('/api/appointments', appointmentRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/patient', patientRoutes);
-app.use('/api/payments', paymentRoutes);
-app.use('/api', contentRoutes);
-
-/* ----- Root Redirect ----- */
-app.get('/', (_req, res) => {
-  const raw = process.env.FRONTEND_URL || 'https://uhs-healthcare-ea3b4.web.app';
-  const frontendUrl = raw.split(',')[0].trim();
-  res.redirect(302, frontendUrl);
-});
+app.use(`${API_BASE}/appointments`, appointmentRoutes);
+app.use(`${API_BASE}/admin`, adminRoutes);
+app.use(`${API_BASE}/patient`, patientRoutes);
+app.use(`${API_BASE}/payments`, paymentRoutes);
+app.use(`${API_BASE}`, contentRoutes);
 
 /* ----- Health Check ----- */
-app.get('/api/health', (_req, res) => {
+app.get(`${API_BASE}/health`, (_req, res) => {
   res.json({ success: true, message: 'UHS Healthcare API is running.' });
 });
 
@@ -175,7 +195,11 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 /* ----- Start ----- */
 function validateEnv() {
   if (process.env.NODE_ENV === 'test') return;
-  const required = ['DATABASE_URL', 'JWT_SECRET', 'COOKIE_SECRET'];
+  // In development mode with SQLite, DATABASE_URL is intentionally empty
+  const required = ['JWT_SECRET', 'COOKIE_SECRET'];
+  if (process.env.NODE_ENV !== 'development') {
+    required.push('DATABASE_URL');
+  }
   const missing = required.filter((k) => !process.env[k]);
   if (missing.length) {
     console.error(`FATAL: Missing required environment variables: ${missing.join(', ')}`);

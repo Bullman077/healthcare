@@ -115,7 +115,7 @@
     }
   }
 
-  var API_URL = (typeof window !== 'undefined' && window.API_URL) ? window.API_URL : 'https://uhs-backen.onrender.com';
+  var API_URL = (typeof window !== 'undefined' && (window.UHS_API_URL || window.API_URL)) ? (window.UHS_API_URL || window.API_URL) : 'https://uhs-backen.onrender.com';
 
   function loadSiteContent() {
     if (cache) {

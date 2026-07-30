@@ -42,31 +42,27 @@ function csrfProtect(req, res, next) {
   const origin = req.headers.origin;
   const referer = req.headers.referer;
 
-  // Allow requests with no origin/referer (e.g. server-to-server, Firebase proxy, curl)
-  if (!origin && !referer) {
-    // Firebase Hosting rewrites forward requests without Origin/Referer headers.
-    // Allow these by checking for the x-forwarded-for header (set by Firebase/Render proxies)
-    const forwardedFor = req.headers['x-forwarded-for'];
-    if (forwardedFor) {
-      return next();
+  // Firebase Hosting and Render proxies set these headers with the actual client origin.
+  // Only allow requests whose origin/referer matches a known frontend origin.
+  const source = origin || referer;
+  if (!source) {
+    // No origin/referer at all: reject in production (server-to-server calls should
+    // use an API key header instead of relying on missing headers).
+    if (process.env.NODE_ENV === 'production') {
+      return next(new AppError('CSRF: Request origin is required.', 403));
     }
-    // In development, allow all (for Postman, curl testing)
-    if (process.env.NODE_ENV !== 'production') {
-      return next();
-    }
-    return next(new AppError('CSRF: Request origin is required.', 403));
+    return next();
   }
 
-  const source = origin || referer;
-
-  // Always allow same-host requests (admin panel served from same server)
   try {
     const srcHost = new URL(source).hostname;
     const reqHost = req.hostname;
     if (srcHost === reqHost || srcHost === 'localhost' || srcHost === '127.0.0.1') {
       return next();
     }
-  } catch (e) { /* malformed origin, fall through to check */ }
+  } catch (e) {
+    return next(new AppError('CSRF: Unusual request origin.', 403));
+  }
 
   const isAllowed = allowedOrigins.some((allowed) => source.startsWith(allowed));
 

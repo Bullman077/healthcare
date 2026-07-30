@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var API_URL = 'https://uhs-backen.onrender.com';
+  var API_URL = (typeof window !== 'undefined' && window.UHS_API_URL) ? window.UHS_API_URL : 'https://uhs-backen.onrender.com';
   var form = document.getElementById('contact-form');
   if (!form) return;
 

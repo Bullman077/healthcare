@@ -17,7 +17,7 @@
   <meta name="google-site-verification" content="ykCSiB2AGOzl-ipPK3M9sgDFkeQqjKc8WlMqyOC1MkA" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/patient/patient.css">
+  <link rel="stylesheet" href="patient.css">
 </head>
 <body>
 
@@ -34,7 +34,7 @@
         </a>
       </div>
       <div class="auth-logo" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-        <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+        <img src="../assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" class="nav__logo-img" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
         <div style="display:flex; flex-direction:column; justify-content:center;">
           <div class="auth-title" data-content="clinic_name" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1; font-family:var(--font-heading);">Unmeasurable Heights of Strength</div>
           <div style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services &bull; Patient Portal</div>
@@ -42,7 +42,7 @@
       </div>
       <div class="auth-subtitle">Sign in to view your medical progress, notes, and appointments</div>
 
-      <div id="authError" style="display:none;background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+      <div id="authError" class="portal-msg portal-msg--error"></div>
 
       <div id="registerFields" class="hidden">
         <div class="form-group">
@@ -83,7 +83,7 @@
             <svg class="eye-closed hidden" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           </button>
         </div>
-        <div id="passwordMismatch" style="display:none;color:#991b1b;font-size:12px;margin-top:4px;">Passwords do not match.</div>
+        <div id="passwordMismatch" class="portal-msg portal-msg--error" style="display:none;">Passwords do not match.</div>
       </div>
 
       <button id="authBtn" class="btn-primary" onclick="handleAuthSubmit()">Sign In to Portal</button>
@@ -102,15 +102,15 @@
   <div id="forgotView" class="auth-container hidden">
     <div class="auth-card">
       <div class="auth-logo" style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-        <img src="/assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+        <img src="../assets/images/logo.png" onerror="if(!this.src.endsWith('assets/images/logo.png'))this.src='assets/images/logo.png';" class="nav__logo-img" alt="Unmeasurable Heights of Strength Logo" style="height:48px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
         <div style="display:flex; flex-direction:column; justify-content:center;">
           <div class="auth-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1; font-family:var(--font-heading);">Reset Password</div>
           <div style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Unmeasurable Heights of Strength</div>
         </div>
       </div>
       <div class="auth-subtitle">Enter your email and we'll send you a reset link</div>
-      <div id="forgotError" style="display:none;background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
-      <div id="forgotSuccess" style="display:none;background:#d1fae5;border:1px solid #6ee7b7;color:#065f46;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+      <div id="forgotError" class="portal-msg portal-msg--error"></div>
+      <div id="forgotSuccess" class="portal-msg portal-msg--success"></div>
 
       <div id="forgotEmailStep">
         <div class="form-group">
@@ -144,7 +144,7 @@
      <header class="nav" role="banner">
         <div class="nav__inner">
           <a href="/patient/" class="nav__logo" aria-label="Home">
-            <img src="/assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
+            <img src="../assets/images/logo.png" class="nav__logo-img" alt="Unmeasurable Heights of Strength Logo" style="height:44px; width:auto; border-radius:50%; border:1.5px solid rgba(75,29,109,0.3);">
             <div style="display:flex; flex-direction:column; justify-content:center;">
               <span class="nav__logo-title" data-content="clinic_name" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
               <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
@@ -205,7 +205,11 @@
           <div class="card-title">
             <span class="card-icon">🩺</span> Doctor Progress &amp; Treatment Plan
           </div>
-          <div id="progressContent" class="progress-box">Loading your medical progress notes...</div>
+           <div id="progressContent" class="progress-box">
+             <div class="skeleton skeleton--text"></div>
+             <div class="skeleton skeleton--text" style="width:80%;"></div>
+             <div class="skeleton skeleton--text" style="width:60%;"></div>
+           </div>
         </div>
 
         <!-- MY APPOINTMENTS -->
@@ -213,7 +217,11 @@
           <div class="card-title">
             <span class="card-icon">📅</span> My Appointments
           </div>
-          <div id="appointmentsList" class="appt-list">Loading appointments...</div>
+           <div id="appointmentsList" class="appt-list">
+             <div class="skeleton skeleton--card" style="margin-bottom:12px;"></div>
+             <div class="skeleton skeleton--card" style="margin-bottom:12px;"></div>
+             <div class="skeleton skeleton--card"></div>
+           </div>
         </div>
       </div>
 
@@ -235,7 +243,7 @@
 
       <!-- ===== MY PROFILE TAB ===== -->
       <div id="tab-profile" class="portal-tab-panel hidden">
-        <div id="profileMsg" style="display:none;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:16px;"></div>
+        <div id="profileMsg" class="portal-msg" style="display:none;"></div>
         <div class="card">
           <div class="card-title"><span class="card-icon">👤</span> Personal Information</div>
           <div class="profile-grid">
@@ -254,7 +262,7 @@
             <div class="form-group"><label class="form-label">Emergency Contact Phone</label><input type="tel" id="profEmergencyPhone" class="form-input"></div>
           </div>
         </div>
-        <div style="text-align:right;margin-top:12px;">
+        <div class="form-row" style="text-align:right;margin-top:12px;">
           <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
         </div>
       </div>
@@ -266,7 +274,7 @@
       <div class="footer-grid">
         <div>
           <div class="nav__logo" style="margin-bottom:1rem;">
-            <img src="https://uhs-healthcare-ea3b4.web.app/assets/images/logo.png" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
+            <img src="https://uhs-healthcare-ea3b4.web.app/assets/images/logo.png" class="nav__logo-img" alt="Unmeasurable Heights of Strength Logo" style="height:42px; width:auto; border-radius:50%;">
             <div style="display:flex; flex-direction:column; justify-content:center;">
               <span class="nav__logo-title" style="font-size:1.02rem; font-weight:800; color:var(--color-plum); line-height:1.1;">Unmeasurable Heights of Strength</span>
               <span style="font-size:0.68rem; font-weight:700; color:var(--color-royal-blue); letter-spacing:0.06em; text-transform:uppercase;">Healthcare Services</span>
@@ -401,8 +409,8 @@
 
   <script>
     let isRegisterMode = false;
-    const PRIMARY_API = '/api/patient';
-    const FALLBACK_API = (window.API_URL || 'https://uhs-backen.onrender.com') + '/api/patient';
+    const PRIMARY_API = '/api/v1/patient';
+    const FALLBACK_API = (window.API_URL || 'https://uhs-backen.onrender.com') + '/api/v1/patient';
 
     async function apiFetch(endpoint, options = {}) {
       const requestInit = {
@@ -568,81 +576,123 @@
       loadPortalData();
     }
 
-    async function loadPortalData() {
-      const [resP, resA] = await Promise.all([
-        apiFetch('/progress', { credentials: 'include' }).catch(() => null),
-        apiFetch('/appointments', { credentials: 'include' }).catch(() => null),
-      ]);
+     async function loadPortalData() {
+       const [resP, resA] = await Promise.all([
+         apiFetch('/progress', { credentials: 'include' }).catch(() => null),
+         apiFetch('/appointments', { credentials: 'include' }).catch(() => null),
+       ]);
 
-      try {
-        const dataP = resP ? await resP.json() : null;
-        if (dataP && dataP.success) {
-          document.getElementById('progressContent').textContent = dataP.progressNotes || 'No specific progress notes recorded yet by your care provider.';
-          
-          // Render Doctor Reminders
-          const reminders = dataP.reminders || [];
-          const remindersCard = document.getElementById('remindersCard');
-          const remindersContent = document.getElementById('remindersContent');
+       try {
+         const dataP = resP ? await resP.json() : null;
+         if (dataP && dataP.success) {
+           document.getElementById('progressContent').textContent = dataP.progressNotes || 'No specific progress notes recorded yet by your care provider.';
+           
+           const reminders = dataP.reminders || [];
+           const remindersCard = document.getElementById('remindersCard');
+           const remindersContent = document.getElementById('remindersContent');
 
-          if (reminders.length > 0) {
-            remindersCard.classList.remove('hidden');
-            remindersContent.innerHTML = reminders.map(r => `
-              <div class="reminder-card">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-                  <strong style="color:#4B1D6D;font-size:15px;">⏱️ Agreed Follow-Up: ${esc(r.timeframe || 'Follow-Up Visit')}</strong>
-                  <span style="font-size:12px;color:var(--slate-400);white-space:nowrap;margin-left:10px;">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
-                </div>
-                <p style="font-size:14px;color:var(--slate-700);margin:0 0 14px;line-height:1.6;">&ldquo;${esc(r.message)}&rdquo;</p>
-                <button onclick="openBookingModal(this.getAttribute('data-timeframe'))" data-timeframe="${esc(r.timeframe || 'Follow-Up Visit')}" class="btn-book" style="cursor:pointer;border:none;">🗓️ Schedule Follow-Up</button>
-              </div>
-            `).join('');
+           if (reminders.length > 0) {
+             remindersCard.classList.remove('hidden', 'reminder-section');
+             remindersContent.innerHTML = reminders.map(r => `
+               <div class="reminder-card">
+                 <div class="reminder-card__header">
+                   <strong class="reminder-card__timeframe">⏱️ ${esc(r.timeframe || 'Follow-Up Visit')}</strong>
+                   <span class="reminder-card__date">${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</span>
+                 </div>
+                 <p class="reminder-card__message">&ldquo;${esc(r.message)}&rdquo;</p>
+                 <button onclick="openBookingModal(this.getAttribute('data-timeframe'))" data-timeframe="${esc(r.timeframe || 'Follow-Up Visit')}" class="reminder-card__action">🗓️ Schedule Follow-Up</button>
+               </div>`
+             ).join('');
+           } else {
+             remindersCard.classList.add('hidden');
+           }
+         }
+       } catch(e) {
+         document.getElementById('progressContent').textContent = 'Unable to load progress notes.';
+       }
+
+       try {
+         const dataA = resA ? await resA.json() : null;
+         const apptContainer = document.getElementById('appointmentsList');
+         if (!dataA || !dataA.success || !dataA.appointments || dataA.appointments.length === 0) {
+           apptContainer.innerHTML = '<div style="color:#64748b;font-size:14px;padding:12px;">No appointments found.</div>';
+           return;
+         }
+
+         apptContainer.innerHTML = dataA.appointments.map(function(a) {
+           var serviceName = a.service && a.service.name || 'Healthcare Service';
+           var isTelehealth = a.service && (a.service.category === 'telehealth') || (serviceName.toLowerCase().indexOf('telehealth') !== -1) || (serviceName.toLowerCase().indexOf('virtual') !== -1);
+           var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
+           var d = new Date(a.date);
+           var dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+           var statusBadge = 'badge-' + (a.status || 'pending');
+           var encoded = encodeURIComponent(JSON.stringify(a));
+            return '<div class="appt-card" data-appt="' + encoded + '" tabindex="0" role="button" aria-label="View details for ' + esc(serviceName) + ' appointment" onclick="openApptPopup(this)" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openApptPopup(this);}">'
+             + '<div class="appt-card__left">'
+               + '<div class="appt-card__service">' + esc(serviceName)
+                 + ' <span class="badge ' + esc(statusBadge) + '">' + esc(a.status || 'pending') + '</span>'
+               + '</div>'
+               + '<div class="appt-card__meta">'
+                 + '📅 <strong>' + esc(dateStr) + '</strong> at <strong>' + esc(a.time) + '</strong>'
+                 + ' <span style="color:var(--slate-400);">·</span> Ref: <code>' + esc(a.referenceNumber || '—') + '</code>'
+               + '</div>'
+             + '</div>'
+             + '<div class="appt-card__right">'
+               + (isTelehealth
+                   ? '<a href="' + esc(meetUrl) + '" target="_blank" class="btn-join">📹 Join Video Call</a>'
+                   : '<span class="btn-clinic">🏥 In-Clinic</span>')
+             + '</div>'
+           + '</div>';
+         }).join('');
+       } catch(e) {
+         document.getElementById('appointmentsList').innerHTML = '<div style="color:#ef4444;font-size:14px;">Error loading appointments.</div>';
+       }
+     }
+
+    /* ===== MODAL ACCESSIBILITY: focus trap, keyboard close, ARIA ===== */
+    var previousActiveElement = null;
+
+    function trapFocus(modalOverlay) {
+      var focusable = modalOverlay.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      modalOverlay.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
           } else {
-            remindersCard.classList.add('hidden');
+            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
           }
         }
-      } catch(e) {
-        document.getElementById('progressContent').textContent = 'Unable to load progress notes.';
-      }
-
-      try {
-        const dataA = resA ? await resA.json() : null;
-        const apptContainer = document.getElementById('appointmentsList');
-        if (!dataA || !dataA.success || !dataA.appointments || dataA.appointments.length === 0) {
-          apptContainer.innerHTML = '<div style="color:#64748b;font-size:14px;padding:12px;">No appointments found.</div>';
-          return;
-        }
-
-        apptContainer.innerHTML = dataA.appointments.map(function(a) {
-          var serviceName = a.service && a.service.name || 'Healthcare Service';
-          var isTelehealth = a.service && (a.service.category === 'telehealth') || (serviceName.toLowerCase().indexOf('telehealth') !== -1) || (serviceName.toLowerCase().indexOf('virtual') !== -1);
-          var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
-          var d = new Date(a.date);
-          var dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-          var statusBadge = 'badge-' + (a.status || 'pending');
-          var encoded = encodeURIComponent(JSON.stringify(a));
-          return '<div class="appt-card" data-appt="' + encoded + '" onclick="openApptDetail(this)">'
-            + '<div class="appt-card-left">'
-              + '<div class="appt-service">' + esc(serviceName)
-                + ' <span class="badge ' + esc(statusBadge) + '">' + esc(a.status || 'pending') + '</span>'
-              + '</div>'
-              + '<div class="appt-meta">'
-                + '📅 <strong>' + esc(dateStr) + '</strong> at <strong>' + esc(a.time) + '</strong>'
-                + ' <span style="color:var(--slate-400);">·</span> Ref: <code>' + esc(a.referenceNumber || '—') + '</code>'
-              + '</div>'
-            + '</div>'
-            + '<div class="appt-right">'
-              + (isTelehealth
-                  ? '<a href="' + esc(meetUrl) + '" target="_blank" class="btn-join">📹 Join Video Call</a>'
-                  : '<span class="btn-clinic">🏥 In-Clinic</span>')
-            + '</div>'
-          + '</div>';
-        }).join('');
-      } catch(e) {
-        document.getElementById('appointmentsList').innerHTML = '<div style="color:#ef4444;font-size:14px;">Error loading appointments.</div>';
-      }
+      });
+      first.focus();
     }
 
-    function openApptDetail(el, encoded) {
+    function releaseFocus() {
+      if (previousActiveElement) previousActiveElement.focus();
+    }
+
+    function openModal(overlayId) {
+      var overlay = document.getElementById(overlayId);
+      if (!overlay) return;
+      previousActiveElement = document.activeElement;
+      overlay.classList.remove('hidden');
+      overlay.setAttribute('aria-hidden', 'false');
+      trapFocus(overlay);
+    }
+
+    function closeModal(overlayId) {
+      var overlay = document.getElementById(overlayId);
+      if (!overlay) return;
+      overlay.classList.add('hidden');
+      overlay.setAttribute('aria-hidden', 'true');
+      releaseFocus();
+    }
+
+    function openApptPopup(el, encoded) {
       if (!el) return;
       var str = encoded || el.getAttribute('data-appt');
       if (!str) return;
@@ -655,7 +705,6 @@
       var meetUrl = a.meetingUrl || 'https://meet.google.com/uhs-' + (a.referenceNumber || 'visit').toLowerCase();
       var dateStr = new Date(a.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Status timeline steps
       var steps = [
         { label: 'Request Submitted', desc: 'Your appointment request has been received', key: 'pending' },
         { label: 'Confirmed', desc: 'Your appointment has been confirmed by the clinic', key: 'confirmed' },
@@ -702,11 +751,11 @@
             )
         + '</div>';
 
-      document.getElementById('apptPopupOverlay').classList.remove('hidden');
+      openModal('apptPopupOverlay');
     }
 
     function closeApptPopup() {
-      document.getElementById('apptPopupOverlay').classList.add('hidden');
+      closeModal('apptPopupOverlay');
     }
 
     /* ===== BOOKING MODAL FUNCTIONS ===== */
@@ -722,11 +771,11 @@
       var tm = new Date(); tm.setDate(tm.getDate() + 1);
       var dateInput = document.getElementById('bmDate');
       if (dateInput) dateInput.min = tm.toISOString().split('T')[0];
-      document.getElementById('bookingModalOverlay').classList.remove('hidden');
+      openModal('bookingModalOverlay');
     }
 
     function closeBookingModal() {
-      document.getElementById('bookingModalOverlay').classList.add('hidden');
+      closeModal('bookingModalOverlay');
     }
 
     async function handlePatientBookingSubmit(e) {
@@ -763,7 +812,7 @@
           message: notes
         };
 
-        const res = await fetch('/api/appointments', {
+        const res = await fetch('/api/v1/appointments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -898,18 +947,19 @@
       try {
         const res = await apiFetch('/me', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify(payload) });
         const data = await res.json();
+        msgEl.style.display = 'block';
         if (data.success) {
           msgEl.textContent = 'Profile updated successfully!';
-          msgEl.style.background = '#d1fae5'; msgEl.style.color = '#065f46'; msgEl.style.border = '1px solid #6ee7b7';
-          msgEl.style.display = 'block';
+          msgEl.className = 'portal-msg portal-msg--success';
           document.getElementById('userDisplayName').textContent = data.patient.firstName + ' ' + data.patient.lastName;
         } else {
           msgEl.textContent = data.message || 'Error saving profile.';
-          msgEl.style.background = '#fee2e2'; msgEl.style.color = '#991b1b'; msgEl.style.border = '1px solid #fca5a5';
-          msgEl.style.display = 'block';
+          msgEl.className = 'portal-msg portal-msg--error';
         }
       } catch(e) {
-        msgEl.textContent = 'Server error.'; msgEl.style.background = '#fee2e2'; msgEl.style.color = '#991b1b'; msgEl.style.display = 'block';
+        msgEl.textContent = 'Server error.';
+        msgEl.className = 'portal-msg portal-msg--error';
+        msgEl.style.display = 'block';
       }
     }
 
@@ -928,14 +978,14 @@
         if (allergies.length) {
           alEl.innerHTML = allergies.map(a => '<span class="medical-tag tag-red">' + esc(typeof a === 'string' ? a : a.name || a) + '</span>').join('');
         } else {
-          alEl.innerHTML = '<span style="color:var(--slate-500);font-size:13px;">No allergies on file.</span>';
+          alEl.innerHTML = '<span class="medical-tag" style="color:var(--slate-500);">No allergies on file.</span>';
         }
 
         var medEl = document.getElementById('medicationsContent');
         if (medications.length) {
           medEl.innerHTML = medications.map(m => '<span class="medical-tag tag-blue">' + esc(typeof m === 'string' ? m : m.name || m) + '</span>').join('');
         } else {
-          medEl.innerHTML = '<span style="color:var(--slate-500);font-size:13px;">No medications on file.</span>';
+          medEl.innerHTML = '<span class="medical-tag" style="color:var(--slate-500);">No medications on file.</span>';
         }
 
         var histEl = document.getElementById('medicalHistoryContent');
@@ -944,6 +994,21 @@
         document.getElementById('allergiesContent').textContent = 'Unable to load health data.';
       }
     }
+
+    /* ===== GLOBAL KEYBOARD: Escape to close modals ===== */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var apptOverlay = document.getElementById('apptPopupOverlay');
+        if (apptOverlay && !apptOverlay.classList.contains('hidden')) {
+          closeApptPopup();
+          return;
+        }
+        var bookingOverlay = document.getElementById('bookingModalOverlay');
+        if (bookingOverlay && !bookingOverlay.classList.contains('hidden')) {
+          closeBookingModal();
+        }
+      }
+    });
 
     window.addEventListener('DOMContentLoaded', checkSession);
 
