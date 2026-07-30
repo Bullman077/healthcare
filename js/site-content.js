@@ -11,11 +11,13 @@
 (function () {
   'use strict';
 
-  var cache = null;
+  let cache = null;
 
   /* Sanitize HTML: strip dangerous tags/attributes while keeping safe formatting */
   function sanitizeHtml(html) {
-    if (!html) return '';
+    if (!html) {
+      return '';
+    }
     return String(html)
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
       .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
@@ -29,72 +31,92 @@
   }
 
   function applyContent(data) {
-    if (!data) return;
+    if (!data) {
+      return;
+    }
 
     /* --- textContent replacements --- */
     document.querySelectorAll('[data-content]').forEach(function (el) {
-      var key = el.getAttribute('data-content');
-      if (data[key]) el.textContent = data[key];
+      const key = el.getAttribute('data-content');
+      if (data[key]) {
+        el.textContent = data[key];
+      }
     });
 
     /* --- innerHTML replacements (sanitized) --- */
     document.querySelectorAll('[data-content-html]').forEach(function (el) {
-      var key = el.getAttribute('data-content-html');
-      if (data[key]) el.innerHTML = sanitizeHtml(data[key]);
+      const key = el.getAttribute('data-content-html');
+      if (data[key]) {
+        el.innerHTML = sanitizeHtml(data[key]);
+      }
     });
 
     /* --- href replacements (phone links) --- */
     document.querySelectorAll('[data-content-href]').forEach(function (el) {
-      var key = el.getAttribute('data-content-href');
-      if (data[key]) el.href = data[key];
+      const key = el.getAttribute('data-content-href');
+      if (data[key]) {
+        el.href = data[key];
+      }
     });
 
     /* --- Privacy page: inject full policy content (sanitized) --- */
-    var privacyArticle = document.getElementById('privacy-article-body');
+    const privacyArticle = document.getElementById('privacy-article-body');
     if (privacyArticle && data.privacy_policy) {
       privacyArticle.innerHTML = sanitizeHtml(data.privacy_policy);
     }
 
     /* --- Terms page: inject full terms content (sanitized) --- */
-    var termsArticle = document.getElementById('terms-article-body');
+    const termsArticle = document.getElementById('terms-article-body');
     if (termsArticle && data.terms_of_service) {
       termsArticle.innerHTML = sanitizeHtml(data.terms_of_service);
     }
 
     /* --- Footer: dynamic contact block (all pages, sanitized) --- */
-    var footerAddress = document.getElementById('footer-clinic-address');
+    const footerAddress = document.getElementById('footer-clinic-address');
     if (footerAddress && data.clinic_address) {
       footerAddress.innerHTML = sanitizeHtml(data.clinic_address.replace(/\n/g, '<br>'));
     }
 
-    var footerPhone = document.getElementById('footer-clinic-phone');
+    const footerPhone = document.getElementById('footer-clinic-phone');
     if (footerPhone && data.clinic_phone) {
       footerPhone.textContent = data.clinic_phone;
-      var phoneLink = footerPhone.closest('a') || footerPhone.querySelector('a');
-      if (phoneLink) phoneLink.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+      const phoneLink = footerPhone.closest('a') || footerPhone.querySelector('a');
+      if (phoneLink) {
+        phoneLink.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+      }
     }
 
-    var footerEmail = document.getElementById('footer-clinic-email');
+    const footerEmail = document.getElementById('footer-clinic-email');
     if (footerEmail && data.clinic_email) {
       footerEmail.textContent = data.clinic_email;
-      var emailLink = footerEmail.closest('a') || footerEmail.querySelector('a');
-      if (emailLink) emailLink.href = 'mailto:' + data.clinic_email;
+      const emailLink = footerEmail.closest('a') || footerEmail.querySelector('a');
+      if (emailLink) {
+        emailLink.href = 'mailto:' + data.clinic_email;
+      }
     }
 
     /* --- Nav call pill --- */
-    var navPills = document.querySelectorAll('.nav__call-pill');
+    const navPills = document.querySelectorAll('.nav__call-pill');
     navPills.forEach(function (pill) {
       if (data.clinic_phone) {
         pill.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> ' + data.clinic_phone;
-        pill.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+        if (pill instanceof HTMLAnchorElement) {
+          pill.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+        } else {
+          // if not an anchor, try to find a nested <a>
+          const nested = pill.querySelector('a');
+          if (nested) {
+            nested.href = 'tel:+1' + data.clinic_phone.replace(/[^\d]/g, '');
+          }
+        }
       }
     });
 
     /* --- Provider photo: set img src on about page --- */
-    var providerImgs = document.querySelectorAll('[data-content-src="provider_photo_url"]');
+    const providerImgs = document.querySelectorAll('[data-content-src="provider_photo_url"]');
     providerImgs.forEach(function (img) {
       if (data.provider_photo_url) {
-        var src = data.provider_photo_url;
+        let src = data.provider_photo_url;
         if (src.indexOf('/') === 0 && src.indexOf('//') !== 0) {
           src = API_URL + src;
         }
@@ -103,19 +125,19 @@
     });
 
     /* --- Contact page: hours block (sanitized) --- */
-    var hoursBlock = document.getElementById('contact-clinic-hours');
+    const hoursBlock = document.getElementById('contact-clinic-hours');
     if (hoursBlock && data.clinic_hours) {
       hoursBlock.innerHTML = sanitizeHtml(data.clinic_hours.replace(/\n/g, '<br>'));
     }
 
     /* --- Contact page: address block (sanitized) --- */
-    var contactAddress = document.getElementById('contact-clinic-address');
+    const contactAddress = document.getElementById('contact-clinic-address');
     if (contactAddress && data.clinic_address) {
       contactAddress.innerHTML = sanitizeHtml(data.clinic_address.replace(/\n/g, '<br>'));
     }
   }
 
-  var API_URL = (typeof window !== 'undefined' && (window.UHS_API_URL || window.API_URL)) ? (window.UHS_API_URL || window.API_URL) : 'https://uhs-backen.onrender.com';
+  const API_URL = (typeof window !== 'undefined' && (window.UHS_API_URL || window.API_URL)) ? (window.UHS_API_URL || window.API_URL) : 'https://uhs-backen.onrender.com';
 
   function loadSiteContent() {
     if (cache) {
@@ -125,12 +147,14 @@
     fetch(API_URL + '/api/site-content')
       .then(function (r) { return r.json(); })
       .then(function (json) {
-        if (json.success && json.data) {
+        if (json && json.success && json.data) {
           cache = json.data;
           applyContent(cache);
         }
       })
-      .catch(function () {});
+      .catch(function () {
+        // optionally log or silently ignore
+      });
   }
 
   if (document.readyState === 'loading') {
