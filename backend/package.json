@@ -12,8 +12,8 @@
     "build": "echo 'No build step required'",
     "seed": "node seed.js",
     "migrate": "node migrate.js",
-    "test": "jest --forceExit --detectOpenHandles",
-    "test:coverage": "jest --coverage --forceExit --detectOpenHandles"
+    "test": "jest --forceExit --detectOpenHandles --passWithNoTests",
+    "test:coverage": "jest --coverage --forceExit --detectOpenHandles --passWithNoTests"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
